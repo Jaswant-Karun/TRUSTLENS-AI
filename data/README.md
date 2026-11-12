@@ -13,3 +13,4 @@ This directory contains the training, evaluation, and live threat intelligence d
 1. Files placed in `raw/` are **read-only** and must never be altered in-place.
 2. All data cleaning, deduplication, and label standardization must be executed via automated preprocessing pipelines in `ml/`.
 3. Processed splits are saved with cryptographic SHA-256 checksums to ensure reproducibility.
+

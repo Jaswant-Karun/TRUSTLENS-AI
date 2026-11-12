@@ -201,3 +201,4 @@ Under **Rule 6 ("Do not remove existing working features")**, the following desi
 3. **Multi-Vector Assessment Logic:** Display of overall threat level, confidence, detected language, and triggered tactics.
 4. **Interactive Graph UI:** Clickable node inspection card layout in `KillChainGraph.tsx`.
 5. **Incident Table Structure:** Tabular schema displaying Time, Vector, Sender, Payload, Classification, Severity, and Action.
+

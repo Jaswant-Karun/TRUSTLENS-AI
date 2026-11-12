@@ -25,3 +25,4 @@ Write-Host " - Frontend UI:     http://localhost:3000" -ForegroundColor White
 Write-Host " - API Docs:        http://127.0.0.1:8000/docs" -ForegroundColor White
 Write-Host " - API Health:      http://127.0.0.1:8000/api/v1/health" -ForegroundColor White
 Write-Host "============================================================" -ForegroundColor Cyan
+

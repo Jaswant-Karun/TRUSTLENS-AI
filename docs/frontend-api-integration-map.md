@@ -271,3 +271,4 @@ classDiagram
 2. **Missing Token Injection:** Protected endpoints (`/analyses`, `/analyses/{id}`) require a valid JWT header, but the frontend has no authentication interceptor.
 3. **Data Shape Incompatibility:** The frontend `ScanResult` interface expects legacy keys (`detected_type`, `text_analysis`, `tactics_analysis`), whereas `AnalysisResultResponse` provides `analysis_type`, `text_model`, `tactic_model`, `risk_assessment`, and `explainability`.
 4. **Mock Fallback Antipattern:** If the backend is loading or temporarily unavailable, `ScanWorkbench.tsx` injects a synthetic client-side result rather than showing an explicit network/retry state.
+

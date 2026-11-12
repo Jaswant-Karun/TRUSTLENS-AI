@@ -69,8 +69,8 @@ async def analyze_url(
 
 @router.post("/image", response_model=ImageAnalysisResponse)
 async def analyze_image(
-    file: UploadFile = File(..., description="Screenshot evidence (JPEG, PNG, WebP; max 10MB)"),
     request: Request,
+    file: UploadFile = File(..., description="Screenshot evidence (JPEG, PNG, WebP; max 10MB)"),
     current_user: Optional[Dict[str, Any]] = Depends(get_optional_current_user),
 ):
     """

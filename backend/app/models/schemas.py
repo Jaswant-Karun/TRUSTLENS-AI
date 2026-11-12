@@ -3,6 +3,8 @@ TRUSTLENS AI - Core Schemas Re-export
 Maintains full backward compatibility while delegating to backend.app.schemas.
 """
 
+from typing import Union, List, Optional, Dict, Any
+from pydantic import BaseModel, Field
 from backend.app.schemas import *
 from backend.app.schemas.analysis import (
     TextAnalysisRequest as TextScanRequest,

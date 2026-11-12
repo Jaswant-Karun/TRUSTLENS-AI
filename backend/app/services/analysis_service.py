@@ -340,3 +340,4 @@ class ThreatAnalysisService:
 
 
 analysis_service = ThreatAnalysisService()
+threat_analysis_service = analysis_service

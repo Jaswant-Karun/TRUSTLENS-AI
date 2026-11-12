@@ -64,14 +64,19 @@ class MultilingualTextPreprocessor:
     @staticmethod
     def identify_language(text: str) -> str:
         """
-        Classifies message into English, Hindi (Devanagari), or Romanized Hinglish.
+        Classifies message into English, Hindi (Devanagari), Tamil (Dravidian), or Romanized Hinglish.
         """
         # 1. Devanagari script detection
         devanagari_chars = len(re.findall(r"[\u0900-\u097F]", text))
         if devanagari_chars >= 3:
             return "Hindi"
 
-        # 2. Romanized Hinglish token detection
+        # 2. Tamil script detection (Unicode U+0B80 to U+0BFF)
+        tamil_chars = len(re.findall(r"[\u0B80-\u0BFF]", text))
+        if tamil_chars >= 3:
+            return "Tamil"
+
+        # 3. Romanized Hinglish token detection
         tokens = set(re.findall(r"\b[a-zA-Z]{3,}\b", text.lower()))
         hinglish_matches = tokens & HINGLISH_KEYWORDS
         if len(hinglish_matches) >= 2 or (len(hinglish_matches) == 1 and len(tokens) <= 6):

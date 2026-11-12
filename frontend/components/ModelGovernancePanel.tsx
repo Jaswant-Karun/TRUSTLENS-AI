@@ -104,3 +104,4 @@ export default function ModelGovernancePanel({ id }: { id?: string }) {
     </div>
   );
 }
+

@@ -33,3 +33,4 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
     </nav>
   );
 }
+

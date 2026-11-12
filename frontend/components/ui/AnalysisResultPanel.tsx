@@ -260,3 +260,4 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
     </div>
   );
 }
+

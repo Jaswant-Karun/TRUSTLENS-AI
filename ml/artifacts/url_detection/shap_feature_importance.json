@@ -1,0 +1,66 @@
+[
+  {
+    "feature": "path_length",
+    "mean_abs_shap": 0.2398
+  },
+  {
+    "feature": "https_flag",
+    "mean_abs_shap": 0.0855
+  },
+  {
+    "feature": "token_count",
+    "mean_abs_shap": 0.0627
+  },
+  {
+    "feature": "number_of_digits",
+    "mean_abs_shap": 0.0369
+  },
+  {
+    "feature": "percentage_numeric_chars",
+    "mean_abs_shap": 0.033
+  },
+  {
+    "feature": "dot_count",
+    "mean_abs_shap": 0.0188
+  },
+  {
+    "feature": "subdomain_count",
+    "mean_abs_shap": 0.011
+  },
+  {
+    "feature": "has_ip_address",
+    "mean_abs_shap": 0.0083
+  },
+  {
+    "feature": "tld_popularity",
+    "mean_abs_shap": 0.0074
+  },
+  {
+    "feature": "url_length",
+    "mean_abs_shap": 0.0064
+  },
+  {
+    "feature": "suspicious_file_extension",
+    "mean_abs_shap": 0.0059
+  },
+  {
+    "feature": "tld_length",
+    "mean_abs_shap": 0.0055
+  },
+  {
+    "feature": "url_entropy",
+    "mean_abs_shap": 0.0021
+  },
+  {
+    "feature": "domain_name_length",
+    "mean_abs_shap": 0.002
+  },
+  {
+    "feature": "has_hyphen_in_domain",
+    "mean_abs_shap": 0.0006
+  },
+  {
+    "feature": "query_param_count",
+    "mean_abs_shap": 0.0002
+  }
+]

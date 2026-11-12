@@ -10,6 +10,8 @@ from backend.app.services.campaign_service import campaign_service, CampaignInte
 from backend.app.services.model_service import model_service, ModelManagementService
 from backend.app.services.report_service import report_service, CommunityScamReportService
 from backend.app.services.ml_service import ml_service, MLOrchestrationService
+from backend.app.services.training_service import training_orchestrator, TrainingOrchestratorService
+from backend.app.services.automation_service import automation_service, AutomationService
 
 __all__ = [
     "risk_service",
@@ -28,5 +30,9 @@ __all__ = [
     "CommunityScamReportService",
     "ml_service",
     "MLOrchestrationService",
+    "training_orchestrator",
+    "TrainingOrchestratorService",
+    "automation_service",
+    "AutomationService",
 ]
 

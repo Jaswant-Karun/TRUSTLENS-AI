@@ -5,7 +5,17 @@ Assembles all official v1 routers under a centralized router.
 
 from fastapi import APIRouter
 
-from backend.app.api.routes import auth, analyze, analyses, campaigns, models, reports, health
+from backend.app.api.routes import (
+    auth,
+    analyze,
+    analyses,
+    campaigns,
+    models,
+    reports,
+    health,
+    training,
+    automation,
+)
 
 api_v1_router = APIRouter()
 
@@ -17,6 +27,8 @@ api_v1_router.include_router(analyses.router)
 api_v1_router.include_router(campaigns.router)
 api_v1_router.include_router(models.router)
 api_v1_router.include_router(reports.router)
+api_v1_router.include_router(training.router)
+api_v1_router.include_router(automation.router)
 
 __all__ = ["api_v1_router"]
 

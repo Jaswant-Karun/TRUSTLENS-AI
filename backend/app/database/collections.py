@@ -70,3 +70,12 @@ def get_automations_collection():
 def get_audit_collection():
     return db_manager.get_collection(COLL_AUDIT_LOGS)
 
+
+# Convenience Aliases
+get_model_registry_collection = get_models_collection
+get_model_evaluations_collection = get_evaluations_collection
+get_automation_logs_collection = get_automations_collection
+get_audit_logs_collection = get_audit_collection
+get_threat_indicators_collection = get_indicators_collection
+get_suspicious_urls_collection = get_urls_collection
+

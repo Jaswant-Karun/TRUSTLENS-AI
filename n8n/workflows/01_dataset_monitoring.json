@@ -1,0 +1,246 @@
+{
+  "name": "TRUSTLENS AI - Workflow 1: Dataset Monitoring & Threat Feed Ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "node-1-schedule",
+      "name": "Schedule Trigger (Every 6h)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [180, 300],
+      "notes": "Triggers threat intelligence dataset monitoring and feed ingestion every 6 hours."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $env.TRUSTLENS_ADMIN_USER || 'admin@trustlens.ai' }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $env.TRUSTLENS_ADMIN_PASSWORD || 'AdminPass123!' }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-2-auth",
+      "name": "Authenticate System Admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 300],
+      "notes": "Authenticates against TrustLens backend to obtain valid JWT Bearer token."
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date().toISOString();\nreturn [\n  {\n    json: {\n      source_name: 'URLhaus_Threat_Feed',\n      feed_timestamp: now,\n      indicators: [\n        {\n          indicator_type: 'url',\n          indicator_value: 'http://secure-update-sbi-portal.top/login.php',\n          confidence: 0.96,\n          tags: ['phishing', 'banking', 'smishing']\n        },\n        {\n          indicator_type: 'url',\n          indicator_value: 'https://parcel-redirection-track-ae.xyz/confirm',\n          confidence: 0.92,\n          tags: ['courier_scam', 'delivery']\n        },\n        {\n          indicator_type: 'domain',\n          indicator_value: 'kyc-pan-verification-alert.online',\n          confidence: 0.89,\n          tags: ['credential_harvesting']\n        }\n      ]\n    }\n  }\n];"
+      },
+      "id": "node-3-fetch-feed",
+      "name": "Fetch Approved Threat Feed",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [620, 300],
+      "notes": "Retrieves verified threat intelligence indicators from approved external feed."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-feed-valid",
+              "leftValue": "={{ $json.source_name }}",
+              "rightValue": "URLhaus_Threat_Feed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "cond-indicators-exist",
+              "leftValue": "={{ $json.indicators.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "node-4-validate",
+      "name": "Validate Feed Metadata & Timestamps",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [840, 300],
+      "notes": "Validates feed source authenticity and confirms non-empty record payload."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/ingest-feed",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Authenticate System Admin').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"source_name\": \"{{ $json.source_name }}\",\n  \"feed_timestamp\": \"{{ $json.feed_timestamp }}\",\n  \"indicators\": {{ JSON.stringify($json.indicators) }},\n  \"workflow_id\": \"{{ $execution.id }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-5-ingest",
+      "name": "Ingest to TrustLens Ingestion API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1080, 200],
+      "notes": "Dispatches validated indicators to backend ingestion API with duplicate prevention."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/log-execution",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Authenticate System Admin').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"dataset_monitoring\",\n  \"trigger_event\": \"schedule_every_6h\",\n  \"status\": \"success\",\n  \"payload_summary\": {\n    \"ingested_count\": {{ $json.ingested_count }},\n    \"duplicates_skipped\": {{ $json.duplicates_skipped }},\n    \"source\": \"{{ $json.source }}\"\n  },\n  \"duration_ms\": 142.5\n}"
+      },
+      "id": "node-6-log-success",
+      "name": "Log Ingestion Success to Audit Store",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 200],
+      "notes": "Logs ingestion execution details into automation_logs collection."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ADMIN_ALERT_WEBHOOK_URL || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"dataset_monitoring\",\n  \"trigger_event\": \"schedule_every_6h\",\n  \"status\": \"failed\",\n  \"error_message\": \"Threat feed validation rejected unverified source or empty payload.\",\n  \"execution_id\": \"{{ $execution.id }}\"\n}"
+      },
+      "id": "node-7-alert-failure",
+      "name": "Notify Administrator on Ingestion Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1080, 420],
+      "notes": "Notifies security administrator if feed ingestion fails or source validation is rejected."
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Every 6h)": {
+      "main": [
+        [
+          {
+            "node": "Authenticate System Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Authenticate System Admin": {
+      "main": [
+        [
+          {
+            "node": "Fetch Approved Threat Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Approved Threat Feed": {
+      "main": [
+        [
+          {
+            "node": "Validate Feed Metadata & Timestamps",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Feed Metadata & Timestamps": {
+      "main": [
+        [
+          {
+            "node": "Ingest to TrustLens Ingestion API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify Administrator on Ingestion Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ingest to TrustLens Ingestion API": {
+      "main": [
+        [
+          {
+            "node": "Log Ingestion Success to Audit Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

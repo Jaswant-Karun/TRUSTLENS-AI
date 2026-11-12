@@ -117,17 +117,24 @@ class CampaignClusterRequest(BaseModel):
 
 
 class CampaignCluster(BaseModel):
+    model_config = {"extra": "allow"}
+
     cluster_id: int
     cluster_name: str
     sample_size: int
     exemplar_text: str
     associated_indicators: List[str] = Field(default_factory=list)
+    cohesion_score: Optional[float] = None
 
 
 class CampaignClusterResponse(BaseModel):
+    model_config = {"extra": "allow"}
+
     total_messages: int
     clusters_identified: int
     clusters: List[CampaignCluster]
+    processing_time_ms: Optional[float] = None
+    legal_disclaimer: Optional[str] = None
     processed_at: datetime = Field(default_factory=get_utc_now)
 
 

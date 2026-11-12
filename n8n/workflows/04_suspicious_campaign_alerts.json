@@ -1,0 +1,261 @@
+{
+  "name": "TRUSTLENS AI - Workflow 4: Suspicious Scam Campaign Alerts",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "campaign-alert-trigger",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "node-1-webhook",
+      "name": "Campaign Indicators Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300],
+      "notes": "Receives newly identified campaign clusters or threat indicators from Model 4 or backend."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-cohesion-threshold",
+              "leftValue": "={{ $json.body.cohesion_score }}",
+              "rightValue": 0.60,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "cond-cluster-id-valid",
+              "leftValue": "={{ $json.body.cluster_id }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "node-2-validate-evidence",
+      "name": "Validate Evidence & Cohesion Threshold",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [420, 300],
+      "notes": "Validates cluster mathematical cohesion score (>= 0.60) to prevent false alerts."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $env.TRUSTLENS_ADMIN_USER || 'admin@trustlens.ai' }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $env.TRUSTLENS_ADMIN_PASSWORD || 'AdminPass123!' }}"
+            }
+          ]
+        }
+      },
+      "id": "node-3-login",
+      "name": "Acquire Alert Service Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 200],
+      "notes": "Authenticates against TrustLens backend to execute alert dispatch."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/campaign-alerts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"cluster_id\": {{ $('Campaign Indicators Webhook Trigger').item.json.body.cluster_id }},\n  \"campaign_name\": \"{{ $('Campaign Indicators Webhook Trigger').item.json.body.campaign_name }}\",\n  \"targeted_entity\": \"{{ $('Campaign Indicators Webhook Trigger').item.json.body.targeted_entity }}\",\n  \"cohesion_score\": {{ $('Campaign Indicators Webhook Trigger').item.json.body.cohesion_score }},\n  \"indicators\": {{ JSON.stringify($('Campaign Indicators Webhook Trigger').item.json.body.indicators || []) }},\n  \"exemplar_message\": \"{{ $('Campaign Indicators Webhook Trigger').item.json.body.exemplar_message || '' }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-4-dispatch",
+      "name": "Check Duplicate Alert & Resolve Targets",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 200],
+      "notes": "Applies 24h suppression window against duplicate alerts and maps impacted subscribers."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-is-duplicate",
+              "leftValue": "={{ $json.is_duplicate }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "node-5-duplicate-check",
+      "name": "Filter Duplicate Alerts",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1140, 200],
+      "notes": "Skips duplicate dispatches when the campaign has already been alerted in the last 24h."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SOC_ALERT_DISPATCH_WEBHOOK || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"suspicious_campaign_alerts\",\n  \"trigger_event\": \"campaign_security_bulletin\",\n  \"status\": \"dispatched\",\n  \"payload_summary\": {\n    \"alert_id\": \"{{ $json.alert_id }}\",\n    \"cluster_id\": {{ $json.cluster_id }},\n    \"campaign_name\": \"{{ $json.campaign_name }}\",\n    \"targeted_entity\": \"{{ $json.targeted_entity }}\",\n    \"recipients_count\": {{ $json.recipients_notified }},\n    \"legal_disclaimer\": \"Campaign similarity denotes statistical linguistic overlap and does not constitute judicial attribution.\"\n  }\n}"
+      },
+      "id": "node-6-notify-soc",
+      "name": "Send Campaign Security Bulletin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1380, 100],
+      "notes": "Dispatches emergency security bulletin with IOCs and legal attribution caveat to affected subscribers."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/log-execution",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Alert Service Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"suspicious_campaign_alerts\",\n  \"trigger_event\": \"suppressed_duplicate_or_low_cohesion\",\n  \"status\": \"suppressed\",\n  \"payload_summary\": {\n    \"cluster_id\": {{ $('Campaign Indicators Webhook Trigger').item.json.body.cluster_id }},\n    \"reason\": \"Duplicate alert suppressed within 24h window or cohesion score below threshold.\"\n  }\n}"
+      },
+      "id": "node-7-log-suppression",
+      "name": "Log Suppression to Audit Trail",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1380, 320],
+      "notes": "Records alert suppression event to audit logs."
+    }
+  ],
+  "connections": {
+    "Campaign Indicators Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Validate Evidence & Cohesion Threshold",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Evidence & Cohesion Threshold": {
+      "main": [
+        [
+          {
+            "node": "Acquire Alert Service Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Suppression to Audit Trail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acquire Alert Service Token": {
+      "main": [
+        [
+          {
+            "node": "Check Duplicate Alert & Resolve Targets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicate Alert & Resolve Targets": {
+      "main": [
+        [
+          {
+            "node": "Filter Duplicate Alerts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Duplicate Alerts": {
+      "main": [
+        [
+          {
+            "node": "Send Campaign Security Bulletin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Suppression to Audit Trail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

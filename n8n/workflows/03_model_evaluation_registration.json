@@ -1,0 +1,281 @@
+{
+  "name": "TRUSTLENS AI - Workflow 3: Model Evaluation & Gated Registration",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evaluate-and-register",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "node-1-webhook",
+      "name": "Receive Completed Job Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300],
+      "notes": "Receives completed training job ID from Workflow 2 or Analyst."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $env.TRUSTLENS_ADMIN_USER || 'admin@trustlens.ai' }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $env.TRUSTLENS_ADMIN_PASSWORD || 'AdminPass123!' }}"
+            }
+          ]
+        }
+      },
+      "id": "node-2-login",
+      "name": "Acquire Admin Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 300],
+      "notes": "Logs in to obtain Bearer token for evaluation and comparison endpoints."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/training/jobs/{{ $('Receive Completed Job Webhook').item.json.body.job_id }}/compare",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        }
+      },
+      "id": "node-3-compare",
+      "name": "Compare Candidate with Production Baseline",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300],
+      "notes": "Calls Python evaluation service to calculate delta against production metrics."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-gate-passed",
+              "leftValue": "={{ $json.passed_criteria }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "node-4-gate",
+      "name": "Check Acceptance Gate (No Regression)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [880, 300],
+      "notes": "Ensures candidate meets absolute thresholds and does not regress production F1."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ADMIN_ALERT_WEBHOOK_URL || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Admin Session').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"model_evaluation_registration\",\n  \"trigger_event\": \"acceptance_gate_passed\",\n  \"status\": \"human_approval_required\",\n  \"payload_summary\": {\n    \"job_id\": \"{{ $json.job_id }}\",\n    \"model_name\": \"{{ $json.model_name }}\",\n    \"candidate_version\": \"{{ $json.candidate_version }}\",\n    \"f1_delta\": {{ $json.f1_delta }},\n    \"recommendation\": \"{{ $json.recommendation }}\",\n    \"approval_url\": \"{{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/training/jobs/{{ $json.job_id }}/promote\"\n  }\n}"
+      },
+      "id": "node-5-request-approval",
+      "name": "Dispatch Human Approval Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 200],
+      "notes": "Requests human security lead approval before any production model promotion."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/training/jobs/{{ $('Compare Candidate with Production Baseline').item.json.job_id }}/promote",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Admin Session').item.json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"approved_by\": \"{{ $env.TRUSTLENS_LEAD_AUDITOR || 'admin_auditor' }}\",\n  \"approval_token\": \"{{ $env.TRUSTLENS_HUMAN_APPROVAL_TOKEN || 'AUTH-HUMAN-LEAD-2026-CONFIRM' }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-6-promote",
+      "name": "Promote Approved Model to Production",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1360, 200],
+      "notes": "Registers candidate in model_registry and archives previous production model."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/log-execution",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Admin Session').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"model_evaluation_registration\",\n  \"trigger_event\": \"model_promoted_success\",\n  \"status\": \"success\",\n  \"payload_summary\": {\n    \"model_name\": \"{{ $json.model_name }}\",\n    \"promoted_version\": \"{{ $json.active_version }}\",\n    \"approved_by\": \"{{ $json.promoted_by }}\",\n    \"audit_id\": \"{{ $json.audit_id }}\"\n  }\n}"
+      },
+      "id": "node-7-log-audit",
+      "name": "Record Promotion Audit Trail",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1600, 200],
+      "notes": "Logs permanent promotion record in automation_logs and audit_logs."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ADMIN_ALERT_WEBHOOK_URL || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Admin Session').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"model_evaluation_registration\",\n  \"trigger_event\": \"candidate_rejected_degradation\",\n  \"status\": \"failed\",\n  \"error_message\": \"Model rejected due to performance degradation or threshold failure.\",\n  \"payload_summary\": {\n    \"reasons\": {{ JSON.stringify($json.reasons) }},\n    \"f1_delta\": {{ $json.f1_delta }}\n  }\n}"
+      },
+      "id": "node-8-reject-alert",
+      "name": "Flag Model Degradation & Reject Promotion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 420],
+      "notes": "Halts promotion pipeline if model exhibits accuracy loss or regression."
+    }
+  ],
+  "connections": {
+    "Receive Completed Job Webhook": {
+      "main": [
+        [
+          {
+            "node": "Acquire Admin Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acquire Admin Session": {
+      "main": [
+        [
+          {
+            "node": "Compare Candidate with Production Baseline",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Candidate with Production Baseline": {
+      "main": [
+        [
+          {
+            "node": "Check Acceptance Gate (No Regression)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Acceptance Gate (No Regression)": {
+      "main": [
+        [
+          {
+            "node": "Dispatch Human Approval Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flag Model Degradation & Reject Promotion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dispatch Human Approval Request": {
+      "main": [
+        [
+          {
+            "node": "Promote Approved Model to Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Promote Approved Model to Production": {
+      "main": [
+        [
+          {
+            "node": "Record Promotion Audit Trail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

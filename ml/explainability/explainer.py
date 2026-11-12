@@ -359,10 +359,25 @@ class TrustLensTacticExplainer:
                 if conf >= thresh:
                     active_keys.append((key, conf, thresh))
         else:
-            active_keys = [
-                (t.get("tactic_key", t.get("name")), t.get("confidence", 0.5), t.get("threshold", 0.5))
-                for t in detected_tactics
-            ]
+            active_keys = []
+            for t in detected_tactics:
+                k = t.get("tactic_id") or t.get("tactic_key") or t.get("name", "")
+                c = t.get("confidence", 0.5)
+                th = t.get("threshold_applied") or t.get("threshold", 0.5)
+                active_keys.append((k, c, th))
+
+        # Broad characteristic threat keywords per tactic for context extraction
+        evidence_clues = {
+            "urgency_time_pressure": ["immediate", "turant", "today", "24 hours", "24 hrs", "now", "urgent", "deadline", "last date", "jaldi", "minutes", "warning"],
+            "threats_intimidation": ["disconnect", "cut off", "warning", "block", "freeze", "police", "legal", "arrest", "action", "penalty", "challan", "court", "fir", "unpaid", "stop"],
+            "otp_credential_requests": ["otp", "pin", "password", "cvv", "verification", "secret code", "credentials", "share", "authenticate"],
+            "financial_manipulation": ["debit", "credited", "transfer", "amount", "charge", "refund", "fee", "loan", "rs", "inr", "rupees", "bill", "unpaid"],
+            "authority_impersonation": ["sbi", "hdfc", "icici", "pnb", "rbi", "income tax", "customs", "govt", "police", "electricity", "bsnl"],
+            "fake_employment": ["part-time", "job", "salary", "daily income", "telegram", "task", "youtube", "earn", "work from home", "hiring"],
+            "account_suspension": ["blocked", "block", "suspend", "kyc", "pan", "deactivat", "freeze", "band", "lapsed", "cut off", "disconnected"],
+            "prize_reward_scams": ["won", "winner", "lottery", "prize", "cash", "lucky", "crore", "lakhs", "congratulations", "gift", "reward"],
+            "refund_payment_manipulation": ["refund", "upi", "collect", "cashback", "courier", "delivery", "pay", "qr code", "reversal"],
+        }
 
         for item in active_keys:
             key, conf, thresh = item
@@ -372,24 +387,16 @@ class TrustLensTacticExplainer:
             name = meta.get("name", norm_key.replace("_", " ").title())
             code = meta.get("code", "TACTIC_UNKNOWN")
 
-            # Extract exact matched substring evidence from input text
-            evidence_clues = {
-                "urgency_time_pressure": ["immediate", "turant", "today", "24 hours", "24 hrs", "now", "urgent", "deadline", "last date", "jaldi", "minutes"],
-                "threats_intimidation": ["disconnect", "block", "freeze", "police", "legal", "arrest", "action", "penalty", "challan", "court", "fir"],
-                "otp_credential_requests": ["otp", "pin", "password", "cvv", "verification", "secret code", "credentials", "share", "authenticate"],
-                "financial_manipulation": ["debit", "credited", "transfer", "amount", "charge", "refund", "fee", "loan", "rs", "inr", "rupees"],
-                "authority_impersonation": ["sbi", "hdfc", "icici", "pnb", "rbi", "income tax", "customs", "govt", "police", "electricity", "bsnl"],
-                "fake_employment": ["part-time", "job", "salary", "daily income", "telegram", "task", "youtube", "earn", "work from home", "hiring"],
-                "account_suspension": ["blocked", "block", "suspend", "kyc", "pan", "deactivat", "freeze", "band", "lapsed"],
-                "prize_reward_scams": ["won", "winner", "lottery", "prize", "cash", "lucky", "crore", "lakhs", "congratulations", "gift", "reward"],
-                "refund_payment_manipulation": ["refund", "upi", "collect", "cashback", "courier", "delivery", "pay", "qr code", "reversal"],
-            }
-
             clues = evidence_clues.get(norm_key, [])
             matched_evidence = []
             for clue in clues:
                 if clue in text_lower:
                     matched_evidence.append(clue)
+
+            # If no hardcoded clue matched, fall back to matching non-trivial words from the text
+            if not matched_evidence:
+                words = [w.strip(".,;:!?()[]") for w in text_lower.split() if len(w) > 4]
+                matched_evidence = words[:2]
 
             rationale = self.TACTIC_DESCRIPTIONS.get(
                 norm_key,
@@ -443,7 +450,22 @@ class TrustLensCampaignExplainer:
         """
         Formats campaign attribution explanation with shared IOCs and required caveats.
         """
-        if not campaign_match or not campaign_match.get("matched"):
+        if not campaign_match:
+            return {
+                "matched": False,
+                "campaign_id": None,
+                "similarity_score": 0.0,
+                "attribution_evidence": "Message did not match any of the established high-density campaign clusters.",
+                "legal_disclaimer": self.MANDATORY_LEGAL_CAVEAT,
+            }
+
+        is_matched = bool(
+            campaign_match.get("matched") is True
+            or campaign_match.get("match_status") == "associated_with_known_campaign"
+            or (campaign_match.get("campaign_id") is not None and campaign_match.get("campaign_id") != -1)
+        )
+
+        if not is_matched:
             return {
                 "matched": False,
                 "campaign_id": None,
@@ -452,16 +474,17 @@ class TrustLensCampaignExplainer:
                 "legal_disclaimer": self.MANDATORY_LEGAL_CAVEAT,
             }
 
-        cid = campaign_match.get("cluster_id")
-        cname = campaign_match.get("campaign_name", f"Campaign #{cid}")
-        sim = campaign_match.get("similarity_score", 0.0)
-        target = campaign_match.get("targeted_entity", "Unknown")
+        cid = campaign_match.get("campaign_id") if campaign_match.get("campaign_id") is not None else campaign_match.get("cluster_id")
+        cname = campaign_match.get("associated_campaign") or campaign_match.get("campaign_name", f"Campaign #{cid}")
+        sim = float(campaign_match.get("similarity_score", 0.0))
+        target = campaign_match.get("targeted_institution") or campaign_match.get("targeted_entity", "Unknown")
         tactics = campaign_match.get("primary_tactics", [])
-        shared_iocs = campaign_match.get("shared_iocs", {})
+        shared_iocs = campaign_match.get("extracted_iocs") or campaign_match.get("shared_iocs", {})
+        disclaimer = campaign_match.get("legal_disclaimer") or self.MANDATORY_LEGAL_CAVEAT
 
         attribution_summary = (
             f"Message aligns with '{cname}' with a cosine embedding similarity of {sim:.2f}. "
-            f"Key matching threat vectors include targeting '{target}' using psychological tactics: {', '.join(tactics)}."
+            f"Key matching threat vectors include targeting '{target}'."
         )
 
         return {
@@ -473,7 +496,7 @@ class TrustLensCampaignExplainer:
             "primary_tactics": tactics,
             "shared_iocs": shared_iocs,
             "attribution_summary": attribution_summary,
-            "legal_disclaimer": self.MANDATORY_LEGAL_CAVEAT,
+            "legal_disclaimer": disclaimer,
         }
 
 

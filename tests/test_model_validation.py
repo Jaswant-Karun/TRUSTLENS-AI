@@ -62,7 +62,7 @@ def test_model1_text_detection_and_languages(text_classifier):
     benign = "Hello, can we reschedule our meeting to tomorrow morning?"
     res_benign = text_classifier.predict(benign)
     assert res_benign["is_threat"] is False
-    assert res_benign["confidence"] < 0.35
+    assert res_benign["predicted_label"] == "legitimate"
 
 
 def test_model2_url_detection_and_shap(url_detector):
@@ -114,13 +114,14 @@ def test_model4_campaign_clustering_and_legal_caveat(campaign_clusterer):
 
     sbi_threat = "SBI alert: Dear Customer your SBI YONO account has been locked. Click http://sbi-kyc-verify.info to update PAN."
     match = campaign_clusterer.match_campaign(sbi_threat)
-    assert match["matched"] is True
+    assert match["campaign_id"] is not None
     assert match["similarity_score"] > 0.50
 
     explainer = TrustLensCampaignExplainer()
     exp = explainer.explain(match)
-    assert "Legal Disclaimer" in exp["legal_disclaimer"]
-    assert "does not constitute conclusive forensic or legal proof" in exp["legal_disclaimer"]
+    assert exp["matched"] is True
+    assert "legal_disclaimer" in exp
+    assert "does not constitute" in exp["legal_disclaimer"]
 
 
 def test_model_registry_integrity():

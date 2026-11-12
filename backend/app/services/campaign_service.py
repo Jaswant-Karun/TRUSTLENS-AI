@@ -53,17 +53,23 @@ class CampaignIntelligenceService:
         # Fallback to local high-density dossiers if MongoDB collection is fresh
         dossiers = self._cached_dossiers
         if target:
-            dossiers = [d for d in dossiers if target.lower() in d.get("targeted_entity", "").lower()]
+            target_lower = target.lower()
+            dossiers = [
+                d for d in dossiers
+                if target_lower in (d.get("targeted_institution") or d.get("targeted_entity") or "").lower()
+            ]
         
         results = []
         for d in dossiers[:limit]:
+            categories = d.get("predominant_categories")
+            tactics = list(categories.keys()) if isinstance(categories, dict) else d.get("primary_tactics", [])
             results.append({
-                "cluster_id": d.get("cluster_id"),
-                "campaign_name": d.get("name"),
-                "targeted_entity": d.get("targeted_entity"),
-                "cluster_size": d.get("size"),
-                "cohesion_score": d.get("cohesion_score"),
-                "primary_tactics": d.get("primary_tactics", []),
+                "cluster_id": d.get("cluster_id") or 0,
+                "campaign_name": d.get("campaign_name") or d.get("name") or f"Campaign #{d.get('cluster_id')}",
+                "targeted_entity": d.get("targeted_institution") or d.get("targeted_entity") or "Generic / Unspecified Institution",
+                "cluster_size": d.get("sample_count") or d.get("size") or 1,
+                "cohesion_score": float(d.get("cluster_cohesion_score") or d.get("cohesion_score") or 0.8),
+                "primary_tactics": tactics,
                 "status": "active",
                 "last_activity": datetime.now(timezone.utc),
             })
@@ -80,17 +86,21 @@ class CampaignIntelligenceService:
         # Look in cached dossiers
         for d in self._cached_dossiers:
             if d.get("cluster_id") == campaign_id:
+                categories = d.get("predominant_categories")
+                tactics = list(categories.keys()) if isinstance(categories, dict) else d.get("primary_tactics", [])
+                indicators = d.get("shared_indicators") or d.get("shared_iocs") or {}
                 return {
                     "cluster_id": d.get("cluster_id"),
-                    "campaign_name": d.get("name"),
-                    "targeted_entity": d.get("targeted_entity"),
-                    "cluster_size": d.get("size"),
-                    "cohesion_score": d.get("cohesion_score"),
-                    "primary_tactics": d.get("primary_tactics", []),
+                    "campaign_name": d.get("campaign_name") or d.get("name") or f"Campaign #{d.get('cluster_id')}",
+                    "targeted_entity": d.get("targeted_institution") or d.get("targeted_entity") or "Generic / Unspecified Institution",
+                    "cluster_size": d.get("sample_count") or d.get("size") or 1,
+                    "cohesion_score": float(d.get("cluster_cohesion_score") or d.get("cohesion_score") or 0.8),
+                    "primary_tactics": tactics,
                     "exemplar_message": d.get("exemplar_message", ""),
                     "shared_phrases": d.get("shared_phrases", []),
-                    "shared_iocs": d.get("shared_iocs", {}),
+                    "shared_iocs": indicators,
                     "legal_disclaimer": (
+                        d.get("soc_legal_disclaimer") or
                         "Legal Disclaimer: Campaign similarity clusters indicate mathematical and linguistic overlap; "
                         "they do not establish forensically confirmed identity of criminal actors or syndicates."
                     ),

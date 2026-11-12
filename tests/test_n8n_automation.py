@@ -78,25 +78,27 @@ def test_n8n_workflow_json_schema_and_documentation():
 async def test_threat_feed_ingestion_and_deduplication(client: AsyncClient, admin_auth_token: str):
     """Tests Workflow 1 target: Feed ingestion with strict duplicate prevention."""
     headers = {"Authorization": f"Bearer {admin_auth_token}"}
+    import uuid
+    run_id = uuid.uuid4().hex[:6]
     
     feed_payload = {
-        "source_name": "Test_URLhaus_Feed",
+        "source_name": f"Test_URLhaus_Feed_{run_id}",
         "feed_timestamp": "2026-11-13T00:00:00Z",
         "indicators": [
             {
                 "indicator_type": "url",
-                "indicator_value": "http://fraud-portal-test-feed.xyz/login.html",
+                "indicator_value": f"http://fraud-portal-test-{run_id}.xyz/login.html",
                 "confidence": 0.94,
                 "tags": ["phishing", "banking"],
             },
             {
                 "indicator_type": "domain",
-                "indicator_value": "pan-card-verification-test.online",
+                "indicator_value": f"pan-card-verification-{run_id}.online",
                 "confidence": 0.88,
                 "tags": ["kyc_fraud"],
             },
         ],
-        "workflow_id": "n8n-exec-test-01",
+        "workflow_id": f"n8n-exec-test-{run_id}",
     }
 
     # 1. First Ingestion: both records should be ingested

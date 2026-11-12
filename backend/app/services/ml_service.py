@@ -74,7 +74,11 @@ class MLOrchestrationService:
             if embedded_urls:
                 url_res = self.scan_url(embedded_urls[0])
             
-            risk_score = text_res["confidence"] if text_res["is_threat"] else 0.1
+            text_risk = text_res["confidence"] if text_res["is_threat"] else 0.1
+            if url_res and url_res.get("is_phishing"):
+                risk_score = max(text_risk, url_res["risk_score"])
+            else:
+                risk_score = text_risk
 
         # Determine calibrated threat category
         if risk_score >= 0.85:

@@ -124,7 +124,7 @@ class TrustLensURLExplainer:
                             "value": v["feature_value"],
                             "shap_impact": v["shap_value"],
                             "description": v["description"],
-                            "interpretation": f"+{v['shap_impact']} to threat log-odds from {v['description']} ({v['feature_value']})",
+                            "interpretation": f"+{v['shap_value']} to threat log-odds from {v['description']} ({v['feature_value']})",
                         })
                     elif v["shap_value"] < 0:
                         top_protective_factors.append({
@@ -132,7 +132,7 @@ class TrustLensURLExplainer:
                             "value": v["feature_value"],
                             "shap_impact": v["shap_value"],
                             "description": v["description"],
-                            "interpretation": f"{v['shap_impact']} mitigating risk from {v['description']} ({v['feature_value']})",
+                            "interpretation": f"{v['shap_value']} mitigating risk from {v['description']} ({v['feature_value']})",
                         })
             except Exception as e:
                 print(f"[WARN] Error calculating SHAP for URL: {e}")

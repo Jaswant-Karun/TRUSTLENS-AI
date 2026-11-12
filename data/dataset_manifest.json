@@ -1,0 +1,130 @@
+{
+  "manifest_version": "1.0.0",
+  "generated_at": "2026-11-12T19:28:58.600034+00:00",
+  "project": "TRUSTLENS AI - Multilingual Digital Fraud Intelligence & Prevention Platform",
+  "stage": "Day 2 - Dataset Acquisition and Verification",
+  "system_info": {
+    "platform": "win32",
+    "python_version": "3.12.4",
+    "chunk_size_bytes": 1048576,
+    "memory_guard": "Stream-based processing enabled (16GB RAM constraint respected)"
+  },
+  "datasets": {
+    "scamshield": {
+      "name": "ScamShield: Multilingual Smishing & Social Engineering Corpus",
+      "dataset_id": "sidzzz07/scamshield-dataset",
+      "source": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset",
+      "version": "1.0.0",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "authors": [
+        "sidzzz07"
+      ],
+      "description": "Multilingual SMS phishing and social engineering dataset covering English, Hindi, and Hinglish.",
+      "raw_directory": "data/raw/scamshield",
+      "files": [
+        {
+          "filename": "train.jsonl",
+          "relative_path": "data/raw/scamshield/train.jsonl",
+          "status": "cached",
+          "format": "jsonl",
+          "size_bytes": 37541871,
+          "size_mb": 35.8027,
+          "sha256": "418b1d7af29945135284d4293230c75b26c3bccd3dda5382caf730fbc0e49cbf",
+          "source_url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/train.jsonl",
+          "downloaded_at": "2026-11-12T16:53:56.429259+00:00"
+        },
+        {
+          "filename": "val.jsonl",
+          "relative_path": "data/raw/scamshield/val.jsonl",
+          "status": "cached",
+          "format": "jsonl",
+          "size_bytes": 4377027,
+          "size_mb": 4.1743,
+          "sha256": "12a8a8dc62de78aeb4881a902bb0e829134f1e6f277ade90b02743134112789f",
+          "source_url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/val.jsonl",
+          "downloaded_at": "2026-11-12T16:53:57.636583+00:00"
+        },
+        {
+          "filename": "test.jsonl",
+          "relative_path": "data/raw/scamshield/test.jsonl",
+          "status": "cached",
+          "format": "jsonl",
+          "size_bytes": 4393460,
+          "size_mb": 4.1899,
+          "sha256": "a3a569a69529fe3398445bdd31046bfbcc19755c6b87f1133c8ed6c0134cdd6c",
+          "source_url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/test.jsonl",
+          "downloaded_at": "2026-11-12T16:53:58.944360+00:00"
+        }
+      ]
+    },
+    "sms_phishing": {
+      "name": "SMS Phishing Dataset for Machine Learning and Pattern Recognition",
+      "dataset_id": "10.17632/f45bkkt8pr.1",
+      "source": "Mendeley Data",
+      "source_url": "https://data.mendeley.com/datasets/f45bkkt8pr/1",
+      "version": "1",
+      "license": "CC BY 4.0",
+      "license_url": "http://creativecommons.org/licenses/by/4.0",
+      "authors": [
+        "Sandhya Mishra",
+        "Devpriya Soni"
+      ],
+      "description": "5,971 labeled SMS messages categorized into Ham, Spam, and Smishing.",
+      "raw_directory": "data/raw/sms_phishing",
+      "files": [
+        {
+          "filename": "Dataset_5971.zip",
+          "relative_path": "data/raw/sms_phishing/Dataset_5971.zip",
+          "status": "cached",
+          "format": "zip",
+          "size_bytes": 244698,
+          "size_mb": 0.2334,
+          "sha256": "9bbf3188fdad81495d8e82825648b9b63b53fc86841a3d26c02629990b233cc3",
+          "source_url": "https://data.mendeley.com/public-files/datasets/f45bkkt8pr/files/edb361de-918d-469f-9106-e84823830665/file_downloaded",
+          "downloaded_at": "2026-11-12T16:54:01.936455+00:00",
+          "extracted_files": [
+            {
+              "filename": "Dataset_5971.csv",
+              "relative_path": "data/raw/sms_phishing/Dataset_5971.csv",
+              "format": "csv",
+              "size_bytes": 595987,
+              "size_mb": 0.5684,
+              "sha256": "649844f1c62a6b27e145eaf17a65f7010c56c390e11a794ea8329993a05ba71e"
+            }
+          ]
+        }
+      ]
+    },
+    "legitphish": {
+      "name": "LegitPhish Dataset",
+      "dataset_id": "10.17632/hx4m73v2sf.2",
+      "source": "Mendeley Data",
+      "source_url": "https://data.mendeley.com/datasets/hx4m73v2sf/2",
+      "version": "2",
+      "license": "CC BY 4.0",
+      "license_url": "http://creativecommons.org/licenses/by/4.0",
+      "authors": [
+        "Rachana Potpelwar",
+        "Uday Kulkarni",
+        "Jaishri Waghmare"
+      ],
+      "description": "101,219 URLs labeled Phishing (0) or Legitimate (1) with 17 extracted lexical/structural features.",
+      "raw_directory": "data/raw/legitphish",
+      "files": [
+        {
+          "filename": "url_features_extracted1.csv",
+          "relative_path": "data/raw/legitphish/url_features_extracted1.csv",
+          "status": "cached",
+          "format": "csv",
+          "size_bytes": 8963838,
+          "size_mb": 8.5486,
+          "sha256": "8685e7901c3b4e73eb43c106cb166cc932dd14f76960a032c713c2c32f09dbcd",
+          "source_url": "https://data.mendeley.com/public-files/datasets/hx4m73v2sf/files/0ed51e4d-d160-4047-b650-3f0801eea4aa/file_downloaded",
+          "downloaded_at": "2026-11-12T16:54:06.881799+00:00"
+        }
+      ]
+    }
+  }
+}

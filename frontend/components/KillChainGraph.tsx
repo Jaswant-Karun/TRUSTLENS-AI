@@ -1,157 +1,191 @@
 "use client";
 
-import React, { useState } from "react";
-import { Network, ShieldCheck, AlertCircle, ArrowRight, Info } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import {
+  Network,
+  ShieldAlert,
+  ShieldCheck,
+  AlertCircle,
+  ExternalLink,
+  ChevronRight,
+  Info,
+  Layers,
+  ArrowRight,
+} from "lucide-react";
+import { getCampaigns, CampaignSummary } from "@/lib/api";
+import { SkeletonCard } from "./ui/LoadingStates";
 
-interface NodeDetail {
-  id: string;
-  label: string;
-  type: string;
-  threatLevel: string;
-  details: string;
-  iocs: string[];
+interface KillChainGraphProps {
+  id?: string;
 }
 
-const NODES: NodeDetail[] = [
-  {
-    id: "origin",
-    label: "Attack Origin",
-    type: "Origin Host / Gateway",
-    threatLevel: "high",
-    details: "Unregistered VoIP SMS Gateway routing bulk deceptive SMS packets.",
-    iocs: ["Sender ID: VK-SBIBNK", "IP: 198.51.100.44"],
-  },
-  {
-    id: "lure",
-    label: "Deceptive Lure",
-    type: "Hinglish Smishing",
-    threatLevel: "critical",
-    details: "Social-engineering pretext threatening immediate bank account deactivation.",
-    iocs: ["Text: 'SBI khata turant band...'", "Tactic: Artificial Urgency"],
-  },
-  {
-    id: "url",
-    label: "Phishing Landing",
-    type: "Credential Stealer",
-    threatLevel: "critical",
-    details: "Cloned netbanking portal hosting fake KYC PAN/Aadhaar update forms.",
-    iocs: ["URL: http://192.168.1.50/sbi-kyc", "Entropy: 4.38"],
-  },
-  {
-    id: "harvest",
-    label: "OTP Interceptor",
-    type: "Two-Factor Bypass",
-    threatLevel: "critical",
-    details: "Live websocket listener harvesting 6-digit transaction authorization codes.",
-    iocs: ["Target: Netbanking 2FA", "Payload: Reverse OTP relay"],
-  },
-  {
-    id: "mule",
-    label: "Mule Account",
-    type: "Intermediate Layer",
-    threatLevel: "medium",
-    details: "Compromised regional savings account used to layer stolen funds.",
-    iocs: ["UPI: payment98@okhdfcbank", "Account: 3491029482"],
-  },
-  {
-    id: "exit",
-    label: "Exit Point",
-    type: "Cryptocurrency / Cashout",
-    threatLevel: "high",
-    details: "Instant P2P cryptocurrency purchase and wallet withdrawal.",
-    iocs: ["Exit Channel: USDT P2P", "Volume: INR 48,500"],
-  },
-];
+export default function KillChainGraph({ id }: KillChainGraphProps) {
+  const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
+  const [selectedCampaign, setSelectedCampaign] = useState<CampaignSummary | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export default function KillChainGraph() {
-  const [selectedNode, setSelectedNode] = useState<NodeDetail>(NODES[1]);
+  useEffect(() => {
+    let isMounted = true;
+    getCampaigns(12)
+      .then((data) => {
+        if (isMounted) {
+          setCampaigns(data);
+          if (data && data.length > 0) {
+            setSelectedCampaign(data[0]);
+          }
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (loading) {
+    return <SkeletonCard />;
+  }
 
   return (
-    <div className="bg-card border border-border rounded-xl p-6 mb-6">
-      <div className="flex items-center justify-between mb-4">
+    <div id={id} className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 mb-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-5 border-b border-slate-100 gap-3">
         <div>
-          <h2 className="text-base font-semibold text-white flex items-center space-x-2">
-            <Network className="w-4 h-4 text-cyberCyan" />
-            <span>Interactive Attack Kill-Chain & Intelligence Graph</span>
-          </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Traces the attack lifecycle from vector origin through social engineering to monetary exfiltration.
+          <div className="flex items-center space-x-2">
+            <Network className="w-4 h-4 text-sky-600" />
+            <h2 className="text-base font-bold text-slate-900">Campaign Intelligence & Attack Kill-Chain Graph</h2>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 font-mono font-medium border border-sky-200">
+              HDBSCAN Model 4
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Discovered threat clusters linking deceptive lures, targeted institutions, and coordinated phishing infrastructure.
           </p>
         </div>
-        <div className="text-xs font-mono text-slate-500 bg-surface px-2.5 py-1 rounded border border-border">
-          CLICK NODE TO INSPECT
+
+        <div className="text-xs font-mono text-slate-500 bg-slate-50 px-2.5 py-1 rounded border border-slate-200">
+          Showing {campaigns.length} Active Coordinated Clusters
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Visual Graph View */}
-        <div className="lg:col-span-3 bg-surface border border-border rounded-lg p-5 flex flex-col justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 relative">
-            {NODES.map((node, i) => {
-              const isSelected = selectedNode.id === node.id;
-              return (
-                <div key={node.id} className="flex flex-col items-center">
-                  <button
-                    onClick={() => setSelectedNode(node)}
-                    className={`w-full p-3 rounded-lg border text-center transition-all flex flex-col items-center justify-center min-h-[90px] ${
-                      isSelected
-                        ? "border-cyberGreen bg-cyberGreen/10 shadow-lg shadow-cyberGreen/10"
-                        : "border-border bg-card hover:border-slate-600"
-                    }`}
-                  >
-                    <div className="text-[10px] uppercase font-mono text-slate-400 mb-1">
-                      Step {i + 1}
-                    </div>
-                    <div className="text-xs font-bold text-slate-200">{node.label}</div>
-                    <div
-                      className={`mt-1.5 px-2 py-0.5 rounded-full text-[9px] font-mono uppercase ${
-                        node.threatLevel === "critical"
-                          ? "bg-cyberRed/20 text-cyberRed"
-                          : node.threatLevel === "high"
-                          ? "bg-cyberAmber/20 text-cyberAmber"
-                          : "bg-cyberCyan/20 text-cyberCyan"
-                      }`}
-                    >
-                      {node.threatLevel}
-                    </div>
-                  </button>
-                  {i < NODES.length - 1 && (
-                    <div className="hidden lg:block absolute" style={{ left: `${(i + 1) * 16.66 - 2}%`, top: "35%" }}>
-                      <ArrowRight className="w-4 h-4 text-slate-600" />
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+      {/* Grid: Left Cluster Selector, Right Kill-Chain Lifecycle */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left: Discovered Campaign Clusters List */}
+        <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+          <div className="text-[11px] font-mono uppercase text-slate-400 font-semibold mb-2">
+            Identified Threat Campaigns
           </div>
+          {campaigns.length === 0 ? (
+            <div className="p-4 bg-slate-50 rounded-lg text-xs text-slate-500 text-center">
+              No active campaign clusters available.
+            </div>
+          ) : (
+            campaigns.map((camp) => {
+              const isSelected = selectedCampaign?.campaign_id === camp.campaign_id;
+              return (
+                <button
+                  key={camp.campaign_id}
+                  onClick={() => setSelectedCampaign(camp)}
+                  className={`w-full text-left p-3 rounded-lg border transition-all flex flex-col justify-between ${
+                    isSelected
+                      ? "border-blue-500 bg-blue-50/60 shadow-sm"
+                      : "border-slate-200 hover:border-slate-300 bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-900">
+                      Cluster #{camp.campaign_id}: {camp.target_brand}
+                    </span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                      Cohesion: {Math.round(camp.cohesion_score * 100)}%
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
+                    <span className="truncate max-w-[150px]">{camp.primary_tactic}</span>
+                    <span className="font-semibold text-slate-700">{camp.cluster_size} messages</span>
+                  </div>
+                </button>
+              );
+            })
+          )}
         </div>
 
-        {/* Node detail inspector panel */}
-        <div className="bg-surface border border-border rounded-lg p-4 flex flex-col justify-between">
+        {/* Right: Interactive Kill-Chain Lifecycle Flow */}
+        <div className="lg:col-span-2 bg-slate-50/70 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between pb-2 border-b border-border mb-3">
-              <span className="text-xs font-mono uppercase text-slate-400">Node Telemetry</span>
-              <span className="text-xs font-mono text-cyberGreen font-bold uppercase">{selectedNode.label}</span>
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
+              <div>
+                <span className="text-[11px] font-mono uppercase text-slate-400 font-medium">Selected Dossier</span>
+                <h3 className="text-sm font-bold text-slate-900">
+                  {selectedCampaign ? `Cluster #${selectedCampaign.campaign_id} — ${selectedCampaign.target_brand}` : "Campaign Dossier"}
+                </h3>
+              </div>
+              {selectedCampaign && (
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-mono font-medium">
+                  Status: {selectedCampaign.status.toUpperCase()}
+                </span>
+              )}
             </div>
-            <div className="text-xs text-slate-300 mb-3">{selectedNode.details}</div>
-            
-            <div className="text-[11px] font-mono text-slate-400 uppercase mb-1.5">Observed IOCs & Rules:</div>
-            <div className="space-y-1">
-              {selectedNode.iocs.map((ioc, idx) => (
-                <div key={idx} className="p-1.5 rounded bg-card border border-border text-[11px] font-mono text-slate-300">
-                  {ioc}
+
+            {/* 4-Stage Attack Lifecycle Pipeline */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 mb-6">
+              {/* Stage 1: Vector Origin */}
+              <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">1. Delivery</span>
+                  <div className="text-xs font-bold text-slate-800 mt-1">Bulk Gateway</div>
+                  <p className="text-[11px] text-slate-500 mt-1">Automated sender routing deceptive SMS packets.</p>
                 </div>
-              ))}
+                <div className="text-[10px] text-blue-600 font-mono font-medium mt-3">Sender Header</div>
+              </div>
+
+              {/* Stage 2: Deceptive Pretext */}
+              <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">2. Pretext Lure</span>
+                  <div className="text-xs font-bold text-slate-800 mt-1 truncate">
+                    {selectedCampaign?.primary_tactic || "Account Coercion"}
+                  </div>
+                  <p className="text-[11px] text-slate-500 mt-1">Impersonation of {selectedCampaign?.target_brand || "institution"}.</p>
+                </div>
+                <div className="text-[10px] text-amber-600 font-mono font-medium mt-3">Psychological Coercion</div>
+              </div>
+
+              {/* Stage 3: Phishing Landing */}
+              <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">3. Credential Trap</span>
+                  <div className="text-xs font-bold text-slate-800 mt-1">Cloned Web Portal</div>
+                  <p className="text-[11px] text-slate-500 mt-1">Typo-squatted domains hosting fake netbanking forms.</p>
+                </div>
+                <div className="text-[10px] text-rose-600 font-mono font-medium mt-3">Zero-Hop Detected</div>
+              </div>
+
+              {/* Stage 4: Exfiltration */}
+              <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">4. Interception</span>
+                  <div className="text-xs font-bold text-slate-800 mt-1">Credential Harvesting</div>
+                  <p className="text-[11px] text-slate-500 mt-1">OTP relays and unauthorized fund withdrawal.</p>
+                </div>
+                <div className="text-[10px] text-purple-600 font-mono font-medium mt-3">Active Mitigation</div>
+              </div>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-[11px] font-mono text-slate-500">
-            <span>Status: Mapped</span>
-            <span className="text-cyberCyan">Confidence: 94.2%</span>
+          {/* Mandatory Legal Caveat */}
+          <div className="p-3 rounded-lg bg-amber-50/70 border border-amber-200 text-xs text-amber-900 flex items-start space-x-2">
+            <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+            <div className="text-[11px] leading-relaxed">
+              <span className="font-semibold">Model 4 Anti-Fabrication Caveat:</span> Campaign clustering represents mathematical sentence embedding proximity and shared lexical/domain indicators. It does NOT automatically establish legal attribution or criminal culpability without independent forensic verification.
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
-

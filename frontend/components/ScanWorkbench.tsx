@@ -1,28 +1,25 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, AlertTriangle, CheckCircle, Flame, Sparkles, RefreshCw } from "lucide-react";
+import {
+  Search,
+  MessageSquare,
+  Globe,
+  Image as ImageIcon,
+  UploadCloud,
+  FileCheck,
+  X,
+  Sparkles,
+  RefreshCw,
+  AlertCircle,
+} from "lucide-react";
+import { scanComprehensive, scanUrl, scanImage, ScanResult } from "@/lib/api";
+import { AnalysisResultPanel } from "./ui/AnalysisResultPanel";
+import { ErrorState } from "./ui/ErrorState";
 
-interface ScanResult {
-  scan_id?: string;
-  detected_type?: string;
-  overall_threat_level?: string;
-  confidence?: number;
-  text_analysis?: {
-    predicted_label: string;
-    confidence: number;
-    detected_language: string;
-    explanation?: string;
-  };
-  url_analysis?: {
-    predicted_label: string;
-    risk_score: number;
-    top_risk_factors: string[];
-    features?: Record<string, any>;
-  };
-  tactics_analysis?: {
-    tactics: Array<{ tactic_code: string; tactic_name: string; confidence: number }>;
-  };
+interface ScanWorkbenchProps {
+  onResult?: (res: ScanResult) => void;
+  id?: string;
 }
 
 const PRESETS = [
@@ -41,95 +38,113 @@ const PRESETS = [
     type: "url",
     content: "http://203.0.113.15/secure-login-portal/auth.php?account_id=98214&kyc=required",
   },
+  {
+    label: "Electricity Bill Threat (Hindi)",
+    type: "text",
+    content: "प्रिय ग्राहक, आपका बिजली कनेक्शन आज रात काट दिया जाएगा क्योंकि बिल बकाया है। तुरंत इस नंबर पर संपर्क करें।",
+  },
 ];
 
-export default function ScanWorkbench({ onResult }: { onResult?: (res: ScanResult) => void }) {
-  const [content, setContent] = useState(PRESETS[0].content);
+export default function ScanWorkbench({ onResult, id }: ScanWorkbenchProps) {
+  const [activeTab, setActiveTab] = useState<"text" | "url" | "ocr">("text");
+  const [textContent, setTextContent] = useState(PRESETS[0].content);
+  const [urlContent, setUrlContent] = useState("http://secure-login-hdfcbank-account-update.xyz/login.php");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
 
-  const handleScan = async (overrideContent?: string) => {
-    const textToScan = overrideContent || content;
-    if (!textToScan.trim()) return;
-
-    setLoading(true);
-    try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/scans/composite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: textToScan, channel: "auto" }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setResult(data);
-        if (onResult) onResult(data);
-      } else {
-        // Fallback calculation for UI continuity
-        fallbackLocalScan(textToScan);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.size > 10 * 1024 * 1024) {
+        setError("File exceeds maximum allowed size of 10MB");
+        return;
       }
-    } catch {
-      fallbackLocalScan(textToScan);
+      setSelectedFile(file);
+      setError(null);
+      const reader = new FileReader();
+      reader.onload = (ev) => setFilePreview(ev.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleScan = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      let scanData: ScanResult;
+
+      if (activeTab === "text") {
+        if (!textContent.trim()) {
+          setError("Please provide a text message to analyze.");
+          setLoading(false);
+          return;
+        }
+        scanData = await scanComprehensive({ content: textContent, channel: "sms" });
+      } else if (activeTab === "url") {
+        if (!urlContent.trim()) {
+          setError("Please provide a URL to analyze.");
+          setLoading(false);
+          return;
+        }
+        scanData = await scanUrl(urlContent);
+      } else {
+        if (!selectedFile) {
+          setError("Please select a screenshot image to upload.");
+          setLoading(false);
+          return;
+        }
+        const ocrRes = await scanImage(selectedFile);
+        if (ocrRes.analysis_result) {
+          scanData = ocrRes.analysis_result;
+        } else {
+          throw new Error("No readable text found in image evidence (insufficient evidence).");
+        }
+      }
+
+      setResult(scanData);
+      if (onResult) onResult(scanData);
+    } catch (err: any) {
+      setError(err?.message || "Analysis request failed. Please check backend connectivity.");
     } finally {
       setLoading(false);
     }
   };
 
-  const fallbackLocalScan = (text: string) => {
-    const isUrl = text.startsWith("http");
-    const mock: ScanResult = {
-      scan_id: "local-eval-" + Date.now().toString(36),
-      detected_type: isUrl ? "url" : "text",
-      overall_threat_level: "high",
-      confidence: 0.88,
-      text_analysis: isUrl
-        ? undefined
-        : {
-            predicted_label: "smishing",
-            confidence: 0.88,
-            detected_language: text.includes("khata") || text.includes("Aapka") ? "Hinglish (Romanized Hindi)" : "English",
-            explanation: "Urgent banking threat with unverified link detected.",
-          },
-      url_analysis: {
-        predicted_label: "phishing",
-        risk_score: 0.88,
-        top_risk_factors: ["Direct IP address used", "Sensitive KYC keywords in path"],
-      },
-      tactics_analysis: {
-        tactics: [
-          { tactic_code: "TACTIC_URGENCY", tactic_name: "Artificial Urgency & Coercion", confidence: 0.92 },
-          { tactic_code: "TACTIC_IMPERSONATION", tactic_name: "Entity Impersonation (Banking)", confidence: 0.95 },
-        ],
-      },
-    };
-    setResult(mock);
-    if (onResult) onResult(mock);
-  };
-
   return (
-    <div className="bg-card border border-border rounded-xl p-6 mb-6">
-      <div className="flex items-center justify-between mb-4">
+    <div id={id} className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 mb-6">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 mb-4 border-b border-slate-100 gap-3">
         <div>
-          <h2 className="text-base font-semibold text-white flex items-center space-x-2">
-            <Sparkles className="w-4 h-4 text-cyberGreen" />
-            <span>Multi-Modal Threat Scan Workbench</span>
+          <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-blue-600" />
+            <span>Multi-Modal Threat Investigation Workbench</span>
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Submit suspicious text messages (SMS, WhatsApp, Email) or URLs for real-time multilingual decomposition.
+          <p className="text-xs text-slate-500 mt-0.5">
+            Offline lexical inspection & multilingual deception decomposition (Models 1, 2, 3 & 4).
           </p>
         </div>
 
-        {/* Threat Presets */}
-        <div className="hidden sm:flex items-center space-x-2 text-xs">
-          <span className="text-slate-500 font-mono">Presets:</span>
+        {/* Quick Presets */}
+        <div className="hidden sm:flex items-center space-x-1.5 text-xs">
+          <span className="text-slate-400 font-mono text-[11px] mr-1">Presets:</span>
           {PRESETS.map((p, i) => (
             <button
               key={i}
               onClick={() => {
-                setContent(p.content);
-                handleScan(p.content);
+                if (p.type === "url") {
+                  setActiveTab("url");
+                  setUrlContent(p.content);
+                } else {
+                  setActiveTab("text");
+                  setTextContent(p.content);
+                }
               }}
-              className="px-2.5 py-1 rounded bg-surface hover:bg-cardHover border border-border text-slate-300 font-mono text-[11px] transition-colors"
+              className="px-2 py-1 rounded bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-[11px] transition-colors"
             >
               {p.label}
             </button>
@@ -137,94 +152,161 @@ export default function ScanWorkbench({ onResult }: { onResult?: (res: ScanResul
         </div>
       </div>
 
-      {/* Input area */}
-      <div className="relative mb-4">
-        <textarea
-          rows={3}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Paste suspicious text message, email, WhatsApp forward, or URL here..."
-          className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-slate-200 placeholder-slate-500 text-sm focus:outline-none focus:border-cyberGreen focus:ring-1 focus:ring-cyberGreen/40 font-mono"
-        />
-        <div className="flex justify-between items-center mt-2">
-          <div className="text-[11px] font-mono text-slate-500">
-            Supports: English, Hindi (Devanagari), Hinglish, URLs, OCR outputs.
-          </div>
-          <button
-            onClick={() => handleScan()}
-            disabled={loading || !content.trim()}
-            className="flex items-center space-x-2 px-5 py-2 rounded-lg bg-cyberGreen hover:bg-emerald-400 text-slate-950 font-semibold text-xs transition-all disabled:opacity-50"
-          >
-            {loading ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Search className="w-3.5 h-3.5" />}
-            <span>{loading ? "Analyzing Deception..." : "Run Threat Intelligence Scan"}</span>
-          </button>
-        </div>
+      {/* Tabs Row */}
+      <div className="flex items-center space-x-1 border-b border-slate-200 mb-4">
+        <button
+          onClick={() => setActiveTab("text")}
+          className={`flex items-center space-x-2 px-4 py-2 text-xs font-semibold border-b-2 transition-all ${
+            activeTab === "text"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-500 hover:text-slate-800"
+          }`}
+        >
+          <MessageSquare className="w-3.5 h-3.5" />
+          <span>Multilingual Message</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("url")}
+          className={`flex items-center space-x-2 px-4 py-2 text-xs font-semibold border-b-2 transition-all ${
+            activeTab === "url"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-500 hover:text-slate-800"
+          }`}
+        >
+          <Globe className="w-3.5 h-3.5" />
+          <span>Phishing URL (Zero-Hop)</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab("ocr")}
+          className={`flex items-center space-x-2 px-4 py-2 text-xs font-semibold border-b-2 transition-all ${
+            activeTab === "ocr"
+              ? "border-blue-600 text-blue-600"
+              : "border-transparent text-slate-500 hover:text-slate-800"
+          }`}
+        >
+          <ImageIcon className="w-3.5 h-3.5" />
+          <span>Screenshot OCR Evidence</span>
+        </button>
       </div>
 
-      {/* Result Card */}
-      {result && (
-        <div className="mt-6 pt-5 border-t border-border grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Overall verdict */}
-          <div className="p-4 rounded-lg bg-surface border border-border">
-            <div className="text-xs uppercase font-mono text-slate-400 mb-1">Overall Threat Assessment</div>
-            <div className="flex items-center space-x-2 my-2">
-              <span
-                className={`px-3 py-1 rounded-full text-xs font-bold font-mono tracking-wider uppercase ${
-                  result.overall_threat_level === "critical" || result.overall_threat_level === "high"
-                    ? "bg-cyberRed/20 text-cyberRed border border-cyberRed/30"
-                    : "bg-cyberGreen/20 text-cyberGreen border border-cyberGreen/30"
-                }`}
-              >
-                {result.overall_threat_level} RISK
-              </span>
-              <span className="text-xs font-mono text-slate-400">
-                Confidence: {(Number(result.confidence || 0) * 100).toFixed(1)}%
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 mt-2">
-              {result.text_analysis?.explanation || "Threat profile extracted based on linguistic and structural indicators."}
-            </p>
-          </div>
-
-          {/* Linguistic & Vector details */}
-          <div className="p-4 rounded-lg bg-surface border border-border">
-            <div className="text-xs uppercase font-mono text-slate-400 mb-2">Linguistic Intelligence</div>
-            <div className="space-y-1.5 text-xs font-mono">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Detected Language:</span>
-                <span className="text-slate-200">{result.text_analysis?.detected_language || "N/A"}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Target Type:</span>
-                <span className="text-slate-200 uppercase">{result.detected_type}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Primary Classification:</span>
-                <span className="text-cyberRed font-bold">{result.text_analysis?.predicted_label || "suspicious"}</span>
-              </div>
+      {/* Input Area Depending on Active Tab */}
+      <div className="mb-4">
+        {activeTab === "text" && (
+          <div>
+            <textarea
+              rows={3}
+              value={textContent}
+              onChange={(e) => setTextContent(e.target.value)}
+              placeholder="Paste suspicious SMS, WhatsApp message forward, KYC alert, or job offer here..."
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 text-xs font-mono focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all"
+            />
+            <div className="flex justify-between items-center text-[11px] text-slate-400 font-mono mt-1.5">
+              <span>Supports: English, Hindi (Devanagari), Hinglish (Latin).</span>
+              <span>Model 1 + Model 3</span>
             </div>
           </div>
+        )}
 
-          {/* Tactic flags */}
-          <div className="p-4 rounded-lg bg-surface border border-border">
-            <div className="text-xs uppercase font-mono text-slate-400 mb-2">Triggered Scam Tactics</div>
-            <div className="flex flex-wrap gap-1.5">
-              {result.tactics_analysis?.tactics?.map((t, idx) => (
-                <span
-                  key={idx}
-                  className="px-2 py-0.5 rounded bg-cyberAmber/10 border border-cyberAmber/30 text-cyberAmber text-[11px] font-mono flex items-center space-x-1"
+        {activeTab === "url" && (
+          <div>
+            <input
+              type="text"
+              value={urlContent}
+              onChange={(e) => setUrlContent(e.target.value)}
+              placeholder="Enter suspicious link or domain (e.g. http://secure-kyc-update.xyz/login.php)..."
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 text-xs font-mono focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 transition-all"
+            />
+            <div className="flex justify-between items-center text-[11px] text-slate-400 font-mono mt-1.5">
+              <span>Evaluates 17 lexical & entropy features without connecting to remote target.</span>
+              <span>Model 2 (XGBoost)</span>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "ocr" && (
+          <div>
+            <div className="border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-xl p-6 text-center bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer relative">
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={handleFileChange}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-full">
+                  <UploadCloud className="w-6 h-6" />
+                </div>
+                <div className="text-xs font-semibold text-slate-800">
+                  {selectedFile ? selectedFile.name : "Click or drag screenshot here"}
+                </div>
+                <p className="text-[11px] text-slate-400">
+                  PNG, JPEG, WebP up to 10MB. Text will be extracted via Tesseract OCR engine.
+                </p>
+              </div>
+            </div>
+
+            {filePreview && (
+              <div className="mt-3 flex items-center justify-between p-2.5 bg-slate-100 rounded-lg text-xs">
+                <div className="flex items-center space-x-2 text-slate-700">
+                  <FileCheck className="w-4 h-4 text-emerald-600" />
+                  <span className="font-medium truncate max-w-xs">{selectedFile?.name}</span>
+                  <span className="text-slate-400 font-mono">({Math.round((selectedFile?.size || 0) / 1024)} KB)</span>
+                </div>
+                <button
+                  onClick={() => {
+                    setSelectedFile(null);
+                    setFilePreview(null);
+                  }}
+                  className="text-slate-400 hover:text-slate-600 p-1"
                 >
-                  <AlertTriangle className="w-3 h-3" />
-                  <span>{t.tactic_name}</span>
-                </span>
-              )) || (
-                <span className="text-xs text-slate-500 font-mono">No tactics flagged</span>
-              )}
-            </div>
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
+        )}
+      </div>
+
+      {/* Action Row */}
+      <div className="flex items-center justify-between pt-2">
+        <span className="text-[11px] font-mono text-slate-400">
+          Status: Offline zero-execution inspection active
+        </span>
+
+        <button
+          onClick={handleScan}
+          disabled={loading}
+          className="flex items-center space-x-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-lg shadow-sm transition-all disabled:opacity-50"
+        >
+          {loading ? (
+            <>
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              <span>Analyzing Deception...</span>
+            </>
+          ) : (
+            <>
+              <Search className="w-3.5 h-3.5" />
+              <span>Run Threat Intelligence Scan</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Error Display */}
+      {error && (
+        <div className="mt-4">
+          <ErrorState message={error} onRetry={handleScan} compact />
+        </div>
+      )}
+
+      {/* Verified Forensic Analysis Result */}
+      {result && (
+        <div className="mt-6 pt-6 border-t border-slate-100">
+          <AnalysisResultPanel result={result} />
         </div>
       )}
     </div>
   );
 }
-

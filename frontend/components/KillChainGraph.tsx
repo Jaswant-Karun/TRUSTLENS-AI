@@ -85,10 +85,16 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
             </div>
           ) : (
             campaigns.map((camp) => {
-              const isSelected = selectedCampaign?.campaign_id === camp.campaign_id;
+              const campId = camp.cluster_id ?? camp.campaign_id ?? 0;
+              const targetName = camp.targeted_entity ?? camp.target_brand ?? "Financial Institution";
+              const tacticsName = Array.isArray(camp.primary_tactics)
+                ? camp.primary_tactics.join(", ")
+                : camp.primary_tactic || "Phishing Lure";
+              const isSelected = (selectedCampaign?.cluster_id ?? selectedCampaign?.campaign_id) === campId;
+
               return (
                 <button
-                  key={camp.campaign_id}
+                  key={campId}
                   onClick={() => setSelectedCampaign(camp)}
                   className={`w-full text-left p-3 rounded-lg border transition-all flex flex-col justify-between ${
                     isSelected
@@ -97,16 +103,16 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-900">
-                      Cluster #{camp.campaign_id}: {camp.target_brand}
+                    <span className="text-xs font-bold text-slate-900 truncate max-w-[170px]">
+                      Cluster #{campId}: {targetName}
                     </span>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
                       Cohesion: {Math.round(camp.cohesion_score * 100)}%
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
-                    <span className="truncate max-w-[150px]">{camp.primary_tactic}</span>
-                    <span className="font-semibold text-slate-700">{camp.cluster_size} messages</span>
+                    <span className="truncate max-w-[140px]">{tacticsName}</span>
+                    <span className="font-semibold text-slate-700 shrink-0">{camp.cluster_size} messages</span>
                   </div>
                 </button>
               );
@@ -121,12 +127,16 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
               <div>
                 <span className="text-[11px] font-mono uppercase text-slate-400 font-medium">Selected Dossier</span>
                 <h3 className="text-sm font-bold text-slate-900">
-                  {selectedCampaign ? `Cluster #${selectedCampaign.campaign_id} — ${selectedCampaign.target_brand}` : "Campaign Dossier"}
+                  {selectedCampaign
+                    ? `Cluster #${selectedCampaign.cluster_id ?? selectedCampaign.campaign_id} — ${
+                        selectedCampaign.targeted_entity ?? selectedCampaign.target_brand ?? "Target"
+                      }`
+                    : "Campaign Dossier"}
                 </h3>
               </div>
               {selectedCampaign && (
                 <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-mono font-medium">
-                  Status: {selectedCampaign.status.toUpperCase()}
+                  Status: {(selectedCampaign.status || "ACTIVE").toUpperCase()}
                 </span>
               )}
             </div>
@@ -148,9 +158,13 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
                 <div>
                   <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">2. Pretext Lure</span>
                   <div className="text-xs font-bold text-slate-800 mt-1 truncate">
-                    {selectedCampaign?.primary_tactic || "Account Coercion"}
+                    {Array.isArray(selectedCampaign?.primary_tactics)
+                      ? selectedCampaign?.primary_tactics.join(", ")
+                      : selectedCampaign?.primary_tactic || "Account Coercion"}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-1">Impersonation of {selectedCampaign?.target_brand || "institution"}.</p>
+                  <p className="text-[11px] text-slate-500 mt-1 truncate">
+                    Impersonation of {selectedCampaign?.targeted_entity ?? selectedCampaign?.target_brand ?? "institution"}.
+                  </p>
                 </div>
                 <div className="text-[10px] text-amber-600 font-mono font-medium mt-3">Psychological Coercion</div>
               </div>

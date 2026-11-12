@@ -38,14 +38,19 @@ export interface ModelMetricsResponse {
 }
 
 export interface CampaignSummary {
-  campaign_id: number;
+  cluster_id?: number;
+  campaign_id?: number;
+  campaign_name?: string;
+  targeted_entity?: string;
+  target_brand?: string;
   cluster_size: number;
-  target_brand: string;
-  primary_tactic: string;
   cohesion_score: number;
+  primary_tactics?: string[];
+  primary_tactic?: string;
   status: string;
-  first_detected: string;
-  last_detected: string;
+  last_activity?: string;
+  first_detected?: string;
+  last_detected?: string;
 }
 
 export interface CampaignDetail {

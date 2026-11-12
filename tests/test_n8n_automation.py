@@ -260,3 +260,4 @@ async def test_daily_summary_and_execution_logging(client: AsyncClient, admin_au
     assert log_res.status_code == 200
     assert log_res.json()["status"] == "logged"
     assert "log_id" in log_res.json()
+

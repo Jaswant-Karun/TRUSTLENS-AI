@@ -189,3 +189,4 @@ Runs daily at 08:00 UTC to aggregate verified telemetry, model latencies, commun
 curl -X GET http://127.0.0.1:8000/api/v1/automation/daily-summary \
   -H "Authorization: Bearer <ADMIN_TOKEN>"
 ```
+

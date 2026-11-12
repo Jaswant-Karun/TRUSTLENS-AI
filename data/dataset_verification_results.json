@@ -1,0 +1,264 @@
+{
+  "audit_timestamp": "2026-11-12T19:30:09.335565+00:00",
+  "manifest_path": "data/dataset_manifest.json",
+  "overall_status": "VERIFIED",
+  "datasets": {
+    "scamshield": {
+      "dataset_name": "ScamShield: Multilingual Smishing & Social Engineering Corpus",
+      "source": "Hugging Face",
+      "source_url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset",
+      "license": "MIT",
+      "license_url": "https://opensource.org/licenses/MIT",
+      "version": "1.0.0",
+      "files": {
+        "train.jsonl": {
+          "exists": true,
+          "size_bytes": 37541871,
+          "size_mb": 35.8027,
+          "sha256": "418b1d7af29945135284d4293230c75b26c3bccd3dda5382caf730fbc0e49cbf",
+          "hash_matches_manifest": true,
+          "row_count": 69286,
+          "keys": [
+            "head1_social_engineering",
+            "head2_scam_intent",
+            "id",
+            "is_scam",
+            "language",
+            "metadata",
+            "source_dataset",
+            "split_group",
+            "text"
+          ],
+          "label_distribution": {
+            "0": 44221,
+            "1": 25065
+          },
+          "language_distribution": {
+            "English": 61058,
+            "Hinglish": 2792,
+            "Hindi": 5436
+          },
+          "json_errors": 0,
+          "status": "VERIFIED"
+        },
+        "val.jsonl": {
+          "exists": true,
+          "size_bytes": 4377027,
+          "size_mb": 4.1743,
+          "sha256": "12a8a8dc62de78aeb4881a902bb0e829134f1e6f277ade90b02743134112789f",
+          "hash_matches_manifest": true,
+          "row_count": 8192,
+          "keys": [
+            "head1_social_engineering",
+            "head2_scam_intent",
+            "id",
+            "is_scam",
+            "language",
+            "metadata",
+            "source_dataset",
+            "split_group",
+            "text"
+          ],
+          "label_distribution": {
+            "0": 5186,
+            "1": 3006
+          },
+          "language_distribution": {
+            "English": 7631,
+            "Hinglish": 105,
+            "Hindi": 456
+          },
+          "json_errors": 0,
+          "status": "VERIFIED"
+        },
+        "test.jsonl": {
+          "exists": true,
+          "size_bytes": 4393460,
+          "size_mb": 4.1899,
+          "sha256": "a3a569a69529fe3398445bdd31046bfbcc19755c6b87f1133c8ed6c0134cdd6c",
+          "hash_matches_manifest": true,
+          "row_count": 8202,
+          "keys": [
+            "head1_social_engineering",
+            "head2_scam_intent",
+            "id",
+            "is_scam",
+            "language",
+            "metadata",
+            "source_dataset",
+            "split_group",
+            "text"
+          ],
+          "label_distribution": {
+            "0": 5191,
+            "1": 3011
+          },
+          "language_distribution": {
+            "English": 7634,
+            "Hinglish": 108,
+            "Hindi": 460
+          },
+          "json_errors": 0,
+          "status": "VERIFIED"
+        }
+      },
+      "aggregate": {
+        "total_rows": 85680,
+        "total_size_bytes": 46312358,
+        "labels": {
+          "0": 54598,
+          "1": 31082
+        },
+        "languages": {
+          "English": 76323,
+          "Hinglish": 3005,
+          "Hindi": 6352
+        },
+        "total_size_mb": 44.1669
+      }
+    },
+    "sms_phishing": {
+      "dataset_name": "SMS Phishing Dataset for Machine Learning and Pattern Recognition",
+      "source": "Mendeley Data",
+      "source_url": "https://data.mendeley.com/datasets/f45bkkt8pr/1",
+      "license": "CC BY 4.0",
+      "license_url": "http://creativecommons.org/licenses/by/4.0",
+      "version": "1",
+      "doi": "10.17632/f45bkkt8pr.1",
+      "authors": [
+        "Sandhya Mishra",
+        "Devpriya Soni"
+      ],
+      "files": {
+        "Dataset_5971.zip": {
+          "exists": true,
+          "size_bytes": 244698,
+          "size_mb": 0.2334,
+          "sha256": "9bbf3188fdad81495d8e82825648b9b63b53fc86841a3d26c02629990b233cc3",
+          "hash_matches_manifest": true,
+          "zip_integrity": {
+            "is_valid_zip": true,
+            "crc_error": null,
+            "member_count": 1,
+            "members": [
+              {
+                "filename": "Dataset_5971.csv",
+                "uncompressed_bytes": 595987,
+                "compressed_bytes": 244568
+              }
+            ]
+          },
+          "status": "VERIFIED"
+        },
+        "Dataset_5971.csv": {
+          "exists": true,
+          "size_bytes": 595987,
+          "size_mb": 0.5684,
+          "sha256": "649844f1c62a6b27e145eaf17a65f7010c56c390e11a794ea8329993a05ba71e",
+          "row_count": 5971,
+          "column_count": 5,
+          "columns": [
+            "LABEL",
+            "TEXT",
+            "URL",
+            "EMAIL",
+            "PHONE"
+          ],
+          "label_column": "LABEL",
+          "label_distribution": {
+            "ham": 4844,
+            "Smishing": 616,
+            "spam": 466,
+            "Spam": 23,
+            "smishing": 22
+          },
+          "missing_labels": 0,
+          "status": "VERIFIED"
+        }
+      }
+    },
+    "legitphish": {
+      "dataset_name": "LegitPhish Dataset",
+      "source": "Mendeley Data",
+      "source_url": "https://data.mendeley.com/datasets/hx4m73v2sf/2",
+      "license": "CC BY 4.0",
+      "license_url": "http://creativecommons.org/licenses/by/4.0",
+      "version": "2",
+      "doi": "10.17632/hx4m73v2sf.2",
+      "authors": [
+        "Rachana Potpelwar",
+        "Uday Kulkarni",
+        "Jaishri Waghmare"
+      ],
+      "files": {
+        "url_features_extracted1.csv": {
+          "exists": true,
+          "size_bytes": 8963838,
+          "size_mb": 8.5486,
+          "sha256": "8685e7901c3b4e73eb43c106cb166cc932dd14f76960a032c713c2c32f09dbcd",
+          "hash_matches_manifest": true,
+          "row_count": 101219,
+          "column_count": 18,
+          "columns": [
+            "URL",
+            "url_length",
+            "has_ip_address",
+            "dot_count",
+            "https_flag",
+            "url_entropy",
+            "token_count",
+            "subdomain_count",
+            "query_param_count",
+            "tld_length",
+            "path_length",
+            "has_hyphen_in_domain",
+            "number_of_digits",
+            "tld_popularity",
+            "suspicious_file_extension",
+            "domain_name_length",
+            "percentage_numeric_chars",
+            "ClassLabel"
+          ],
+          "label_column": "ClassLabel",
+          "label_distribution": {
+            "0": 63678,
+            "1": 37540,
+            "": 1
+          },
+          "missing_labels": 1,
+          "status": "VERIFIED"
+        }
+      }
+    }
+  },
+  "provenance_summary": {
+    "scamshield": {
+      "license": "MIT (Permissive open source)",
+      "commercial_compatible": true
+    },
+    "sms_phishing": {
+      "license": "CC BY 4.0 (Attribution required)",
+      "commercial_compatible": true
+    },
+    "legitphish": {
+      "license": "CC BY 4.0 (Attribution required)",
+      "commercial_compatible": true
+    }
+  },
+  "verified_facts": [
+    "All 6 raw files exist on disk, are readable, non-empty, and match SHA-256 cryptographic hashes.",
+    "ScamShield dataset contains exactly 85,680 JSONL records across train (69,286), val (8,192), and test (8,202) splits.",
+    "ScamShield languages represented: English (76,323 samples / 89.08%), Hindi (6,352 samples / 7.41%), Hinglish (3,005 samples / 3.51%).",
+    "SMS Phishing dataset contains exactly 5,971 records in CSV format with columns ['LABEL', 'TEXT', 'URL', 'EMAIL', 'PHONE'].",
+    "LegitPhish dataset contains exactly 101,219 URL records with 17 extracted numerical/structural features and 1 label column ('ClassLabel').",
+    "LegitPhish labels breakdown: 63,678 Phishing ('0'), 37,540 Legitimate ('1'), and exactly 1 record with an empty label ('').",
+    "SMS Phishing labels breakdown: 4,844 'ham', 616 'Smishing', 466 'spam', 23 'Spam', 22 'smishing'.",
+    "Dataset_5971.zip passes archive CRC integrity validation with zero errors and safe path extraction."
+  ],
+  "unestablished_or_limitations": [
+    "Tamil language records are NOT present in either ScamShield or SMS Phishing raw datasets; claims of Tamil fraud model training are unverified.",
+    "LegitPhish contains pre-computed lexical features rather than raw HTML or dynamic HTTP response traces.",
+    "SMS Phishing contains casing inconsistencies ('Smishing' vs 'smishing', 'Spam' vs 'spam') that require case folding during preprocessing.",
+    "LegitPhish row 101,219 has an empty label string that must be filtered or imputed prior to training."
+  ]
+}

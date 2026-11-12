@@ -92,6 +92,7 @@ class TransparentRiskAggregationService:
         tactic_score = 0.0
         tactic_weight = 0.0
         active_tactics = []
+        has_high_severity = False
         if tactic_result and tactic_result.get("tactics"):
             tactics = tactic_result["tactics"]
             active_tactics = [t.get("tactic_name") or t.get("name") for t in tactics]
@@ -157,7 +158,17 @@ class TransparentRiskAggregationService:
         calibrated_risk = round(min(max(raw_risk, 0.0), 1.0), 4)
 
         # Step 4: Map to Standard Threat Levels
-        if calibrated_risk >= 0.80:
+        if not is_threat_context and not threat_intel_match:
+            # When all models confirm clean context without technical or behavioral threats
+            if calibrated_risk >= 0.25:
+                level = self.LEVEL_LOW
+                verdict = "Low Risk / Informational: Institutional communication without malicious coercion."
+                remedies = ["No threat actions required."]
+            else:
+                level = self.LEVEL_CLEAN
+                verdict = "Legitimate / Clean: No malicious behavioral or technical indicators detected."
+                remedies = ["No threat actions required."]
+        elif calibrated_risk >= 0.80:
             level = self.LEVEL_CRITICAL
             verdict = "Critical Malicious Fraud: Immediate threat detected across multiple independent vectors."
             remedies = [

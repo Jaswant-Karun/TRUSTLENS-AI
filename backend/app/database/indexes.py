@@ -91,3 +91,4 @@ async def init_database_indexes() -> None:
                 await coll.create_index(keys, unique=unique, background=True)
         except Exception as e:
             logger.warning(f"Note on index creation for '{coll_name}': {e}")
+

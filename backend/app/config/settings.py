@@ -69,3 +69,4 @@ class AppSettings(BaseSettings):
 
 
 settings = AppSettings()
+

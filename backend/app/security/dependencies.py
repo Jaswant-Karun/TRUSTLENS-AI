@@ -95,3 +95,4 @@ async def require_admin(current_user: Dict[str, Any] = Depends(get_current_user)
             detail="Access denied: Administrator privileges required.",
         )
     return current_user
+

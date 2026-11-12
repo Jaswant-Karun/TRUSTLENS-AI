@@ -260,3 +260,4 @@ async def test_security_headers_and_correlation_id():
         assert res.headers.get("X-Frame-Options") == "DENY"
         assert "X-Correlation-ID" in res.headers
         assert "X-Process-Time" in res.headers
+

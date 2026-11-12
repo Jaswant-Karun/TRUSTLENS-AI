@@ -36,3 +36,4 @@ async def get_experiments():
     Retrieves full experimental lineage tracking baseline vs champion model progressions.
     """
     return model_service.get_experiment_history()
+

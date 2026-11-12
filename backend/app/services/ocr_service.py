@@ -86,3 +86,4 @@ class ScreenshotOCRService:
 
 
 ocr_service = ScreenshotOCRService()
+

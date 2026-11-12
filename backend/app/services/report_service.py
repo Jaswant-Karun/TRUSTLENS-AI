@@ -188,3 +188,4 @@ class CommunityScamReportService:
 
 
 report_service = CommunityScamReportService()
+

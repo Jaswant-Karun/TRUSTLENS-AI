@@ -477,3 +477,4 @@ if __name__ == "__main__":
     registry.build_training_history()
     registry.build_evaluation_history()
     print("Model Registry, Training History, and Evaluation History successfully initialized.")
+

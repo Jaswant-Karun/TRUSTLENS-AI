@@ -100,3 +100,4 @@ class CampaignIntelligenceService:
 
 
 campaign_service = CampaignIntelligenceService()
+

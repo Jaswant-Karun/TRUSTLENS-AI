@@ -23,3 +23,4 @@ def sanitize_input_text(text: str) -> str:
     clean = text.replace("\x00", "")
     clean = re.sub(r"[ \t]+", " ", clean)
     return clean.strip()
+

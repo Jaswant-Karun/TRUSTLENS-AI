@@ -66,3 +66,4 @@ class ImageAnalysisResponse(BaseModel):
     analysis_result: Optional[AnalysisResultResponse] = None
     processing_time_ms: float
     created_at: datetime
+

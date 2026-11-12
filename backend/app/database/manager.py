@@ -158,3 +158,4 @@ db_manager = DatabaseManager()
 
 def get_db():
     return db_manager
+

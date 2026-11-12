@@ -82,3 +82,4 @@ async def get_my_profile(current_user: Dict[str, Any] = Depends(get_current_user
         "created_at": current_user["created_at"],
         "last_login": current_user.get("last_login"),
     }
+

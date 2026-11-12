@@ -205,3 +205,4 @@ class TransparentRiskAggregationService:
 
 
 risk_service = TransparentRiskAggregationService()
+

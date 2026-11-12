@@ -19,3 +19,4 @@ api_v1_router.include_router(models.router)
 api_v1_router.include_router(reports.router)
 
 __all__ = ["api_v1_router"]
+

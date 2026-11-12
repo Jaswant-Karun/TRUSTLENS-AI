@@ -84,3 +84,4 @@ async def review_scam_report(
         reviewer_id=reviewer["user_id"],
         client_ip=client_ip,
     )
+

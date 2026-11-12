@@ -23,3 +23,4 @@ __all__ = [
     "require_analyst_or_admin",
     "require_admin",
 ]
+

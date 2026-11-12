@@ -69,3 +69,4 @@ def get_automations_collection():
 
 def get_audit_collection():
     return db_manager.get_collection(COLL_AUDIT_LOGS)
+

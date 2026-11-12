@@ -33,3 +33,4 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
             logger.info(f"[{correlation_id}] {request.method} {request.url.path} -> {response.status_code} ({process_time}ms)")
 
         return response
+

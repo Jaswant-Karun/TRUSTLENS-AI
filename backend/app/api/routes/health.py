@@ -25,3 +25,4 @@ async def health_check():
         "models_loaded": ml_engine.get_status(),
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
+

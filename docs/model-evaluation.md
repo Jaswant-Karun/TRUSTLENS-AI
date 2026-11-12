@@ -284,3 +284,4 @@ All four machine learning models are verified for production deployment:
 4. **Model 4 (Campaign Discovery):** Robust clustering (47 campaigns, 0.3209 Silhouette) with automated attribution caveats.
 
 **Deployment Verdict:** **APPROVED FOR FULL SOC DASHBOARD & LIVE PIPELINE INTEGRATION.**
+

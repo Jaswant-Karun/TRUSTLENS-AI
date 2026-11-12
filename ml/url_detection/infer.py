@@ -50,8 +50,8 @@ class PhishingURLInferenceEngine:
         factors = []
         if features.get("has_ip_address", 0) == 1:
             factors.append("Direct IPv4/IPv6 address used in place of domain name")
-        if features.get("percentage_numeric_chars", 0.0) > 0.25:
-            factors.append(f"High numeric character density ({features['percentage_numeric_chars']*100:.1f}%)")
+        if features.get("percentage_numeric_chars", 0.0) > 25.0:
+            factors.append(f"High numeric character density ({features['percentage_numeric_chars']:.1f}%)")
         if features.get("dot_count", 0) >= 3:
             factors.append(f"High dot count ({features['dot_count']} dots) indicates nested spoofing subdomains")
         if features.get("url_entropy", 0.0) > 4.2:

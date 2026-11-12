@@ -1,0 +1,76 @@
+{
+  "name": "TRUSTLENS AI - Incident Triage & Threat Intelligence Dispatch",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "threat-alert",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook Threat Ingest",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.body.confidence }}",
+              "operation": "largerEqual",
+              "value2": 0.85
+            }
+          ]
+        }
+      },
+      "id": "2",
+      "name": "High Severity Filter",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/v1/telemetry/summary",
+        "options": {}
+      },
+      "id": "3",
+      "name": "Sync Telemetry State",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [720, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Threat Ingest": {
+      "main": [
+        [
+          {
+            "node": "High Severity Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Severity Filter": {
+      "main": [
+        [
+          {
+            "node": "Sync Telemetry State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

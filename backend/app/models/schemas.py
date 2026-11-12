@@ -4,19 +4,23 @@ Type-safe request validation and response serialisation models.
 """
 
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field, HttpUrl
-from datetime import datetime
+from pydantic import BaseModel, Field
+from datetime import datetime, timezone
+
+
+def get_utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 # --- HEALTH & STATUS ---
 
 class SystemHealthResponse(BaseModel):
-    status: str = Field(..., example="healthy")
+    status: str = Field(..., json_schema_extra={"example": "healthy"})
     app_name: str
     version: str
     database_connected: bool
     models_loaded: Dict[str, bool]
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=get_utc_now)
 
 
 # --- TEXT SCAM CLASSIFICATION (ENGINE 1) ---
@@ -35,7 +39,7 @@ class TextScanResponse(BaseModel):
     detected_language: str
     model_version: str
     explanation: Optional[str] = None
-    processed_at: datetime = Field(default_factory=datetime.utcnow)
+    processed_at: datetime = Field(default_factory=get_utc_now)
 
 
 # --- PHISHING URL DETECTION (ENGINE 2) ---
@@ -72,7 +76,7 @@ class URLScanResponse(BaseModel):
     features: LexicalFeatures
     top_risk_factors: List[str] = Field(default_factory=list)
     model_version: str
-    processed_at: datetime = Field(default_factory=datetime.utcnow)
+    processed_at: datetime = Field(default_factory=get_utc_now)
 
 
 # --- SCAM TACTIC DETECTION (ENGINE 3) ---
@@ -93,13 +97,13 @@ class TacticScanResponse(BaseModel):
     tactic_count: int
     primary_vector: Optional[str] = None
     model_version: str
-    processed_at: datetime = Field(default_factory=datetime.utcnow)
+    processed_at: datetime = Field(default_factory=get_utc_now)
 
 
 # --- SCAM CAMPAIGN INTELLIGENCE (ENGINE 4) ---
 
 class CampaignClusterRequest(BaseModel):
-    messages: List[str] = Field(..., min_items=2, description="List of messages to cluster")
+    messages: List[str] = Field(..., min_length=2, description="List of messages to cluster")
     similarity_threshold: float = Field(0.75, ge=0.0, le=1.0)
 
 
@@ -115,7 +119,7 @@ class CampaignClusterResponse(BaseModel):
     total_messages: int
     clusters_identified: int
     clusters: List[CampaignCluster]
-    processed_at: datetime = Field(default_factory=datetime.utcnow)
+    processed_at: datetime = Field(default_factory=get_utc_now)
 
 
 # --- COMPOSITE UNIFIED SCAN ---
@@ -135,7 +139,7 @@ class CompositeScanResponse(BaseModel):
     url_analysis: Optional[URLScanResponse] = None
     tactics_analysis: Optional[TacticScanResponse] = None
     campaign_association: Optional[Dict[str, Any]] = None
-    processed_at: datetime = Field(default_factory=datetime.utcnow)
+    processed_at: datetime = Field(default_factory=get_utc_now)
 
 
 # --- TELEMETRY & SOC OVERVIEW ---

@@ -4,14 +4,18 @@ Defines data structures stored in MongoDB Atlas collections.
 """
 
 from typing import List, Optional, Dict, Any
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel, Field
+
+
+def get_utc_now() -> datetime:
+    return datetime.now(timezone.utc)
 
 
 class ThreatScanDocument(BaseModel):
     """Stored in 'threat_scans' collection."""
     scan_id: str = Field(..., description="Unique UUID for this scan")
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=get_utc_now)
     channel: str = Field(..., description="sms | email | url | ocr_screenshot")
     raw_payload: str
     detected_language: Optional[str] = "unknown"
@@ -37,8 +41,8 @@ class CampaignClusterDocument(BaseModel):
     """Stored in 'campaign_clusters' collection."""
     campaign_id: str
     campaign_name: str
-    first_seen: datetime = Field(default_factory=datetime.utcnow)
-    last_seen: datetime = Field(default_factory=datetime.utcnow)
+    first_seen: datetime = Field(default_factory=get_utc_now)
+    last_seen: datetime = Field(default_factory=get_utc_now)
     incident_count: int = 1
     exemplar_text: str
     ioc_list: List[str] = Field(default_factory=list)
@@ -51,8 +55,8 @@ class IOCIndicatorDocument(BaseModel):
     value: str
     reputation: str = "suspicious"  # clean | suspicious | malicious
     sighting_count: int = 1
-    first_observed: datetime = Field(default_factory=datetime.utcnow)
-    last_observed: datetime = Field(default_factory=datetime.utcnow)
+    first_observed: datetime = Field(default_factory=get_utc_now)
+    last_observed: datetime = Field(default_factory=get_utc_now)
     associated_campaigns: List[str] = Field(default_factory=list)
 
 

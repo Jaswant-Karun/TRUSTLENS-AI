@@ -1,0 +1,46 @@
+{
+  "dataset_version": "1.0.0",
+  "timestamp_utc": "2026-11-12T16:59:52.687901+00:00",
+  "text_datasets": {
+    "scamshield_total": 85680,
+    "mendeley_sms_total": 5971,
+    "mendeley_overlapping_records": 5756,
+    "mendeley_novel_records_added_to_train": 215,
+    "unified_text_train_rows": 69501,
+    "unified_text_val_rows": 8192,
+    "unified_text_test_rows": 8202,
+    "class_distribution_threat": {
+      "train_threat_percentage": 0.36192285003093483,
+      "val_threat_percentage": 0.366943359375,
+      "test_threat_percentage": 0.3671055840039015
+    },
+    "language_distribution_train": {
+      "English": 62929,
+      "Hindi": 5426,
+      "Hinglish": 1146
+    }
+  },
+  "url_dataset": {
+    "source": "LegitPhish (Mendeley Data)",
+    "raw_rows": 101219,
+    "corrupted_rows_dropped": 1,
+    "duplicate_urls_removed": 346,
+    "clean_unique_urls": 100872,
+    "url_train_rows": 70610,
+    "url_val_rows": 15131,
+    "url_test_rows": 15131,
+    "phishing_ratio_overall": 0.6294292593117122
+  },
+  "file_checksums_sha256": {
+    "scamshield_test.parquet": "638d52ad991d29c3d327feaad1d56d75d04c32293c2d834e3b7bf4808fd143aa",
+    "scamshield_train.parquet": "8ed2264a6de893a170ad5d4ece80fb172d6bdd5d0a407e5b85ec2fc9c705221e",
+    "scamshield_val.parquet": "b0d1a3cd9793cfe811246c67ef125a12edbe72f1b2f723da6d6caf5cea8f08b3",
+    "sms_phishing_clean.parquet": "79ab540c1a1c41aaf2221f79f815bedc4efea17d7a79abd81805ef4ddb394e09",
+    "text_test.parquet": "638d52ad991d29c3d327feaad1d56d75d04c32293c2d834e3b7bf4808fd143aa",
+    "text_train.parquet": "1e26174a1a28c459837c17ef8b5982ed2d78f907c58f5c0afcdeaffbdce71a60",
+    "text_val.parquet": "b0d1a3cd9793cfe811246c67ef125a12edbe72f1b2f723da6d6caf5cea8f08b3",
+    "urls_test.parquet": "ba7b125a662f97ecf2cd2c92c63cd21afea3510cc4d39edd5ba5a7b0ab60af53",
+    "urls_train.parquet": "15e2fa4fc93e07eca4d857698ae1599517891df28d1e8c45a34c291e06096849",
+    "urls_val.parquet": "a4266cc9aad408668e6965f3bd79d05a71e146a909312481a9b056385ff21fa0"
+  }
+}

@@ -67,25 +67,28 @@ def extract_url_features(raw_url: str) -> Dict[str, Any]:
 
     # Basic length features
     url_length = len(clean_url)
-    domain_name_length = len(netloc)
     path_length = len(path)
 
     # Subdomain & TLD decomposition
-    domain_clean = netloc.split(":")[0]  # strip port if present
+    # Note: strip port if present for domain analysis
+    domain_clean = netloc.split(":")[0]
     parts = domain_clean.split(".")
     subdomain_count = max(0, len(parts) - 2) if len(parts) > 1 else 0
     tld = parts[-1] if len(parts) > 1 else ""
     tld_length = len(tld)
     tld_popularity = 1 if tld in POPULAR_TLDS else 0
+    domain_name = parts[-2] if len(parts) >= 2 else parts[0]
+    domain_name_length = len(domain_name)
 
     # Counts
     dot_count = clean_url.count(".")
     has_hyphen_in_domain = 1 if "-" in domain_clean else 0
-    query_param_count = len(query.split("&")) if query else 0
+    # In Mendeley LegitPhish dataset, query count is defined by len(clean_url.split("?"))
+    query_param_count = len(clean_url.split("?"))
 
-    # Digits and numeric character percentage
+    # Digits and numeric character percentage (scaled 0-100 to match dataset)
     digits_total = sum(c.isdigit() for c in clean_url)
-    percentage_numeric_chars = round(digits_total / max(1, url_length), 4)
+    percentage_numeric_chars = round((digits_total / max(1, url_length)) * 100, 4)
 
     # IP address in hostname (IPv4)
     has_ip = 1 if re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$", netloc) else 0

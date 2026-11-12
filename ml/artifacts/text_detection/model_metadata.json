@@ -1,0 +1,21 @@
+{
+  "model_id": "trustlens-model1-multilingual-v1",
+  "created_at_utc": "2026-11-12T17:13:42.964621+00:00",
+  "task": "Multilingual Digital Scam Message Detection",
+  "train_samples": 69501,
+  "test_samples": 8202,
+  "best_model": "Feature Union + Calibrated LinearSVC",
+  "macro_f1": 0.976,
+  "accuracy": 0.9777,
+  "supported_languages": [
+    "English",
+    "Hindi",
+    "Hinglish"
+  ],
+  "language_validation_note": "Tamil is NOT claimed as supported because the evaluated dataset does not contain Tamil records.",
+  "artifacts": {
+    "model": "best_model.joblib",
+    "vectorizer": "best_vectorizer.joblib",
+    "confusion_matrix": "confusion_matrix.png"
+  }
+}

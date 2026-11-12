@@ -1,0 +1,284 @@
+{
+  "experiments": [
+    {
+      "model_name": "Word TF-IDF + Logistic Regression",
+      "accuracy": 0.9684,
+      "precision_macro": 0.9649,
+      "recall_macro": 0.9674,
+      "f1_macro": 0.9661,
+      "f1_weighted": 0.9685,
+      "false_positive_rate": 0.0287,
+      "false_negative_rate": 0.0365,
+      "brier_score_loss": 0.0264,
+      "roc_auc": 0.9933,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9786,
+          "recall": 0.9713,
+          "f1": 0.975
+        },
+        "threat": {
+          "precision": 0.9511,
+          "recall": 0.9635,
+          "f1": 0.9573
+        }
+      },
+      "per_language": {
+        "English": {
+          "sample_count": 7668,
+          "accuracy": 0.9678,
+          "f1_macro": 0.966,
+          "recall_threat": 0.9656
+        },
+        "Hinglish": {
+          "sample_count": 74,
+          "accuracy": 0.973,
+          "f1_macro": 0.9093,
+          "recall_threat": 1.0
+        },
+        "Hindi": {
+          "sample_count": 460,
+          "accuracy": 0.9783,
+          "f1_macro": 0.6373,
+          "recall_threat": 0.1818
+        }
+      },
+      "confusion_matrix": [
+        [
+          5042,
+          149
+        ],
+        [
+          110,
+          2901
+        ]
+      ],
+      "eval_latency_seconds": 0.001,
+      "train_duration_seconds": 0.83
+    },
+    {
+      "model_name": "Char TF-IDF + Logistic Regression",
+      "accuracy": 0.9718,
+      "precision_macro": 0.9683,
+      "recall_macro": 0.9714,
+      "f1_macro": 0.9698,
+      "f1_weighted": 0.9719,
+      "false_positive_rate": 0.027,
+      "false_negative_rate": 0.0302,
+      "brier_score_loss": 0.0236,
+      "roc_auc": 0.9943,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9823,
+          "recall": 0.973,
+          "f1": 0.9776
+        },
+        "threat": {
+          "precision": 0.9542,
+          "recall": 0.9698,
+          "f1": 0.962
+        }
+      },
+      "per_language": {
+        "English": {
+          "sample_count": 7668,
+          "accuracy": 0.9709,
+          "f1_macro": 0.9693,
+          "recall_threat": 0.9714
+        },
+        "Hinglish": {
+          "sample_count": 74,
+          "accuracy": 1.0,
+          "f1_macro": 1.0,
+          "recall_threat": 1.0
+        },
+        "Hindi": {
+          "sample_count": 460,
+          "accuracy": 0.9826,
+          "f1_macro": 0.7456,
+          "recall_threat": 0.3636
+        }
+      },
+      "confusion_matrix": [
+        [
+          5051,
+          140
+        ],
+        [
+          91,
+          2920
+        ]
+      ],
+      "eval_latency_seconds": 0.0056,
+      "train_duration_seconds": 1.19
+    },
+    {
+      "model_name": "Feature Union (Word+Char) + Logistic Regression",
+      "accuracy": 0.9763,
+      "precision_macro": 0.9739,
+      "recall_macro": 0.9753,
+      "f1_macro": 0.9746,
+      "f1_weighted": 0.9764,
+      "false_positive_rate": 0.0208,
+      "false_negative_rate": 0.0286,
+      "brier_score_loss": 0.0194,
+      "roc_auc": 0.9958,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9834,
+          "recall": 0.9792,
+          "f1": 0.9813
+        },
+        "threat": {
+          "precision": 0.9644,
+          "recall": 0.9714,
+          "f1": 0.9679
+        }
+      },
+      "per_language": {
+        "English": {
+          "sample_count": 7668,
+          "accuracy": 0.9755,
+          "f1_macro": 0.9741,
+          "recall_threat": 0.9724
+        },
+        "Hinglish": {
+          "sample_count": 74,
+          "accuracy": 0.9865,
+          "f1_macro": 0.9578,
+          "recall_threat": 1.0
+        },
+        "Hindi": {
+          "sample_count": 460,
+          "accuracy": 0.9891,
+          "f1_macro": 0.8502,
+          "recall_threat": 0.5455
+        }
+      },
+      "confusion_matrix": [
+        [
+          5083,
+          108
+        ],
+        [
+          86,
+          2925
+        ]
+      ],
+      "eval_latency_seconds": 0.0067,
+      "train_duration_seconds": 2.16
+    },
+    {
+      "model_name": "Feature Union + Calibrated LinearSVC",
+      "accuracy": 0.9777,
+      "precision_macro": 0.9763,
+      "recall_macro": 0.9757,
+      "f1_macro": 0.976,
+      "f1_weighted": 0.9777,
+      "false_positive_rate": 0.0168,
+      "false_negative_rate": 0.0319,
+      "brier_score_loss": 0.0178,
+      "roc_auc": 0.996,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9815,
+          "recall": 0.9832,
+          "f1": 0.9824
+        },
+        "threat": {
+          "precision": 0.971,
+          "recall": 0.9681,
+          "f1": 0.9696
+        }
+      },
+      "per_language": {
+        "English": {
+          "sample_count": 7668,
+          "accuracy": 0.9768,
+          "f1_macro": 0.9754,
+          "recall_threat": 0.969
+        },
+        "Hinglish": {
+          "sample_count": 74,
+          "accuracy": 1.0,
+          "f1_macro": 1.0,
+          "recall_threat": 1.0
+        },
+        "Hindi": {
+          "sample_count": 460,
+          "accuracy": 0.9891,
+          "f1_macro": 0.8502,
+          "recall_threat": 0.5455
+        }
+      },
+      "confusion_matrix": [
+        [
+          5104,
+          87
+        ],
+        [
+          96,
+          2915
+        ]
+      ],
+      "eval_latency_seconds": 0.0342,
+      "train_duration_seconds": 5.39
+    }
+  ],
+  "best_model": {
+    "model_name": "Feature Union + Calibrated LinearSVC",
+    "accuracy": 0.9777,
+    "precision_macro": 0.9763,
+    "recall_macro": 0.9757,
+    "f1_macro": 0.976,
+    "f1_weighted": 0.9777,
+    "false_positive_rate": 0.0168,
+    "false_negative_rate": 0.0319,
+    "brier_score_loss": 0.0178,
+    "roc_auc": 0.996,
+    "per_class": {
+      "legitimate": {
+        "precision": 0.9815,
+        "recall": 0.9832,
+        "f1": 0.9824
+      },
+      "threat": {
+        "precision": 0.971,
+        "recall": 0.9681,
+        "f1": 0.9696
+      }
+    },
+    "per_language": {
+      "English": {
+        "sample_count": 7668,
+        "accuracy": 0.9768,
+        "f1_macro": 0.9754,
+        "recall_threat": 0.969
+      },
+      "Hinglish": {
+        "sample_count": 74,
+        "accuracy": 1.0,
+        "f1_macro": 1.0,
+        "recall_threat": 1.0
+      },
+      "Hindi": {
+        "sample_count": 460,
+        "accuracy": 0.9891,
+        "f1_macro": 0.8502,
+        "recall_threat": 0.5455
+      }
+    },
+    "confusion_matrix": [
+      [
+        5104,
+        87
+      ],
+      [
+        96,
+        2915
+      ]
+    ],
+    "eval_latency_seconds": 0.0342,
+    "train_duration_seconds": 5.39
+  }
+}

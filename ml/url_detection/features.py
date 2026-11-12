@@ -1,29 +1,20 @@
 """
-TRUSTLENS AI - Phishing URL Feature Extractor
-Extracts 17 lexical, structural, and cryptographic entropy features from URLs.
+TRUSTLENS AI - Production Phishing URL Feature Extractor
+Extracts 16 structural, lexical, and cryptographic entropy indicators from raw URLs
+matching the schema of the LegitPhish benchmark dataset.
 Strictly deterministic and does not make network requests to malicious targets.
 """
 
 import math
 import re
 from urllib.parse import urlparse
-from typing import Dict, Any
+from typing import Dict, Any, List
 
+POPULAR_TLDS = {"com", "org", "net", "edu", "gov", "mil", "in", "io", "ai", "co"}
 
-SUSPICIOUS_KEYWORDS = [
-    "login", "verify", "update", "banking", "secure", "account",
-    "kyc", "signin", "support", "wallet", "confirm", "service",
-    "password", "auth", "billing", "free", "claim", "reward", "upi"
-]
-
-SUSPICIOUS_TLDS = {
-    "xyz", "top", "work", "click", "buzz", "gq", "cf", "tk", "ml", "ga",
-    "fit", "rest", "cam", "loan", "surf", "casa", "bar", "icu"
-}
-
-SHORTENER_DOMAINS = {
-    "bit.ly", "tinyurl.com", "goo.gl", "t.co", "is.gd", "buff.ly",
-    "ow.ly", "cutt.ly", "rb.gy", "v.gd", "tr.im"
+SUSPICIOUS_EXTENSIONS = {
+    ".exe", ".zip", ".rar", ".apk", ".bin", ".iso", ".scr", ".bat",
+    ".cmd", ".php", ".sh", ".vbs", ".hta", ".jar", ".msi"
 }
 
 
@@ -35,80 +26,95 @@ def calculate_entropy(text: str) -> float:
     return -sum(p * math.log2(p) for p in probabilities if p > 0)
 
 
-def extract_url_features(url: str) -> Dict[str, Any]:
+FEATURE_COLUMNS = [
+    "url_length",
+    "has_ip_address",
+    "dot_count",
+    "https_flag",
+    "url_entropy",
+    "token_count",
+    "subdomain_count",
+    "query_param_count",
+    "tld_length",
+    "path_length",
+    "has_hyphen_in_domain",
+    "number_of_digits",
+    "tld_popularity",
+    "suspicious_file_extension",
+    "domain_name_length",
+    "percentage_numeric_chars",
+]
+
+
+def extract_url_features(raw_url: str) -> Dict[str, Any]:
     """
-    Extracts 17 structural and lexical features from a raw URL.
-    Returns a dictionary of numerical and boolean features ready for ML inference.
+    Parses a raw URL string and extracts all 16 numerical and structural indicators.
+    Guarantees no outbound network connections.
     """
-    clean_url = url.strip()
+    clean_url = str(raw_url).strip()
+
+    # Prepend scheme for reliable parsing if omitted
     if not re.match(r"^https?://", clean_url, re.IGNORECASE):
-        # Prepend scheme for reliable URL parsing
         parsed = urlparse("http://" + clean_url)
+        https_flag = 0
     else:
         parsed = urlparse(clean_url)
+        https_flag = 1 if parsed.scheme.lower() == "https" else 0
 
     netloc = parsed.netloc.lower()
     path = parsed.path
     query = parsed.query
 
-    # 1. Length features
+    # Basic length features
     url_length = len(clean_url)
-    domain_length = len(netloc)
+    domain_name_length = len(netloc)
     path_length = len(path)
 
-    # 2. Structural counts
-    count_dots = clean_url.count(".")
-    count_hyphens = clean_url.count("-")
-    
-    # Subdomains count
-    domain_parts = netloc.split(".")
-    count_subdomains = max(0, len(domain_parts) - 2) if len(domain_parts) > 1 else 0
+    # Subdomain & TLD decomposition
+    domain_clean = netloc.split(":")[0]  # strip port if present
+    parts = domain_clean.split(".")
+    subdomain_count = max(0, len(parts) - 2) if len(parts) > 1 else 0
+    tld = parts[-1] if len(parts) > 1 else ""
+    tld_length = len(tld)
+    tld_popularity = 1 if tld in POPULAR_TLDS else 0
 
-    # 3. Security flags
+    # Counts
+    dot_count = clean_url.count(".")
+    has_hyphen_in_domain = 1 if "-" in domain_clean else 0
+    query_param_count = len(query.split("&")) if query else 0
+
+    # Digits and numeric character percentage
+    digits_total = sum(c.isdigit() for c in clean_url)
+    percentage_numeric_chars = round(digits_total / max(1, url_length), 4)
+
     # IP address in hostname (IPv4)
-    has_ip = bool(re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$", netloc))
-    has_at = "@" in clean_url
-    has_double_slash = "//" in path
+    has_ip = 1 if re.match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$", netloc) else 0
 
-    # Suspicious keywords
-    has_suspicious_kw = any(kw in clean_url.lower() for kw in SUSPICIOUS_KEYWORDS)
+    # Lexical tokens count
+    tokens = re.split(r"[\W_]+", clean_url)
+    token_count = len([t for t in tokens if t])
 
-    # 4. Entropy metrics
+    # Entropy
     url_entropy = round(calculate_entropy(clean_url), 4)
-    domain_entropy = round(calculate_entropy(netloc), 4)
 
-    # 5. Character ratios
-    digits_count = sum(c.isdigit() for c in clean_url)
-    digit_ratio = round(digits_count / max(1, url_length), 4)
-
-    special_chars_count = len(re.findall(r"[^a-zA-Z0-9]", clean_url))
-    special_char_ratio = round(special_chars_count / max(1, url_length), 4)
-
-    # 6. TLD and Shortener analysis
-    tld = domain_parts[-1] if domain_parts else ""
-    is_suspicious_tld = tld in SUSPICIOUS_TLDS
-    is_shortened = any(shortener in netloc for shortener in SHORTENER_DOMAINS)
-
-    # 7. Query parameters count
-    count_params = len(query.split("&")) if query else 0
+    # Suspicious file extension
+    suspicious_file_extension = 1 if any(path.lower().endswith(ext) for ext in SUSPICIOUS_EXTENSIONS) else 0
 
     return {
         "url_length": url_length,
-        "domain_length": domain_length,
-        "path_length": path_length,
-        "count_dots": count_dots,
-        "count_hyphens": count_hyphens,
-        "count_subdomains": count_subdomains,
         "has_ip_address": has_ip,
-        "has_at_symbol": has_at,
-        "has_double_slash": has_double_slash,
-        "has_suspicious_keywords": has_suspicious_kw,
+        "dot_count": dot_count,
+        "https_flag": https_flag,
         "url_entropy": url_entropy,
-        "domain_entropy": domain_entropy,
-        "digit_ratio": digit_ratio,
-        "special_char_ratio": special_char_ratio,
-        "is_suspicious_tld": is_suspicious_tld,
-        "is_shortened": is_shortened,
-        "count_params": count_params,
+        "token_count": token_count,
+        "subdomain_count": subdomain_count,
+        "query_param_count": query_param_count,
+        "tld_length": tld_length,
+        "path_length": path_length,
+        "has_hyphen_in_domain": has_hyphen_in_domain,
+        "number_of_digits": digits_total,
+        "tld_popularity": tld_popularity,
+        "suspicious_file_extension": suspicious_file_extension,
+        "domain_name_length": domain_name_length,
+        "percentage_numeric_chars": percentage_numeric_chars,
     }
-

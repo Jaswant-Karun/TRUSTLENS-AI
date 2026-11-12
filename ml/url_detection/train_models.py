@@ -201,16 +201,23 @@ def main():
     print("\n[4/4] Computing SHAP TreeExplainer Attributions...")
     explainer = shap.TreeExplainer(best_model_obj)
     
-    # Subsample 1,000 validation records for rapid, robust SHAP estimation
-    val_sub = val_df.sample(n=min(1000, len(val_df)), random_state=42)
+    # Subsample 500 validation records for rapid, robust SHAP estimation
+    val_sub = val_df.sample(n=min(500, len(val_df)), random_state=42)
     X_val_sub = val_sub[FEATURE_COLUMNS].values
-    shap_values = explainer.shap_values(X_val_sub)
+    raw_shap = explainer.shap_values(X_val_sub)
 
-    # If binary classification returns list or 2D array
-    if isinstance(shap_values, list):
-        shap_vals_target = shap_values[1]
+    # Handle various SHAP return types across versions (list, 3D array, or 2D array)
+    if isinstance(raw_shap, list):
+        shap_vals_target = raw_shap[1]
+    elif hasattr(raw_shap, "ndim") and raw_shap.ndim == 3:
+        shap_vals_target = raw_shap[:, :, 1]
     else:
-        shap_vals_target = shap_values
+        shap_vals_target = raw_shap
+
+    # Ensure 2D (n_samples, n_features)
+    shap_vals_target = np.array(shap_vals_target)
+    if shap_vals_target.ndim == 3:
+        shap_vals_target = shap_vals_target[:, :, 1]
 
     # SHAP Summary Plot
     plt.figure(figsize=(10, 7))
@@ -220,12 +227,14 @@ def main():
     plt.savefig(artifacts_dir / "shap_summary.png", dpi=200)
     plt.close()
 
-    # Mean absolute SHAP values per feature
+    # Mean absolute SHAP values per feature (1D float)
     mean_abs_shap = np.abs(shap_vals_target).mean(axis=0)
-    feature_ranking = [
-        {"feature": feat, "mean_abs_shap": round(float(val), 4)}
-        for feat, val in sorted(zip(FEATURE_COLUMNS, mean_abs_shap), key=lambda x: x[1], reverse=True)
-    ]
+    feature_ranking = []
+    for feat, val in zip(FEATURE_COLUMNS, mean_abs_shap):
+        scalar_val = float(val) if np.isscalar(val) else float(val.mean())
+        feature_ranking.append({"feature": feat, "mean_abs_shap": round(scalar_val, 4)})
+
+    feature_ranking.sort(key=lambda x: x["mean_abs_shap"], reverse=True)
 
     with open(artifacts_dir / "shap_feature_importance.json", "w", encoding="utf-8") as f:
         json.dump(feature_ranking, f, indent=2)

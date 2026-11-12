@@ -17,3 +17,4 @@ async def scan_url(request: URLScanRequest):
         return URLScanResponse(**result)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"URL evaluation error: {str(exc)}")
+

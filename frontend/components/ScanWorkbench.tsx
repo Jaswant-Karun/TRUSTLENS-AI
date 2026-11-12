@@ -227,3 +227,4 @@ export default function ScanWorkbench({ onResult }: { onResult?: (res: ScanResul
     </div>
   );
 }
+

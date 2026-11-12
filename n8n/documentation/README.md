@@ -34,3 +34,4 @@ This directory houses the automation workflows connecting external threat intell
    ```
 2. Navigate to `http://localhost:5678`.
 3. Go to **Workflows -> Import from File** and select any JSON file from `n8n/workflows/`.
+

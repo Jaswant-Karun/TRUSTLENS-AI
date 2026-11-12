@@ -83,3 +83,4 @@ class PhishingURLDetector:
             "is_trained": self.is_trained,
             "model_version": model_ver,
         }
+

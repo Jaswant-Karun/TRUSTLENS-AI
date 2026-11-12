@@ -88,3 +88,4 @@ async def test_composite_scan():
     assert data["detected_type"] == "text"
     assert data["url_analysis"] is not None
     assert data["tactics_analysis"] is not None
+

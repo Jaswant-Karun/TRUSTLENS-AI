@@ -21,3 +21,4 @@ async def get_system_health():
         database_connected=db_manager.is_connected,
         models_loaded=ml_service.get_models_status(),
     )
+

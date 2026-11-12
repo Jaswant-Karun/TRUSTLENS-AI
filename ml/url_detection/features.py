@@ -111,3 +111,4 @@ def extract_url_features(url: str) -> Dict[str, Any]:
         "is_shortened": is_shortened,
         "count_params": count_params,
     }
+

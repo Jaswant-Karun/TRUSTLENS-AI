@@ -82,3 +82,4 @@ class CampaignClusterer:
             "clusters": formatted_clusters,
             "is_trained": self.is_trained,
         }
+

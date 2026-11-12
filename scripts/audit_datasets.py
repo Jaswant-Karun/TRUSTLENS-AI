@@ -108,3 +108,4 @@ if __name__ == "__main__":
     audit_sms_phishing()
     audit_legitphish()
     audit_scamshield()
+

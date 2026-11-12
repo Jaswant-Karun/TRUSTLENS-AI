@@ -89,3 +89,4 @@ class ScamTacticDetector:
             "is_trained": self.is_trained,
             "model_version": "trained-multilabel-v1" if self.is_trained else "taxonomy-rule-baseline",
         }
+

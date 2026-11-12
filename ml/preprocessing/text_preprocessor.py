@@ -127,3 +127,4 @@ def pd_isna(val: Any) -> bool:
 
 
 text_preprocessor = MultilingualTextPreprocessor()
+

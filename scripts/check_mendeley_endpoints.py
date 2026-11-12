@@ -23,3 +23,4 @@ for ep in endpoints:
             print("Content:", r.text[:300])
     except Exception as e:
         print(f"{ep} -> Error: {e}")
+

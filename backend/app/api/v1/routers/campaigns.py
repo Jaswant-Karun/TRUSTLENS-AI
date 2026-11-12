@@ -20,3 +20,4 @@ async def cluster_campaign_messages(request: CampaignClusterRequest):
         return CampaignClusterResponse(**result)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Campaign clustering error: {str(exc)}")
+

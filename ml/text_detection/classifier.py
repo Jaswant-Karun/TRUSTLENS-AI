@@ -93,3 +93,4 @@ class MultilingualScamClassifier:
             "model_version": model_ver,
             "explanation": explanation,
         }
+

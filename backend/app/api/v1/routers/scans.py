@@ -35,3 +35,4 @@ async def scan_composite_content(request: CompositeScanRequest):
         return CompositeScanResponse(**result)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Composite scan error: {str(exc)}")
+

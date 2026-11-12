@@ -17,3 +17,4 @@ async def scan_tactics(request: TacticScanRequest):
         return TacticScanResponse(**result)
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Tactic detection error: {str(exc)}")
+

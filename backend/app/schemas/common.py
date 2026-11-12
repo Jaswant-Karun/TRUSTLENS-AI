@@ -12,11 +12,11 @@ from pydantic import BaseModel, Field
 class CampaignSummary(BaseModel):
     model_config = {"extra": "allow"}
 
-    cluster_id: int
-    campaign_name: str
-    targeted_entity: str
-    cluster_size: int
-    cohesion_score: float
+    cluster_id: int = 0
+    campaign_name: str = "Unspecified Campaign"
+    targeted_entity: str = "Generic / Unspecified Institution"
+    cluster_size: int = 1
+    cohesion_score: float = 0.0
     primary_tactics: List[str] = Field(default_factory=list)
     status: str = "active"
     last_activity: Optional[datetime] = None
@@ -25,16 +25,16 @@ class CampaignSummary(BaseModel):
 class CampaignDetailResponse(BaseModel):
     model_config = {"extra": "allow"}
 
-    cluster_id: int
-    campaign_name: str
-    targeted_entity: str
-    cluster_size: int
-    cohesion_score: float
+    cluster_id: int = 0
+    campaign_name: str = "Unspecified Campaign"
+    targeted_entity: str = "Generic / Unspecified Institution"
+    cluster_size: int = 1
+    cohesion_score: float = 0.0
     primary_tactics: List[str] = Field(default_factory=list)
-    exemplar_message: str
+    exemplar_message: str = ""
     shared_phrases: List[str] = Field(default_factory=list)
-    shared_iocs: Dict[str, List[str]] = Field(default_factory=dict)
-    legal_disclaimer: str
+    shared_iocs: Dict[str, Any] = Field(default_factory=dict)
+    legal_disclaimer: str = ""
     discovered_at: Optional[datetime] = None
 
 

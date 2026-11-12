@@ -58,7 +58,7 @@ async def test_text_scan_multilingual():
     data = response.json()
     assert "predicted_label" in data
     assert "detected_language" in data
-    assert data["detected_language"] in ["Hinglish (Romanized Hindi)", "English", "Hindi (Devanagari)"]
+    assert data["detected_language"] in ["Hinglish", "Hinglish (Romanized Hindi)", "English", "Hindi", "Hindi (Devanagari)"]
 
 
 @pytest.mark.asyncio

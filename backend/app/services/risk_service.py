@@ -96,11 +96,21 @@ class TransparentRiskAggregationService:
         if tactic_result and tactic_result.get("tactics"):
             tactics = tactic_result["tactics"]
             active_tactics = [t.get("tactic_name") or t.get("name") for t in tactics]
-            # Severity weighting per detected tactic
-            high_severity_tactics = {"Threats and Intimidation", "OTP and Credential Requests", "Bank or Government Impersonation", "Account Suspension Threats"}
-            has_high_severity = any(t in high_severity_tactics for t in active_tactics)
             
-            tactic_score = 0.85 if has_high_severity else (0.50 if len(active_tactics) >= 2 else 0.30)
+            # Coercive tactics that indicate active social engineering
+            coercive_malicious_tactics = {"Threats and Intimidation", "OTP and Credential Requests", "Account Suspension Threats"}
+            has_coercive = any(t in coercive_malicious_tactics for t in active_tactics)
+            
+            # If Model 1 confirmed message is legitimate, bank/financial terms represent normal branding, not fraud
+            is_confirmed_legit = text_result and not text_result.get("is_threat")
+            if is_confirmed_legit and not has_coercive:
+                tactic_score = 0.10
+                has_high_severity = False
+            else:
+                high_severity_tactics = coercive_malicious_tactics | {"Bank or Government Impersonation"}
+                has_high_severity = any(t in high_severity_tactics for t in active_tactics)
+                tactic_score = 0.85 if has_high_severity else (0.50 if len(active_tactics) >= 2 else 0.30)
+
             tactic_weight = 0.15
             breakdown["tactic_signal"] = {
                 "detected_tactics_count": len(active_tactics),
@@ -113,7 +123,7 @@ class TransparentRiskAggregationService:
 
         campaign_score = 0.0
         campaign_weight = 0.0
-        is_threat_context = (text_result and text_result.get("is_threat")) or (url_result and url_result.get("is_phishing")) or bool(active_tactics)
+        is_threat_context = (text_result and text_result.get("is_threat")) or (url_result and url_result.get("is_phishing")) or has_high_severity
         if campaign_result and (campaign_result.get("matched") or campaign_result.get("campaign_id") is not None):
             sim = float(campaign_result.get("similarity_score", 0.0))
             # Campaign similarity contributes to threat risk only when message exhibits suspicious context

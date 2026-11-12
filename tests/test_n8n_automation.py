@@ -39,18 +39,18 @@ async def client():
 async def admin_auth_token(client: AsyncClient):
     """Registers and logs in a test administrator to get a valid JWT."""
     admin_creds = {
-        "username": "n8n_test_admin",
         "email": "n8n_admin@trustlens.internal",
         "password": "SecurePassword123!",
+        "full_name": "Automation Admin",
         "role": "admin",
     }
     # Register (ignore if already exists)
     await client.post("/api/v1/auth/register", json=admin_creds)
-    
-    # Login
+
+    # Login with JSON
     login_res = await client.post(
         "/api/v1/auth/login",
-        data={"username": admin_creds["username"], "password": admin_creds["password"]},
+        json={"email": admin_creds["email"], "password": admin_creds["password"]},
     )
     assert login_res.status_code == 200, f"Login failed: {login_res.text}"
     token = login_res.json()["access_token"]

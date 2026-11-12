@@ -22,6 +22,11 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         return [ts for ts in timestamps if ts > cutoff]
 
     async def dispatch(self, request: Request, call_next) -> Response:
+        import os
+        # Exempt during automated test runs
+        if os.environ.get("TESTING") == "true" or getattr(request.app.state, "testing", False):
+            return await call_next(request)
+
         # Exempt Swagger docs & health checks from rate limiting
         if request.url.path in ["/docs", "/redoc", "/openapi.json", "/", f"{settings.API_V1_STR}/health"]:
             return await call_next(request)

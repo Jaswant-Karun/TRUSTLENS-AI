@@ -1,0 +1,307 @@
+{
+  "experiments": [
+    {
+      "model_name": "One-vs-Rest Logistic Regression",
+      "micro_f1": 0.9382,
+      "macro_f1": 0.8949,
+      "weighted_f1": 0.9385,
+      "hamming_loss": 0.005,
+      "per_sample_latency_ms": 0.0023,
+      "train_duration_seconds": 21.41,
+      "per_label_metrics": {
+        "urgency_time_pressure": {
+          "name": "Urgency and Time Pressure",
+          "code": "TACTIC_URGENCY",
+          "precision": 0.9213,
+          "recall": 0.9717,
+          "f1_score": 0.9458,
+          "pr_auc": 0.965,
+          "support": 530,
+          "tuned_threshold": 0.6
+        },
+        "threats_intimidation": {
+          "name": "Threats and Intimidation",
+          "code": "TACTIC_INTIMIDATION",
+          "precision": 0.9176,
+          "recall": 0.9551,
+          "f1_score": 0.936,
+          "pr_auc": 0.9533,
+          "support": 245,
+          "tuned_threshold": 0.64
+        },
+        "otp_credential_requests": {
+          "name": "OTP and Credential Requests",
+          "code": "TACTIC_CREDENTIAL_THEFT",
+          "precision": 1.0,
+          "recall": 0.6897,
+          "f1_score": 0.8163,
+          "pr_auc": 0.9396,
+          "support": 29,
+          "tuned_threshold": 0.84
+        },
+        "financial_manipulation": {
+          "name": "Financial Manipulation",
+          "code": "TACTIC_FINANCIAL_PRESSURE",
+          "precision": 0.9592,
+          "recall": 0.8905,
+          "f1_score": 0.9236,
+          "pr_auc": 0.9501,
+          "support": 475,
+          "tuned_threshold": 0.76
+        },
+        "authority_impersonation": {
+          "name": "Bank or Government Impersonation",
+          "code": "TACTIC_AUTHORITY_IMPERSONATION",
+          "precision": 0.945,
+          "recall": 0.9329,
+          "f1_score": 0.9389,
+          "pr_auc": 0.9732,
+          "support": 313,
+          "tuned_threshold": 0.6
+        },
+        "fake_employment": {
+          "name": "Fake Employment Opportunities",
+          "code": "TACTIC_FAKE_EMPLOYMENT",
+          "precision": 0.5676,
+          "recall": 0.875,
+          "f1_score": 0.6885,
+          "pr_auc": 0.8682,
+          "support": 24,
+          "tuned_threshold": 0.44
+        },
+        "account_suspension": {
+          "name": "Account Suspension Threats",
+          "code": "TACTIC_ACCOUNT_SUSPENSION",
+          "precision": 0.8595,
+          "recall": 0.972,
+          "f1_score": 0.9123,
+          "pr_auc": 0.9683,
+          "support": 107,
+          "tuned_threshold": 0.86
+        },
+        "prize_reward_scams": {
+          "name": "Prize and Reward Scams",
+          "code": "TACTIC_REWARD_BAIT",
+          "precision": 0.9435,
+          "recall": 0.9665,
+          "f1_score": 0.9549,
+          "pr_auc": 0.975,
+          "support": 985,
+          "tuned_threshold": 0.64
+        },
+        "refund_payment_manipulation": {
+          "name": "Refund and Payment Manipulation",
+          "code": "TACTIC_PAYMENT_MANIPULATION",
+          "precision": 0.9249,
+          "recall": 0.9512,
+          "f1_score": 0.9379,
+          "pr_auc": 0.9479,
+          "support": 246,
+          "tuned_threshold": 0.68
+        }
+      }
+    },
+    {
+      "model_name": "One-vs-Rest Calibrated LinearSVC",
+      "micro_f1": 0.9513,
+      "macro_f1": 0.9313,
+      "weighted_f1": 0.9511,
+      "hamming_loss": 0.0039,
+      "per_sample_latency_ms": 0.039,
+      "train_duration_seconds": 105.14,
+      "per_label_metrics": {
+        "urgency_time_pressure": {
+          "name": "Urgency and Time Pressure",
+          "code": "TACTIC_URGENCY",
+          "precision": 0.9397,
+          "recall": 0.9698,
+          "f1_score": 0.9545,
+          "pr_auc": 0.9721,
+          "support": 530,
+          "tuned_threshold": 0.3
+        },
+        "threats_intimidation": {
+          "name": "Threats and Intimidation",
+          "code": "TACTIC_INTIMIDATION",
+          "precision": 0.9373,
+          "recall": 0.9755,
+          "f1_score": 0.956,
+          "pr_auc": 0.9633,
+          "support": 245,
+          "tuned_threshold": 0.2
+        },
+        "otp_credential_requests": {
+          "name": "OTP and Credential Requests",
+          "code": "TACTIC_CREDENTIAL_THEFT",
+          "precision": 0.9643,
+          "recall": 0.931,
+          "f1_score": 0.9474,
+          "pr_auc": 0.9647,
+          "support": 29,
+          "tuned_threshold": 0.34
+        },
+        "financial_manipulation": {
+          "name": "Financial Manipulation",
+          "code": "TACTIC_FINANCIAL_PRESSURE",
+          "precision": 0.9643,
+          "recall": 0.9095,
+          "f1_score": 0.9361,
+          "pr_auc": 0.9631,
+          "support": 475,
+          "tuned_threshold": 0.5
+        },
+        "authority_impersonation": {
+          "name": "Bank or Government Impersonation",
+          "code": "TACTIC_AUTHORITY_IMPERSONATION",
+          "precision": 0.9547,
+          "recall": 0.9425,
+          "f1_score": 0.9486,
+          "pr_auc": 0.9854,
+          "support": 313,
+          "tuned_threshold": 0.36
+        },
+        "fake_employment": {
+          "name": "Fake Employment Opportunities",
+          "code": "TACTIC_FAKE_EMPLOYMENT",
+          "precision": 0.7917,
+          "recall": 0.7917,
+          "f1_score": 0.7917,
+          "pr_auc": 0.8818,
+          "support": 24,
+          "tuned_threshold": 0.36
+        },
+        "account_suspension": {
+          "name": "Account Suspension Threats",
+          "code": "TACTIC_ACCOUNT_SUSPENSION",
+          "precision": 0.9358,
+          "recall": 0.9533,
+          "f1_score": 0.9444,
+          "pr_auc": 0.9616,
+          "support": 107,
+          "tuned_threshold": 0.44
+        },
+        "prize_reward_scams": {
+          "name": "Prize and Reward Scams",
+          "code": "TACTIC_REWARD_BAIT",
+          "precision": 0.9524,
+          "recall": 0.9756,
+          "f1_score": 0.9639,
+          "pr_auc": 0.9778,
+          "support": 985,
+          "tuned_threshold": 0.34
+        },
+        "refund_payment_manipulation": {
+          "name": "Refund and Payment Manipulation",
+          "code": "TACTIC_PAYMENT_MANIPULATION",
+          "precision": 0.939,
+          "recall": 0.939,
+          "f1_score": 0.939,
+          "pr_auc": 0.9753,
+          "support": 246,
+          "tuned_threshold": 0.5
+        }
+      }
+    }
+  ],
+  "best_model": {
+    "model_name": "One-vs-Rest Calibrated LinearSVC",
+    "micro_f1": 0.9513,
+    "macro_f1": 0.9313,
+    "weighted_f1": 0.9511,
+    "hamming_loss": 0.0039,
+    "per_sample_latency_ms": 0.039,
+    "train_duration_seconds": 105.14,
+    "per_label_metrics": {
+      "urgency_time_pressure": {
+        "name": "Urgency and Time Pressure",
+        "code": "TACTIC_URGENCY",
+        "precision": 0.9397,
+        "recall": 0.9698,
+        "f1_score": 0.9545,
+        "pr_auc": 0.9721,
+        "support": 530,
+        "tuned_threshold": 0.3
+      },
+      "threats_intimidation": {
+        "name": "Threats and Intimidation",
+        "code": "TACTIC_INTIMIDATION",
+        "precision": 0.9373,
+        "recall": 0.9755,
+        "f1_score": 0.956,
+        "pr_auc": 0.9633,
+        "support": 245,
+        "tuned_threshold": 0.2
+      },
+      "otp_credential_requests": {
+        "name": "OTP and Credential Requests",
+        "code": "TACTIC_CREDENTIAL_THEFT",
+        "precision": 0.9643,
+        "recall": 0.931,
+        "f1_score": 0.9474,
+        "pr_auc": 0.9647,
+        "support": 29,
+        "tuned_threshold": 0.34
+      },
+      "financial_manipulation": {
+        "name": "Financial Manipulation",
+        "code": "TACTIC_FINANCIAL_PRESSURE",
+        "precision": 0.9643,
+        "recall": 0.9095,
+        "f1_score": 0.9361,
+        "pr_auc": 0.9631,
+        "support": 475,
+        "tuned_threshold": 0.5
+      },
+      "authority_impersonation": {
+        "name": "Bank or Government Impersonation",
+        "code": "TACTIC_AUTHORITY_IMPERSONATION",
+        "precision": 0.9547,
+        "recall": 0.9425,
+        "f1_score": 0.9486,
+        "pr_auc": 0.9854,
+        "support": 313,
+        "tuned_threshold": 0.36
+      },
+      "fake_employment": {
+        "name": "Fake Employment Opportunities",
+        "code": "TACTIC_FAKE_EMPLOYMENT",
+        "precision": 0.7917,
+        "recall": 0.7917,
+        "f1_score": 0.7917,
+        "pr_auc": 0.8818,
+        "support": 24,
+        "tuned_threshold": 0.36
+      },
+      "account_suspension": {
+        "name": "Account Suspension Threats",
+        "code": "TACTIC_ACCOUNT_SUSPENSION",
+        "precision": 0.9358,
+        "recall": 0.9533,
+        "f1_score": 0.9444,
+        "pr_auc": 0.9616,
+        "support": 107,
+        "tuned_threshold": 0.44
+      },
+      "prize_reward_scams": {
+        "name": "Prize and Reward Scams",
+        "code": "TACTIC_REWARD_BAIT",
+        "precision": 0.9524,
+        "recall": 0.9756,
+        "f1_score": 0.9639,
+        "pr_auc": 0.9778,
+        "support": 985,
+        "tuned_threshold": 0.34
+      },
+      "refund_payment_manipulation": {
+        "name": "Refund and Payment Manipulation",
+        "code": "TACTIC_PAYMENT_MANIPULATION",
+        "precision": 0.939,
+        "recall": 0.939,
+        "f1_score": 0.939,
+        "pr_auc": 0.9753,
+        "support": 246,
+        "tuned_threshold": 0.5
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "model_id": "trustlens-model3-scam-tactic-v1",
+  "created_at_utc": "2026-11-12T17:43:46.612394+00:00",
+  "task": "Multi-Label Social Engineering and Scam Tactic Detection",
+  "train_samples": 69286,
+  "val_samples": 8192,
+  "test_samples": 8202,
+  "best_model": "One-vs-Rest Calibrated LinearSVC",
+  "micro_f1": 0.9513,
+  "macro_f1": 0.9313,
+  "weighted_f1": 0.9511,
+  "hamming_loss": 0.0039,
+  "supported_tactics_count": 9,
+  "supported_tactics": [
+    "urgency_time_pressure",
+    "threats_intimidation",
+    "otp_credential_requests",
+    "financial_manipulation",
+    "authority_impersonation",
+    "fake_employment",
+    "account_suspension",
+    "prize_reward_scams",
+    "refund_payment_manipulation"
+  ],
+  "unavailable_tactics": [
+    {
+      "id": "fake_investment",
+      "name": "Fake Investment Opportunities",
+      "status": "unavailable",
+      "reason": "UNAVAILABLE: No verified ground-truth training annotations exist in benchmark dataset. Model not fabricated."
+    }
+  ],
+  "taxonomy": {
+    "urgency_time_pressure": {
+      "id": "urgency_time_pressure",
+      "name": "Urgency and Time Pressure",
+      "code": "TACTIC_URGENCY",
+      "description": "Imposes artificial deadlines or countdowns to panic victims into hasty compliance without verification.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 1: urgency == 1",
+      "threat_level": "high"
+    },
+    "threats_intimidation": {
+      "id": "threats_intimidation",
+      "name": "Threats and Intimidation",
+      "code": "TACTIC_INTIMIDATION",
+      "description": "Coerces victims using legal threats, police action, service cutoffs, or physical/financial harm.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 1: fear == 1 OR Head 2 in ['Electricity Disconnection', 'Traffic e-Challan']",
+      "threat_level": "critical"
+    },
+    "otp_credential_requests": {
+      "id": "otp_credential_requests",
+      "name": "OTP and Credential Requests",
+      "code": "TACTIC_CREDENTIAL_THEFT",
+      "description": "Directly solicits one-time passwords (OTPs), PINs, passwords, or authentication tokens.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 2: 'OTP / Credential Theft' OR metadata: has_otp == True",
+      "threat_level": "critical"
+    },
+    "financial_manipulation": {
+      "id": "financial_manipulation",
+      "name": "Financial Manipulation",
+      "code": "TACTIC_FINANCIAL_PRESSURE",
+      "description": "Manipulates victims regarding unauthorized debits, transaction disputes, penalty fees, or loan disbursements.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 1: financial_pressure == 1 OR Head 2: 'Loan Scam'",
+      "threat_level": "high"
+    },
+    "authority_impersonation": {
+      "id": "authority_impersonation",
+      "name": "Bank or Government Impersonation",
+      "code": "TACTIC_AUTHORITY_IMPERSONATION",
+      "description": "Falsely impersonates trusted financial institutions (SBI, HDFC), regulatory agencies, police, or government departments.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 1: authority_impersonation == 1 OR Head 2 in ['Traffic e-Challan', 'Fake KYC']",
+      "threat_level": "high"
+    },
+    "fake_employment": {
+      "id": "fake_employment",
+      "name": "Fake Employment Opportunities",
+      "code": "TACTIC_FAKE_EMPLOYMENT",
+      "description": "Lures victims with fraudulent work-from-home, part-time rating, YouTube video liking, or Telegram task jobs.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 2: 'Telegram Job'",
+      "threat_level": "medium"
+    },
+    "fake_investment": {
+      "id": "fake_investment",
+      "name": "Fake Investment Opportunities",
+      "code": "TACTIC_FAKE_INVESTMENT",
+      "description": "Promises unrealistic or guaranteed returns on cryptocurrency, forex, or stock market trading schemes.",
+      "supported": false,
+      "mapping_source": "UNAVAILABLE: No verified ground-truth training annotations exist in benchmark dataset. Model not fabricated.",
+      "threat_level": "high"
+    },
+    "account_suspension": {
+      "id": "account_suspension",
+      "name": "Account Suspension Threats",
+      "code": "TACTIC_ACCOUNT_SUSPENSION",
+      "description": "Falsely claims that bank accounts, debit cards, PAN linkages, or SIM cards have been suspended or frozen.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 2: 'Bank Account Freeze' OR ('Fake KYC' AND Head 1 fear == 1)",
+      "threat_level": "high"
+    },
+    "prize_reward_scams": {
+      "id": "prize_reward_scams",
+      "name": "Prize and Reward Scams",
+      "code": "TACTIC_REWARD_BAIT",
+      "description": "Baits victims with unsolicited lottery winnings, cash rewards, free gifts, or prize giveaways.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 1: reward_bait == 1 OR Head 2: 'Lottery / Prize'",
+      "threat_level": "medium"
+    },
+    "refund_payment_manipulation": {
+      "id": "refund_payment_manipulation",
+      "name": "Refund and Payment Manipulation",
+      "code": "TACTIC_PAYMENT_MANIPULATION",
+      "description": "Exploits UPI Collect requests, fake refund processing, or parcel re-delivery payment fees to siphon funds.",
+      "supported": true,
+      "mapping_source": "ScamShield Head 2 in ['UPI Fraud', 'Courier Scam']",
+      "threat_level": "high"
+    }
+  }
+}

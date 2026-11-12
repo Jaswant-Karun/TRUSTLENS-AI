@@ -1,0 +1,11 @@
+{
+  "urgency_time_pressure": 0.3,
+  "threats_intimidation": 0.2,
+  "otp_credential_requests": 0.34,
+  "financial_manipulation": 0.5,
+  "authority_impersonation": 0.36,
+  "fake_employment": 0.36,
+  "account_suspension": 0.44,
+  "prize_reward_scams": 0.34,
+  "refund_payment_manipulation": 0.5
+}

@@ -88,16 +88,23 @@ class TacticScanRequest(BaseModel):
 
 
 class DetectedTactic(BaseModel):
+    model_config = {"extra": "allow"}
+
     tactic_code: str
     tactic_name: str
     confidence: float
     evidence_tokens: List[str] = Field(default_factory=list)
+    threat_level: Optional[str] = None
+    explanation: Optional[str] = None
 
 
 class TacticScanResponse(BaseModel):
+    model_config = {"extra": "allow"}
+
     tactics: List[DetectedTactic]
     tactic_count: int
     primary_vector: Optional[str] = None
+    investment_advisory: Optional[Dict[str, Any]] = None
     model_version: str
     processed_at: datetime = Field(default_factory=get_utc_now)
 

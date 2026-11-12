@@ -55,6 +55,24 @@ class TextScanResponse(BaseModel):
     explanation: Optional[str] = None
 
 
+class CompositeScanRequest(BaseModel):
+    content: str = Field(..., min_length=2, max_length=10000)
+    channel: str = Field("auto")
+    sender: Optional[str] = None
+
+
+class CompositeScanResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    scan_id: str
+    detected_type: str
+    overall_threat_level: str
+    confidence: float
+    text_analysis: Optional[Dict[str, Any]] = None
+    url_analysis: Optional[Dict[str, Any]] = None
+    tactics_analysis: Optional[Dict[str, Any]] = None
+    campaign_association: Optional[Dict[str, Any]] = None
+
+
 class DetectedTactic(BaseModel):
     model_config = {"extra": "allow"}
     tactic_code: str
@@ -67,6 +85,48 @@ class DetectedTactic(BaseModel):
 
 class TacticScanRequest(BaseModel):
     text: str
+
+
+class TacticScanResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    tactics: List[DetectedTactic] = []
+    tactic_count: int = 0
+    primary_vector: Optional[str] = None
+    investment_advisory: Optional[Dict[str, Any]] = None
+    model_version: str = "trustlens-model3-multilabel-v1.0"
+
+
+class CampaignClusterRequest(BaseModel):
+    messages: List[str] = Field(..., min_length=2)
+    similarity_threshold: float = Field(0.75, ge=0.0, le=1.0)
+
+
+class CampaignCluster(BaseModel):
+    model_config = {"extra": "allow"}
+    cluster_id: int
+    cluster_name: str
+    sample_size: int
+    exemplar_text: str
+    associated_indicators: List[str] = []
+    cohesion_score: Optional[float] = None
+
+
+class CampaignClusterResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    total_messages: int
+    clusters_identified: int
+    clusters: List[CampaignCluster] = []
+
+
+class TelemetrySummaryResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    total_scans_analyzed: int
+    total_threats_blocked: int
+    active_campaigns_tracked: int
+    avg_inference_latency_ms: float
+    threat_breakdown: Dict[str, int]
+    top_tactics: List[Dict[str, Any]]
+    system_status: str
 
 
 class SystemHealthResponse(BaseModel):

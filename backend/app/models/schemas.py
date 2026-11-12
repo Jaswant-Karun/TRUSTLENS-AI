@@ -49,23 +49,25 @@ class URLScanRequest(BaseModel):
 
 
 class LexicalFeatures(BaseModel):
+    model_config = {"extra": "allow"}
+
     url_length: int
-    domain_length: int
-    path_length: int
-    count_dots: int
-    count_hyphens: int
-    count_subdomains: int
-    has_ip_address: bool
-    has_at_symbol: bool
-    has_double_slash: bool
-    has_suspicious_keywords: bool
-    url_entropy: float
-    domain_entropy: float
-    digit_ratio: float
-    special_char_ratio: float
-    is_suspicious_tld: bool
-    is_shortened: bool
-    count_params: int
+    domain_length: int = 0
+    path_length: int = 0
+    count_dots: int = 0
+    count_hyphens: int = 0
+    count_subdomains: int = 0
+    has_ip_address: Union[bool, int] = False
+    has_at_symbol: bool = False
+    has_double_slash: bool = False
+    has_suspicious_keywords: bool = False
+    url_entropy: float = 0.0
+    domain_entropy: float = 0.0
+    digit_ratio: float = 0.0
+    special_char_ratio: float = 0.0
+    is_suspicious_tld: bool = False
+    is_shortened: bool = False
+    count_params: int = 0
 
 
 class URLScanResponse(BaseModel):

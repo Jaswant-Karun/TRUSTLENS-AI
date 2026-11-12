@@ -99,13 +99,20 @@ def extract_url_features(raw_url: str) -> Dict[str, Any]:
 
     # Entropy
     url_entropy = round(calculate_entropy(clean_url), 4)
+    domain_entropy = round(calculate_entropy(domain_clean), 4)
 
     # Suspicious file extension
     suspicious_file_extension = 1 if any(path.lower().endswith(ext) for ext in SUSPICIOUS_EXTENSIONS) else 0
 
+    # API compatibility helper flags
+    suspicious_keywords = ["login", "signin", "verify", "update", "bank", "secure", "account", "kyc", "otp"]
+    has_suspicious_keywords = any(kw in clean_url.lower() for kw in suspicious_keywords)
+    special_char_count = sum(not c.isalnum() for c in clean_url)
+
     return {
+        # Core 16 model features (exact schema for XGBoost / RF / LR)
         "url_length": url_length,
-        "has_ip_address": has_ip,
+        "has_ip_address": bool(has_ip),
         "dot_count": dot_count,
         "https_flag": https_flag,
         "url_entropy": url_entropy,
@@ -120,4 +127,18 @@ def extract_url_features(raw_url: str) -> Dict[str, Any]:
         "suspicious_file_extension": suspicious_file_extension,
         "domain_name_length": domain_name_length,
         "percentage_numeric_chars": percentage_numeric_chars,
+        # API Schema Compatibility fields
+        "domain_length": domain_name_length,
+        "domain_entropy": domain_entropy,
+        "count_dots": dot_count,
+        "count_hyphens": clean_url.count("-"),
+        "count_subdomains": subdomain_count,
+        "has_at_symbol": "@" in clean_url,
+        "has_double_slash": clean_url.count("//") > 1,
+        "has_suspicious_keywords": has_suspicious_keywords,
+        "digit_ratio": round(digits_total / max(1, url_length), 4),
+        "special_char_ratio": round(special_char_count / max(1, url_length), 4),
+        "is_suspicious_tld": tld in ["xyz", "top", "buzz", "club", "online", "vip", "cfd", "work"],
+        "is_shortened": domain_clean in ["bit.ly", "tinyurl.com", "t.co", "is.gd", "goo.gl"],
+        "count_params": query_param_count,
     }

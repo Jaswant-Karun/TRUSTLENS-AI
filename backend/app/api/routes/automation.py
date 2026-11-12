@@ -106,3 +106,4 @@ async def log_workflow_execution(
         duration_ms=request.duration_ms,
     )
     return {"status": "logged", "log_id": log_id}
+

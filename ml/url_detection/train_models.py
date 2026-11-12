@@ -174,7 +174,7 @@ def main():
     print(f"     Accuracy: {xgb_eval['accuracy']:.4f} | F1: {xgb_eval['f1_binary']:.4f} | ROC-AUC: {xgb_eval['roc_auc']:.4f} | FPR: {xgb_eval['false_positive_rate']:.4f}")
 
     # 3. Select Best Model
-    best_exp = max(experiments, key=lambda x: x["roc_auc"])
+    best_exp = max(experiments, key=lambda x: (x["roc_auc"], x["f1_binary"]))
     print(f"\n[3/4] Best Performing URL Model: '{best_exp['model_name']}' (ROC-AUC = {best_exp['roc_auc']:.4f})")
 
     best_model_obj = xgb_model if "XGBoost" in best_exp["model_name"] else rf

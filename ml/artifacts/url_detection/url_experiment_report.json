@@ -22,7 +22,7 @@
         ]
       ],
       "per_sample_latency_ms": 0.0001,
-      "train_duration_seconds": 0.21
+      "train_duration_seconds": 0.18
     },
     {
       "model_name": "Random Forest",
@@ -45,8 +45,8 @@
           9523
         ]
       ],
-      "per_sample_latency_ms": 0.0029,
-      "train_duration_seconds": 0.73
+      "per_sample_latency_ms": 0.0027,
+      "train_duration_seconds": 0.74
     },
     {
       "model_name": "XGBoost Classifier",
@@ -69,98 +69,98 @@
           9522
         ]
       ],
-      "per_sample_latency_ms": 0.0005,
-      "train_duration_seconds": 0.71
+      "per_sample_latency_ms": 0.0007,
+      "train_duration_seconds": 0.73
     }
   ],
   "best_model": {
-    "model_name": "Random Forest",
-    "accuracy": 0.9997,
-    "precision": 0.9996,
-    "recall": 0.9999,
-    "f1_binary": 0.9997,
-    "f1_macro": 0.9996,
+    "model_name": "XGBoost Classifier",
+    "accuracy": 0.9998,
+    "precision": 0.9999,
+    "recall": 0.9998,
+    "f1_binary": 0.9998,
+    "f1_macro": 0.9998,
     "roc_auc": 1.0,
     "pr_auc": 1.0,
-    "false_positive_rate": 0.0007,
-    "false_negative_rate": 0.0001,
+    "false_positive_rate": 0.0002,
+    "false_negative_rate": 0.0002,
     "confusion_matrix": [
       [
-        5603,
-        4
+        5606,
+        1
       ],
       [
-        1,
-        9523
+        2,
+        9522
       ]
     ],
-    "per_sample_latency_ms": 0.0029,
+    "per_sample_latency_ms": 0.0007,
     "train_duration_seconds": 0.73
   },
   "feature_ranking": [
     {
       "feature": "path_length",
-      "mean_abs_shap": 0.2398
+      "mean_abs_shap": 6.7612
     },
     {
       "feature": "https_flag",
-      "mean_abs_shap": 0.0855
-    },
-    {
-      "feature": "token_count",
-      "mean_abs_shap": 0.0627
-    },
-    {
-      "feature": "number_of_digits",
-      "mean_abs_shap": 0.0369
-    },
-    {
-      "feature": "percentage_numeric_chars",
-      "mean_abs_shap": 0.033
-    },
-    {
-      "feature": "dot_count",
-      "mean_abs_shap": 0.0188
-    },
-    {
-      "feature": "subdomain_count",
-      "mean_abs_shap": 0.011
-    },
-    {
-      "feature": "has_ip_address",
-      "mean_abs_shap": 0.0083
+      "mean_abs_shap": 2.0495
     },
     {
       "feature": "tld_popularity",
-      "mean_abs_shap": 0.0074
+      "mean_abs_shap": 0.874
+    },
+    {
+      "feature": "percentage_numeric_chars",
+      "mean_abs_shap": 0.7867
+    },
+    {
+      "feature": "dot_count",
+      "mean_abs_shap": 0.4888
+    },
+    {
+      "feature": "subdomain_count",
+      "mean_abs_shap": 0.4141
     },
     {
       "feature": "url_length",
-      "mean_abs_shap": 0.0064
-    },
-    {
-      "feature": "suspicious_file_extension",
-      "mean_abs_shap": 0.0059
-    },
-    {
-      "feature": "tld_length",
-      "mean_abs_shap": 0.0055
-    },
-    {
-      "feature": "url_entropy",
-      "mean_abs_shap": 0.0021
+      "mean_abs_shap": 0.3445
     },
     {
       "feature": "domain_name_length",
-      "mean_abs_shap": 0.002
+      "mean_abs_shap": 0.1993
+    },
+    {
+      "feature": "token_count",
+      "mean_abs_shap": 0.1816
+    },
+    {
+      "feature": "suspicious_file_extension",
+      "mean_abs_shap": 0.156
+    },
+    {
+      "feature": "url_entropy",
+      "mean_abs_shap": 0.1539
+    },
+    {
+      "feature": "number_of_digits",
+      "mean_abs_shap": 0.0708
     },
     {
       "feature": "has_hyphen_in_domain",
-      "mean_abs_shap": 0.0006
+      "mean_abs_shap": 0.0309
+    },
+    {
+      "feature": "tld_length",
+      "mean_abs_shap": 0.0132
     },
     {
       "feature": "query_param_count",
       "mean_abs_shap": 0.0002
+    },
+    {
+      "feature": "has_ip_address",
+      "mean_abs_shap": 0.0
     }
   ]
 }

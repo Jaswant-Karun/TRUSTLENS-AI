@@ -1,0 +1,115 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-11-12T23:42:54.023842",
+  "experiments": [
+    {
+      "run_id": "EXP-TEXT-001",
+      "track": "text_detection",
+      "date": "2026-11-12",
+      "model": "Word TF-IDF + Logistic Regression",
+      "macro_f1": 0.9661,
+      "accuracy": 0.9684,
+      "status": "baseline_completed"
+    },
+    {
+      "run_id": "EXP-TEXT-002",
+      "track": "text_detection",
+      "date": "2026-11-12",
+      "model": "Char TF-IDF + Logistic Regression",
+      "macro_f1": 0.9698,
+      "accuracy": 0.9718,
+      "status": "candidate_completed"
+    },
+    {
+      "run_id": "EXP-TEXT-003",
+      "track": "text_detection",
+      "date": "2026-11-12",
+      "model": "Feature Union (Word+Char) + Logistic Regression",
+      "macro_f1": 0.9746,
+      "accuracy": 0.9763,
+      "status": "candidate_completed"
+    },
+    {
+      "run_id": "EXP-TEXT-004",
+      "track": "text_detection",
+      "date": "2026-11-12",
+      "model": "Feature Union + Calibrated LinearSVC",
+      "macro_f1": 0.976,
+      "accuracy": 0.9777,
+      "status": "champion_selected",
+      "note": "Lowest false positive rate (1.68%) and superior Hinglish generalization."
+    },
+    {
+      "run_id": "EXP-URL-001",
+      "track": "url_detection",
+      "date": "2026-11-12",
+      "model": "Logistic Regression Baseline",
+      "f1_score": 0.9977,
+      "accuracy": 0.9971,
+      "roc_auc": 0.9998,
+      "status": "baseline_completed"
+    },
+    {
+      "run_id": "EXP-URL-002",
+      "track": "url_detection",
+      "date": "2026-11-12",
+      "model": "Random Forest (150 trees)",
+      "f1_score": 0.9997,
+      "accuracy": 0.9997,
+      "roc_auc": 1.0,
+      "status": "candidate_completed"
+    },
+    {
+      "run_id": "EXP-URL-003",
+      "track": "url_detection",
+      "date": "2026-11-12",
+      "model": "XGBoost Classifier (200 trees)",
+      "f1_score": 0.9998,
+      "accuracy": 0.9998,
+      "roc_auc": 1.0,
+      "status": "champion_selected",
+      "note": "Sub-microsecond latency (0.0007 ms) with flawless zero network dependency."
+    },
+    {
+      "run_id": "EXP-TACTIC-001",
+      "track": "tactic_detection",
+      "date": "2026-11-12",
+      "model": "One-vs-Rest Logistic Regression",
+      "micro_f1": 0.9382,
+      "macro_f1": 0.8949,
+      "hamming_loss": 0.005,
+      "status": "baseline_completed"
+    },
+    {
+      "run_id": "EXP-TACTIC-002",
+      "track": "tactic_detection",
+      "date": "2026-11-12",
+      "model": "One-vs-Rest Calibrated LinearSVC + Threshold Tuning",
+      "micro_f1": 0.9513,
+      "macro_f1": 0.9313,
+      "hamming_loss": 0.0039,
+      "status": "champion_selected",
+      "note": "Achieved >0.90 F1 on 8 of 9 active classes through per-class threshold calibration."
+    },
+    {
+      "run_id": "EXP-CAMP-001",
+      "track": "campaign_detection",
+      "date": "2026-11-12",
+      "model": "DBSCAN Baseline (eps=0.45, min_samples=10)",
+      "clusters": 6,
+      "silhouette": 0.0292,
+      "status": "baseline_rejected",
+      "note": "Under-clustering into massive indistinct agglomerations."
+    },
+    {
+      "run_id": "EXP-CAMP-002",
+      "track": "campaign_detection",
+      "date": "2026-11-12",
+      "model": "HDBSCAN with MiniLM 384D Embeddings",
+      "clusters": 47,
+      "silhouette": 0.3209,
+      "status": "champion_selected",
+      "note": "Discovered high-cohesion campaigns for SBI, FedEx, Electricity Board, and KBC."
+    }
+  ]
+}

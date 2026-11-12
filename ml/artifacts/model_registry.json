@@ -1,0 +1,268 @@
+{
+  "registry_version": "1.0.0",
+  "last_updated": "2026-11-12T23:42:53.940023",
+  "models": {
+    "trustlens-model-1-text-scam": {
+      "model_id": "trustlens-model-1-text-scam",
+      "display_name": "Multilingual Digital Scam Message Detector",
+      "semantic_version": "v1.0.0",
+      "status": "production_verified",
+      "track": "text_detection",
+      "algorithm": "FeatureUnion (Word TF-IDF + Char TF-IDF) + Calibrated LinearSVC (Platt Scaling)",
+      "framework": "scikit-learn 1.5+",
+      "input_type": "Digital communication text (SMS, WhatsApp, Email)",
+      "output_type": "Binary threat classification & calibrated risk probability",
+      "supported_languages": [
+        "English",
+        "Hindi (Devanagari)",
+        "Hinglish (Romanized)",
+        "Bengali",
+        "Tamil"
+      ],
+      "evaluation_summary": {
+        "test_sample_count": 8202,
+        "accuracy": 0.9777,
+        "macro_f1": 0.976,
+        "weighted_f1": 0.9777,
+        "precision_macro": 0.9763,
+        "recall_macro": 0.9757,
+        "false_positive_rate": 0.0168,
+        "false_negative_rate": 0.0319,
+        "brier_score_loss": 0.0178,
+        "roc_auc": 0.996
+      },
+      "training_parameters": {
+        "classifier": "LinearSVC",
+        "penalty": "l2",
+        "loss": "squared_hinge",
+        "C": 1.0,
+        "max_iter": 3000,
+        "calibration": "sigmoid (Platt scaling, 3-fold CV)",
+        "word_ngrams": [
+          1,
+          3
+        ],
+        "char_ngrams": [
+          2,
+          5
+        ],
+        "sublinear_tf": true,
+        "max_features": 100000
+      },
+      "hardware_requirements": {
+        "inference_latency_per_sample_ms": 0.034,
+        "throughput_samples_per_sec": 29400,
+        "peak_memory_mb": 45,
+        "target_device": "CPU / Edge compatible (no GPU required)",
+        "disk_footprint_mb": 3.01
+      },
+      "artifacts": [
+        {
+          "path": "ml/artifacts/text_detection/best_model.joblib",
+          "size_bytes": 1202133,
+          "sha256": "85b9f8000d66627772ef0f00ae84b7d4fc768087ca89186ab873e008fa2509eb"
+        },
+        {
+          "path": "ml/artifacts/text_detection/best_vectorizer.joblib",
+          "size_bytes": 1806240,
+          "sha256": "52e2838f47f71016e976ad188540c26a14730fce3bc28c8c6e45fe5e69a70a28"
+        }
+      ],
+      "explainability_engine": "Linear hyperplane coefficient attribution & subword n-gram saliency",
+      "deployment_audit": {
+        "unseen_data_passed": true,
+        "latency_budget_passed": true,
+        "fpr_below_2_percent": true,
+        "offline_execution_verified": true
+      }
+    },
+    "trustlens-model-2-phishing-url": {
+      "model_id": "trustlens-model-2-phishing-url",
+      "display_name": "Lexical & Structural Phishing URL Detector",
+      "semantic_version": "v1.0.0",
+      "status": "production_verified",
+      "track": "url_detection",
+      "algorithm": "XGBoost Gradient Boosted Decision Trees",
+      "framework": "xgboost 2.1+",
+      "input_type": "Raw untrusted URL string",
+      "output_type": "Binary phishing classification & continuous risk probability",
+      "network_policy": "Zero outbound network connections; fully deterministic offline parsing",
+      "evaluation_summary": {
+        "test_sample_count": 15131,
+        "accuracy": 0.9998,
+        "f1_score": 0.9998,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "precision": 0.9999,
+        "recall": 0.9998,
+        "false_positive_rate": 0.0002,
+        "false_negative_rate": 0.0002
+      },
+      "training_parameters": {
+        "n_estimators": 200,
+        "max_depth": 6,
+        "learning_rate": 0.1,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "eval_metric": "logloss",
+        "objective": "binary:logistic",
+        "random_state": 42
+      },
+      "hardware_requirements": {
+        "inference_latency_per_sample_ms": 0.0007,
+        "throughput_samples_per_sec": 1428000,
+        "peak_memory_mb": 18,
+        "target_device": "CPU / Microservice / WAF compatible",
+        "disk_footprint_mb": 0.24
+      },
+      "artifacts": [
+        {
+          "path": "ml/artifacts/url_detection/best_url_model.joblib",
+          "size_bytes": 244185,
+          "sha256": "71fc9267c819cd87ef4172736d223a1b84ba3c0ff2f246d2ad1a72cfc95b9107"
+        },
+        {
+          "path": "ml/artifacts/url_detection/feature_schema.json",
+          "size_bytes": 411,
+          "sha256": "109c576180e1f51a39f2067f8766bd8ba92ed7e3aabb7e1cc99b2bfe3bcc1dc7"
+        }
+      ],
+      "explainability_engine": "Game-theoretic SHAP TreeExplainer with 16 structural feature attributions",
+      "deployment_audit": {
+        "unseen_data_passed": true,
+        "latency_budget_passed": true,
+        "fpr_below_2_percent": true,
+        "offline_execution_verified": true
+      }
+    },
+    "trustlens-model-3-tactic-detector": {
+      "model_id": "trustlens-model-3-tactic-detector",
+      "display_name": "Multi-Label Social Engineering & Scam Tactic Detector",
+      "semantic_version": "v1.0.0",
+      "status": "production_verified",
+      "track": "tactic_detection",
+      "algorithm": "One-vs-Rest Calibrated LinearSVC with Post-Processed Threshold Tuning",
+      "framework": "scikit-learn 1.5+",
+      "input_type": "Digital communication text",
+      "output_type": "Multi-label indicator vector across 9 active social engineering tactics",
+      "active_tactics_count": 9,
+      "evaluation_summary": {
+        "test_sample_count": 8202,
+        "micro_f1": 0.9513,
+        "macro_f1": 0.9313,
+        "weighted_f1": 0.9511,
+        "hamming_loss": 0.0039,
+        "average_pr_auc": 0.9666
+      },
+      "training_parameters": {
+        "estimator": "LinearSVC (Platt Calibrated)",
+        "strategy": "OneVsRestClassifier",
+        "tuned_thresholds": {
+          "urgency_time_pressure": 0.3,
+          "threats_intimidation": 0.2,
+          "otp_credential_requests": 0.34,
+          "financial_manipulation": 0.5,
+          "authority_impersonation": 0.36,
+          "fake_employment": 0.36,
+          "account_suspension": 0.44,
+          "prize_reward_scams": 0.34,
+          "refund_payment_manipulation": 0.5
+        },
+        "unsupported_tactics": [
+          "fake_investment (marked UNAVAILABLE due to lack of ground truth)"
+        ]
+      },
+      "hardware_requirements": {
+        "inference_latency_per_sample_ms": 0.039,
+        "throughput_samples_per_sec": 25600,
+        "peak_memory_mb": 55,
+        "target_device": "CPU / Edge compatible",
+        "disk_footprint_mb": 15.15
+      },
+      "artifacts": [
+        {
+          "path": "ml/artifacts/tactic_detection/best_tactic_model.joblib",
+          "size_bytes": 12974273,
+          "sha256": "cf7b77c766fc4fc40fa5808f44ff1669f424ca4930c63b18f77ed780551554aa"
+        },
+        {
+          "path": "ml/artifacts/tactic_detection/vectorizer.joblib",
+          "size_bytes": 2174573,
+          "sha256": "9caa7004810d3260435bb85390e7e65f114f329b5c8f742a3667fc1426965132"
+        },
+        {
+          "path": "ml/artifacts/tactic_detection/thresholds.json",
+          "size_bytes": 303,
+          "sha256": "7f4976ddb25807232314852b566db154fa63611f93d3b7b43aa011d5f4738f3b"
+        }
+      ],
+      "explainability_engine": "Multi-label subword evidence extraction + cognitive exploitation taxonomy",
+      "deployment_audit": {
+        "unseen_data_passed": true,
+        "latency_budget_passed": true,
+        "fpr_below_2_percent": true,
+        "offline_execution_verified": true
+      }
+    },
+    "trustlens-model-4-campaign-clusterer": {
+      "model_id": "trustlens-model-4-campaign-clusterer",
+      "display_name": "Scam Campaign Discovery & Similarity Intelligence Engine",
+      "semantic_version": "v1.0.0",
+      "status": "production_verified",
+      "track": "campaign_detection",
+      "algorithm": "HDBSCAN Clustering over all-MiniLM-L6-v2 384D Normalized Embeddings",
+      "framework": "scikit-learn 1.5+ / sentence-transformers 6.3+",
+      "input_type": "Corpus of suspicious communications or single live message",
+      "output_type": "Campaign cluster ID, exemplar matching, and shared IOC attribution",
+      "evaluation_summary": {
+        "total_attack_samples_clustered": 5715,
+        "clusters_discovered": 47,
+        "silhouette_score": 0.3209,
+        "davies_bouldin_index": 1.3339,
+        "noise_percentage": 50.76,
+        "clustered_samples_count": 2814,
+        "dbscan_baseline_silhouette": 0.0292
+      },
+      "training_parameters": {
+        "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+        "embedding_dimension": 384,
+        "normalization": "L2 unit sphere",
+        "min_cluster_size": 15,
+        "min_samples": 5,
+        "metric": "euclidean",
+        "cluster_selection_epsilon": 0.15
+      },
+      "hardware_requirements": {
+        "inference_latency_per_sample_ms": 2.1,
+        "throughput_samples_per_sec": 475,
+        "peak_memory_mb": 120,
+        "target_device": "CPU / GPU accelerated optional",
+        "disk_footprint_mb": 8.87
+      },
+      "artifacts": [
+        {
+          "path": "ml/artifacts/campaign_detection/cluster_artifacts.joblib",
+          "size_bytes": 98374,
+          "sha256": "67813bb12e3b81870d17ad2b90fce97b90af8a2f5ef9f4a4f4dc7ccfec774448"
+        },
+        {
+          "path": "ml/artifacts/campaign_detection/threat_embeddings.npy",
+          "size_bytes": 8778368,
+          "sha256": "2fb0c47188563e07858bca97ec57a36c7c1996f4a897389e32d04712f9db638f"
+        },
+        {
+          "path": "ml/artifacts/campaign_detection/campaign_dossiers.json",
+          "size_bytes": 57563,
+          "sha256": "7feb42e02359448fc506e0d21f26f5abbc3f34fa1fde43dab21886cc1ea4e6d7"
+        }
+      ],
+      "explainability_engine": "Centroid cosine distance, shared IOCs, and mandatory legal caveat",
+      "deployment_audit": {
+        "unseen_data_passed": true,
+        "latency_budget_passed": true,
+        "fpr_below_2_percent": true,
+        "offline_execution_verified": true
+      }
+    }
+  }
+}

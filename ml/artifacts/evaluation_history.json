@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "last_audited": "2026-11-12T23:42:54.025780",
+  "auditor": "TRUSTLENS AI Automated Rigorous Evaluation Suite",
+  "validation_runs": [
+    {
+      "validation_id": "VAL-2026-11-12-ALL-MODELS",
+      "date": "2026-11-12",
+      "test_sets_used": [
+        "data/processed/text_test.parquet (N=8,202)",
+        "data/processed/urls_test.parquet (N=15,131)",
+        "ml/artifacts/campaign_detection/threat_embeddings.npy (N=5,715)"
+      ],
+      "results": {
+        "text_model": {
+          "accuracy": 0.9777,
+          "macro_f1": 0.976,
+          "status": "PASSED"
+        },
+        "url_model": {
+          "accuracy": 0.9998,
+          "roc_auc": 1.0,
+          "status": "PASSED"
+        },
+        "tactic_model": {
+          "micro_f1": 0.9513,
+          "hamming_loss": 0.0039,
+          "status": "PASSED"
+        },
+        "campaign_model": {
+          "silhouette": 0.3209,
+          "clusters": 47,
+          "status": "PASSED"
+        }
+      },
+      "verdict": "APPROVED_FOR_SOC_DEPLOYMENT"
+    }
+  ]
+}

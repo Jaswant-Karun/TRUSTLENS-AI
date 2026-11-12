@@ -39,6 +39,7 @@ data/processed/*.csv
 data/external/*
 !data/external/.gitkeep
 ml/artifacts/*.joblib
+ml/artifacts/**/*.joblib
 ml/artifacts/*.onnx
 ml/artifacts/*.bin
 ml/artifacts/*.safetensors

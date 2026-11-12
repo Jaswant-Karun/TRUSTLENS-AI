@@ -112,9 +112,11 @@ class TransparentRiskAggregationService:
 
         campaign_score = 0.0
         campaign_weight = 0.0
+        is_threat_context = (text_result and text_result.get("is_threat")) or (url_result and url_result.get("is_phishing")) or bool(active_tactics)
         if campaign_result and (campaign_result.get("matched") or campaign_result.get("campaign_id") is not None):
             sim = float(campaign_result.get("similarity_score", 0.0))
-            if sim > 0.50:
+            # Campaign similarity contributes to threat risk only when message exhibits suspicious context
+            if sim > 0.50 and is_threat_context:
                 campaign_score = sim
                 campaign_weight = 0.10
                 cname = campaign_result.get("associated_campaign") or campaign_result.get("campaign_name", "Known Campaign")
@@ -144,6 +146,13 @@ class TransparentRiskAggregationService:
 
         if url_result and url_result.get("is_phishing") and url_prob > 0.95:
             raw_risk = max(raw_risk, 0.90)
+
+        # Elevation if text model confirms strong threat combined with coercive tactics
+        if text_result and text_result.get("is_threat") and text_prob >= 0.70:
+            if has_high_severity:
+                raw_risk = max(raw_risk, 0.75)
+            else:
+                raw_risk = max(raw_risk, 0.60)
 
         calibrated_risk = round(min(max(raw_risk, 0.0), 1.0), 4)
 

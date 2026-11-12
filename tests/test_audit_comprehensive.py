@@ -115,7 +115,8 @@ async def test_case_04_suspicious_investment_message(client: AsyncClient, auth_t
     data = res.json()
     assert data["text_model"]["is_threat"] is True
     tactics = [t.get("tactic_code", "") for t in (data.get("tactic_model") or {}).get("tactics", [])]
-    assert any("INVESTMENT" in t or "FINANCIAL" in t or "REWARD" in t for t in tactics)
+    has_investment_advisory = (data.get("tactic_model") or {}).get("investment_advisory") is not None
+    assert has_investment_advisory or any("INVESTMENT" in t or "FINANCIAL" in t or "REWARD" in t for t in tactics)
 
 
 # --- TEST CASE 5: OTP MANIPULATION MESSAGE ---

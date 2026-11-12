@@ -62,10 +62,12 @@ class MLOrchestrationService:
             detected_type = "url"
             url_res = self.scan_url(content.strip())
             risk_score = url_res["risk_score"]
+            campaign_res = None
         else:
             detected_type = "text"
             text_res = self.scan_text(content, sender=sender, channel=channel)
             tactics_res = self.scan_tactics(content)
+            campaign_res = self.campaign_clusterer.match_campaign(content)
             
             # Check for embedded URLs in message text
             embedded_urls = re.findall(r"https?://[^\s<>\"']+|www\.[^\s<>\"']+", content)
@@ -94,7 +96,7 @@ class MLOrchestrationService:
             "text_analysis": text_res,
             "url_analysis": url_res,
             "tactics_analysis": tactics_res,
-            "campaign_association": None,
+            "campaign_association": campaign_res,
         }
 
 

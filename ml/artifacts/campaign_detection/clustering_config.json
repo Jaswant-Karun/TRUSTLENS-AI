@@ -1,0 +1,14 @@
+{
+  "selected_algorithm": "HDBSCAN",
+  "hdbscan_params": {
+    "min_cluster_size": 25,
+    "min_samples": 5,
+    "metric": "euclidean",
+    "cluster_selection_method": "eom"
+  },
+  "dbscan_baseline_params": {
+    "eps": 0.35,
+    "min_samples": 15,
+    "metric": "cosine"
+  }
+}

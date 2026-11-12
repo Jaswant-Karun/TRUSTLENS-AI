@@ -1,0 +1,1300 @@
+[
+  {
+    "cluster_id": 11,
+    "campaign_name": "Campaign Cluster #11 \u2014 Generic / Unspecified Institution",
+    "sample_count": 254,
+    "percentage_of_threats": 4.44,
+    "cluster_cohesion_score": 0.8193,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Lottery / Prize": 227,
+      "Smishing": 23
+    },
+    "exemplar_message": "URGENT! Your Mobile number has been awarded with a \u00a32000 prize GUARANTEED. Call 0[PHONE] from land line. Claim 3030. Valid 12hrs only 150ppm",
+    "shared_phrases": [
+      "prize guaranteed",
+      "guaranteed phone",
+      "prize guaranteed phone",
+      "valid 12hrs",
+      "urgent mobile"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "8712778108",
+        "8712778107",
+        "8712300220",
+        "8712778109"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 3,
+    "campaign_name": "Campaign Cluster #03 \u2014 India Post / FedEx / Courier",
+    "sample_count": 220,
+    "percentage_of_threats": 3.85,
+    "cluster_cohesion_score": 0.7267,
+    "targeted_institution": "India Post / FedEx / Courier",
+    "predominant_categories": {
+      "Courier Scam": 220
+    },
+    "exemplar_message": "We inform you that Package delivery AE40752516885 be wait for your confirmation Track your parcel here [URL]",
+    "shared_phrases": [
+      "track url",
+      "visit url",
+      "parcel arrive",
+      "dhl parcel",
+      "arrive track url"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "6903828031",
+        "9514901185"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 39,
+    "campaign_name": "Campaign Cluster #39 \u2014 Generic / Unspecified Institution",
+    "sample_count": 170,
+    "percentage_of_threats": 2.97,
+    "cluster_cohesion_score": 0.8642,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 141,
+      "UPI Fraud": 24
+    },
+    "exemplar_message": "Dear Paytm Customer your KYC have be Expired Paytm office PH XXXXXXXXXX Call Immediately Your account will block with in 24hours Thank you Paytm Team",
+    "shared_phrases": [
+      "paytm kyc",
+      "xxxxxxxxxx immediately",
+      "account block",
+      "dear paytm",
+      "immediately account"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "6295500709"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 19,
+    "campaign_name": "Campaign Cluster #19 \u2014 Generic / Unspecified Institution",
+    "sample_count": 167,
+    "percentage_of_threats": 2.92,
+    "cluster_cohesion_score": 0.79,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Bank Account Freeze": 83,
+      "Fake KYC": 67
+    },
+    "exemplar_message": "Cyber Crime Department se bol raha hoon. Aapke Aadhaar card ka istemal karke fake SIM issue ki gayi hai.",
+    "shared_phrases": [
+      "bol raha",
+      "raha hoon",
+      "bol raha hoon",
+      "se bol raha",
+      "se bol"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 45,
+    "campaign_name": "Campaign Cluster #45 \u2014 SBI (State Bank of India)",
+    "sample_count": 160,
+    "percentage_of_threats": 2.8,
+    "cluster_cohesion_score": 0.9753,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 160
+    },
+    "exemplar_message": "Dear SBI user your SBI YONO Account will be block today.Please click here link update your PAN CARD Number Thank You SBI [URL]",
+    "shared_phrases": [
+      "block today click",
+      "today click",
+      "today click link",
+      "sbi yono",
+      "click link update"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 23,
+    "campaign_name": "Campaign Cluster #23 \u2014 Generic / Unspecified Institution",
+    "sample_count": 133,
+    "percentage_of_threats": 2.33,
+    "cluster_cohesion_score": 0.7557,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Courier Scam": 81,
+      "UPI Fraud": 52
+    },
+    "exemplar_message": "extra day extra savings biggest grocery sale get off free delivery flat upto on mobikwik use code ss min order wwwaskmegroceycom",
+    "shared_phrases": [
+      "extra mobikwik",
+      "mobikwik cashback",
+      "free delivery",
+      "mobikwik cashback visit",
+      "cashback visit"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 12,
+    "campaign_name": "Campaign Cluster #12 \u2014 Generic / Unspecified Institution",
+    "sample_count": 92,
+    "percentage_of_threats": 1.61,
+    "cluster_cohesion_score": 0.806,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Lottery / Prize": 80,
+      "Courier Scam": 7
+    },
+    "exemplar_message": "Dear customer Congratulation you be winner of Flipkart company online shopping you win first prize Tata Safari car and amount RS 15,50,000",
+    "shared_phrases": [
+      "1st prize",
+      "prize tata",
+      "tata safari",
+      "dear customer",
+      "prize tata safari"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "7257845743"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 13,
+    "campaign_name": "Campaign Cluster #13 \u2014 State Electricity Board",
+    "sample_count": 85,
+    "percentage_of_threats": 1.49,
+    "cluster_cohesion_score": 0.9087,
+    "targeted_institution": "State Electricity Board",
+    "predominant_categories": {
+      "Electricity Disconnection": 85
+    },
+    "exemplar_message": "Dear Consumer Your Electricity power will be disconnect Tonight at 9.30 pm from electricity office because your previous month bill be not update Please immediately contact with our electricity officer XXXXXXXXXX Thank you",
+    "shared_phrases": [
+      "electricity office",
+      "electricity power",
+      "30 pm",
+      "month update",
+      "disconnect tonight"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "7866077106",
+        "7003448500",
+        "8509497886",
+        "8250476077"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 36,
+    "campaign_name": "Campaign Cluster #36 \u2014 HDFC Bank",
+    "sample_count": 77,
+    "percentage_of_threats": 1.35,
+    "cluster_cohesion_score": 0.7619,
+    "targeted_institution": "HDFC Bank",
+    "predominant_categories": {
+      "UPI Fraud": 77
+    },
+    "exemplar_message": "planning weekend trips book bus tickets with hdfc bank payzapp in one click get cashback valid till st august download app now on app payzapp in",
+    "shared_phrases": [
+      "rs cashback",
+      "hdfc bank",
+      "paytm wallet",
+      "app payzapp",
+      "hdfc bank payzapp"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 43,
+    "campaign_name": "Campaign Cluster #43 \u2014 SBI (State Bank of India)",
+    "sample_count": 58,
+    "percentage_of_threats": 1.01,
+    "cluster_cohesion_score": 0.9692,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 58
+    },
+    "exemplar_message": "Dear Customer your SBI bank account have be suspend for KYC Please Complete your KYC XX min click here link [URL]",
+    "shared_phrases": [
+      "bank account suspend",
+      "kyc xx",
+      "complete kyc xx",
+      "kyc xx min",
+      "xx min"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 6,
+    "campaign_name": "Campaign Cluster #06 \u2014 Generic / Unspecified Institution",
+    "sample_count": 54,
+    "percentage_of_threats": 0.94,
+    "cluster_cohesion_score": 0.8062,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Telegram Job": 54
+    },
+    "exemplar_message": "Hi Anjana Amazon urgently recruit for part-time job you can earn XXXX-XXXXX Rs every day add Whatsapp wa.me/ XXXXXXXXXXXX",
+    "shared_phrases": [
+      "recruit time",
+      "time job",
+      "urgently recruit",
+      "recruit time job",
+      "urgently recruit time"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "8526763093",
+        "9233250821"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 35,
+    "campaign_name": "Campaign Cluster #35 \u2014 HDFC Bank",
+    "sample_count": 54,
+    "percentage_of_threats": 0.94,
+    "cluster_cohesion_score": 0.7718,
+    "targeted_institution": "HDFC Bank",
+    "predominant_categories": {
+      "Loan Scam": 54
+    },
+    "exemplar_message": "dear hdfc bank customer avail your pre approved business loan limited period offer of upto rs lac sms blpr to tc applyplease reply from th",
+    "shared_phrases": [
+      "personal loan",
+      "hdfc bank",
+      "business loan",
+      "dear customer",
+      "instant personal"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 26,
+    "campaign_name": "Campaign Cluster #26 \u2014 Generic / Unspecified Institution",
+    "sample_count": 52,
+    "percentage_of_threats": 0.91,
+    "cluster_cohesion_score": 0.9168,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Electricity Disconnection": 47,
+      "UPI Fraud": 5
+    },
+    "exemplar_message": "\u092c\u0947\u0938\u094d\u0915\u0949\u092e (BESCOM): \u092a\u094d\u0930\u093f\u092f \u0909\u092a\u092d\u094b\u0915\u094d\u0924\u093e, \u0906\u092a\u0915\u093e \u092c\u093f\u091c\u0932\u0940 \u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0906\u091c \u0930\u093e\u0924 9:30 \u092c\u091c\u0947 \u0915\u093e\u091f \u0926\u093f\u092f\u093e \u091c\u093e\u090f\u0917\u093e \u0915\u094d\u092f\u094b\u0902\u0915\u093f \u092a\u093f\u091b\u0932\u0947 \u092e\u093e\u0939 \u0915\u093e \u092c\u093f\u0932 \u20b9850 \u0905\u092a\u0921\u0947\u091f \u0928\u0939\u0940\u0902 \u0939\u0941\u0906 \u0939\u0948\u0964 \u092c\u093f\u0932 \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0947\u0902: jvvnl-bill-update.online",
+    "shared_phrases": [
+      "\u0936\u0928 \u0906\u091c 30",
+      "\u0936\u0928 \u0906\u091c",
+      "\u092c\u091c \u090f\u0917 \u091b\u0932",
+      "\u092c\u091c \u090f\u0917",
+      "\u0928\u0939 \u0917\u0924"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 38,
+    "campaign_name": "Campaign Cluster #38 \u2014 Generic / Unspecified Institution",
+    "sample_count": 52,
+    "percentage_of_threats": 0.91,
+    "cluster_cohesion_score": 0.8692,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 52
+    },
+    "exemplar_message": "Dear Customer Your Airtel SIM Has Been Blocked due to KYC Update Within 24Hrs please Contact Airtel Customer care XXXXXXXXXX to Continue your Service.Thank You",
+    "shared_phrases": [
+      "dear customer",
+      "customer care",
+      "airtel sim",
+      "xxxxxxxxxx immediately",
+      "care xxxxxxxxxx"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 37,
+    "campaign_name": "Campaign Cluster #37 \u2014 Generic / Unspecified Institution",
+    "sample_count": 51,
+    "percentage_of_threats": 0.89,
+    "cluster_cohesion_score": 0.8486,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "UPI Fraud": 51
+    },
+    "exemplar_message": "hi manish get rs cashback on recharge of rs use code rb promocode linked to manishgarggmailcom valid twice per usercreditdebit cardnet banking till th feb not valid for airtel users tc apply transact now frchinfc",
+    "shared_phrases": [
+      "use code",
+      "rs cashback",
+      "valid airtel",
+      "valid airtel users",
+      "airtel users"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 9,
+    "campaign_name": "Campaign Cluster #09 \u2014 Generic / Unspecified Institution",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 0.9138,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Electricity Disconnection": 48
+    },
+    "exemplar_message": "UPPCL Notice: Dear Consumer, aapka power connection tonight 9:30 PM cut ho jayega unpaid bill Rs 299 ki wajah se. Update bill immediately: uppcl-bill-update.bill",
+    "shared_phrases": [
+      "wajah se update",
+      "wajah se",
+      "tonight 30 pm",
+      "tonight 30",
+      "update immediately"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 14,
+    "campaign_name": "Campaign Cluster #14 \u2014 State Electricity Board",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 1.0,
+    "targeted_institution": "State Electricity Board",
+    "predominant_categories": {
+      "Electricity Disconnection": 48
+    },
+    "exemplar_message": "Power Alert: Aapke ghar ki bijli aaj raat 9:30 disconnect kar di jayegi. Last month bill update nahi hua hai. Call Billing Officer: [PHONE]",
+    "shared_phrases": [
+      "update nahi hua",
+      "update nahi",
+      "raat 30 disconnect",
+      "raat 30",
+      "power alert aapke"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 15,
+    "campaign_name": "Campaign Cluster #15 \u2014 Generic / Unspecified Institution",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 0.9624,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 48
+    },
+    "exemplar_message": "Dear Customer, aapka IndusInd A/c ending in XX5673 freeze hone wala hai. Card unblock karwane ke liye customer care number [PHONE] par call karein aur biometric verify karein.",
+    "shared_phrases": [
+      "aur biometric",
+      "aur biometric verify",
+      "care number phone",
+      "care number",
+      "card unblock"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 22,
+    "campaign_name": "Campaign Cluster #22 \u2014 Generic / Unspecified Institution",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 0.9099,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 48
+    },
+    "exemplar_message": "\u0938\u093e\u0935\u0927\u093e\u0928! \u0906\u092a\u0915\u093e \u090f\u091a\u0921\u0940\u090f\u092b\u0938\u0940 \u092c\u0948\u0902\u0915 \u0916\u093e\u0924\u093e \u0938\u0902\u0916\u094d\u092f\u093e XX6180 \u0906\u091c \u0930\u093e\u0924 12 \u092c\u091c\u0947 \u092c\u094d\u0932\u0949\u0915 \u0915\u0930 \u0926\u093f\u092f\u093e \u091c\u093e\u090f\u0917\u093e\u0964 \u0908-\u0915\u0947\u0935\u093e\u0908\u0938\u0940 (e-KYC) \u0938\u0924\u094d\u092f\u093e\u092a\u0928 \u0939\u0947\u0924\u0941 \u0924\u0941\u0930\u0902\u0924 \u092a\u0948\u0928 \u0935 \u0906\u0927\u093e\u0930 \u0932\u093f\u0902\u0915 \u0915\u0930\u0947\u0902: idfcfirst-net-secure.online",
+    "shared_phrases": [
+      "12 \u092c\u091c",
+      "\u0938\u0924 \u092a\u0928 \u0906\u0927",
+      "\u0938\u0924 \u092a\u0928",
+      "12 \u092c\u091c \u0915\u0930",
+      "kyc \u0938\u0924 \u092a\u0928"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 30,
+    "campaign_name": "Campaign Cluster #30 \u2014 Generic / Unspecified Institution",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 0.9847,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Electricity Disconnection": 48
+    },
+    "exemplar_message": "\u0935\u093f\u0926\u094d\u092f\u0941\u0924 \u0928\u094b\u091f\u093f\u0938: \u0909\u092a\u092d\u094b\u0915\u094d\u0924\u093e \u0915\u094d\u0930. XX2193, \u092c\u0915\u093e\u092f\u093e \u092c\u093f\u0932 \u20b9850 \u0915\u0947 \u0915\u093e\u0930\u0923 \u0906\u091c \u0932\u093e\u0907\u0928 \u0915\u093e\u091f\u0940 \u091c\u093e \u0930\u0939\u0940 \u0939\u0948\u0964 \u0921\u093f\u0938\u094d\u0915\u0928\u0947\u0915\u094d\u0936\u0928 \u0938\u0947 \u092c\u091a\u0928\u0947 \u0939\u0947\u0924\u0941 \u0924\u0941\u0930\u0902\u0924 \u092c\u093f\u091c\u0932\u0940 \u0905\u0927\u093f\u0915\u093e\u0930\u0940 \u0938\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0915\u0930\u0947\u0902: [PHONE]",
+    "shared_phrases": [
+      "\u0936\u0928 \u092c\u091a\u0928 \u091c\u0932",
+      "\u0936\u0928 \u092c\u091a\u0928",
+      "\u0930\u0939 \u0915\u0928 \u0936\u0928",
+      "\u0930\u0939 \u0915\u0928",
+      "\u0930\u0923 \u0906\u091c \u0907\u0928"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 31,
+    "campaign_name": "Campaign Cluster #31 \u2014 Generic / Unspecified Institution",
+    "sample_count": 48,
+    "percentage_of_threats": 0.84,
+    "cluster_cohesion_score": 0.9948,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 48
+    },
+    "exemplar_message": "\u092e\u0939\u0924\u094d\u0935\u092a\u0942\u0930\u094d\u0923 \u0938\u0942\u091a\u0928\u093e: \u090f\u091a\u0921\u0940\u090f\u092b\u0938\u0940 \u092c\u0948\u0902\u0915 \u0909\u092a\u092d\u094b\u0915\u094d\u0924\u093e, \u0906\u092a\u0915\u093e \u0921\u0947\u092c\u093f\u091f \u0915\u093e\u0930\u094d\u0921 \u0935 \u0928\u0947\u091f \u092c\u0948\u0902\u0915\u093f\u0902\u0917 \u092c\u094d\u0932\u0949\u0915 \u0915\u0930 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u092a\u0941\u0928\u0903 \u091a\u093e\u0932\u0942 \u0915\u0930\u0928\u0947 \u0939\u0947\u0924\u0941 \u092c\u0948\u0902\u0915 \u0939\u0947\u0932\u094d\u092a\u0921\u0947\u0938\u094d\u0915 [PHONE] \u092a\u0930 \u0924\u0941\u0930\u0902\u0924 \u0915\u0949\u0932 \u0915\u0930\u0947\u0902 \u092f\u093e \u0913\u091f\u0940\u092a\u0940 \u092c\u0924\u093e\u090f\u0902\u0964",
+    "shared_phrases": [
+      "\u0935\u092a \u091a\u0928",
+      "\u0915\u0930 \u0917\u092f \u0915\u0930\u0928",
+      "\u0915\u0930 \u0913\u091f",
+      "\u0915\u0930 \u0913\u091f \u092c\u0924",
+      "\u0915\u0930 \u0917\u092f"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 34,
+    "campaign_name": "Campaign Cluster #34 \u2014 Generic / Unspecified Institution",
+    "sample_count": 47,
+    "percentage_of_threats": 0.82,
+    "cluster_cohesion_score": 0.9463,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Fake KYC": 47
+    },
+    "exemplar_message": "Alert: Aapka Yes Bank account suspend ho chuka hai kyunki KYC pending hai. Diye gaye official portal link par click karke turant KYC update karein: yes-verify-netbanking.live",
+    "shared_phrases": [
+      "kyc update",
+      "account suspend",
+      "alert aapka",
+      "suspend ho",
+      "suspend ho chuka"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 5,
+    "campaign_name": "Campaign Cluster #05 \u2014 Traffic Police (e-Challan)",
+    "sample_count": 45,
+    "percentage_of_threats": 0.79,
+    "cluster_cohesion_score": 0.9487,
+    "targeted_institution": "Traffic Police (e-Challan)",
+    "predominant_categories": {
+      "Traffic e-Challan": 45
+    },
+    "exemplar_message": "Parivahan Alert: Vehicle RJ-01-CD-3068 challan worth Rs 1,000 pending in Ahmedabad. Download official Parivahan Virtual Court App to pay fine: mahatraffic-challan.site/parivahan_challan.apk",
+    "shared_phrases": [
+      "alert vehicle",
+      "app pay fine",
+      "app pay",
+      "virtual court",
+      "worth rs"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": [
+        "9813191023"
+      ]
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 1,
+    "campaign_name": "Campaign Cluster #01 \u2014 Traffic Police (e-Challan)",
+    "sample_count": 44,
+    "percentage_of_threats": 0.77,
+    "cluster_cohesion_score": 0.9552,
+    "targeted_institution": "Traffic Police (e-Challan)",
+    "predominant_categories": {
+      "Traffic e-Challan": 44
+    },
+    "exemplar_message": "Traffic Police Notice: Non-bailable warrant issued for traffic violation on vehicle RJ-03-BC-9548. Settle penalty with Traffic Sub-Inspector: [PHONE]",
+    "shared_phrases": [
+      "warrant issued traffic",
+      "warrant issued",
+      "sub inspector",
+      "police notice non",
+      "inspector phone"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 25,
+    "campaign_name": "Campaign Cluster #25 \u2014 Traffic Police (e-Challan)",
+    "sample_count": 44,
+    "percentage_of_threats": 0.77,
+    "cluster_cohesion_score": 0.9281,
+    "targeted_institution": "Traffic Police (e-Challan)",
+    "predominant_categories": {
+      "Traffic e-Challan": 44
+    },
+    "exemplar_message": "\u092f\u093e\u0924\u093e\u092f\u093e\u0924 \u092a\u0941\u0932\u093f\u0938 \u092a\u091f\u0928\u093e: \u0906\u092a\u0915\u0947 \u0935\u093e\u0939\u0928 UP-07-BC-6003 \u092a\u0930 \u20b92,000 \u0915\u093e \u0908-\u091a\u093e\u0932\u093e\u0928 \u0926\u0930\u094d\u091c \u0939\u0941\u0906 \u0939\u0948\u0964 \u0928\u094d\u092f\u093e\u092f\u093e\u0932\u092f \u0938\u092e\u0928 \u0938\u0947 \u092c\u091a\u0928\u0947 \u0915\u0947 \u0932\u093f\u090f \u091a\u093e\u0932\u093e\u0928 \u090f\u092a\u0940\u0915\u0947 (APK) \u0921\u093e\u0909\u0928\u0932\u094b\u0921 \u0915\u0930\u0947\u0902: e-court-notice.xyz/challan_download.apk",
+    "shared_phrases": [
+      "\u0932\u092f \u0938\u092e\u0928",
+      "\u0938\u092e\u0928 \u092c\u091a\u0928",
+      "\u0932\u092f \u0938\u092e\u0928 \u092c\u091a\u0928",
+      "\u0926\u0930 \u0932\u092f \u0938\u092e\u0928",
+      "\u0926\u0930 \u0932\u092f"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 29,
+    "campaign_name": "Campaign Cluster #29 \u2014 Generic / Unspecified Institution",
+    "sample_count": 44,
+    "percentage_of_threats": 0.77,
+    "cluster_cohesion_score": 0.9878,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Traffic e-Challan": 44
+    },
+    "exemplar_message": "\u092a\u0930\u093f\u0935\u0939\u0928 \u0935\u093f\u092d\u093e\u0917 \u0928\u094b\u091f\u093f\u0938: \u0935\u093e\u0939\u0928 KA-07-AB-9056 \u092a\u0930 \u0932\u0902\u092c\u093f\u0924 \u091a\u093e\u0932\u093e\u0928 \u20b91,000 \u0915\u093e \u092d\u0941\u0917\u0924\u093e\u0928 \u0928 \u0915\u0930\u0928\u0947 \u092a\u0930 \u0935\u093e\u0939\u0928 \u0938\u0940\u091c \u0915\u093f\u092f\u093e \u091c\u093e\u090f\u0917\u093e\u0964 \u0932\u094b\u0915 \u0905\u0926\u093e\u0932\u0924 \u0905\u0927\u093f\u0915\u093e\u0930\u0940 \u0938\u0947 \u0938\u0902\u092a\u0930\u094d\u0915 \u0915\u0930\u0947\u0902: [PHONE]",
+    "shared_phrases": [
+      "\u0939\u0928 \u090f\u0917 \u0905\u0926",
+      "\u0905\u0927 \u092a\u0930",
+      "\u0905\u0927 \u092a\u0930 \u0915\u0930",
+      "\u0905\u0926 \u0932\u0924",
+      "\u0905\u0926 \u0932\u0924 \u0905\u0927"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 40,
+    "campaign_name": "Campaign Cluster #40 \u2014 HDFC Bank",
+    "sample_count": 40,
+    "percentage_of_threats": 0.7,
+    "cluster_cohesion_score": 0.92,
+    "targeted_institution": "HDFC Bank",
+    "predominant_categories": {
+      "Fake KYC": 40
+    },
+    "exemplar_message": "Dear user your hdfc Bank Account will be block Today please update your PAN CARD click here to link and update [URL]",
+    "shared_phrases": [
+      "block today",
+      "update pan",
+      "update pan card",
+      "pan card",
+      "click link"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 42,
+    "campaign_name": "Campaign Cluster #42 \u2014 SBI (State Bank of India)",
+    "sample_count": 38,
+    "percentage_of_threats": 0.66,
+    "cluster_cohesion_score": 0.9654,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 38
+    },
+    "exemplar_message": "Dear SBI customer your account have be block due to KYC update within XX Hrs please contact customer care XXXXXXXXXXX to continue your service thank you",
+    "shared_phrases": [
+      "customer sbi account",
+      "sbi account block",
+      "sbi account",
+      "customer sbi",
+      "dear customer sbi"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 20,
+    "campaign_name": "Campaign Cluster #20 \u2014 Generic / Unspecified Institution",
+    "sample_count": 37,
+    "percentage_of_threats": 0.65,
+    "cluster_cohesion_score": 0.9112,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Lottery / Prize": 37
+    },
+    "exemplar_message": "Badhai ho! Aapka SIM card PM Dhan Yojana lottery mein 25 Lakh cash prize ke liye vijeta bana hai. Registration shulk jama karke claim karein: lottery-dept-india-gov.top",
+    "shared_phrases": [
+      "40 lakh",
+      "fee dena",
+      "dena hoga",
+      "congratulations aapne 40",
+      "congratulations aapne"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 41,
+    "campaign_name": "Campaign Cluster #41 \u2014 SBI (State Bank of India)",
+    "sample_count": 34,
+    "percentage_of_threats": 0.59,
+    "cluster_cohesion_score": 0.9555,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 34
+    },
+    "exemplar_message": "Customer Your State Bank of india Account Will be Suspended Please Re KYC Verification Update Click here link [URL] /sbibank",
+    "shared_phrases": [
+      "click link url",
+      "link url",
+      "click link",
+      "state bank india",
+      "bank india"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 4,
+    "campaign_name": "Campaign Cluster #04 \u2014 Generic / Unspecified Institution",
+    "sample_count": 33,
+    "percentage_of_threats": 0.58,
+    "cluster_cohesion_score": 0.8519,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Courier Scam": 33
+    },
+    "exemplar_message": "Important Notice: Your India Post package #IN701253 delivery failed due to missing street address. Confirm address & pay redelivery fee Rs 75: indiapost-redelivery-update.track/pay",
+    "shared_phrases": [
+      "address confirm",
+      "address confirm address",
+      "address pay",
+      "address pay redelivery",
+      "street address"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 8,
+    "campaign_name": "Campaign Cluster #08 \u2014 Generic / Unspecified Institution",
+    "sample_count": 33,
+    "percentage_of_threats": 0.58,
+    "cluster_cohesion_score": 0.7933,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "UPI Fraud": 33
+    },
+    "exemplar_message": "ola bangalore get rs ola money cashback when you book your first auto ride with the ola app hurry valid till rd march get the app www ola bz b tca",
+    "shared_phrases": [
+      "use code",
+      "ola money",
+      "ola app",
+      "ola auto",
+      "code air"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 46,
+    "campaign_name": "Campaign Cluster #46 \u2014 SBI (State Bank of India)",
+    "sample_count": 33,
+    "percentage_of_threats": 0.58,
+    "cluster_cohesion_score": 0.9878,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 33
+    },
+    "exemplar_message": "Dear SBI user your SBI YONO A/c have be block please update your PAN CARD click here to login your net banking update your PAN no [URL]",
+    "shared_phrases": [
+      "update pan",
+      "banking update pan",
+      "update pan card",
+      "user sbi yono",
+      "sbi yono"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 2,
+    "campaign_name": "Campaign Cluster #02 \u2014 India Post / FedEx / Courier",
+    "sample_count": 32,
+    "percentage_of_threats": 0.56,
+    "cluster_cohesion_score": 0.9971,
+    "targeted_institution": "India Post / FedEx / Courier",
+    "predominant_categories": {
+      "Courier Scam": 32
+    },
+    "exemplar_message": "Delhivery Alert: Delivery boy attempted delivery for parcel #IN927564 but house number was missing. Call Delivery Executive: [PHONE] within 2 hours.",
+    "shared_phrases": [
+      "phone hours",
+      "house number missing",
+      "alert delivery",
+      "boy attempted delivery",
+      "delhivery alert"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 32,
+    "campaign_name": "Campaign Cluster #32 \u2014 Generic / Unspecified Institution",
+    "sample_count": 32,
+    "percentage_of_threats": 0.56,
+    "cluster_cohesion_score": 0.9965,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Courier Scam": 32
+    },
+    "exemplar_message": "\u092d\u093e\u0930\u0924\u0940\u092f \u0921\u093e\u0915 \u092a\u093e\u0930\u094d\u0938\u0932 \u0938\u0942\u091a\u0928\u093e: \u092a\u0948\u0915\u0947\u091f #IN927564 \u0935\u0947\u092f\u0930\u0939\u093e\u0909\u0938 \u092e\u0947\u0902 \u0905\u091f\u0915\u093e \u0939\u0948\u0964 \u092a\u0924\u093e \u0938\u0924\u094d\u092f\u093e\u092a\u0928 \u0939\u0947\u0924\u0941 \u0921\u093f\u0932\u0940\u0935\u0930\u0940 \u0905\u0927\u093f\u0915\u093e\u0930\u0940 \u0938\u0947 \u0924\u0941\u0930\u0902\u0924 \u0938\u0902\u092a\u0930\u094d\u0915 \u0915\u0930\u0947\u0902: [PHONE] \u0905\u0928\u094d\u092f\u0925\u093e \u0938\u093e\u092e\u093e\u0928 \u0935\u093e\u092a\u0938 \u0939\u094b\u0917\u093e\u0964",
+    "shared_phrases": [
+      "\u092a\u0930 \u0915\u0930",
+      "\u092a\u0930 \u0915\u0930 phone",
+      "\u092f\u0925 \u092a\u0938",
+      "\u092f\u0930\u0939 \u0909\u0938",
+      "\u0935\u0930 \u0905\u0927"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 44,
+    "campaign_name": "Campaign Cluster #44 \u2014 SBI (State Bank of India)",
+    "sample_count": 31,
+    "percentage_of_threats": 0.54,
+    "cluster_cohesion_score": 0.9547,
+    "targeted_institution": "SBI (State Bank of India)",
+    "predominant_categories": {
+      "Fake KYC": 31
+    },
+    "exemplar_message": "Your A/C will be block today update your PANCARD for KYC verify your account login NetBanking Click here [URL] SBI A/C will be block today.update your PANCARD for KYC verify your account login NetBanking KYC upload Click here website bit.ly/3Jc5FxM",
+    "shared_phrases": [
+      "account login netbanking",
+      "verify account",
+      "login netbanking",
+      "kyc verify account",
+      "account login"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 24,
+    "campaign_name": "Campaign Cluster #24 \u2014 Generic / Unspecified Institution",
+    "sample_count": 28,
+    "percentage_of_threats": 0.49,
+    "cluster_cohesion_score": 0.9312,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Courier Scam": 28
+    },
+    "exemplar_message": "\u0905\u0932\u0930\u094d\u091f: \u0906\u092a\u0915\u093e \u0921\u0947\u0932\u094d\u0939\u0940\u0935\u0930\u0940 (Delhivery) \u092a\u093e\u0930\u094d\u0938\u0932 #IN731661 \u0938\u0940\u092e\u093e \u0936\u0941\u0932\u094d\u0915 \u092e\u0947\u0902 \u0930\u094b\u0915 \u0926\u093f\u092f\u093e \u0917\u092f\u093e \u0939\u0948 \u0915\u094d\u092f\u094b\u0902\u0915\u093f \u092a\u0924\u093e \u0905\u0927\u0942\u0930\u093e \u0939\u0948\u0964 \u20b935 \u0936\u0941\u0932\u094d\u0915 \u0915\u093e \u092d\u0941\u0917\u0924\u093e\u0928 \u0915\u0930\u0915\u0947 24 \u0918\u0902\u091f\u0947 \u092e\u0947\u0902 \u092a\u0924\u093e \u0905\u092a\u0921\u0947\u091f \u0915\u0930\u0947\u0902: delhivery-redelivery-update.site/pay",
+    "shared_phrases": [
+      "24 \u092a\u0924",
+      "24 \u092a\u0924 \u0905\u092a\u0921",
+      "redelivery update",
+      "\u0905\u092a\u0921 \u0915\u0930",
+      "\u0915\u0930\u0915 24 \u092a\u0924"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 0,
+    "campaign_name": "Campaign Cluster #00 \u2014 Generic / Unspecified Institution",
+    "sample_count": 27,
+    "percentage_of_threats": 0.47,
+    "cluster_cohesion_score": 0.8093,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Courier Scam": 24,
+      "UPI Fraud": 3
+    },
+    "exemplar_message": "get ultra wifi dongal g speed mbps enjoy unlimited data month free home delivery cash back by paytm just pay hurry up call",
+    "shared_phrases": [
+      "home delivery",
+      "free home",
+      "free home delivery",
+      "mts wifi",
+      "unlimited data"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 7,
+    "campaign_name": "Campaign Cluster #07 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9923,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Telegram Job": 25
+    },
+    "exemplar_message": "Work From Home: Daily income Rs 3,500 by writing simple 5-star product reviews on Flipkart. Send 'JOB' on WhatsApp: [PHONE]",
+    "shared_phrases": [
+      "writing simple star",
+      "writing simple",
+      "work home daily",
+      "work home",
+      "whatsapp phone"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 10,
+    "campaign_name": "Campaign Cluster #10 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9997,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Bank Account Freeze": 25
+    },
+    "exemplar_message": "TRAI Notice: Aapke naam par chal rahe sabhi mobile numbers aur bank accounts 2 ghante mein block ho jayenge. Clearance certificate download karein: trai-sim-deactivation.top/verify?user=8355",
+    "shared_phrases": [
+      "verify user",
+      "chal rahe",
+      "chal rahe sabhi",
+      "clearance certificate",
+      "clearance certificate download"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 16,
+    "campaign_name": "Campaign Cluster #16 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 1.0,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Bank Account Freeze": 25
+    },
+    "exemplar_message": "Hi Beta, Call me Please. Cyber crime branch s bat kar rha hu, urgent money laundering case hai, turant call karo: [PHONE]",
+    "shared_phrases": [
+      "urgent money laundering",
+      "urgent money",
+      "turant karo phone",
+      "turant karo",
+      "rha hu urgent"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 17,
+    "campaign_name": "Campaign Cluster #17 \u2014 KBC / Kaun Banega Crorepati",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.984,
+    "targeted_institution": "KBC / Kaun Banega Crorepati",
+    "predominant_categories": {
+      "Lottery / Prize": 25
+    },
+    "exemplar_message": "Congratulations! You won 25 Lakh in Jio Diwali Lucky Contest. Claim code KBC91. Call Lottery Department incharge immediately on [PHONE].",
+    "shared_phrases": [
+      "lucky contest",
+      "lucky contest claim",
+      "lottery department",
+      "lottery department incharge",
+      "department incharge"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 18,
+    "campaign_name": "Campaign Cluster #18 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9994,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Bank Account Freeze": 25
+    },
+    "exemplar_message": "\u0938\u093e\u0907\u092c\u0930 \u0915\u094d\u0930\u093e\u0907\u092e \u0938\u0947\u0932 \u0905\u0932\u0930\u094d\u091f: \u0906\u092a\u0915\u0947 \u092c\u0948\u0902\u0915 \u0916\u093e\u0924\u0947 \u092e\u0947\u0902 \u0905\u0935\u0948\u0927 \u0935\u093f\u0926\u0947\u0936\u0940 \u0932\u0947\u0928\u0926\u0947\u0928 \u0926\u0930\u094d\u091c \u0939\u0941\u090f \u0939\u0948\u0902\u0964 \u0916\u093e\u0924\u093e \u092b\u094d\u0930\u0940\u091c \u0939\u094b\u0928\u0947 \u0935 \u090f\u092b\u0906\u0908\u0906\u0930 \u0938\u0947 \u092c\u091a\u0928\u0947 \u0939\u0947\u0924\u0941 \u0924\u0941\u0930\u0902\u0924 \u0911\u0928\u0932\u093e\u0907\u0928 \u0938\u0924\u094d\u092f\u093e\u092a\u0928 \u0915\u0930\u0947\u0902: cbi-cybercell-verification.xyz/notice?id=47363",
+    "shared_phrases": [
+      "\u0938\u0924 \u092a\u0928 \u0915\u0930",
+      "\u0938\u0924 \u092a\u0928",
+      "\u092c\u091a\u0928 \u0911\u0928\u0932 \u0907\u0928",
+      "\u092c\u091a\u0928 \u0911\u0928\u0932",
+      "\u092a\u0928 \u0915\u0930 cbi"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 21,
+    "campaign_name": "Campaign Cluster #21 \u2014 KBC / Kaun Banega Crorepati",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9242,
+    "targeted_institution": "KBC / Kaun Banega Crorepati",
+    "predominant_categories": {
+      "Lottery / Prize": 25
+    },
+    "exemplar_message": "\u092c\u0927\u093e\u0908 \u0939\u094b! \u0906\u092a\u0915\u093e \u092e\u094b\u092c\u093e\u0907\u0932 \u0928\u0902\u092c\u0930 \u0915\u0947\u092c\u0940\u0938\u0940 (KBC) \u0932\u0915\u0940 \u0921\u094d\u0930\u0949 \u092e\u0947\u0902 \u091a\u0941\u0928\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0906\u092a\u0928\u0947 \u091c\u0940\u0924\u093e \u0939\u0948 1 Crore \u0915\u093e \u0928\u0915\u0926 \u0907\u0928\u093e\u092e\u0964 \u0915\u094d\u0932\u0947\u092e \u0915\u094b\u0921: KBC52\u0964 \u0905\u092d\u0940 \u0915\u094d\u0932\u0947\u092e \u0915\u0930\u0947\u0902: pm-kisan-reward.site",
+    "shared_phrases": [
+      "\u0932\u0915 \u0917\u092f \u0906\u092a\u0928",
+      "\u0932\u0915 \u0917\u092f",
+      "\u092c\u0930 kbc \u0932\u0915",
+      "\u092c\u0930 kbc",
+      "\u092c\u0927 \u0906\u092a\u0915 \u0907\u0932"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 27,
+    "campaign_name": "Campaign Cluster #27 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9885,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Telegram Job": 25
+    },
+    "exemplar_message": "\u0905\u092e\u0947\u091c\u093c\u0928 \u092a\u093e\u0930\u094d\u091f-\u091f\u093e\u0907\u092e \u091c\u0949\u092c \u092d\u0930\u094d\u0924\u0940! \u092e\u094b\u092c\u093e\u0907\u0932 \u0938\u0947 2 \u0918\u0902\u091f\u0947 \u0915\u093e\u092e \u0915\u0930\u0915\u0947 \u20b92,500 \u092a\u094d\u0930\u0924\u093f\u0926\u093f\u0928 \u0915\u092e\u093e\u090f\u0902\u0964 \u0915\u094b\u0908 \u092a\u0902\u091c\u0940\u0915\u0930\u0923 \u0936\u0941\u0932\u094d\u0915 \u0928\u0939\u0940\u0902\u0964 \u0924\u0941\u0930\u0902\u0924 \u0935\u094d\u0939\u093e\u091f\u094d\u0938\u090f\u092a \u0915\u0930\u0947\u0902: [PHONE]",
+    "shared_phrases": [
+      "\u0938\u090f\u092a \u0915\u0930 phone",
+      "\u0938\u090f\u092a \u0915\u0930",
+      "\u0930\u0924 \u0915\u092e \u0915\u0930\u0923",
+      "\u0930\u0924 \u0915\u092e",
+      "\u092d\u0930 \u0907\u0932 \u0915\u0930\u0915"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 28,
+    "campaign_name": "Campaign Cluster #28 \u2014 KBC / Kaun Banega Crorepati",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 0.9858,
+    "targeted_institution": "KBC / Kaun Banega Crorepati",
+    "predominant_categories": {
+      "Lottery / Prize": 25
+    },
+    "exemplar_message": "\u0915\u0947\u092c\u0940\u0938\u0940 \u0939\u0947\u0921 \u0911\u092b\u093f\u0938 \u092e\u0941\u0902\u092c\u0908: \u0906\u092a\u0915\u0947 \u0928\u093e\u092e \u092a\u0930 25 Lakh \u0915\u0940 \u0932\u0949\u091f\u0930\u0940 \u091a\u0947\u0915 \u0924\u0948\u092f\u093e\u0930 \u0939\u0948\u0964 \u092e\u0948\u0928\u0947\u091c\u0930 \u0930\u093e\u0923\u093e \u092a\u094d\u0930\u0924\u093e\u092a \u0938\u093f\u0902\u0939 \u0938\u0947 \u0935\u094d\u0939\u093e\u091f\u094d\u0938\u090f\u092a \u092a\u0930 \u0924\u0941\u0930\u0902\u0924 \u0938\u0902\u092a\u0930\u094d\u0915 \u0915\u0930\u0947\u0902: [PHONE]\u0964 \u092b\u093c\u093e\u0907\u0932 \u0928\u0902\u092c\u0930 KBC91\u0964",
+    "shared_phrases": [
+      "\u0938\u090f\u092a \u092a\u0930 \u092a\u0930",
+      "\u0938\u090f\u092a \u092a\u0930",
+      "\u0930\u0924 \u0938\u090f\u092a \u092a\u0930",
+      "\u0930\u0924 \u0938\u090f\u092a",
+      "\u092a\u0930 \u092a\u0930 \u0915\u0930"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  },
+  {
+    "cluster_id": 33,
+    "campaign_name": "Campaign Cluster #33 \u2014 Generic / Unspecified Institution",
+    "sample_count": 25,
+    "percentage_of_threats": 0.44,
+    "cluster_cohesion_score": 1.0,
+    "targeted_institution": "Generic / Unspecified Institution",
+    "predominant_categories": {
+      "Bank Account Freeze": 25
+    },
+    "exemplar_message": "\u0926\u093f\u0932\u094d\u0932\u0940 \u092a\u0941\u0932\u093f\u0938 \u092e\u0941\u0916\u094d\u092f\u093e\u0932\u092f: \u0906\u092a\u0915\u0947 \u0906\u0927\u093e\u0930 \u0915\u093e\u0930\u094d\u0921 \u092a\u0930 14 \u0917\u0948\u0930\u0915\u093e\u0928\u0942\u0928\u0940 \u0916\u093e\u0924\u0947 \u092a\u093e\u090f \u0917\u090f \u0939\u0948\u0902\u0964 2 \u0918\u0902\u091f\u0947 \u092e\u0947\u0902 \u0935\u0940\u0921\u093f\u092f\u094b \u0935\u0947\u0930\u093f\u092b\u093f\u0915\u0947\u0936\u0928 \u0915\u0930\u0947\u0902 \u0935\u0930\u0928\u093e \u0938\u093e\u0907\u092c\u0930 \u0905\u0930\u0947\u0938\u094d\u091f \u0935\u093e\u0930\u0902\u091f \u091c\u093e\u0930\u0940 \u0939\u094b\u0917\u093e\u0964 \u091c\u093e\u0902\u091a \u0905\u0927\u093f\u0915\u093e\u0930\u0940: [PHONE]",
+    "shared_phrases": [
+      "\u0936\u0928 \u0915\u0930 \u0935\u0930\u0928",
+      "\u0936\u0928 \u0915\u0930",
+      "\u0935\u0930\u0928 \u0907\u092c\u0930 \u0905\u0930",
+      "\u0935\u0930\u0928 \u0907\u092c\u0930",
+      "\u0932\u092f \u0906\u092a\u0915 \u0906\u0927"
+    ],
+    "shared_indicators": {
+      "unique_domains_count": 0,
+      "sample_domains": [],
+      "sample_urls": [],
+      "sample_upis": [],
+      "sample_phones": []
+    },
+    "soc_legal_disclaimer": "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."
+  }
+]

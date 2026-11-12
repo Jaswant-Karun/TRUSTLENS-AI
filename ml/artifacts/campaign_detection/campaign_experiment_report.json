@@ -1,0 +1,76 @@
+{
+  "task": "Scam Campaign Discovery & Similarity Intelligence",
+  "total_threat_samples": 5715,
+  "hdbscan_results": {
+    "algorithm": "HDBSCAN",
+    "total_samples": 5715,
+    "clusters_discovered": 47,
+    "noise_samples": 2901,
+    "noise_percentage": 50.76,
+    "clustered_samples": 2814,
+    "silhouette_score": 0.3209,
+    "davies_bouldin_index": 1.3339,
+    "duration_seconds": 65.08
+  },
+  "dbscan_results": {
+    "algorithm": "DBSCAN Baseline",
+    "total_samples": 5715,
+    "clusters_discovered": 6,
+    "noise_samples": 1344,
+    "noise_percentage": 23.52,
+    "clustered_samples": 4371,
+    "silhouette_score": 0.0292,
+    "davies_bouldin_index": 2.119,
+    "duration_seconds": 1.76
+  },
+  "top_campaigns_discovered": [
+    {
+      "cluster_id": 11,
+      "name": "Campaign Cluster #11 \u2014 Generic / Unspecified Institution",
+      "size": 254,
+      "cohesion": 0.8193
+    },
+    {
+      "cluster_id": 3,
+      "name": "Campaign Cluster #03 \u2014 India Post / FedEx / Courier",
+      "size": 220,
+      "cohesion": 0.7267
+    },
+    {
+      "cluster_id": 39,
+      "name": "Campaign Cluster #39 \u2014 Generic / Unspecified Institution",
+      "size": 170,
+      "cohesion": 0.8642
+    },
+    {
+      "cluster_id": 19,
+      "name": "Campaign Cluster #19 \u2014 Generic / Unspecified Institution",
+      "size": 167,
+      "cohesion": 0.79
+    },
+    {
+      "cluster_id": 45,
+      "name": "Campaign Cluster #45 \u2014 SBI (State Bank of India)",
+      "size": 160,
+      "cohesion": 0.9753
+    },
+    {
+      "cluster_id": 23,
+      "name": "Campaign Cluster #23 \u2014 Generic / Unspecified Institution",
+      "size": 133,
+      "cohesion": 0.7557
+    },
+    {
+      "cluster_id": 12,
+      "name": "Campaign Cluster #12 \u2014 Generic / Unspecified Institution",
+      "size": 92,
+      "cohesion": 0.806
+    },
+    {
+      "cluster_id": 13,
+      "name": "Campaign Cluster #13 \u2014 State Electricity Board",
+      "size": 85,
+      "cohesion": 0.9087
+    }
+  ]
+}

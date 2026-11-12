@@ -1,0 +1,119 @@
+{
+  "text_eda": {
+    "train_samples": 69501,
+    "threat_percentage": 0.36192285003093483,
+    "length_statistics": {
+      "legitimate": {
+        "mean_char": 73.00653933749746,
+        "median_char": 55.0,
+        "std_char": 62.42847313857042,
+        "mean_words": 14.308002796130516
+      },
+      "threat": {
+        "mean_char": 138.2776099228751,
+        "median_char": 131.0,
+        "std_char": 54.92538588075414,
+        "mean_words": 23.785441679255783
+      }
+    },
+    "top_scam_words": [
+      [
+        "get",
+        6952
+      ],
+      [
+        "url",
+        5099
+      ],
+      [
+        "call",
+        4621
+      ],
+      [
+        "free",
+        4408
+      ],
+      [
+        "now",
+        4304
+      ],
+      [
+        "offer",
+        3530
+      ],
+      [
+        "off",
+        3346
+      ],
+      [
+        "dear",
+        3327
+      ],
+      [
+        "click",
+        3094
+      ],
+      [
+        "please",
+        3036
+      ]
+    ],
+    "top_legit_words": [
+      [
+        "haha",
+        4851
+      ],
+      [
+        "can",
+        3914
+      ],
+      [
+        "but",
+        2620
+      ],
+      [
+        "now",
+        2339
+      ],
+      [
+        "then",
+        2243
+      ],
+      [
+        "lol",
+        2237
+      ],
+      [
+        "just",
+        2109
+      ],
+      [
+        "got",
+        2079
+      ],
+      [
+        "time",
+        1850
+      ],
+      [
+        "what",
+        1836
+      ]
+    ]
+  },
+  "url_eda": {
+    "train_samples": 70610,
+    "phishing_percentage": 0.6294292593117122,
+    "correlations_with_is_phishing": {
+      "url_length": 0.3429345948975476,
+      "dot_count": 0.689386708789681,
+      "subdomain_count": 0.4367645231552827,
+      "path_length": 0.42597808921029984,
+      "url_entropy": 0.2971947062817008,
+      "number_of_digits": 0.7601551214466131,
+      "percentage_numeric_chars": 0.8152154081486765,
+      "has_ip_address": 0.7445506784658646,
+      "is_phishing": 1.0
+    }
+  }
+}

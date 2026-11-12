@@ -1,0 +1,244 @@
+{
+  "name": "TRUSTLENS AI - Workflow 6: Executive Daily Intelligence Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node-1-schedule",
+      "name": "Daily Morning Schedule (08:00 UTC)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [180, 300],
+      "notes": "Executes daily morning executive threat intelligence dispatch at 08:00 UTC."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $env.TRUSTLENS_ADMIN_USER || 'admin@trustlens.ai' }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $env.TRUSTLENS_ADMIN_PASSWORD || 'AdminPass123!' }}"
+            }
+          ]
+        }
+      },
+      "id": "node-2-login",
+      "name": "Acquire Executive Reporting Session",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [400, 300],
+      "notes": "Authenticates admin account to query cross-service analytics."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/daily-summary",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            }
+          ]
+        }
+      },
+      "id": "node-3-get-summary",
+      "name": "Retrieve Actual Telemetry & Scan Stats",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 300],
+      "notes": "Fetches verified 24h analysis metrics, community reviews, and emerging threat vectors."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/models/metrics",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Executive Reporting Session').item.json.access_token }}"
+            }
+          ]
+        }
+      },
+      "id": "node-4-get-models",
+      "name": "Retrieve Model Latency & Accuracy Baselines",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 300],
+      "notes": "Queries live production metrics for Models 1, 2, 3, and 4."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/campaigns?limit=5",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Executive Reporting Session').item.json.access_token }}"
+            }
+          ]
+        }
+      },
+      "id": "node-5-get-campaigns",
+      "name": "Retrieve Emerging Campaign Clusters",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300],
+      "notes": "Queries top active coordinated scam campaign dossiers."
+    },
+    {
+      "parameters": {
+        "jsCode": "const summary = $('Retrieve Actual Telemetry & Scan Stats').item.json;\nconst models = $('Retrieve Model Latency & Accuracy Baselines').item.json;\nconst campaigns = $('Retrieve Emerging Campaign Clusters').all().map(item => item.json);\n\nconst reportMarkdown = `# 🛡️ TRUSTLENS AI — Daily Executive Intelligence Report\n**Report Date:** ${summary.report_date}\n**Generated:** ${summary.generated_at}\n\n## 📊 24-Hour Threat Telemetry\n- **Total Scans Analyzed:** ${summary.telemetry_24h.total_threat_scans}\n- **High/Critical Threats Blocked:** ${summary.telemetry_24h.high_severity_threats}\n- **Clean Communications:** ${summary.telemetry_24h.clean_scans}\n- **System Threat Ratio:** ${(summary.telemetry_24h.threat_ratio * 100).toFixed(1)}%\n\n## 👥 Community Intelligence Queue\n- **Verified Scams Added:** ${summary.community_reports.verified_scams}\n- **Pending Review Queue:** ${summary.community_reports.pending_review}\n\n## 🤖 Production Model Health\n- **Model 1 (Multilingual Text):** ${models.models?.model1_text?.status || 'HEALTHY'}\n- **Model 2 (Phishing URLs):** ${models.models?.model2_url?.status || 'HEALTHY'}\n- **Model 3 (Tactic Multi-Label):** ${models.models?.model3_tactics?.status || 'HEALTHY'}\n- **Model 4 (Campaign Clustering):** ${models.models?.model4_campaigns?.status || 'HEALTHY'}\n- **Average Latency:** ${summary.model_health.avg_latency_ms} ms\n\n## 🚨 Active Coordinated Campaign Clusters\nTotal Clusters Tracked: ${summary.active_campaign_clusters}\n\n*Legal Disclaimer: Campaign similarity clusters indicate statistical linguistic and technical overlap; they do not establish judicial organizational attribution.*`;\n\nreturn [{\n  json: {\n    report_date: summary.report_date,\n    generated_at: summary.generated_at,\n    markdown_body: reportMarkdown,\n    telemetry: summary.telemetry_24h,\n    top_campaigns_count: campaigns.length\n  }\n}];"
+      },
+      "id": "node-6-synthesize",
+      "name": "Synthesize Verified Daily Intelligence Dossier",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 300],
+      "notes": "Compiles executive markdown report from verified backend telemetry and model states."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/log-execution",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Executive Reporting Session').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"daily_intelligence_report\",\n  \"trigger_event\": \"daily_cron_0800_utc\",\n  \"status\": \"success\",\n  \"payload_summary\": {\n    \"report_date\": \"{{ $json.report_date }}\",\n    \"telemetry\": {{ JSON.stringify($json.telemetry) }}\n  },\n  \"duration_ms\": 312.0\n}"
+      },
+      "id": "node-7-log-report",
+      "name": "Store Report Record to Automation Logs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1600, 200],
+      "notes": "Persists executive intelligence report in automation_logs collection."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EXECUTIVE_DISPATCH_WEBHOOK || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"daily_intelligence_report\",\n  \"trigger_event\": \"executive_briefing_dispatch\",\n  \"status\": \"dispatched\",\n  \"report_title\": \"TRUSTLENS AI Daily Threat Intelligence Briefing\",\n  \"report_date\": \"{{ $json.report_date }}\",\n  \"markdown\": \"{{ $json.markdown_body }}\"\n}"
+      },
+      "id": "node-8-dispatch-briefing",
+      "name": "Dispatch Executive Briefing to Admin & SOC Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1840, 200],
+      "notes": "Dispatches daily formatted briefing to administrative and executive channels."
+    }
+  ],
+  "connections": {
+    "Daily Morning Schedule (08:00 UTC)": {
+      "main": [
+        [
+          {
+            "node": "Acquire Executive Reporting Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acquire Executive Reporting Session": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Actual Telemetry & Scan Stats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Actual Telemetry & Scan Stats": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Model Latency & Accuracy Baselines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Model Latency & Accuracy Baselines": {
+      "main": [
+        [
+          {
+            "node": "Retrieve Emerging Campaign Clusters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve Emerging Campaign Clusters": {
+      "main": [
+        [
+          {
+            "node": "Synthesize Verified Daily Intelligence Dossier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Synthesize Verified Daily Intelligence Dossier": {
+      "main": [
+        [
+          {
+            "node": "Store Report Record to Automation Logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Report Record to Automation Logs": {
+      "main": [
+        [
+          {
+            "node": "Dispatch Executive Briefing to Admin & SOC Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

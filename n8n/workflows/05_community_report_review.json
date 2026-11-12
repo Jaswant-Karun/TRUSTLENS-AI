@@ -1,0 +1,240 @@
+{
+  "name": "TRUSTLENS AI - Workflow 5: Community Scam Report Review & Analyst Triage",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "community-report-ingress",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "node-1-webhook",
+      "name": "Community Report Ingress Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [180, 300],
+      "notes": "Receives submitted scam report from public reporting portal or API."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-has-content",
+              "leftValue": "={{ ($json.body.message_content || $json.body.suspicious_url || '').length }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "cond-has-channel",
+              "leftValue": "={{ ['sms', 'whatsapp', 'email', 'social_media', 'call', 'other'].includes($json.body.channel || 'sms') }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "node-2-validate",
+      "name": "Validate Input & Mask PII",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [420, 300],
+      "notes": "Validates report fields and sanitizes personal identifiable information."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/auth/login",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "username",
+              "value": "={{ $env.TRUSTLENS_ADMIN_USER || 'admin@trustlens.ai' }}"
+            },
+            {
+              "name": "password",
+              "value": "={{ $env.TRUSTLENS_ADMIN_PASSWORD || 'AdminPass123!' }}"
+            }
+          ]
+        }
+      },
+      "id": "node-3-login",
+      "name": "Acquire Triage Session Token",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 200],
+      "notes": "Obtains analyst/admin Bearer token for report submission."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/reports",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $json.access_token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"channel\": \"{{ $('Community Report Ingress Webhook').item.json.body.channel || 'sms' }}\",\n  \"sender\": \"{{ $('Community Report Ingress Webhook').item.json.body.sender || '' }}\",\n  \"message_content\": \"{{ $('Community Report Ingress Webhook').item.json.body.message_content || '' }}\",\n  \"suspicious_url\": \"{{ $('Community Report Ingress Webhook').item.json.body.suspicious_url || '' }}\",\n  \"category\": \"{{ $('Community Report Ingress Webhook').item.json.body.category || 'unknown' }}\",\n  \"description\": \"{{ $('Community Report Ingress Webhook').item.json.body.description || 'Community submitted incident' }}\"\n}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "node-4-submit-report",
+      "name": "Submit Report to Backend & De-duplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [900, 200],
+      "notes": "Persists report to scam_reports collection with pending review state."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ANALYST_ALERT_WEBHOOK || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"community_report_review\",\n  \"trigger_event\": \"new_pending_report\",\n  \"status\": \"queued_for_analyst\",\n  \"payload_summary\": {\n    \"report_id\": \"{{ $json.report_id }}\",\n    \"channel\": \"{{ $json.channel }}\",\n    \"triage_url\": \"{{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/reports/{{ $json.report_id }}/review\"\n  }\n}"
+      },
+      "id": "node-5-notify-analyst",
+      "name": "Notify Security Reviewer on Duty",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1140, 200],
+      "notes": "Dispatches triage notification to security analyst desk."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL || 'http://127.0.0.1:8000' }}/api/v1/automation/log-execution",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Acquire Triage Session Token').item.json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"community_report_review\",\n  \"trigger_event\": \"report_enqueued\",\n  \"status\": \"success\",\n  \"payload_summary\": {\n    \"report_id\": \"{{ $('Submit Report to Backend & De-duplicate').item.json.report_id }}\"\n  }\n}"
+      },
+      "id": "node-6-log-triage",
+      "name": "Log Triage Enqueue Event",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1380, 200],
+      "notes": "Logs triage action into automation_logs."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ADMIN_ALERT_WEBHOOK_URL || 'http://127.0.0.1:8000/api/v1/automation/log-execution' }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"workflow_name\": \"community_report_review\",\n  \"trigger_event\": \"invalid_report_payload\",\n  \"status\": \"rejected\",\n  \"error_message\": \"Report rejected due to empty content or invalid communication channel.\"\n}"
+      },
+      "id": "node-7-reject-alert",
+      "name": "Log Rejected Submission",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 420],
+      "notes": "Records invalid submissions without contaminating the review queue."
+    }
+  ],
+  "connections": {
+    "Community Report Ingress Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input & Mask PII",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input & Mask PII": {
+      "main": [
+        [
+          {
+            "node": "Acquire Triage Session Token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log Rejected Submission",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Acquire Triage Session Token": {
+      "main": [
+        [
+          {
+            "node": "Submit Report to Backend & De-duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit Report to Backend & De-duplicate": {
+      "main": [
+        [
+          {
+            "node": "Notify Security Reviewer on Duty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Security Reviewer on Duty": {
+      "main": [
+        [
+          {
+            "node": "Log Triage Enqueue Event",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

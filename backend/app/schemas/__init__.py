@@ -16,6 +16,11 @@ from backend.app.schemas.analysis import (
     RiskAssessmentSummary,
     AnalysisResultResponse,
     ImageAnalysisResponse,
+    TacticScanResponse,
+    CampaignClusterRequest,
+    CampaignCluster,
+    CampaignClusterResponse,
+    TelemetrySummaryResponse,
 )
 from backend.app.schemas.common import (
     CampaignSummary,
@@ -41,6 +46,11 @@ __all__ = [
     "RiskAssessmentSummary",
     "AnalysisResultResponse",
     "ImageAnalysisResponse",
+    "TacticScanResponse",
+    "CampaignClusterRequest",
+    "CampaignCluster",
+    "CampaignClusterResponse",
+    "TelemetrySummaryResponse",
     "CampaignSummary",
     "CampaignDetailResponse",
     "ModelMetadataItem",

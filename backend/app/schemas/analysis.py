@@ -67,3 +67,55 @@ class ImageAnalysisResponse(BaseModel):
     processing_time_ms: float
     created_at: datetime
 
+
+class DetectedTacticItem(BaseModel):
+    model_config = {"extra": "allow"}
+    tactic_code: str
+    tactic_name: str
+    confidence: float
+    evidence_tokens: List[str] = Field(default_factory=list)
+    threat_level: Optional[str] = None
+    explanation: Optional[str] = None
+
+
+class TacticScanResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    tactics: List[DetectedTacticItem] = Field(default_factory=list)
+    tactic_count: int = 0
+    primary_vector: Optional[str] = None
+    investment_advisory: Optional[Dict[str, Any]] = None
+    model_version: str = "trustlens-model3-multilabel-v1.0"
+
+
+class CampaignClusterRequest(BaseModel):
+    messages: List[str] = Field(..., min_length=2)
+    similarity_threshold: float = Field(0.75, ge=0.0, le=1.0)
+
+
+class CampaignCluster(BaseModel):
+    model_config = {"extra": "allow"}
+    cluster_id: int
+    cluster_name: str
+    sample_size: int
+    exemplar_text: str
+    associated_indicators: List[str] = Field(default_factory=list)
+    cohesion_score: Optional[float] = None
+
+
+class CampaignClusterResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    total_messages: int
+    clusters_identified: int
+    clusters: List[CampaignCluster] = Field(default_factory=list)
+
+
+class TelemetrySummaryResponse(BaseModel):
+    model_config = {"extra": "allow"}
+    total_scans_analyzed: int
+    total_threats_blocked: int
+    active_campaigns_tracked: int
+    avg_inference_latency_ms: float
+    threat_breakdown: Dict[str, int]
+    top_tactics: List[Dict[str, Any]]
+    system_status: str
+

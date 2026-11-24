@@ -33,8 +33,10 @@ export interface ModelMetricsResponse {
     text_scam_detector: any;
     phishing_url_detector: any;
     tactic_detector: any;
-    campaign_discovery: any;
+    campaign_discovery?: any;
+    campaign_clusterer?: any;
   };
+  soc_intelligence_cards?: Record<string, string>;
 }
 
 export interface CampaignSummary {

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { GraphNode, GraphEdge } from "./types";
-import { Link as LinkIcon, ChevronDown, ChevronRight, ArrowRight } from "lucide-react";
+import { Link as LinkIcon, ChevronDown, ChevronRight, ArrowRight, Share2 } from "lucide-react";
 import { getNodeColor } from "./GraphNode";
 
 interface RelationshipInspectorProps {
@@ -10,6 +10,8 @@ interface RelationshipInspectorProps {
   allNodes: GraphNode[];
   edges: GraphEdge[];
   onSelectNodeById: (id: string) => void;
+  onExpandNode?: (id: string) => void;
+  isExpanding?: boolean;
 }
 
 export function RelationshipInspector({
@@ -17,6 +19,8 @@ export function RelationshipInspector({
   allNodes,
   edges,
   onSelectNodeById,
+  onExpandNode,
+  isExpanding,
 }: RelationshipInspectorProps) {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -84,6 +88,18 @@ export function RelationshipInspector({
                 </div>
               );
             })
+          )}
+
+          {/* One-Hop Relationship Expansion Action */}
+          {onExpandNode && (
+            <button
+              onClick={() => onExpandNode(selectedNode.id)}
+              disabled={isExpanding}
+              className="w-full mt-2 py-1.5 px-3 bg-[#181E28] hover:bg-[#202731] border border-purple-500/40 text-purple-300 hover:text-white rounded text-[11px] font-mono flex items-center justify-center space-x-1.5 transition-colors disabled:opacity-50"
+            >
+              <Share2 className="w-3.5 h-3.5 text-purple-400" />
+              <span>{isExpanding ? "Querying MongoDB..." : "Expand 1-Hop Relationships"}</span>
+            </button>
           )}
         </div>
       )}

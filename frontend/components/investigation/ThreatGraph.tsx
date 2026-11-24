@@ -18,6 +18,7 @@ interface ThreatGraphProps {
   zoomLevel?: number;
   onZoomChange?: (zoom: number) => void;
   onViewChange?: (view: { x: number; y: number; zoom: number; bounds: { minX: number; maxX: number; minY: number; maxY: number } }) => void;
+  onExpandNeighbors?: (nodeId: string) => void;
 }
 
 export function ThreatGraph({
@@ -32,6 +33,7 @@ export function ThreatGraph({
   zoomLevel: externalZoom,
   onZoomChange,
   onViewChange,
+  onExpandNeighbors,
 }: ThreatGraphProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -225,10 +227,13 @@ export function ThreatGraph({
   };
 
   const handleExpandNeighbors = (nodeId: string) => {
-    // Focus and highlight neighbors
-    const targetNode = nodes.find((n) => n.id === nodeId);
-    if (targetNode) {
-      onSelectNode(targetNode);
+    if (onExpandNeighbors) {
+      onExpandNeighbors(nodeId);
+    } else {
+      const targetNode = nodes.find((n) => n.id === nodeId);
+      if (targetNode) {
+        onSelectNode(targetNode);
+      }
     }
   };
 

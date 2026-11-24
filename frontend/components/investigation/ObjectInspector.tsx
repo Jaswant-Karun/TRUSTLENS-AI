@@ -21,6 +21,8 @@ interface ObjectInspectorProps {
   onSelectNodeById: (id: string) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  onExpandNode?: (id: string) => void;
+  isExpanding?: boolean;
 }
 
 export function ObjectInspector({
@@ -31,6 +33,8 @@ export function ObjectInspector({
   onSelectNodeById,
   isCollapsed,
   onToggleCollapse,
+  onExpandNode,
+  isExpanding,
 }: ObjectInspectorProps) {
   // Collapsed Sidebar View (ThreatQ right rail)
   if (isCollapsed) {
@@ -100,6 +104,8 @@ export function ObjectInspector({
                 allNodes={investigation.nodes}
                 edges={investigation.edges}
                 onSelectNodeById={onSelectNodeById}
+                onExpandNode={onExpandNode}
+                isExpanding={isExpanding}
               />
             </div>
           </div>

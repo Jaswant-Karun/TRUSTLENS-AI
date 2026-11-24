@@ -1,7 +1,15 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
-import { InvestigationData, GraphNode, GraphEdge, TimelineEvent, NodeType } from "./types";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
+import {
+  InvestigationData,
+  GraphNode,
+  GraphEdge,
+  TimelineEvent,
+  NodeType,
+  adaptBackendNode,
+  adaptBackendEdge,
+} from "./types";
 import { TopNavigation } from "./TopNavigation";
 import { ThreatGraph } from "./ThreatGraph";
 import { GraphToolbar } from "./GraphToolbar";
@@ -9,6 +17,7 @@ import { GraphMinimap } from "./GraphMinimap";
 import { ObjectInspector } from "./ObjectInspector";
 import { InvestigationTimeline } from "./InvestigationTimeline";
 import { CreateInvestigationModal } from "./CreateInvestigationModal";
+import { getInvestigationObjectRelationships } from "@/lib/api";
 
 interface InvestigationWorkspaceProps {
   investigation: InvestigationData;
@@ -37,6 +46,11 @@ export function InvestigationWorkspace({
   const [selectedEdge, setSelectedEdge] = useState<GraphEdge | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
 
+  // Sync state if prop changes
+  useEffect(() => {
+    setInvestigation(initialInvestigation);
+  }, [initialInvestigation]);
+
   // Graph viewport & tools state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTypes, setSelectedTypes] = useState<Set<NodeType>>(
@@ -55,6 +69,10 @@ export function InvestigationWorkspace({
   const [isInspectorCollapsed, setIsInspectorCollapsed] = useState(false);
   const [isTimelineCollapsed, setIsTimelineCollapsed] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Live 1-hop expansion state
+  const [isExpanding, setIsExpanding] = useState(false);
+  const [syncStatusMessage, setSyncStatusMessage] = useState("Live Intelligence Sync Active");
 
   // Search match count calculation
   const searchMatchesCount = useMemo(() => {
@@ -132,6 +150,60 @@ export function InvestigationWorkspace({
     setSelectedEvent(null);
   };
 
+  // 1-Hop Relationship Expansion implementation
+  const handleExpandNeighbors = useCallback(
+    async (nodeId: string) => {
+      setIsExpanding(true);
+      setSyncStatusMessage(`Expanding 1-hop relationships for ${nodeId}...`);
+      try {
+        const res = await getInvestigationObjectRelationships(investigation.id, nodeId);
+        if (res && res.connected_nodes) {
+          const existingNodeIds = new Set(investigation.nodes.map((n) => n.id));
+          const parent = investigation.nodes.find((pn) => pn.id === nodeId);
+
+          const newNodes = res.connected_nodes
+            .filter((n) => !existingNodeIds.has(n.id))
+            .map((n, idx) => {
+              const angle = (idx / Math.max(res.connected_nodes.length, 1)) * 2 * Math.PI;
+              const adapted = adaptBackendNode(n);
+              if (parent) {
+                adapted.x = parent.x + Math.cos(angle) * 160;
+                adapted.y = parent.y + Math.sin(angle) * 160;
+              }
+              return adapted;
+            });
+
+          const existingEdgeIds = new Set(investigation.edges.map((e) => e.id));
+          const newEdges = res.edges
+            .filter((e) => !existingEdgeIds.has(e.id))
+            .map(adaptBackendEdge);
+
+          if (newNodes.length > 0 || newEdges.length > 0) {
+            const updatedInv: InvestigationData = {
+              ...investigation,
+              objectsCount: investigation.nodes.length + newNodes.length,
+              nodes: [...investigation.nodes, ...newNodes],
+              edges: [...investigation.edges, ...newEdges],
+            };
+            setInvestigation(updatedInv);
+            if (onUpdateInvestigation) onUpdateInvestigation(updatedInv);
+            setSyncStatusMessage(
+              `Expanded +${newNodes.length} nodes, +${newEdges.length} edges from MongoDB`
+            );
+          } else {
+            setSyncStatusMessage(`No additional 1-hop entities found for ${nodeId}`);
+          }
+        }
+      } catch (err: any) {
+        setSyncStatusMessage(`Expansion error: ${err?.message || "Failed"}`);
+      } finally {
+        setIsExpanding(false);
+        setTimeout(() => setSyncStatusMessage("Live Intelligence Sync Active"), 5000);
+      }
+    },
+    [investigation, onUpdateInvestigation]
+  );
+
   // Create new investigation modal handler
   const handleCreateSubmit = (data: any) => {
     const newInv: InvestigationData = {
@@ -185,7 +257,7 @@ export function InvestigationWorkspace({
             onToggleType={handleToggleType}
             onSelectAllTypes={handleSelectAllTypes}
             onClearAllTypes={handleClearAllTypes}
-            syncStatus="Live Intelligence Sync Active"
+            syncStatus={syncStatusMessage}
             matchesCount={searchMatchesCount}
           />
 
@@ -211,6 +283,7 @@ export function InvestigationWorkspace({
             zoomLevel={zoomLevel}
             onZoomChange={setZoomLevel}
             onViewChange={setViewState}
+            onExpandNeighbors={handleExpandNeighbors}
           />
         </div>
 
@@ -226,6 +299,8 @@ export function InvestigationWorkspace({
           }}
           isCollapsed={isInspectorCollapsed}
           onToggleCollapse={() => setIsInspectorCollapsed(!isInspectorCollapsed)}
+          onExpandNode={handleExpandNeighbors}
+          isExpanding={isExpanding}
         />
       </div>
 

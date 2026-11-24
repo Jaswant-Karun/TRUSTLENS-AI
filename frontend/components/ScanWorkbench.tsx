@@ -98,9 +98,11 @@ export default function ScanWorkbench({ onResult, id }: ScanWorkbenchProps) {
           setLoading(false);
           return;
         }
-        const ocrRes = await scanImage(selectedFile);
-        if (ocrRes.analysis_result) {
+        const ocrRes: any = await scanImage(selectedFile);
+        if (ocrRes && ocrRes.analysis_result) {
           scanData = ocrRes.analysis_result;
+        } else if (ocrRes && ocrRes.analysis_id) {
+          scanData = ocrRes;
         } else {
           throw new Error("No readable text found in image evidence (insufficient evidence).");
         }

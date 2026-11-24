@@ -1,21 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Shield,
   LayoutDashboard,
-  Search,
+  MessageSquare,
+  Globe,
+  Image as ImageIcon,
+  Crosshair,
+  Fingerprint,
   Network,
-  History,
+  AlertTriangle,
   Cpu,
-  FileText,
+  History,
+  Users,
+  Settings,
   ChevronLeft,
   ChevronRight,
   ExternalLink,
   Activity,
-  CheckCircle2,
+  Layers,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -23,8 +29,17 @@ interface SidebarProps {
   onToggleCollapse: () => void;
   isMobileOpen: boolean;
   onMobileClose: () => void;
-  activeTab?: string;
-  onSelectTab?: (tab: string) => void;
+}
+
+interface NavSection {
+  title: string;
+  items: {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: string;
+    badgeColor?: string;
+  }[];
 }
 
 export function Sidebar({
@@ -32,47 +47,124 @@ export function Sidebar({
   onToggleCollapse,
   isMobileOpen,
   onMobileClose,
-  activeTab,
-  onSelectTab,
 }: SidebarProps) {
   const pathname = usePathname();
 
-  const navItems = [
+  const navigationSections: NavSection[] = [
     {
-      id: "overview",
-      label: "SOC Overview",
-      href: "/",
-      icon: LayoutDashboard,
-      badge: "Live",
+      title: "Overview",
+      items: [
+        {
+          label: "Dashboard",
+          href: "/dashboard",
+          icon: LayoutDashboard,
+          badge: "Live",
+          badgeColor: "bg-emerald-950 text-emerald-400 border-emerald-800",
+        },
+      ],
     },
     {
-      id: "scan",
-      label: "Threat Workbench",
-      href: "/#scanner",
-      icon: Search,
-      badge: "Multi-Vector",
+      title: "Analysis",
+      items: [
+        {
+          label: "Text Analysis",
+          href: "/analyze/text",
+          icon: MessageSquare,
+          badge: "M1+M3",
+          badgeColor: "bg-blue-950 text-blue-400 border-blue-800",
+        },
+        {
+          label: "URL Analysis",
+          href: "/analyze/url",
+          icon: Globe,
+          badge: "Zero-Hop",
+          badgeColor: "bg-cyan-950 text-cyan-400 border-cyan-800",
+        },
+        {
+          label: "Screenshot Analysis",
+          href: "/analyze/image",
+          icon: ImageIcon,
+          badge: "OCR",
+          badgeColor: "bg-purple-950 text-purple-400 border-purple-800",
+        },
+        {
+          label: "Comprehensive Investigation",
+          href: "/investigation",
+          icon: Crosshair,
+          badge: "Multi-Vector",
+          badgeColor: "bg-rose-950 text-rose-400 border-rose-800",
+        },
+      ],
     },
     {
-      id: "campaigns",
-      label: "Campaign Intelligence",
-      href: "/#campaigns",
-      icon: Network,
-      badge: "47 Clusters",
+      title: "Intelligence",
+      items: [
+        {
+          label: "Tactic Intelligence",
+          href: "/intelligence/tactics",
+          icon: Fingerprint,
+          badge: "10 Tactics",
+          badgeColor: "bg-amber-950 text-amber-400 border-amber-800",
+        },
+        {
+          label: "Campaign Intelligence",
+          href: "/intelligence/campaigns",
+          icon: Network,
+          badge: "HDBSCAN",
+          badgeColor: "bg-teal-950 text-teal-400 border-teal-800",
+        },
+        {
+          label: "Threat Intelligence",
+          href: "/intelligence/threats",
+          icon: AlertTriangle,
+        },
+      ],
     },
     {
-      id: "history",
-      label: "Incident Logs",
-      href: "/#history",
-      icon: History,
+      title: "ML Center",
+      items: [
+        {
+          label: "Model Performance",
+          href: "/models",
+          icon: Cpu,
+          badge: "98% F1",
+          badgeColor: "bg-emerald-950 text-emerald-400 border-emerald-800",
+        },
+      ],
     },
     {
-      id: "models",
-      label: "Model Governance",
-      href: "/#models",
-      icon: Cpu,
-      badge: "98% F1",
+      title: "Records",
+      items: [
+        {
+          label: "Analysis History",
+          href: "/history",
+          icon: History,
+        },
+        {
+          label: "Community Reports",
+          href: "/reports",
+          icon: Users,
+        },
+      ],
+    },
+    {
+      title: "Settings",
+      items: [
+        {
+          label: "Settings",
+          href: "/settings",
+          icon: Settings,
+        },
+      ],
     },
   ];
+
+  const isItemActive = (href: string) => {
+    if (href === "/dashboard") {
+      return pathname === "/dashboard" || pathname === "/";
+    }
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   return (
     <>
@@ -80,11 +172,11 @@ export function Sidebar({
       {isMobileOpen && (
         <div
           onClick={onMobileClose}
-          className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 lg:hidden"
+          className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 lg:hidden"
         />
       )}
 
-      {/* Main Sidebar Panel */}
+      {/* Main Persistent Sidebar Panel */}
       <aside
         className={`fixed top-0 bottom-0 left-0 z-50 flex flex-col bg-[#0b1329] border-r border-slate-800/80 transition-all duration-300 ${
           isCollapsed ? "w-20" : "w-64"
@@ -92,123 +184,108 @@ export function Sidebar({
       >
         {/* Brand Header */}
         <div className="h-16 px-4 flex items-center justify-between border-b border-slate-800">
-          <Link href="/" className="flex items-center space-x-3 overflow-hidden">
+          <Link href="/dashboard" className="flex items-center space-x-3 overflow-hidden">
             <div className="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 shadow-sm">
               <Shield className="w-5 h-5 text-sky-400" />
             </div>
             {!isCollapsed && (
               <div className="flex flex-col min-w-0">
-                <div className="flex items-center space-x-1.5">
-                  <span className="font-bold text-sm tracking-wider text-white">TRUSTLENS</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/20 text-sky-300 font-mono font-semibold border border-sky-500/30">
-                    AI
-                  </span>
-                </div>
-                <span className="text-[11px] text-slate-400 truncate font-mono">Fraud Intelligence</span>
+                <span className="font-bold text-sm tracking-wider text-white font-mono flex items-center gap-1.5">
+                  TRUSTLENS<span className="text-cyan-400">AI</span>
+                </span>
+                <span className="text-[10px] text-slate-400 uppercase tracking-widest font-mono">
+                  SOC Intelligence
+                </span>
               </div>
             )}
           </Link>
 
-          {/* Desktop Collapse Toggle */}
+          {/* Collapse Toggle Button (Desktop) */}
           <button
             onClick={onToggleCollapse}
-            className="hidden lg:flex p-1 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-            title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors"
+            aria-label={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
         </div>
 
-        {/* Navigation Items List */}
-        <div className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          <div className={`px-2 pb-2 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold ${isCollapsed ? "text-center" : ""}`}>
-            {isCollapsed ? "•••" : "Platform Navigation"}
-          </div>
-
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab ? activeTab === item.id : pathname === item.href;
-
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  if (onSelectTab) onSelectTab(item.id);
-                  onMobileClose();
-                }}
-                className={`w-full flex items-center rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${
-                  isActive
-                    ? "bg-blue-600 text-white shadow-sm font-semibold"
-                    : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
-                } ${isCollapsed ? "justify-center" : "justify-between"}`}
-                title={isCollapsed ? item.label : undefined}
-              >
-                <div className="flex items-center space-x-3 min-w-0">
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} />
-                  {!isCollapsed && <span className="truncate">{item.label}</span>}
+        {/* Scrollable Navigation Items */}
+        <div className="flex-1 py-4 px-3 overflow-y-auto space-y-6">
+          {navigationSections.map((section, sIdx) => (
+            <div key={sIdx} className="space-y-1">
+              {!isCollapsed && (
+                <div className="px-3 pb-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                  {section.title}
                 </div>
-                {!isCollapsed && item.badge && (
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded font-mono font-medium ${
-                      isActive
-                        ? "bg-blue-700 text-blue-100"
-                        : "bg-slate-800 text-slate-400 border border-slate-700"
+              )}
+              {isCollapsed && sIdx > 0 && <div className="border-t border-slate-800/60 my-2"></div>}
+
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                const active = isItemActive(item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => {
+                      if (isMobileOpen) onMobileClose();
+                    }}
+                    title={isCollapsed ? item.label : undefined}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all group ${
+                      active
+                        ? "bg-blue-600/20 text-cyan-300 font-semibold border border-blue-500/30 shadow-sm"
+                        : "text-slate-400 hover:text-slate-100 hover:bg-slate-800/50 border border-transparent"
                     }`}
                   >
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+                    <div className="flex items-center space-x-3 min-w-0">
+                      <Icon
+                        className={`w-4 h-4 shrink-0 transition-colors ${
+                          active ? "text-cyan-400" : "text-slate-400 group-hover:text-slate-200"
+                        }`}
+                      />
+                      {!isCollapsed && <span className="truncate">{item.label}</span>}
+                    </div>
+
+                    {!isCollapsed && item.badge && (
+                      <span
+                        className={`text-[9px] font-mono px-1.5 py-0.5 rounded border uppercase tracking-wider shrink-0 ${
+                          item.badgeColor || "bg-slate-800 text-slate-300 border-slate-700"
+                        }`}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </div>
 
-        {/* Model Readiness Status Box */}
-        {!isCollapsed && (
-          <div className="p-3 mx-3 mb-3 rounded-lg bg-slate-900/90 border border-slate-800 text-[11px] font-mono space-y-2">
-            <div className="flex items-center justify-between text-slate-400">
-              <span>ML Engine Status</span>
-              <span className="flex items-center space-x-1 text-emerald-400 font-semibold">
-                <CheckCircle2 className="w-3 h-3" />
-                <span>4 / 4 Online</span>
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-1 text-[10px] text-slate-500">
-              <span className="truncate">• M1: Text (97.8%)</span>
-              <span className="truncate">• M2: URL (98.8%)</span>
-              <span className="truncate">• M3: Tactics (10)</span>
-              <span className="truncate">• M4: Clusters (47)</span>
-            </div>
-          </div>
-        )}
-
-        {/* User / Host Footer */}
-        <div className="p-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-white text-[11px] shrink-0">
-              TL
-            </div>
-            {!isCollapsed && (
-              <div className="truncate">
-                <div className="text-white font-medium text-xs truncate">SOC Analyst</div>
-                <div className="text-[10px] text-slate-500 font-mono truncate">trustlens-node-1</div>
+        {/* Bottom Engine Status & System Info */}
+        <div className="p-3 border-t border-slate-800 bg-[#080d1c]">
+          {!isCollapsed ? (
+            <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-[11px] font-mono">
+                <span className="flex items-center space-x-1.5 text-slate-300">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Engine Online</span>
+                </span>
+                <span className="text-[10px] text-cyan-400 font-semibold">v1.0.0</span>
               </div>
-            )}
-          </div>
-          {!isCollapsed && (
-            <a
-              href="http://127.0.0.1:8000/docs"
-              target="_blank"
-              rel="noreferrer"
-              className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition-colors"
-              title="FastAPI Swagger Documentation"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+              <div className="text-[10px] text-slate-400 font-mono">
+                Models: M1 (Text) • M2 (URL) • M3 (Tactics) • M4 (Clustering)
+              </div>
+            </div>
+          ) : (
+            <div className="flex justify-center" title="Engine Online v1.0.0">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            </div>
           )}
         </div>
       </aside>
     </>
   );
 }
-

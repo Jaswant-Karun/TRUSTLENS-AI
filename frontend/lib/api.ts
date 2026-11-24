@@ -55,9 +55,12 @@ export interface CampaignSummary {
 
 export interface CampaignDetail {
   campaign_id: number;
+  cluster_id?: number;
   cluster_size: number;
-  target_brand: string;
-  primary_tactic: string;
+  targeted_entity?: string;
+  target_brand?: string;
+  primary_tactic?: string;
+  primary_tactics?: string[];
   cohesion_score: number;
   status: string;
   exemplar_message: string;
@@ -139,16 +142,66 @@ export interface PaginatedAnalyses {
   total_pages: number;
 }
 
+export interface CommunityReport {
+  report_id: string;
+  reporter_user_id?: string;
+  target_type: string;
+  target_identifier?: string;
+  content: string;
+  description?: string;
+  evidence_urls: string[];
+  status: "pending" | "under_review" | "verified_scam" | "benign";
+  reviewed_by?: string;
+  review_notes?: string;
+  assigned_tactics: string[];
+  created_at: string;
+  reviewed_at?: string;
+}
+
+export interface UserProfile {
+  user_id: string;
+  email: string;
+  full_name: string;
+  role: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+/** Token Management */
+export function getStoredToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("trustlens_token");
+}
+
+export function setStoredToken(token: string): void {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("trustlens_token", token);
+  }
+}
+
+export function clearStoredToken(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("trustlens_token");
+  }
+}
+
 /** Helper for resilient fetch */
 async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
+  const token = getStoredToken();
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    ...(options?.headers as Record<string, string>),
+  };
+
+  if (token && !headers["Authorization"]) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const url = `${API_BASE}${endpoint}`;
   try {
     const res = await fetch(url, {
       ...options,
-      headers: {
-        Accept: "application/json",
-        ...options?.headers,
-      },
+      headers,
     });
 
     if (!res.ok) {
@@ -159,17 +212,16 @@ async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> 
 
     return await res.json();
   } catch (err: any) {
-    // If relative fetch fails in SSR or static contexts, try direct localhost fallback
     if (url.startsWith("/api/v1") && typeof window !== "undefined") {
       const directUrl = `http://127.0.0.1:8000${endpoint}`;
       try {
         const directRes = await fetch(directUrl, {
           ...options,
-          headers: { Accept: "application/json", ...options?.headers },
+          headers,
         });
         if (directRes.ok) return await directRes.json();
       } catch {
-        // Fall through to primary error
+        // Fall through
       }
     }
     throw err;
@@ -184,6 +236,11 @@ export async function getHealth(): Promise<SystemHealth> {
 /** Get genuine held-out evaluation benchmarks & telemetry */
 export async function getModelMetrics(): Promise<ModelMetricsResponse> {
   return apiFetch<ModelMetricsResponse>("/models/metrics");
+}
+
+/** List model registry entries */
+export async function getModelRegistry(): Promise<any> {
+  return apiFetch<any>("/models");
 }
 
 /** List real HDBSCAN campaign clusters */
@@ -210,6 +267,19 @@ export async function scanComprehensive(payload: {
   });
 }
 
+/** Run standalone text analysis */
+export async function scanText(payload: {
+  content: string;
+  channel?: string;
+  sender?: string;
+}): Promise<ScanResult> {
+  return apiFetch<ScanResult>("/analyze/text", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
 /** Run zero-hop offline URL inspection */
 export async function scanUrl(url: string): Promise<ScanResult> {
   return apiFetch<ScanResult>("/analyze/url", {
@@ -220,12 +290,17 @@ export async function scanUrl(url: string): Promise<ScanResult> {
 }
 
 /** Run screenshot OCR analysis */
-export async function scanImage(file: File): Promise<any> {
+export async function scanImage(file: File): Promise<ScanResult> {
   const formData = new FormData();
   formData.append("file", file);
 
+  const token = getStoredToken();
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
   const res = await fetch(`${API_BASE}/analyze/image`, {
     method: "POST",
+    headers,
     body: formData,
   });
 
@@ -250,4 +325,68 @@ export async function getAnalysesHistory(params?: {
   if (params?.channel) query.set("channel", params.channel);
 
   return apiFetch<PaginatedAnalyses>(`/analyses?${query.toString()}`);
+}
+
+/** Community Reports */
+export async function getCommunityReports(params?: {
+  status?: string;
+  target_type?: string;
+  page?: number;
+  page_size?: number;
+}): Promise<{ items: CommunityReport[]; total_count: number; page: number; total_pages: number }> {
+  const query = new URLSearchParams();
+  if (params?.status) query.set("status", params.status);
+  if (params?.target_type) query.set("target_type", params.target_type);
+  if (params?.page) query.set("page", params.page.toString());
+  if (params?.page_size) query.set("page_size", params.page_size.toString());
+
+  return apiFetch<{ items: CommunityReport[]; total_count: number; page: number; total_pages: number }>(
+    `/reports?${query.toString()}`
+  );
+}
+
+export async function submitCommunityReport(payload: {
+  target_type: string;
+  content: string;
+  target_identifier?: string;
+  description?: string;
+  evidence_urls?: string[];
+}): Promise<CommunityReport> {
+  return apiFetch<CommunityReport>("/reports", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function reviewCommunityReport(
+  reportId: string,
+  payload: {
+    verdict: "verified_scam" | "benign" | "inconclusive";
+    notes?: string;
+    assigned_tactics?: string[];
+  }
+): Promise<CommunityReport> {
+  return apiFetch<CommunityReport>(`/reports/${reportId}/review`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+/** Auth */
+export async function loginUser(email: string, password: string): Promise<{ access_token: string; user: UserProfile }> {
+  const res = await apiFetch<any>("/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (res?.access_token) {
+    setStoredToken(res.access_token);
+  }
+  return res;
+}
+
+export async function getCurrentUser(): Promise<UserProfile> {
+  return apiFetch<UserProfile>("/auth/me");
 }

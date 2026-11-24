@@ -580,7 +580,7 @@ export default function IntelligenceDashboard() {
 
           {/* Top SHAP Feature Bars */}
           <div className="space-y-2.5 font-mono text-xs">
-            {shapFeatures.map((f, i) => (
+            {shapFeatures.map((f: any, i: number) => (
               <div key={i} className="space-y-1">
                 <div className="flex justify-between text-[11px]">
                   <span className="text-slate-700 font-semibold">{f.feature}</span>

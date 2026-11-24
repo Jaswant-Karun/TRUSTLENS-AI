@@ -12,6 +12,7 @@ export interface SystemHealth {
   version: string;
   database_connected: boolean;
   models_loaded: Record<string, boolean>;
+  environment?: string;
   timestamp?: string;
 }
 

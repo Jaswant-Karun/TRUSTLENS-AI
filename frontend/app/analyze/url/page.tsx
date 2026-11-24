@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
 import { scanUrl, ScanResult } from "@/lib/api";
 import {
@@ -65,8 +65,9 @@ export default function UrlAnalysisPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
 
-  const handleScan = async () => {
-    const trimmed = url.trim();
+  const executeScan = async (targetUrl?: string) => {
+    const candidate = targetUrl || url;
+    const trimmed = candidate.trim();
     if (!trimmed) {
       setError("Please provide a target URL or domain to inspect.");
       return;
@@ -94,6 +95,13 @@ export default function UrlAnalysisPage() {
       setLoading(false);
     }
   };
+
+  const handleScan = () => executeScan();
+
+  // Initial scan on mount
+  useEffect(() => {
+    executeScan(URL_PRESETS[0].url);
+  }, []);
 
   const handlePaste = async () => {
     try {
@@ -153,6 +161,7 @@ export default function UrlAnalysisPage() {
                 onClick={() => {
                   setUrl(preset.url);
                   setError(null);
+                  executeScan(preset.url);
                 }}
                 className={`text-xs px-3 py-1.5 rounded-lg border font-mono transition-colors text-left flex items-center space-x-2 ${
                   url === preset.url

@@ -1,0 +1,160 @@
+{
+  "http_checks": {
+    "/": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 34707
+    },
+    "/dashboard": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 30943
+    },
+    "/analyze/text": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 36299
+    },
+    "/analyze/url": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 35929
+    },
+    "/analyze/image": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 31562
+    },
+    "/investigation": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 34128
+    },
+    "/intelligence/tactics": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 70138
+    },
+    "/intelligence/campaigns": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 33433
+    },
+    "/intelligence/threats": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 50601
+    },
+    "/models": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 29366
+    },
+    "/history": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 38069
+    },
+    "/reports": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 36819
+    },
+    "/settings": {
+      "status_code": 200,
+      "success": true,
+      "content_length": 33151
+    }
+  },
+  "responsive_checks": {
+    "dashboard": {
+      "desktop": {
+        "success": true,
+        "size_bytes": 142756,
+        "file": "dashboard_desktop.png"
+      },
+      "laptop": {
+        "success": true,
+        "size_bytes": 128624,
+        "file": "dashboard_laptop.png"
+      },
+      "tablet": {
+        "success": true,
+        "size_bytes": 90393,
+        "file": "dashboard_tablet.png"
+      },
+      "mobile": {
+        "success": true,
+        "size_bytes": 34000,
+        "file": "dashboard_mobile.png"
+      }
+    },
+    "analyze_url": {
+      "desktop": {
+        "success": true,
+        "size_bytes": 164661,
+        "file": "analyze_url_desktop.png"
+      },
+      "laptop": {
+        "success": true,
+        "size_bytes": 113357,
+        "file": "analyze_url_laptop.png"
+      },
+      "tablet": {
+        "success": true,
+        "size_bytes": 117538,
+        "file": "analyze_url_tablet.png"
+      },
+      "mobile": {
+        "success": true,
+        "size_bytes": 40117,
+        "file": "analyze_url_mobile.png"
+      }
+    },
+    "models": {
+      "desktop": {
+        "success": true,
+        "size_bytes": 143767,
+        "file": "models_desktop.png"
+      },
+      "laptop": {
+        "success": true,
+        "size_bytes": 121424,
+        "file": "models_laptop.png"
+      },
+      "tablet": {
+        "success": true,
+        "size_bytes": 88576,
+        "file": "models_tablet.png"
+      },
+      "mobile": {
+        "success": true,
+        "size_bytes": 30921,
+        "file": "models_mobile.png"
+      }
+    },
+    "reports": {
+      "desktop": {
+        "success": true,
+        "size_bytes": 127174,
+        "file": "reports_desktop.png"
+      },
+      "laptop": {
+        "success": true,
+        "size_bytes": 103534,
+        "file": "reports_laptop.png"
+      },
+      "tablet": {
+        "success": true,
+        "size_bytes": 76171,
+        "file": "reports_tablet.png"
+      },
+      "mobile": {
+        "success": true,
+        "size_bytes": 28226,
+        "file": "reports_mobile.png"
+      }
+    }
+  },
+  "errors": []
+}

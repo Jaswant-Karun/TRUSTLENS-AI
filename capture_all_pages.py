@@ -14,7 +14,9 @@ os.makedirs(docs_dir, exist_ok=True)
 
 targets = [
     {"name": "review_dashboard.png", "url": "http://localhost:3000/dashboard", "size": "1440,1100"},
-    {"name": "review_analyze_url.png", "url": "http://localhost:3000/analyze/url", "size": "1440,1100"},
+    {"name": "review_analyze_url.png", "url": "http://localhost:3000/analyze/url", "size": "1440,1350"},
+    {"name": "review_analyze_text.png", "url": "http://localhost:3000/analyze/text", "size": "1440,1350"},
+    {"name": "review_investigation.png", "url": "http://localhost:3000/investigation", "size": "1440,1350"},
     {"name": "review_intel_campaigns.png", "url": "http://localhost:3000/intelligence/campaigns", "size": "1440,1200"},
     {"name": "review_intel_tactics.png", "url": "http://localhost:3000/intelligence/tactics", "size": "1440,1200"},
     {"name": "review_intel_threats.png", "url": "http://localhost:3000/intelligence/threats", "size": "1440,1100"},
@@ -31,7 +33,7 @@ for t in targets:
         "--headless=new",
         "--disable-gpu",
         f"--window-size={t['size']}",
-        "--virtual-time-budget=4000",
+        "--virtual-time-budget=4500",
         f"--screenshot={doc_out}",
         t["url"]
     ]

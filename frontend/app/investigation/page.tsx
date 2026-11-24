@@ -79,9 +79,19 @@ export default function ComprehensiveInvestigationPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
 
-  const handleInvestigate = async () => {
-    const trimmedContent = content.trim();
-    if (!trimmedContent && !url.trim()) {
+  const executeInvestigate = async (
+    customContent?: string,
+    customUrl?: string,
+    customChannel?: string,
+    customSender?: string
+  ) => {
+    const cTarget = customContent !== undefined ? customContent : content;
+    const uTarget = customUrl !== undefined ? customUrl : url;
+    const chTarget = customChannel !== undefined ? customChannel : channel;
+    const sTarget = customSender !== undefined ? customSender : sender;
+
+    const trimmedContent = cTarget.trim();
+    if (!trimmedContent && !uTarget.trim()) {
       setError("Please provide either message text, a target URL, or both for investigation.");
       return;
     }
@@ -95,10 +105,10 @@ export default function ComprehensiveInvestigationPage() {
       setTimeout(() => setProgressStatus("Evaluating Model 3 (Tactics) & Model 4 (Campaign Clustering)..."), 450);
 
       const data = await scanComprehensive({
-        content: trimmedContent || url.trim(),
-        url: url.trim() || undefined,
-        channel,
-        sender: sender.trim() || undefined,
+        content: trimmedContent || uTarget.trim(),
+        url: uTarget.trim() || undefined,
+        channel: chTarget,
+        sender: sTarget.trim() || undefined,
       });
 
       setResult(data);
@@ -109,6 +119,17 @@ export default function ComprehensiveInvestigationPage() {
       setProgressStatus("");
     }
   };
+
+  const handleInvestigate = () => executeInvestigate();
+
+  React.useEffect(() => {
+    executeInvestigate(
+      INCIDENT_PRESETS[0].content,
+      INCIDENT_PRESETS[0].url,
+      INCIDENT_PRESETS[0].channel,
+      INCIDENT_PRESETS[0].sender
+    );
+  }, []);
 
   const handleClear = () => {
     setContent("");
@@ -154,6 +175,7 @@ export default function ComprehensiveInvestigationPage() {
                   setChannel(preset.channel);
                   setSender(preset.sender);
                   setError(null);
+                  executeInvestigate(preset.content, preset.url, preset.channel, preset.sender);
                 }}
                 className={`p-3 rounded-lg border text-left transition-colors font-mono ${
                   content === preset.content && url === preset.url

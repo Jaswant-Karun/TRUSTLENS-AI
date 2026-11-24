@@ -106,8 +106,12 @@ export default function TextAnalysisPage() {
       ? PRESET_LURES
       : PRESET_LURES.filter((p) => p.category === selectedCategory);
 
-  const handleScan = async () => {
-    const trimmed = content.trim();
+  const executeScan = async (customText?: string, customChannel?: string, customSender?: string) => {
+    const textTarget = customText !== undefined ? customText : content;
+    const channelTarget = customChannel !== undefined ? customChannel : channel;
+    const senderTarget = customSender !== undefined ? customSender : sender;
+
+    const trimmed = textTarget.trim();
     if (!trimmed) {
       setError("Please provide a suspicious communication text to analyze.");
       return;
@@ -127,8 +131,8 @@ export default function TextAnalysisPage() {
 
       const data = await scanText({
         text: trimmed,
-        channel,
-        sender: sender.trim() || undefined,
+        channel: channelTarget,
+        sender: senderTarget.trim() || undefined,
       });
 
       setResult(data);
@@ -139,6 +143,12 @@ export default function TextAnalysisPage() {
       setProgressStep("");
     }
   };
+
+  const handleScan = () => executeScan();
+
+  React.useEffect(() => {
+    executeScan(PRESET_LURES[0].content, PRESET_LURES[0].channel, PRESET_LURES[0].sender);
+  }, []);
 
   const handlePaste = async () => {
     try {
@@ -197,6 +207,7 @@ export default function TextAnalysisPage() {
                   setChannel(preset.channel);
                   setSender(preset.sender);
                   setError(null);
+                  executeScan(preset.content, preset.channel, preset.sender);
                 }}
                 className={`text-xs px-3 py-1.5 rounded-lg border font-mono transition-colors text-left flex items-center space-x-2 ${
                   content === preset.content

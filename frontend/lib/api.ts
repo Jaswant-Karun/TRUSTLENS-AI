@@ -174,16 +174,20 @@ export interface AnalysisHistoryItem {
   analysis_id: string;
   created_at: string;
   channel: string;
+  analysis_type?: string;
   sender?: string;
   content_preview: string;
   threat_level: string;
   risk_score: number;
   is_threat: boolean;
+  model_version?: string;
+  status?: string;
 }
 
 export interface PaginatedAnalyses {
   items: AnalysisHistoryItem[];
-  total: number;
+  total_count?: number;
+  total?: number;
   page: number;
   page_size: number;
   total_pages: number;
@@ -420,7 +424,7 @@ export async function submitCommunityReport(payload: {
 export async function reviewCommunityReport(
   reportId: string,
   payload: {
-    verdict: "verified_scam" | "benign" | "inconclusive";
+    verdict: "verified_scam" | "benign" | "inconclusive" | "under_review";
     notes?: string;
     assigned_tactics?: string[];
   }

@@ -18,8 +18,15 @@ import {
   CheckSquare,
   Square,
   X,
+  Search,
+  Copy,
+  Check,
+  Globe,
+  Phone,
+  Hash,
+  Filter,
 } from "lucide-react";
-import { getCampaigns, CampaignSummary } from "@/lib/api";
+import { getCampaigns, getCampaignDetail, CampaignSummary, CampaignDetail } from "@/lib/api";
 import { SkeletonCard } from "./ui/LoadingStates";
 
 interface KillChainGraphProps {
@@ -40,7 +47,15 @@ interface GraphNode {
 export default function KillChainGraph({ id }: KillChainGraphProps) {
   const [campaigns, setCampaigns] = useState<CampaignSummary[]>([]);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignSummary | null>(null);
+  const [campaignDetail, setCampaignDetail] = useState<any | null>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Search & Filter state for Campaign Clusters
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [copiedExemplar, setCopiedExemplar] = useState(false);
+  const [copiedIoc, setCopiedIoc] = useState<string | null>(null);
 
   // Graph state (from Image 3: Threat Intelligence Relationships)
   const [zoomLevel, setZoomLevel] = useState(129);
@@ -92,6 +107,44 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
       isMounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedCampaign) {
+      const id = selectedCampaign.cluster_id ?? selectedCampaign.campaign_id;
+      if (id !== undefined) {
+        setLoadingDetail(true);
+        getCampaignDetail(id)
+          .then((res) => {
+            setCampaignDetail(res);
+            setLoadingDetail(false);
+          })
+          .catch(() => {
+            setLoadingDetail(false);
+          });
+      }
+    }
+  }, [selectedCampaign]);
+
+  const handleCopyText = (text: string, isExemplar: boolean) => {
+    navigator.clipboard.writeText(text);
+    if (isExemplar) {
+      setCopiedExemplar(true);
+      setTimeout(() => setCopiedExemplar(false), 2000);
+    } else {
+      setCopiedIoc(text);
+      setTimeout(() => setCopiedIoc(null), 2000);
+    }
+  };
+
+  const filteredCampaigns = campaigns.filter((camp) => {
+    const campId = String(camp.cluster_id ?? camp.campaign_id ?? "");
+    const targetName = (camp.targeted_entity ?? camp.target_brand ?? "").toLowerCase();
+    const campName = (camp.campaign_name ?? "").toLowerCase();
+    const q = searchQuery.toLowerCase();
+    const matchQuery = !q || campId.includes(q) || targetName.includes(q) || campName.includes(q);
+    const matchStatus = statusFilter === "all" || (camp.status || "active").toLowerCase() === statusFilter.toLowerCase();
+    return matchQuery && matchStatus;
+  });
 
   if (loading) {
     return <SkeletonCard />;
@@ -405,58 +458,89 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
 
         {/* Grid: Left Cluster Selector, Right Kill-Chain Lifecycle */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left: Discovered Campaign Clusters List */}
-          <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
-            <div className="text-[11px] font-mono uppercase text-slate-400 font-semibold mb-2">
-              Identified Threat Clusters
-            </div>
-            {campaigns.length === 0 ? (
-              <div className="p-4 bg-slate-50 rounded-lg text-xs text-slate-500 text-center">
-                No active campaign clusters available.
+          {/* Left: Discovered Campaign Clusters List with Search & Filters */}
+          <div className="space-y-3">
+            {/* Search & Filter Controls */}
+            <div className="space-y-2">
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  placeholder="Filter by ID, entity (e.g. SBI, Paytm)..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full text-xs font-mono pl-8 pr-3 py-1.5 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-sky-500"
+                />
               </div>
-            ) : (
-              campaigns.map((camp) => {
-                const campId = camp.cluster_id ?? camp.campaign_id ?? 0;
-                const targetName = camp.targeted_entity ?? camp.target_brand ?? "Financial Institution";
-                const tacticsName = Array.isArray(camp.primary_tactics)
-                  ? camp.primary_tactics.join(", ")
-                  : camp.primary_tactic || "Phishing Lure";
-                const isSelected = (selectedCampaign?.cluster_id ?? selectedCampaign?.campaign_id) === campId;
 
-                return (
-                  <button
-                    key={campId}
-                    onClick={() => setSelectedCampaign(camp)}
-                    className={`w-full text-left p-3 rounded-lg border transition-all flex flex-col justify-between ${
-                      isSelected
-                        ? "border-blue-500 bg-blue-50/60 shadow-sm"
-                        : "border-slate-200 hover:border-slate-300 bg-white"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-900 truncate max-w-[170px]">
-                        Cluster #{campId}: {targetName}
-                      </span>
-                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
-                        Cohesion: {Math.round(camp.cohesion_score * 100)}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
-                      <span className="truncate max-w-[140px]">{tacticsName}</span>
-                      <span className="font-semibold text-slate-700 shrink-0">{camp.cluster_size} messages</span>
-                    </div>
-                  </button>
-                );
-              })
-            )}
+              <div className="flex items-center space-x-2">
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="text-[11px] font-mono px-2 py-1 rounded border border-slate-300 bg-white flex-1"
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active Only</option>
+                  <option value="mitigated">Mitigated</option>
+                </select>
+                <span className="text-[11px] font-mono text-slate-400">
+                  {filteredCampaigns.length} shown
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+              {filteredCampaigns.length === 0 ? (
+                <div className="p-4 bg-slate-50 rounded-lg text-xs text-slate-500 text-center">
+                  No clusters match criteria.
+                </div>
+              ) : (
+                filteredCampaigns.map((camp) => {
+                  const campId = camp.cluster_id ?? camp.campaign_id ?? 0;
+                  const targetName = camp.targeted_entity ?? camp.target_brand ?? "Financial Institution";
+                  const tacticsName = Array.isArray(camp.primary_tactics)
+                    ? camp.primary_tactics.join(", ")
+                    : camp.primary_tactic || "Phishing Lure";
+                  const isSelected = (selectedCampaign?.cluster_id ?? selectedCampaign?.campaign_id) === campId;
+
+                  return (
+                    <button
+                      key={campId}
+                      onClick={() => setSelectedCampaign(camp)}
+                      className={`w-full text-left p-3 rounded-lg border transition-all flex flex-col justify-between ${
+                        isSelected
+                          ? "border-sky-500 bg-sky-50/70 shadow-sm"
+                          : "border-slate-200 hover:border-slate-300 bg-white"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-slate-900 truncate max-w-[170px]">
+                          Cluster #{campId}: {targetName}
+                        </span>
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">
+                          Cohesion: {Math.round(camp.cohesion_score * 100)}%
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2 font-mono">
+                        <span className="truncate max-w-[140px]">{tacticsName}</span>
+                        <span className="font-semibold text-slate-700 shrink-0">{camp.cluster_size} msgs</span>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
           </div>
 
-          {/* Right: Interactive Kill-Chain Lifecycle Flow */}
-          <div className="lg:col-span-2 bg-slate-50/70 border border-slate-200 rounded-xl p-5 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-200">
+          {/* Right: Comprehensive Campaign Dossier & Forensic Breakdown */}
+          <div className="lg:col-span-2 bg-slate-50/70 border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4">
+            <div className="space-y-4">
+              {/* Dossier Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-200 gap-2">
                 <div>
-                  <span className="text-[11px] font-mono uppercase text-slate-400 font-medium">Selected Dossier</span>
+                  <span className="text-[11px] font-mono uppercase text-slate-400 font-medium">
+                    Cluster Dossier #{selectedCampaign?.cluster_id ?? selectedCampaign?.campaign_id ?? 0}
+                  </span>
                   <h4 className="text-sm font-bold text-slate-900">
                     {selectedCampaign
                       ? `Cluster #${selectedCampaign.cluster_id ?? selectedCampaign.campaign_id} — ${
@@ -465,64 +549,164 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
                       : "Campaign Dossier"}
                   </h4>
                 </div>
-                {selectedCampaign && (
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-mono font-medium">
-                    Status: {(selectedCampaign.status || "ACTIVE").toUpperCase()}
+
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300 font-mono font-medium">
+                    Cohesion: {Math.round((selectedCampaign?.cohesion_score || 0.8) * 100)}%
                   </span>
-                )}
+                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-mono font-medium">
+                    Status: {(selectedCampaign?.status || "ACTIVE").toUpperCase()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Exemplar Message Card */}
+              <div className="p-3.5 bg-white rounded-lg border border-slate-200 shadow-subtle space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono uppercase text-slate-500 font-semibold flex items-center gap-1.5">
+                    <AlertCircle className="w-3.5 h-3.5 text-sky-600" />
+                    Observed Exemplar Communication
+                  </span>
+                  {campaignDetail?.exemplar_message && (
+                    <button
+                      onClick={() => handleCopyText(campaignDetail.exemplar_message, true)}
+                      className="text-[11px] font-mono text-sky-600 hover:text-sky-800 flex items-center space-x-1"
+                    >
+                      {copiedExemplar ? (
+                        <>
+                          <Check className="w-3 h-3 text-emerald-600" />
+                          <span>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3 h-3" />
+                          <span>Copy Exemplar</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                <div className="p-2.5 bg-slate-50 rounded border border-slate-200 text-xs font-mono text-slate-800 leading-relaxed">
+                  {loadingDetail ? (
+                    <span className="text-slate-400 italic">Fetching exemplar from dossier...</span>
+                  ) : campaignDetail?.exemplar_message ? (
+                    campaignDetail.exemplar_message
+                  ) : (
+                    "URGENT: Security alert regarding your account. Immediate verification required via secure gateway."
+                  )}
+                </div>
+              </div>
+
+              {/* Shared Phrases & Technical Indicators Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {/* Shared Recurring Phrases */}
+                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle space-y-2">
+                  <span className="text-[11px] font-mono uppercase text-slate-500 font-semibold block">
+                    Shared Recurring Phrases
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {campaignDetail?.shared_phrases && campaignDetail.shared_phrases.length > 0 ? (
+                      campaignDetail.shared_phrases.map((phrase: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-mono"
+                        >
+                          "{phrase}"
+                        </span>
+                      ))
+                    ) : (
+                      <span className="text-xs text-slate-400 font-mono italic">
+                        Semantic embedding proximity without strict verbatim n-grams
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Shared Technical Indicators (IOCs) */}
+                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle space-y-2">
+                  <span className="text-[11px] font-mono uppercase text-slate-500 font-semibold block">
+                    Associated Technical Indicators
+                  </span>
+                  <div className="space-y-1 max-h-24 overflow-y-auto">
+                    {campaignDetail?.shared_iocs?.sample_phones && campaignDetail.shared_iocs.sample_phones.length > 0 ? (
+                      campaignDetail.shared_iocs.sample_phones.slice(0, 4).map((phone: string, i: number) => (
+                        <div key={i} className="flex items-center justify-between text-xs font-mono text-slate-700 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+                          <span className="flex items-center gap-1">
+                            <Phone className="w-3 h-3 text-amber-600" /> {phone}
+                          </span>
+                          <button
+                            onClick={() => handleCopyText(phone, false)}
+                            className="text-slate-400 hover:text-slate-700"
+                            title="Copy Phone"
+                          >
+                            {copiedIoc === phone ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                          </button>
+                        </div>
+                      ))
+                    ) : (
+                      <span className="text-xs text-slate-400 font-mono italic">
+                        No persistent telephony identifiers observed
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* 4-Stage Attack Lifecycle Pipeline */}
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 mb-6">
-                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">1. Delivery</span>
-                    <div className="text-xs font-bold text-slate-800 mt-1">Bulk Gateway</div>
-                    <p className="text-[11px] text-slate-500 mt-1">Automated sender routing deceptive SMS packets.</p>
+                    <span className="text-[9px] font-mono uppercase text-slate-400 font-semibold">1. Delivery</span>
+                    <div className="text-xs font-bold text-slate-800 mt-0.5">Bulk Gateway</div>
+                    <p className="text-[10px] text-slate-500 mt-0.5">Automated sender routing deceptive SMS/WhatsApp.</p>
                   </div>
-                  <div className="text-[10px] text-blue-600 font-mono font-medium mt-3">Sender Header</div>
+                  <div className="text-[10px] text-blue-600 font-mono font-medium mt-2">Sender Header</div>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">2. Pretext Lure</span>
-                    <div className="text-xs font-bold text-slate-800 mt-1 truncate">
+                    <span className="text-[9px] font-mono uppercase text-slate-400 font-semibold">2. Pretext Lure</span>
+                    <div className="text-xs font-bold text-slate-800 mt-0.5 truncate">
                       {Array.isArray(selectedCampaign?.primary_tactics)
                         ? selectedCampaign?.primary_tactics.join(", ")
                         : selectedCampaign?.primary_tactic || "Account Coercion"}
                     </div>
-                    <p className="text-[11px] text-slate-500 mt-1 truncate">
+                    <p className="text-[10px] text-slate-500 mt-0.5 truncate">
                       Impersonation of {selectedCampaign?.targeted_entity ?? selectedCampaign?.target_brand ?? "institution"}.
                     </p>
                   </div>
-                  <div className="text-[10px] text-amber-600 font-mono font-medium mt-3">Psychological Coercion</div>
+                  <div className="text-[10px] text-amber-600 font-mono font-medium mt-2">Psychological Coercion</div>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">3. Credential Trap</span>
-                    <div className="text-xs font-bold text-slate-800 mt-1">Cloned Web Portal</div>
-                    <p className="text-[11px] text-slate-500 mt-1">Typo-squatted domains hosting fake netbanking forms.</p>
+                    <span className="text-[9px] font-mono uppercase text-slate-400 font-semibold">3. Credential Trap</span>
+                    <div className="text-xs font-bold text-slate-800 mt-0.5">Cloned Web Portal</div>
+                    <p className="text-[10px] text-slate-500 mt-0.5">Typo-squatted domains hosting fake netbanking forms.</p>
                   </div>
-                  <div className="text-[10px] text-rose-600 font-mono font-medium mt-3">Zero-Hop Detected</div>
+                  <div className="text-[10px] text-rose-600 font-mono font-medium mt-2">Zero-Hop Detected</div>
                 </div>
 
-                <div className="p-3 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200 shadow-subtle flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] font-mono uppercase text-slate-400 font-semibold">4. Interception</span>
-                    <div className="text-xs font-bold text-slate-800 mt-1">Credential Harvesting</div>
-                    <p className="text-[11px] text-slate-500 mt-1">OTP relays and unauthorized fund withdrawal.</p>
+                    <span className="text-[9px] font-mono uppercase text-slate-400 font-semibold">4. Interception</span>
+                    <div className="text-xs font-bold text-slate-800 mt-0.5">Credential Harvest</div>
+                    <p className="text-[10px] text-slate-500 mt-0.5">OTP relays and unauthorized fund withdrawal.</p>
                   </div>
-                  <div className="text-[10px] text-purple-600 font-mono font-medium mt-3">Active Mitigation</div>
+                  <div className="text-[10px] text-purple-600 font-mono font-medium mt-2">Active Mitigation</div>
                 </div>
               </div>
             </div>
 
-            {/* Mandatory Legal Caveat */}
-            <div className="p-3 rounded-lg bg-amber-50/70 border border-amber-200 text-xs text-amber-900 flex items-start space-x-2">
+            {/* Mandatory Scientific & Legal Caveat */}
+            <div className="p-3 rounded-lg bg-amber-50/80 border border-amber-200 text-xs text-amber-900 flex items-start space-x-2.5">
               <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
               <div className="text-[11px] leading-relaxed">
-                <span className="font-semibold">Model 4 Anti-Fabrication Caveat:</span> Campaign clustering represents mathematical sentence embedding proximity and shared lexical/domain indicators. It does NOT automatically establish legal attribution or criminal culpability without independent forensic verification.
+                <strong className="block text-amber-950 font-semibold mb-0.5">
+                  Model 4 Governance & Scientific Attribution Policy
+                </strong>
+                Unsupervised density clustering (HDBSCAN on sentence embeddings) identifies mathematical and linguistic similarity across deceptive lures. An unsupervised cluster <strong>does not prove a single criminal organization or coordinated syndicate</strong> without external human corroboration and independent legal subpoena verification.
               </div>
             </div>
           </div>

@@ -17,6 +17,7 @@ from backend.app.database.collections import (
     COLL_MODEL_EVALUATIONS,
     COLL_AUTOMATION_LOGS,
     COLL_AUDIT_LOGS,
+    COLL_INVESTIGATIONS,
 )
 
 INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
@@ -72,6 +73,12 @@ INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
         {"keys": [("timestamp", -1)]},
         {"keys": [("user_id", 1)]},
         {"keys": [("action", 1)]},
+    ],
+    COLL_INVESTIGATIONS: [
+        {"keys": [("investigation_id", 1)], "unique": True},
+        {"keys": [("status", 1)]},
+        {"keys": [("severity", 1)]},
+        {"keys": [("created_at", -1)]},
     ],
 }
 

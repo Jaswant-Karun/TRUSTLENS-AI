@@ -16,6 +16,7 @@ COLL_MODEL_REGISTRY = "model_registry"
 COLL_MODEL_EVALUATIONS = "model_evaluations"
 COLL_AUTOMATION_LOGS = "automation_logs"
 COLL_AUDIT_LOGS = "audit_logs"
+COLL_INVESTIGATIONS = "investigations"
 
 ALL_COLLECTIONS = [
     COLL_USERS,
@@ -28,6 +29,7 @@ ALL_COLLECTIONS = [
     COLL_MODEL_EVALUATIONS,
     COLL_AUTOMATION_LOGS,
     COLL_AUDIT_LOGS,
+    COLL_INVESTIGATIONS,
 ]
 
 
@@ -69,6 +71,10 @@ def get_automations_collection():
 
 def get_audit_collection():
     return db_manager.get_collection(COLL_AUDIT_LOGS)
+
+
+def get_investigations_collection():
+    return db_manager.get_collection(COLL_INVESTIGATIONS)
 
 
 # Convenience Aliases

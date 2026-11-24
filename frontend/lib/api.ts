@@ -452,3 +452,142 @@ export async function loginUser(email: string, password: string): Promise<{ acce
 export async function getCurrentUser(): Promise<UserProfile> {
   return apiFetch<UserProfile>("/auth/me");
 }
+
+/* -------------------------------------------------------------------------- */
+/* Investigation Graph API Client (Phase 1.2 Contract)                        */
+/* -------------------------------------------------------------------------- */
+
+export interface BackendGraphNode {
+  id: string;
+  type: string;
+  label: string;
+  properties: Record<string, any>;
+  source: string;
+  verification_status: string;
+  created_at: string;
+}
+
+export interface BackendGraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  relationship_type: string;
+  evidence_reference?: string;
+  created_at: string;
+}
+
+export interface BackendTimelineEvent {
+  id: string;
+  event_type: string;
+  title: string;
+  description?: string;
+  related_object_ids: string[];
+  timestamp: string;
+  source: string;
+}
+
+export interface InvestigationSummaryItem {
+  id: string;
+  title: string;
+  description?: string;
+  status: string;
+  severity?: string;
+  created_at: string;
+  updated_at: string;
+  objects_count: number;
+  tasks_count: number;
+  comments_count: number;
+  tags: string[];
+}
+
+export interface InvestigationDetailResponse extends InvestigationSummaryItem {
+  sources: string[];
+  attributes: Record<string, any>;
+  visibility: string;
+}
+
+export interface InvestigationGraphResponse {
+  investigation_id: string;
+  nodes: BackendGraphNode[];
+  edges: BackendGraphEdge[];
+  total_nodes: number;
+  total_edges: number;
+}
+
+export interface InvestigationTimelineResponse {
+  investigation_id: string;
+  timeline: BackendTimelineEvent[];
+  total_events: number;
+}
+
+export interface ObjectDetailResponse {
+  investigation_id: string;
+  object: BackendGraphNode;
+  relationships_count: number;
+}
+
+export interface ObjectRelationshipsResponse {
+  investigation_id: string;
+  object_id: string;
+  connected_nodes: BackendGraphNode[];
+  edges: BackendGraphEdge[];
+  total_connected: number;
+}
+
+/** Lists persisted investigation dossiers */
+export async function getInvestigations(params?: {
+  status?: string;
+  severity?: string;
+  limit?: number;
+  signal?: AbortSignal;
+}): Promise<InvestigationSummaryItem[]> {
+  const query = new URLSearchParams();
+  if (params?.status) query.set("status", params.status);
+  if (params?.severity) query.set("severity", params.severity);
+  if (params?.limit) query.set("limit", params.limit.toString());
+  return apiFetch<InvestigationSummaryItem[]>(`/investigations?${query.toString()}`, { signal: params?.signal });
+}
+
+/** Retrieves single investigation dossier metadata */
+export async function getInvestigation(id: string, signal?: AbortSignal): Promise<InvestigationDetailResponse> {
+  return apiFetch<InvestigationDetailResponse>(`/investigations/${id}`, { signal });
+}
+
+/** Retrieves full graph nodes and edges for an investigation */
+export async function getInvestigationGraph(id: string, signal?: AbortSignal): Promise<InvestigationGraphResponse> {
+  return apiFetch<InvestigationGraphResponse>(`/investigations/${id}/graph`, { signal });
+}
+
+/** Retrieves multi-track chronological timeline events */
+export async function getInvestigationTimeline(id: string, signal?: AbortSignal): Promise<InvestigationTimelineResponse> {
+  return apiFetch<InvestigationTimelineResponse>(`/investigations/${id}/timeline`, { signal });
+}
+
+/** Retrieves specific object details from an investigation */
+export async function getInvestigationObject(id: string, objectId: string, signal?: AbortSignal): Promise<ObjectDetailResponse> {
+  return apiFetch<ObjectDetailResponse>(`/investigations/${id}/objects/${objectId}`, { signal });
+}
+
+/** One-Hop Relationship Expansion query */
+export async function getInvestigationObjectRelationships(
+  id: string,
+  objectId: string,
+  signal?: AbortSignal
+): Promise<ObjectRelationshipsResponse> {
+  return apiFetch<ObjectRelationshipsResponse>(`/investigations/${id}/objects/${objectId}/relationships`, { signal });
+}
+
+/** Creates and persists a new investigation dossier */
+export async function createInvestigation(payload: {
+  title: string;
+  description?: string;
+  severity?: string;
+  tags?: string[];
+}): Promise<InvestigationDetailResponse> {
+  return apiFetch<InvestigationDetailResponse>("/investigations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+

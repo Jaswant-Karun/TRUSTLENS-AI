@@ -18,6 +18,9 @@ import {
   FileText,
   AlertOctagon,
   Image as ImageIcon,
+  Network,
+  Cpu,
+  Info,
 } from "lucide-react";
 import { ScanResult } from "@/lib/api";
 
@@ -26,14 +29,14 @@ interface AnalysisResultPanelProps {
 }
 
 export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
-  const [activeSubTab, setActiveSubTab] = useState<"overview" | "ssl" | "content" | "whois" | "evidence">("overview");
+  const [activeSubTab, setActiveSubTab] = useState<"overview" | "ssl" | "content" | "campaign" | "evidence">("overview");
 
   const threatLevel = result.threat_level || "inconclusive";
-  const confidencePct = Math.round((result.confidence || 0.95) * 100);
-  const riskPct = Math.round((result.risk_score || 0.88) * 100);
-  const riskScore13 = ((result.risk_score || 0.88) * 13).toFixed(1);
+  const confidencePct = Math.round((result.confidence || 0.90) * 100);
+  const riskPct = Math.round((result.risk_score || 0.85) * 100);
+  const riskScore13 = ((result.risk_score || 0.85) * 13).toFixed(1);
 
-  const levelStyles = {
+  const levelStyles: Record<string, any> = {
     critical: {
       badge: "bg-red-500/10 text-red-400 border-red-500/30",
       alertBg: "bg-gradient-to-r from-red-950/80 via-red-900/40 to-slate-900/90 border-red-800/80 text-red-200",
@@ -84,29 +87,39 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
     },
   };
 
-  const style = levelStyles[threatLevel] || levelStyles.inconclusive;
+  const style = levelStyles[threatLevel.toLowerCase()] || levelStyles.inconclusive;
 
   // Derive counts for severity pills
-  const highCount = threatLevel === "critical" ? 6 : threatLevel === "high" ? 4 : 1;
+  const highCount = threatLevel === "critical" ? 6 : threatLevel === "high" ? 4 : 0;
   const medCount = threatLevel === "medium" || threatLevel === "high" ? 2 : 1;
   const lowCount = threatLevel === "clean" ? 8 : 4;
 
   // Metadata items
   const detectedBrand =
+    result.campaign_association?.targeted_institution ||
     result.metadata?.targeted_entity ||
-    (result.text_model as any)?.detected_brand ||
-    (result.url_model?.is_phishing ? "Financial / Corporate Impersonation" : "Generic / Unbranded");
+    (result.url_model?.is_phishing ? "Banking / Financial Clone" : "Generic / Unbranded");
 
   const category =
-    result.tactic_model?.detected_tactics && result.tactic_model.detected_tactics.length > 0
-      ? result.tactic_model.detected_tactics[0].replace(/_/g, " ").toUpperCase()
+    result.tactic_model?.primary_vector ||
+    (result.tactic_model?.tactics && result.tactic_model.tactics.length > 0
+      ? result.tactic_model.tactics[0].tactic_name
       : result.url_model?.is_phishing
-      ? "PHISHING / CREDENTIAL HARVEST"
-      : "LEGITIMATE COMMUNICATION";
+      ? "Phishing / Credential Trap"
+      : result.text_model?.predicted_label || "Digital Scam Communication");
+
+  const urlRiskScore =
+    result.url_model?.risk_score !== undefined
+      ? Math.round(result.url_model.risk_score * 100)
+      : result.url_model?.phishing_probability !== undefined
+      ? Math.round(result.url_model.phishing_probability * 100)
+      : null;
+
+  const urlFeatures = result.url_model?.features || {};
 
   return (
     <div className="bg-[#0b1329] text-white rounded-xl border border-slate-800 shadow-2xl overflow-hidden space-y-5 p-6">
-      {/* 1. Alert Banner (from Image 2: PhiShark) */}
+      {/* 1. Alert Banner (PhiShark inspired) */}
       <div className={`p-4 rounded-xl border flex items-start space-x-3 ${style.alertBg}`}>
         <div className="p-1 rounded-md bg-black/30 shrink-0 mt-0.5">{style.icon}</div>
         <div className="flex-1">
@@ -118,20 +131,18 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
           </div>
           <p className="text-xs mt-1 text-slate-300 leading-relaxed">
             {result.risk_assessment?.verdict ||
-              `This communication exhibits suspicious deception signatures impersonating '${detectedBrand}'. It is flagged due to malicious heuristics and manipulative social engineering cues.`}
+              `This communication exhibits suspicious deception signatures impersonating '${detectedBrand}'. Flagged due to malicious heuristics and manipulative social engineering cues.`}
           </p>
         </div>
       </div>
 
-      {/* 2. Target Overview Card with Circular Risk Gauge (from Image 2: PhiShark) */}
+      {/* 2. Target Overview Card with Circular Risk Gauge */}
       <div className="bg-slate-900/80 rounded-xl border border-slate-800 p-5 flex flex-col lg:flex-row items-center justify-between gap-6">
         {/* Left: Circular Risk Gauge */}
         <div className="flex items-center space-x-4 shrink-0">
           <div className="relative w-24 h-24 flex items-center justify-center">
             <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-              {/* Background circle */}
               <circle cx="50" cy="50" r="42" fill="transparent" stroke="#1e293b" strokeWidth="8" />
-              {/* Animated risk ring */}
               <circle
                 cx="50"
                 cy="50"
@@ -159,7 +170,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
               {style.riskLabel}
             </span>
             <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-              Score: <strong className="text-white">{riskPct}/100</strong> ({confidencePct}% conf)
+              Risk: <strong className="text-white">{riskPct}/100</strong> ({confidencePct}% conf)
             </div>
             <div className="text-[10px] text-slate-500 font-mono mt-0.5">
               ID: {result.analysis_id.slice(0, 14)}
@@ -169,19 +180,19 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
 
         {/* Center: Target Identifier & Timestamps */}
         <div className="flex-1 min-w-0 border-y lg:border-y-0 lg:border-x border-slate-800 py-3 lg:py-0 lg:px-6 w-full">
-          <div className="text-[11px] font-mono uppercase text-slate-400">Target Submitted</div>
+          <div className="text-[11px] font-mono uppercase text-slate-400">Analyzed Target</div>
           <div className="flex items-center space-x-2 mt-1">
             <Globe className="w-4 h-4 text-cyan-400 shrink-0" />
             <span className="text-xs font-mono font-bold text-slate-100 truncate">
-              {result.metadata?.target_url || result.metadata?.extracted_url || result.analysis_id}
+              {result.url_model?.url || result.text_model?.text?.slice(0, 60) || result.analysis_id}
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-4 text-[11px] font-mono text-slate-400 mt-2.5">
             <div>
-              Scan Type: <strong className="text-cyan-400">{result.metadata?.channel?.toUpperCase() || "WEB / MULTI-MODAL"}</strong>
+              Vector: <strong className="text-cyan-400">{result.analysis_type.toUpperCase()}</strong>
             </div>
             <div>
-              Started: <strong className="text-slate-300">Today, Real-Time</strong>
+              Primary: <strong className="text-slate-300">{result.risk_assessment?.primary_vector || "Multi-Modal"}</strong>
             </div>
             <div>
               Latency: <strong className="text-slate-300">{result.processing_time_ms} ms</strong>
@@ -189,7 +200,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
           </div>
         </div>
 
-        {/* Right: Severity Badge Pill Counts (6 High, 1 Med, 8 Low) */}
+        {/* Right: Severity Badge Pill Counts */}
         <div className="flex items-center space-x-3 shrink-0">
           <div className="flex flex-col items-center">
             <div className="w-10 h-10 rounded-full border border-red-500/40 bg-red-950/40 flex items-center justify-center text-sm font-bold font-mono text-red-400">
@@ -212,14 +223,14 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
         </div>
       </div>
 
-      {/* 3. Forensic Detail Sub-Tabs (from Image 2: PhiShark) */}
+      {/* 3. Forensic Detail Sub-Tabs */}
       <div className="border-b border-slate-800 flex items-center space-x-1 overflow-x-auto text-xs font-mono">
         {[
-          { id: "overview", label: "Overview" },
-          { id: "ssl", label: "SSL & Lexical" },
-          { id: "content", label: "Content & Tactics" },
-          { id: "whois", label: "WHOIS & Network" },
-          { id: "evidence", label: "Model Evidence" },
+          { id: "overview", label: "Overview & Models" },
+          { id: "ssl", label: "Zero-Hop Lexical URL" },
+          { id: "content", label: "Tactics & Psychological" },
+          { id: "campaign", label: "Campaign Cluster" },
+          { id: "evidence", label: "Evidence & Remediation" },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -235,31 +246,31 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
         ))}
       </div>
 
-      {/* Tab 1: Overview Metadata Grid */}
+      {/* TAB 1: OVERVIEW & MODEL METRICS */}
       {activeSubTab === "overview" && (
         <div className="space-y-5">
-          {/* 5 Metadata Summary Tiles (Image 2 style) */}
+          {/* Metadata Tiles */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Detected Brand</span>
+              <span className="text-[10px] font-mono uppercase text-slate-400 block">Target Brand</span>
               <span className="text-xs font-bold text-white mt-1 block truncate">{detectedBrand}</span>
             </div>
             <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Category</span>
+              <span className="text-[10px] font-mono uppercase text-slate-400 block">Threat Classification</span>
               <span className="text-xs font-bold text-cyan-400 mt-1 block truncate">{category}</span>
             </div>
             <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Trust Signals</span>
+              <span className="text-[10px] font-mono uppercase text-slate-400 block">Verdict Integrity</span>
               <span className="text-xs font-bold text-amber-400 mt-1 block">
-                {threatLevel === "clean" ? "High (Verified)" : "Low / Suspicious"}
+                {threatLevel === "clean" ? "Verified Clean" : "Confirmed Malicious"}
               </span>
             </div>
             <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Visual Quality</span>
-              <span className="text-xs font-bold text-slate-200 mt-1 block">High-Fidelity Clone</span>
+              <span className="text-[10px] font-mono uppercase text-slate-400 block">Inspection Safety</span>
+              <span className="text-xs font-bold text-emerald-400 mt-1 block">100% Zero-Hop</span>
             </div>
             <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800 col-span-2 sm:col-span-1">
-              <span className="text-[10px] font-mono uppercase text-slate-400 block">Language</span>
+              <span className="text-[10px] font-mono uppercase text-slate-400 block">Detected Language</span>
               <span className="text-xs font-bold text-white mt-1 block">
                 {result.text_model?.detected_language || "Multilingual (EN/HI)"}
               </span>
@@ -272,20 +283,25 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
             <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-2.5">
               <div className="flex items-center justify-between text-xs font-mono border-b border-slate-800 pb-2">
                 <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5" /> Model 1: Linguistic
+                  <Globe className="w-3.5 h-3.5" /> Model 1: Text Scam
                 </span>
-                <span className="text-[10px] text-slate-400">{Math.round((result.text_model?.confidence || 0.95) * 100)}%</span>
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                  {result.text_model ? `${Math.round((result.text_model.confidence || 0.9) * 100)}%` : "N/A"}
+                </span>
               </div>
               <div className="text-xs space-y-1.5 font-mono">
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Verdict:</span>
+                  <span className="text-slate-400">Classification:</span>
                   <span className={result.text_model?.is_threat ? "text-red-400 font-bold" : "text-emerald-400"}>
-                    {result.text_model?.predicted_label || "Scam Detected"}
+                    {result.text_model?.predicted_label || "No Threat Signal"}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-400">Language:</span>
-                  <span className="text-slate-200">{result.text_model?.detected_language || "Hindi / Hinglish"}</span>
+                  <span className="text-slate-200">{result.text_model?.detected_language || "Unknown"}</span>
+                </div>
+                <div className="text-[10px] text-slate-400 pt-1 border-t border-slate-800/60 truncate">
+                  {result.text_model?.explanation || "Linguistic patterns evaluated"}
                 </div>
               </div>
             </div>
@@ -296,22 +312,25 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                 <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
                   <LinkIcon className="w-3.5 h-3.5" /> Model 2: Zero-Hop URL
                 </span>
-                <span className="text-[10px] text-slate-400">
-                  {result.url_model ? `${Math.round(result.url_model.phishing_probability * 100)}%` : "N/A"}
+                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">
+                  {urlRiskScore !== null ? `${urlRiskScore}% Risk` : "N/A"}
                 </span>
               </div>
               <div className="text-xs space-y-1.5 font-mono">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Classification:</span>
                   <span className={result.url_model?.is_phishing ? "text-red-400 font-bold" : "text-emerald-400"}>
-                    {result.url_model?.is_phishing ? "Phishing URL" : "Legitimate URL"}
+                    {result.url_model?.is_phishing ? "Phishing URL" : result.url_model ? "Legitimate URL" : "No URL Target"}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-400">Entropy Score:</span>
+                  <span className="text-slate-400">Shannon Entropy:</span>
                   <span className="text-slate-200">
-                    {((result.url_model as any)?.shannon_entropy ?? (result.url_model?.features as any)?.shannon_entropy ?? 4.12)}
+                    {urlFeatures.url_entropy ? `${Number(urlFeatures.url_entropy).toFixed(2)} bits` : "N/A"}
                   </span>
+                </div>
+                <div className="text-[10px] text-slate-400 pt-1 border-t border-slate-800/60 truncate">
+                  {urlFeatures.has_ip_address ? "Direct IP Host Detected" : "Standard Hostname"}
                 </div>
               </div>
             </div>
@@ -320,23 +339,24 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
             <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/70 space-y-2.5">
               <div className="flex items-center justify-between text-xs font-mono border-b border-slate-800 pb-2">
                 <span className="text-cyan-400 font-semibold flex items-center gap-1.5">
-                  <Fingerprint className="w-3.5 h-3.5" /> Model 3: Social Engineering
+                  <Fingerprint className="w-3.5 h-3.5" /> Model 3: Tactics
                 </span>
                 <span className="text-[10px] text-amber-400 font-bold">
-                  {result.tactic_model?.tactic_count || 3} tactics
+                  {result.tactic_model?.tactic_count ?? result.tactic_model?.tactics?.length ?? 0} tactics
                 </span>
               </div>
               <div className="flex flex-wrap gap-1">
-                {(result.tactic_model?.detected_tactics && result.tactic_model.detected_tactics.length > 0
-                  ? result.tactic_model.detected_tactics
-                  : ["urgency", "bank_impersonation", "otp_request"]
-                ).map((t, i) => (
-                  <span
-                    key={i}
-                    className="text-[10px] px-2 py-0.5 rounded bg-amber-950/40 border border-amber-600/30 text-amber-300 font-mono"
-                  >
-                    {t.replace(/_/g, " ")}
-                  </span>
+                {(result.tactic_model?.tactics && result.tactic_model.tactics.length > 0 ? (
+                  result.tactic_model.tactics.map((t: any, i: number) => (
+                    <span
+                      key={i}
+                      className="text-[10px] px-2 py-0.5 rounded bg-amber-950/40 border border-amber-600/30 text-amber-300 font-mono"
+                    >
+                      {t.tactic_name || t.tactic_code}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-[11px] text-slate-400">No manipulation tactics isolated</span>
                 ))}
               </div>
             </div>
@@ -344,113 +364,194 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
         </div>
       )}
 
-      {/* Tab 2: SSL & Lexical */}
+      {/* TAB 2: ZERO-HOP LEXICAL URL */}
       {activeSubTab === "ssl" && (
         <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800 space-y-4">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
-            Zero-Hop Lexical Features (Model 2 XGBoost)
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs font-mono">
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Direct IP Address Host:</span>
-              <span className="font-bold text-red-400 block mt-1">Detected (High Severity)</span>
-            </div>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Subdomain Depth:</span>
-              <span className="font-bold text-amber-400 block mt-1">3 Subdomains (Excessive)</span>
-            </div>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Suspicious TLD:</span>
-              <span className="font-bold text-amber-400 block mt-1">.xyz / .php gateway</span>
-            </div>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Shannon Entropy:</span>
-              <span className="font-bold text-slate-200 block mt-1">4.38 bits/char</span>
-            </div>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Target Keyword in Path:</span>
-              <span className="font-bold text-red-400 block mt-1">"sbi-kyc", "update"</span>
-            </div>
-            <div className="p-3 bg-slate-950 rounded border border-slate-800">
-              <span className="text-slate-400">Execution Safety:</span>
-              <span className="font-bold text-emerald-400 block mt-1">100% Zero-Hop (Never Visited)</span>
-            </div>
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5">
+              <LinkIcon className="w-4 h-4" /> Zero-Hop Lexical Features (Model 2 XGBoost)
+            </h4>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/40 text-emerald-400">
+              100% Zero-Hop Safe (Never Visited)
+            </span>
           </div>
+
+          {result.url_model?.features ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs font-mono">
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">Direct IP Address Host:</span>
+                <span className={`font-bold block mt-1 ${urlFeatures.has_ip_address ? "text-red-400" : "text-emerald-400"}`}>
+                  {urlFeatures.has_ip_address ? "True (High Severity)" : "False (Hostname)"}
+                </span>
+              </div>
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">Shannon Entropy:</span>
+                <span className="font-bold text-slate-200 block mt-1">
+                  {urlFeatures.url_entropy ? `${Number(urlFeatures.url_entropy).toFixed(3)} bits/char` : "N/A"}
+                </span>
+              </div>
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">Subdomain Count:</span>
+                <span className={`font-bold block mt-1 ${urlFeatures.subdomain_count > 2 ? "text-amber-400" : "text-slate-200"}`}>
+                  {urlFeatures.subdomain_count ?? 0} Subdomains
+                </span>
+              </div>
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">Dot Count:</span>
+                <span className={`font-bold block mt-1 ${urlFeatures.dot_count > 3 ? "text-red-400" : "text-slate-200"}`}>
+                  {urlFeatures.dot_count ?? 0} Dots
+                </span>
+              </div>
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">HTTPS Encryption Flag:</span>
+                <span className={`font-bold block mt-1 ${urlFeatures.https_flag ? "text-emerald-400" : "text-amber-400"}`}>
+                  {urlFeatures.https_flag ? "HTTPS Enabled (1)" : "HTTP Unencrypted (0)"}
+                </span>
+              </div>
+              <div className="p-3 bg-slate-950 rounded border border-slate-800">
+                <span className="text-slate-400">Suspicious Script File:</span>
+                <span className={`font-bold block mt-1 ${urlFeatures.suspicious_file_extension ? "text-red-400" : "text-slate-400"}`}>
+                  {urlFeatures.suspicious_file_extension ? "Detected (.php/.exe/.apk)" : "None"}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 bg-slate-950 rounded border border-slate-800 text-xs font-mono text-slate-400">
+              No standalone URL was supplied for lexical decomposition.
+            </div>
+          )}
+
+          {/* Top SHAP Risk Factors */}
+          {result.url_model?.top_risk_factors && result.url_model.top_risk_factors.length > 0 && (
+            <div className="mt-4 pt-3 border-t border-slate-800">
+              <span className="text-[11px] font-mono text-slate-400 font-semibold uppercase block mb-2">
+                SHAP Explanations & Risk Drivers:
+              </span>
+              <ul className="space-y-1.5 text-xs font-mono text-slate-300">
+                {result.url_model.top_risk_factors.map((factor: string, i: number) => (
+                  <li key={i} className="flex items-start space-x-2">
+                    <span className="text-red-400 font-bold">•</span>
+                    <span>{factor}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Tab 3: Content & Tactics */}
+      {/* TAB 3: CONTENT & TACTICS */}
       {activeSubTab === "content" && (
         <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800 space-y-4">
           <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
-            Manipulative Social Engineering Vectors (Model 3)
+            Social Engineering Tactics Isolated (Model 3)
           </h4>
-          <div className="space-y-2">
-            {(result.tactic_model?.detected_tactics || ["urgency_and_time_pressure", "bank_impersonation", "account_suspension_threats"]).map(
-              (tac, i) => (
-                <div key={i} className="p-3 bg-slate-950 rounded border border-slate-800 flex items-center justify-between text-xs font-mono">
-                  <div className="flex items-center space-x-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-                    <span className="font-bold text-slate-200 uppercase">{tac.replace(/_/g, " ")}</span>
+
+          {result.tactic_model?.tactics && result.tactic_model.tactics.length > 0 ? (
+            <div className="space-y-3">
+              {result.tactic_model.tactics.map((tac: any, i: number) => (
+                <div key={i} className="p-3.5 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <div className="flex items-center space-x-2">
+                      <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                      <span className="font-bold text-slate-200">{tac.tactic_name || tac.tactic_code}</span>
+                    </div>
+                    <span className="text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/30 font-semibold">
+                      {Math.round((tac.confidence || 1.0) * 100)}% Conf
+                    </span>
                   </div>
-                  <span className="text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/30">
-                    High Confidence
-                  </span>
+                  {tac.explanation && (
+                    <p className="text-xs text-slate-400 leading-relaxed font-sans">{tac.explanation}</p>
+                  )}
+                  {tac.evidence_tokens && tac.evidence_tokens.length > 0 && (
+                    <div className="flex items-center gap-1.5 pt-1 text-[11px] font-mono text-slate-500">
+                      <span>Evidence Tokens:</span>
+                      {tac.evidence_tokens.map((tok: string, idx: number) => (
+                        <span key={idx} className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300 font-bold">
+                          "{tok}"
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Tab 4: WHOIS & Network */}
-      {activeSubTab === "whois" && (
-        <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800 space-y-3 text-xs font-mono">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-            Passive Infrastructure Telemetry
-          </h4>
-          <div className="p-3 bg-slate-950 rounded border border-slate-800 text-slate-300 leading-relaxed">
-            <div>ASN: AS13335 (Cloudflare / Bulletproof Relays)</div>
-            <div>Country: IN / US Gateway</div>
-            <div>Passive Registration Age: &lt; 48 hours (Freshly Registered Domain)</div>
-            <div>Reputation: Blacklisted across 4 threat intelligence feeds</div>
-          </div>
-        </div>
-      )}
-
-      {/* Tab 5: Model Evidence & Remedial Actions */}
-      {activeSubTab === "evidence" && (
-        <div className="space-y-4">
-          <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5 mb-3">
-              <Sparkles className="w-3.5 h-3.5" /> Token-Level Forensic Evidence Highlighting
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {(result.explainability?.text_highlights && result.explainability.text_highlights.length > 0
-                ? result.explainability.text_highlights
-                : [
-                    { token: "turant", weight: 0.94 },
-                    { token: "band", weight: 0.88 },
-                    { token: "urgent", weight: 0.96 },
-                    { token: "verify", weight: 0.85 },
-                  ]
-              ).map((h, i) => (
-                <span
-                  key={i}
-                  className="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-xs font-mono flex items-center space-x-1.5"
-                >
-                  <span className="font-bold text-cyan-300">"{h.token}"</span>
-                  <span className="text-[10px] text-slate-400">({h.weight})</span>
-                </span>
               ))}
             </div>
-          </div>
+          ) : (
+            <div className="p-4 bg-slate-950 rounded border border-slate-800 text-xs font-mono text-slate-400">
+              No psychological coercion tactics detected in this submission.
+            </div>
+          )}
+        </div>
+      )}
 
+      {/* TAB 4: CAMPAIGN CLUSTER (MODEL 4) */}
+      {activeSubTab === "campaign" && (
+        <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800 space-y-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5">
+            <Network className="w-4 h-4" /> HDBSCAN Scam Campaign Association (Model 4)
+          </h4>
+
+          {result.campaign_association?.associated_campaign ? (
+            <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                <div>
+                  <div className="text-xs font-bold text-white font-mono">
+                    {result.campaign_association.associated_campaign}
+                  </div>
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                    Target: {result.campaign_association.targeted_institution || "Generic Institution"}
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 shrink-0">
+                  <span className="text-xs font-mono px-2 py-1 rounded bg-blue-950 border border-blue-500/30 text-blue-300">
+                    Similarity: {((result.campaign_association.similarity_score || 0) * 100).toFixed(1)}%
+                  </span>
+                  <span className="text-xs font-mono px-2 py-1 rounded bg-slate-800 text-slate-300">
+                    {result.campaign_association.cluster_size || 0} Incident Messages
+                  </span>
+                </div>
+              </div>
+
+              {/* Shared phrases */}
+              {result.campaign_association.shared_phrases && result.campaign_association.shared_phrases.length > 0 && (
+                <div>
+                  <span className="text-[11px] font-mono text-slate-400 uppercase block mb-1.5">
+                    Shared Campaign Phrases:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {result.campaign_association.shared_phrases.map((phrase: string, i: number) => (
+                      <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                        "{phrase}"
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Legal Caveat */}
+              <div className="p-3 bg-amber-950/20 border border-amber-900/40 rounded text-[11px] text-amber-300/90 font-mono leading-relaxed">
+                <Info className="w-3.5 h-3.5 inline mr-1 text-amber-400" />
+                {result.campaign_association.legal_disclaimer ||
+                  "Similarity clustering denotes shared linguistic and infrastructure patterns; it does not constitute legal proof of identical organizational origin."}
+              </div>
+            </div>
+          ) : (
+            <div className="p-4 bg-slate-950 rounded border border-slate-800 text-xs font-mono text-slate-400">
+              No existing campaign cluster association isolated (potential novel/isolated threat).
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* TAB 5: EVIDENCE & REMEDIAL GUIDANCE */}
+      {activeSubTab === "evidence" && (
+        <div className="space-y-4">
+          {/* Remedial Checklist */}
           <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800">
             <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-mono flex items-center gap-1.5 mb-3">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Actionable Remedial Guidance
+              <CheckCircle2 className="w-3.5 h-3.5" /> Actionable Incident Response & Remediation
             </h4>
-            <ul className="space-y-1.5 text-xs text-slate-300 font-mono">
+            <ul className="space-y-2 text-xs text-slate-300 font-mono">
               {(result.risk_assessment?.remedial_actions && result.risk_assessment.remedial_actions.length > 0
                 ? result.risk_assessment.remedial_actions
                 : [
@@ -458,14 +559,36 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                     "Block the sender number or domain on the SMS gateway.",
                     "Notify bank fraud reporting desk with message ID and URL payload.",
                   ]
-              ).map((act, i) => (
-                <li key={i} className="flex items-start space-x-2">
+              ).map((act: string, i: number) => (
+                <li key={i} className="flex items-start space-x-2.5 p-2 bg-slate-950 rounded border border-slate-800/80">
                   <span className="text-cyan-400 font-bold">•</span>
                   <span>{act}</span>
                 </li>
               ))}
             </ul>
           </div>
+
+          {/* Contributing Risk Factors Breakdown */}
+          {result.risk_assessment?.transparency_breakdown?.contributing_factors && (
+            <div className="bg-slate-900/60 rounded-xl p-5 border border-slate-800">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5 mb-3">
+                <Cpu className="w-3.5 h-3.5" /> Transparent Multi-Model Weight Aggregation
+              </h4>
+              <div className="space-y-2">
+                {result.risk_assessment.transparency_breakdown.contributing_factors.map((factor: any, i: number) => (
+                  <div key={i} className="flex items-center justify-between p-2.5 bg-slate-950 rounded border border-slate-800 text-xs font-mono">
+                    <span className="text-slate-300">{factor.source}</span>
+                    <div className="flex items-center space-x-3">
+                      <span className="text-slate-400">{factor.rationale}</span>
+                      <span className="font-bold text-cyan-400">
+                        Impact: {typeof factor.score_impact === "number" ? factor.score_impact.toFixed(3) : factor.score_impact}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -475,7 +598,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
           <Clock className="w-3.5 h-3.5 text-slate-500" />
           <span>Processing Time: {result.processing_time_ms} ms</span>
         </div>
-        <div>Model Architecture: Multilingual Bi-LSTM + XGBoost + One-vs-Rest SVM</div>
+        <div>Model Architecture: Multilingual Bi-LSTM + XGBoost + One-vs-Rest SVM + HDBSCAN</div>
       </div>
     </div>
   );

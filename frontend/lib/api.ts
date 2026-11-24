@@ -78,7 +78,7 @@ export interface CampaignDetail {
 export interface ScanResult {
   analysis_id: string;
   analysis_type: string;
-  threat_level: "clean" | "low" | "medium" | "high" | "critical" | "inconclusive";
+  threat_level: "clean" | "low" | "medium" | "high" | "critical" | "inconclusive" | string;
   confidence: number;
   risk_score: number;
   risk_assessment: {
@@ -87,43 +87,87 @@ export interface ScanResult {
     risk_score: number;
     verdict: string;
     primary_vector?: string;
-    transparency_breakdown: Record<string, number>;
+    transparency_breakdown: Record<string, any>;
     remedial_actions: string[];
   };
   text_model?: {
-    model_id: string;
+    model_id?: string;
+    text?: string;
     is_threat: boolean;
     confidence: number;
     predicted_label: string;
     detected_language: string;
     language_confidence?: number;
+    model_version?: string;
+    explanation?: string;
+    processing_time_ms?: number;
+    [key: string]: any;
   };
   url_model?: {
-    model_id: string;
+    model_id?: string;
+    url?: string;
     is_phishing: boolean;
-    phishing_probability: number;
+    phishing_probability?: number;
+    risk_score?: number;
+    predicted_label?: string;
     features?: Record<string, any>;
     top_risk_factors?: string[];
+    model_version?: string;
+    processing_time_ms?: number;
+    [key: string]: any;
   };
   tactic_model?: {
-    model_id: string;
-    detected_tactics: string[];
+    model_id?: string;
+    detected_tactics?: string[];
     tactic_count: number;
-    tactics?: Array<{ tactic_code: string; tactic_name: string; confidence: number }>;
+    primary_vector?: string;
+    tactics?: Array<{
+      tactic_id?: string;
+      tactic_code?: string;
+      tactic_name: string;
+      threat_level?: string;
+      confidence: number;
+      explanation?: string;
+      evidence_tokens?: string[];
+      [key: string]: any;
+    }>;
+    model_version?: string;
+    processing_time_ms?: number;
+    [key: string]: any;
   };
   campaign_association?: {
-    cluster_id: number;
+    cluster_id?: number;
+    campaign_id?: number;
     campaign_name?: string;
+    associated_campaign?: string;
     similarity_score: number;
+    targeted_institution?: string;
+    cluster_size?: number;
+    shared_phrases?: string[];
+    extracted_iocs?: Record<string, string[]>;
+    legal_disclaimer?: string;
+    [key: string]: any;
   };
   extracted_iocs?: Record<string, string[]>;
   explainability?: {
     text_highlights?: Array<{ token: string; weight: number }>;
     url_shap?: Array<{ feature: string; impact: string }>;
+    [key: string]: any;
   };
   processing_time_ms: number;
   created_at: string;
   metadata?: Record<string, any>;
+  [key: string]: any;
+}
+
+export interface ImageAnalysisResponse {
+  analysis_id: string;
+  extracted_text: string;
+  ocr_confidence: number;
+  analysis_status: "completed" | "insufficient-evidence" | "inconclusive" | string;
+  analysis_result?: ScanResult | null;
+  processing_time_ms: number;
+  created_at: string;
 }
 
 export interface AnalysisHistoryItem {
@@ -246,6 +290,11 @@ export async function getModelRegistry(): Promise<any> {
   return apiFetch<any>("/models");
 }
 
+/** Get experimental lineage and benchmark progression */
+export async function getExperiments(): Promise<any> {
+  return apiFetch<any>("/models/experiments");
+}
+
 /** List real HDBSCAN campaign clusters */
 export async function getCampaigns(limit = 20): Promise<CampaignSummary[]> {
   return apiFetch<CampaignSummary[]>(`/campaigns?limit=${limit}`);
@@ -272,14 +321,20 @@ export async function scanComprehensive(payload: {
 
 /** Run standalone text analysis */
 export async function scanText(payload: {
-  content: string;
+  text?: string;
+  content?: string;
   channel?: string;
   sender?: string;
 }): Promise<ScanResult> {
+  const body = {
+    text: payload.text || payload.content || "",
+    channel: payload.channel || "sms",
+    sender: payload.sender || null,
+  };
   return apiFetch<ScanResult>("/analyze/text", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(body),
   });
 }
 
@@ -293,7 +348,7 @@ export async function scanUrl(url: string): Promise<ScanResult> {
 }
 
 /** Run screenshot OCR analysis */
-export async function scanImage(file: File): Promise<ScanResult> {
+export async function scanImage(file: File): Promise<ImageAnalysisResponse> {
   const formData = new FormData();
   formData.append("file", file);
 

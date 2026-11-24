@@ -117,6 +117,7 @@ export interface ScanResult {
   };
   processing_time_ms: number;
   created_at: string;
+  metadata?: Record<string, any>;
 }
 
 export interface AnalysisHistoryItem {

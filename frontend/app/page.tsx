@@ -8,6 +8,8 @@ import {
   PageHeader,
   ConfirmDialog,
   useToast,
+  ThreatTrendChart,
+  SeverityDistributionChart,
 } from "@/components/ui";
 import TelemetryCards from "@/components/TelemetryCards";
 import ScanWorkbench from "@/components/ScanWorkbench";
@@ -22,6 +24,16 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { info } = useToast();
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab");
+      if (tabParam && ["overview", "scan", "campaigns", "history", "models"].includes(tabParam)) {
+        setActiveTab(tabParam);
+      }
+    }
+  }, []);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -131,27 +143,30 @@ export default function DashboardPage() {
             }
           />
 
-          {/* Tab 1: Overview Cockpit */}
+          {/* Tab 1: Overview Cockpit (Sentinel Nexus Inspiration) */}
           {activeTab === "overview" && (
             <div className="space-y-6">
               <TelemetryCards />
-              <ScanWorkbench id="scanner" />
+              {/* Dual Visual Charts (Threat Trend + Severity Distribution) */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <KillChainGraph id="campaigns" />
-                <ModelGovernancePanel id="models" />
+                <ThreatTrendChart />
+                <SeverityDistributionChart />
               </div>
+              <ScanWorkbench id="scanner" />
+              <KillChainGraph id="campaigns" />
+              <ModelGovernancePanel id="models" />
               <IncidentFeed id="history" />
             </div>
           )}
 
-          {/* Tab 2: Dedicated Threat Workbench */}
+          {/* Tab 2: Dedicated Threat Workbench (PhiShark Inspiration) */}
           {activeTab === "scan" && (
             <div className="space-y-6">
               <ScanWorkbench id="scanner" />
             </div>
           )}
 
-          {/* Tab 3: Dedicated Campaign Intelligence */}
+          {/* Tab 3: Dedicated Campaign Intelligence (Constellation Graph) */}
           {activeTab === "campaigns" && (
             <div className="space-y-6">
               <KillChainGraph id="campaigns" />
@@ -165,7 +180,7 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {/* Tab 5: Dedicated Model Governance & ML Evaluation */}
+          {/* Tab 5: Dedicated Model Governance & ML Evaluation (Confusion Matrix Heatmap) */}
           {activeTab === "models" && (
             <div className="space-y-6">
               <ModelGovernancePanel id="models" />

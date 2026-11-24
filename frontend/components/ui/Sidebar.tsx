@@ -61,6 +61,13 @@ export function Sidebar({
           badge: "Live",
           badgeColor: "bg-emerald-950 text-emerald-400 border-emerald-800",
         },
+        {
+          label: "Investigation Workspace",
+          href: "/investigations/INV-2026-KYC-11",
+          icon: Network,
+          badge: "ThreatQ UI",
+          badgeColor: "bg-blue-950 text-cyan-300 border-blue-800",
+        },
       ],
     },
     {

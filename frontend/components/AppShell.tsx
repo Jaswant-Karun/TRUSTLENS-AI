@@ -85,6 +85,16 @@ export function AppShell({ children }: AppShellProps) {
 
   const routeInfo = getRouteInfo(pathname);
 
+  // Full-width ThreatQ Cybersecurity Workspace & Hub routes bypass the traditional sidebar layout
+  const isThreatQRoute =
+    pathname.startsWith("/investigations") ||
+    pathname === "/threat-library" ||
+    pathname === "/analytics";
+
+  if (isThreatQRoute) {
+    return <div className="min-h-screen w-full bg-[#171C25] text-slate-100">{children}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex">
       {/* 1. Persistent Dark Navy Sidebar */}

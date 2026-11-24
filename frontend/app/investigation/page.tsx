@@ -158,6 +158,30 @@ export default function ComprehensiveInvestigationPage() {
         </div>
       </div>
 
+      {/* ThreatQ Advanced Workspace Callout Banner */}
+      <div className="p-4 bg-[#1E2631] rounded-xl border border-cyan-500/40 text-xs text-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center space-x-3">
+          <div className="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500/50 flex items-center justify-center shrink-0 text-cyan-400">
+            <Network className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="font-bold text-white text-sm">
+              ThreatQ Advanced Cyber Threat Workspace
+            </h4>
+            <p className="text-slate-400 text-xs mt-0.5">
+              Launch the dark immersive workspace with interactive relationship graph, right-side inspector, and correlation timeline.
+            </p>
+          </div>
+        </div>
+        <a
+          href="/investigations/INV-2026-KYC-11"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md font-semibold flex items-center space-x-2 shrink-0 shadow-md shadow-blue-600/30 transition-all border border-blue-400/40"
+        >
+          <span>Launch ThreatQ Canvas</span>
+          <ArrowRight className="w-4 h-4" />
+        </a>
+      </div>
+
       {/* Investigation Dossier Input Workbench */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 space-y-5">
         {/* Preset Selector */}

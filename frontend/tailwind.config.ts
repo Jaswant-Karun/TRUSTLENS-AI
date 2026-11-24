@@ -37,6 +37,19 @@ const config: Config = {
         canvas: "#f8fafc",
         cardLight: "#ffffff",
         subtleBorder: "#e2e8f0",
+        // ThreatQ-Inspired Advanced Cyber Investigation Workspace Palette
+        threatq: {
+          bg: "#171C25",
+          nav: "#252D38",
+          canvas: "#181E28",
+          panel: "#252D38",
+          border: "#3A4553",
+          timeline: "#1E2631",
+          accent: "#3B82F6",
+          cyan: "#38BDF8",
+          text: "#F1F5F9",
+          muted: "#AAB4C2",
+        },
       },
       fontFamily: {
         sans: ["Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],

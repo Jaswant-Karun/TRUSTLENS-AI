@@ -64,6 +64,7 @@ export interface GraphEdge {
     | string;
   severity?: "critical" | "high" | "medium" | "low" | "neutral";
   isDashed?: boolean;
+  weight?: number;
 }
 
 export interface TimelineEvent {

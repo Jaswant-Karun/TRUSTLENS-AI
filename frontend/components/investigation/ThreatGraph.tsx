@@ -2,20 +2,9 @@
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { GraphNode, GraphEdge, NodeType } from "./types";
-import {
-  ShieldAlert,
-  Globe,
-  Link as LinkIcon,
-  Server,
-  Zap,
-  Mail,
-  FileText,
-  AlertTriangle,
-  Fingerprint,
-  Database,
-  UserCheck,
-  Check,
-} from "lucide-react";
+import { GraphNodeComponent } from "./GraphNode";
+import { GraphEdgeComponent } from "./GraphEdge";
+import { NodeContextMenu } from "./NodeContextMenu";
 
 interface ThreatGraphProps {
   nodes: GraphNode[];
@@ -46,7 +35,7 @@ export function ThreatGraph({
 }: ThreatGraphProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Local mutable positions for drag & force simulation
+  // Local mutable positions for drag & force layout simulation
   const [nodes, setNodes] = useState<GraphNode[]>(initialNodes);
   const [viewTransform, setViewTransform] = useState({ x: 550, y: 340, zoom: 0.95 });
   const [isPanning, setIsPanning] = useState(false);
@@ -54,6 +43,13 @@ export function ThreatGraph({
   const [draggedNodeId, setDraggedNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+
+  // Right-click context menu state
+  const [contextMenu, setContextMenu] = useState<{
+    node: GraphNode;
+    x: number;
+    y: number;
+  } | null>(null);
 
   // Automatically center graph on mount based on viewport dimensions
   useEffect(() => {
@@ -134,66 +130,15 @@ export function ThreatGraph({
     }
   }, [viewTransform, bounds, onViewChange]);
 
-  // Node styles and colors based on 10 object types
-  const getNodeColor = (type: NodeType, isCentral?: boolean) => {
-    if (isCentral) return { bg: "#EF4444", border: "#F87171", text: "#FEE2E2", halo: "rgba(239, 68, 68, 0.3)" };
-    switch (type) {
-      case "message":
-        return { bg: "#0284C7", border: "#38BDF8", text: "#E0F2FE", halo: "rgba(56, 189, 248, 0.25)" };
-      case "url":
-        return { bg: "#D97706", border: "#FBBF24", text: "#FEF3C7", halo: "rgba(251, 191, 36, 0.25)" };
-      case "domain":
-        return { bg: "#059669", border: "#34D399", text: "#D1FAE5", halo: "rgba(52, 211, 153, 0.25)" };
-      case "ip":
-        return { bg: "#DB2777", border: "#F472B6", text: "#FCE7F3", halo: "rgba(244, 114, 182, 0.25)" };
-      case "scam_category":
-        return { bg: "#DC2626", border: "#F87171", text: "#FEE2E2", halo: "rgba(248, 113, 113, 0.25)" };
-      case "tactic":
-        return { bg: "#7C3AED", border: "#A78BFA", text: "#EDE9FE", halo: "rgba(167, 139, 250, 0.25)" };
-      case "campaign_cluster":
-        return { bg: "#EA580C", border: "#FB923C", text: "#FFEDD5", halo: "rgba(251, 146, 60, 0.3)" };
-      case "user_report":
-        return { bg: "#0891B2", border: "#22D3EE", text: "#CFFAFE", halo: "rgba(34, 211, 238, 0.25)" };
-      case "threat_indicator":
-        return { bg: "#CA8A04", border: "#FACC15", text: "#FEF9C3", halo: "rgba(250, 204, 21, 0.25)" };
-      case "source_reference":
-      default:
-        return { bg: "#475569", border: "#94A3B8", text: "#F1F5F9", halo: "rgba(148, 163, 184, 0.25)" };
-    }
-  };
-
-  const getNodeIcon = (type: NodeType) => {
-    switch (type) {
-      case "message":
-        return <Mail className="w-4 h-4 text-white" />;
-      case "url":
-        return <LinkIcon className="w-4 h-4 text-white" />;
-      case "domain":
-        return <Globe className="w-4 h-4 text-white" />;
-      case "ip":
-        return <Server className="w-4 h-4 text-white" />;
-      case "scam_category":
-        return <ShieldAlert className="w-4 h-4 text-white" />;
-      case "tactic":
-        return <Zap className="w-4 h-4 text-white" />;
-      case "campaign_cluster":
-        return <AlertTriangle className="w-5 h-5 text-white" />;
-      case "user_report":
-        return <UserCheck className="w-4 h-4 text-white" />;
-      case "threat_indicator":
-        return <Fingerprint className="w-4 h-4 text-white" />;
-      case "source_reference":
-      default:
-        return <Database className="w-4 h-4 text-white" />;
-    }
-  };
-
-  // Mouse pan handlers
+  // Pan interactions
   const handleMouseDown = (e: React.MouseEvent) => {
-    // If clicking background, start pan
+    if (e.button === 2) return; // Right-click handled separately
     if (e.target === containerRef.current || (e.target as HTMLElement).tagName === "svg") {
       setIsPanning(true);
       setPanStart({ x: e.clientX - viewTransform.x, y: e.clientY - viewTransform.y });
+      onSelectNode(null);
+      onSelectEdge(null);
+      setContextMenu(null);
     }
   };
 
@@ -247,6 +192,7 @@ export function ThreatGraph({
 
   // Node drag start
   const handleNodeMouseDown = (e: React.MouseEvent, node: GraphNode) => {
+    if (e.button === 2) return; // Right-click handled by context menu
     e.stopPropagation();
     setDraggedNodeId(node.id);
     const rect = containerRef.current?.getBoundingClientRect();
@@ -255,6 +201,35 @@ export function ThreatGraph({
     const mouseCanvasY = (e.clientY - rect.top - viewTransform.y) / viewTransform.zoom;
     setDragOffset({ x: mouseCanvasX - node.x, y: mouseCanvasY - node.y });
     onSelectNode(node);
+    setContextMenu(null);
+  };
+
+  // Node context menu handler
+  const handleNodeContextMenu = (e: React.MouseEvent, node: GraphNode) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({
+      node,
+      x: e.clientX,
+      y: e.clientY,
+    });
+  };
+
+  // Context menu actions
+  const handleCopyIdentifier = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  const handleInspectDetails = (node: GraphNode) => {
+    onSelectNode(node);
+  };
+
+  const handleExpandNeighbors = (nodeId: string) => {
+    // Focus and highlight neighbors
+    const targetNode = nodes.find((n) => n.id === nodeId);
+    if (targetNode) {
+      onSelectNode(targetNode);
+    }
   };
 
   // Filtered nodes based on typeFilter and searchQuery
@@ -312,7 +287,7 @@ export function ThreatGraph({
         </defs>
 
         <g transform={`translate(${viewTransform.x}, ${viewTransform.y}) scale(${viewTransform.zoom})`}>
-          {/* Edges */}
+          {/* Edges rendered via modular GraphEdgeComponent */}
           {visibleEdges.map((edge) => {
             const src = nodeMap.get(edge.source);
             const tgt = nodeMap.get(edge.target);
@@ -320,168 +295,64 @@ export function ThreatGraph({
 
             const isSelected = selectedEdgeId === edge.id;
             const isConnectedToFocus = activeFocusId ? connectedEdgeIds.has(edge.id) : true;
-            const strokeOpacity = activeFocusId ? (isConnectedToFocus ? 0.9 : 0.15) : 0.45;
-            const strokeColor = isSelected
-              ? "#38BDF8"
-              : isConnectedToFocus && activeFocusId
-              ? "#60A5FA"
-              : "#4B5563";
-            const strokeWidth = isSelected ? 2.5 : isConnectedToFocus && activeFocusId ? 2 : 1.2;
 
             return (
-              <g
+              <GraphEdgeComponent
                 key={edge.id}
-                onClick={(e) => {
+                edge={edge}
+                sourceNode={src}
+                targetNode={tgt}
+                isSelected={isSelected}
+                activeFocusId={activeFocusId}
+                isConnectedToFocus={isConnectedToFocus}
+                onClick={(e, clickedEdge) => {
                   e.stopPropagation();
-                  onSelectEdge(edge);
+                  onSelectEdge(clickedEdge);
                 }}
-                className="cursor-pointer"
-              >
-                <line
-                  x1={src.x}
-                  y1={src.y}
-                  x2={tgt.x}
-                  y2={tgt.y}
-                  stroke={strokeColor}
-                  strokeWidth={strokeWidth}
-                  strokeOpacity={strokeOpacity}
-                  strokeDasharray={edge.isDashed ? "4,4" : undefined}
-                />
-                {/* Edge Label on Hover/Select */}
-                {edge.label && (isSelected || (activeFocusId && isConnectedToFocus)) && (
-                  <text
-                    x={(src.x + tgt.x) / 2}
-                    y={(src.y + tgt.y) / 2 - 4}
-                    fill="#94A3B8"
-                    fontSize="9"
-                    fontFamily="monospace"
-                    textAnchor="middle"
-                    className="select-none pointer-events-none bg-slate-900"
-                  >
-                    {edge.label}
-                  </text>
-                )}
-              </g>
+              />
             );
           })}
 
-          {/* Nodes */}
+          {/* Nodes rendered via modular GraphNodeComponent */}
           {visibleNodes.map((node) => {
             const isSelected = selectedNodeId === node.id;
             const isHovered = hoveredNodeId === node.id;
             const isConnected = activeFocusId ? connectedNodeIds.has(node.id) : true;
-            const isSearchMatch =
-              searchQuery && node.label.toLowerCase().includes(searchQuery.toLowerCase());
+            const isSearchMatch = Boolean(
+              searchQuery && node.label.toLowerCase().includes(searchQuery.toLowerCase())
+            );
             const opacity = activeFocusId ? (isConnected ? 1 : 0.25) : 1;
 
-            const radius = node.isCentral ? 38 : node.radius || 24;
-            const colors = getNodeColor(node.type, node.isCentral);
-
             return (
-              <g
+              <GraphNodeComponent
                 key={node.id}
-                transform={`translate(${node.x}, ${node.y})`}
-                onMouseDown={(e) => handleNodeMouseDown(e, node)}
+                node={node}
+                isSelected={isSelected}
+                isHovered={isHovered}
+                isConnected={isConnected}
+                isSearchMatch={isSearchMatch}
+                opacity={opacity}
+                onMouseDown={handleNodeMouseDown}
                 onMouseEnter={() => setHoveredNodeId(node.id)}
                 onMouseLeave={() => setHoveredNodeId(null)}
-                className="cursor-pointer transition-opacity duration-150"
-                style={{ opacity }}
-              >
-                {/* Central Node Pulse Halo */}
-                {node.isCentral && (
-                  <circle
-                    r={radius + 12}
-                    fill="none"
-                    stroke={colors.border}
-                    strokeWidth="1.5"
-                    strokeOpacity="0.4"
-                    className="animate-ping"
-                  />
-                )}
-
-                {/* Selection Halo Ring */}
-                {(isSelected || isHovered || isSearchMatch) && (
-                  <circle
-                    r={radius + 6}
-                    fill="none"
-                    stroke={isSelected ? "#38BDF8" : isSearchMatch ? "#FBBF24" : colors.border}
-                    strokeWidth="2.5"
-                    strokeDasharray={isSelected ? "4,2" : undefined}
-                    filter="url(#node-glow)"
-                  />
-                )}
-
-                {/* Outer Node Circle */}
-                <circle
-                  r={radius}
-                  fill={colors.bg}
-                  stroke={isSelected ? "#FFFFFF" : colors.border}
-                  strokeWidth={isSelected ? 3 : 2}
-                  className="shadow-xl"
-                />
-
-                {/* Inner Icon / Glyph */}
-                <foreignObject
-                  x={-10}
-                  y={-10}
-                  width={20}
-                  height={20}
-                  className="pointer-events-none flex items-center justify-center"
-                >
-                  <div className="w-full h-full flex items-center justify-center">
-                    {getNodeIcon(node.type)}
-                  </div>
-                </foreignObject>
-
-                {/* Count Badge (e.g. 45 indicators or 18 events) */}
-                {node.count !== undefined && (
-                  <g transform={`translate(${radius * 0.7}, ${-radius * 0.7})`}>
-                    <circle r="9" fill="#0284C7" stroke="#38BDF8" strokeWidth="1.5" />
-                    <text
-                      y="3.5"
-                      fill="#FFFFFF"
-                      fontSize="9"
-                      fontWeight="bold"
-                      fontFamily="monospace"
-                      textAnchor="middle"
-                      className="pointer-events-none select-none"
-                    >
-                      {node.count}
-                    </text>
-                  </g>
-                )}
-
-                {/* Label Underneath Node */}
-                <text
-                  y={radius + 14}
-                  fill={isSelected ? "#38BDF8" : "#E2E8F0"}
-                  fontSize={node.isCentral ? "12" : "10"}
-                  fontWeight={node.isCentral ? "bold" : "500"}
-                  fontFamily="sans-serif"
-                  textAnchor="middle"
-                  className="select-none pointer-events-none tracking-wide"
-                >
-                  {node.label.length > 28 ? node.label.substring(0, 26) + "..." : node.label}
-                </text>
-
-                {/* Subtype tag if available */}
-                {node.subType && (
-                  <text
-                    y={radius + 26}
-                    fill="#94A3B8"
-                    fontSize="8"
-                    fontFamily="monospace"
-                    textAnchor="middle"
-                    className="select-none pointer-events-none"
-                  >
-                    {node.subType}
-                  </text>
-                )}
-              </g>
+                onContextMenu={handleNodeContextMenu}
+              />
             );
           })}
         </g>
       </svg>
+
+      {/* Floating Right-Click Context Menu */}
+      {contextMenu && (
+        <NodeContextMenu
+          node={contextMenu.node}
+          position={{ x: contextMenu.x, y: contextMenu.y }}
+          onClose={() => setContextMenu(null)}
+          onInspectDetails={handleInspectDetails}
+          onCopyIdentifier={handleCopyIdentifier}
+          onExpandNeighbors={handleExpandNeighbors}
+        />
+      )}
     </div>
   );
 }

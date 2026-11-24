@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { InvestigationData, GraphNode, GraphEdge, TimelineEvent, NodeType } from "./types";
 import { TopNavigation } from "./TopNavigation";
 import { ThreatGraph } from "./ThreatGraph";
@@ -15,6 +15,19 @@ interface InvestigationWorkspaceProps {
   onUpdateInvestigation?: (updated: InvestigationData) => void;
 }
 
+const ALL_NODE_TYPES: NodeType[] = [
+  "message",
+  "url",
+  "domain",
+  "ip",
+  "scam_category",
+  "tactic",
+  "campaign_cluster",
+  "user_report",
+  "threat_indicator",
+  "source_reference",
+];
+
 export function InvestigationWorkspace({
   investigation: initialInvestigation,
   onUpdateInvestigation,
@@ -27,18 +40,7 @@ export function InvestigationWorkspace({
   // Graph viewport & tools state
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTypes, setSelectedTypes] = useState<Set<NodeType>>(
-    new Set<NodeType>([
-      "message",
-      "url",
-      "domain",
-      "ip",
-      "scam_category",
-      "tactic",
-      "campaign_cluster",
-      "user_report",
-      "threat_indicator",
-      "source_reference",
-    ])
+    new Set<NodeType>(ALL_NODE_TYPES)
   );
   const [showMinimap, setShowMinimap] = useState(true);
   const [zoomLevel, setZoomLevel] = useState(1.0);
@@ -53,6 +55,14 @@ export function InvestigationWorkspace({
   const [isInspectorCollapsed, setIsInspectorCollapsed] = useState(false);
   const [isTimelineCollapsed, setIsTimelineCollapsed] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Search match count calculation
+  const searchMatchesCount = useMemo(() => {
+    if (!searchQuery.trim()) return undefined;
+    return investigation.nodes.filter((n) =>
+      n.label.toLowerCase().includes(searchQuery.toLowerCase())
+    ).length;
+  }, [searchQuery, investigation.nodes]);
 
   // Handle node selection
   const handleSelectNode = useCallback((node: GraphNode | null) => {
@@ -97,6 +107,14 @@ export function InvestigationWorkspace({
       }
       return next;
     });
+  }, []);
+
+  const handleSelectAllTypes = useCallback(() => {
+    setSelectedTypes(new Set<NodeType>(ALL_NODE_TYPES));
+  }, []);
+
+  const handleClearAllTypes = useCallback(() => {
+    setSelectedTypes(new Set<NodeType>());
   }, []);
 
   // Zoom controls
@@ -165,7 +183,10 @@ export function InvestigationWorkspace({
             onToggleMinimap={() => setShowMinimap(!showMinimap)}
             selectedTypes={selectedTypes}
             onToggleType={handleToggleType}
+            onSelectAllTypes={handleSelectAllTypes}
+            onClearAllTypes={handleClearAllTypes}
             syncStatus="Live Intelligence Sync Active"
+            matchesCount={searchMatchesCount}
           />
 
           {/* Floating Minimap Bird's-Eye (Top Left underneath toolbar) */}

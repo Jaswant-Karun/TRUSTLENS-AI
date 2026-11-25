@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import {
   RotateCcw,
-  RotateCw,
+  RefreshCw,
   Plus,
   Minus,
   Maximize2,
@@ -20,6 +20,7 @@ interface GraphToolbarProps {
   onZoomOut: () => void;
   onFitScreen: () => void;
   onResetLayout: () => void;
+  onRefresh?: () => void;
   showMinimap: boolean;
   onToggleMinimap: () => void;
   selectedTypes: Set<NodeType>;
@@ -37,6 +38,7 @@ export function GraphToolbar({
   onZoomOut,
   onFitScreen,
   onResetLayout,
+  onRefresh,
   showMinimap,
   onToggleMinimap,
   selectedTypes,
@@ -76,7 +78,7 @@ export function GraphToolbar({
         placeholder="Filter nodes..."
       />
 
-      {/* 2. Undo / Redo & Layout Reset */}
+      {/* 2. Layout Reset & Refresh */}
       <div className="flex items-center bg-[#252D38]/90 backdrop-blur-md border border-[#3A4553] rounded-md h-8 px-1 shadow-xl">
         <button
           onClick={onResetLayout}
@@ -85,13 +87,15 @@ export function GraphToolbar({
         >
           <RotateCcw className="w-3.5 h-3.5" />
         </button>
-        <button
-          disabled
-          title="Redo (Clean state)"
-          className="p-1.5 text-slate-600 rounded cursor-not-allowed"
-        >
-          <RotateCw className="w-3.5 h-3.5" />
-        </button>
+        {onRefresh && (
+          <button
+            onClick={onRefresh}
+            title="Refresh Graph from Backend"
+            className="p-1.5 text-slate-400 hover:text-[#22D3EE] hover:bg-[#181E28] rounded transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
       {/* 3. Zoom & Viewport Controls */}

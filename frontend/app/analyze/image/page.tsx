@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
+import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { scanImage, ImageAnalysisResponse, ScanResult } from "@/lib/api";
 import {
   Image as ImageIcon,
@@ -97,6 +98,8 @@ export default function ImageAnalysisPage() {
         description="Extract and evaluate deceptive text, embedded URLs, and manipulative cues from uploaded screenshots using Tesseract OCR + Models 1 & 3."
         badge={{ text: "Vision OCR Active", variant: "purple" }}
       />
+
+      <AnalyzeModeTabs />
 
       {/* Safety Notice Banner */}
       <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-800 flex items-start space-x-3 text-xs text-slate-300">

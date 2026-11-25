@@ -43,11 +43,11 @@ export function ObjectInspector({
         <button
           onClick={onToggleCollapse}
           title="Expand Details Panel"
-          className="p-1.5 text-slate-400 hover:text-white hover:bg-[#181E28] rounded mb-4 transition-colors"
+          className="p-1.5 text-[#94A3B8] hover:text-[#22D3EE] hover:bg-[#202936] rounded mb-4 transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <span className="[writing-mode:vertical-rl] text-xs font-mono tracking-widest text-slate-400 uppercase">
+        <span className="[writing-mode:vertical-rl] text-xs font-mono tracking-widest text-[#94A3B8] uppercase">
           {selectedNode ? "Object Details" : selectedEdge ? "Relationship" : "Investigation"}
         </span>
       </div>
@@ -55,9 +55,9 @@ export function ObjectInspector({
   }
 
   return (
-    <aside className="w-80 md:w-96 bg-[#252D38] border-l border-[#3A4553] flex flex-col h-full text-slate-200 select-none z-20 overflow-hidden shadow-2xl">
+    <aside className="w-80 md:w-96 bg-[#252D38] border-l border-[#3A4553] flex flex-col h-full text-[#F8FAFC] select-none z-20 overflow-hidden shadow-2xl">
       {/* 1. Header Bar */}
-      <div className="p-4 border-b border-[#3A4553] flex items-center justify-between bg-[#202731]">
+      <div className="p-4 border-b border-[#3A4553] flex items-center justify-between bg-[#202936]">
         <div className="flex items-center space-x-2 min-w-0">
           <div className="w-6 h-6 rounded bg-rose-500/20 border border-rose-500/40 flex items-center justify-center shrink-0">
             <ShieldAlert className="w-3.5 h-3.5 text-rose-400" />

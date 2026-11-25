@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
+import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { scanComprehensive, ScanResult } from "@/lib/api";
 import {
   Crosshair,
@@ -146,6 +147,8 @@ export default function ComprehensiveInvestigationPage() {
         description="Unified cross-correlation across text semantics (Model 1), zero-hop lexical URLs (Model 2), social engineering tactics (Model 3), and campaign clustering (Model 4)."
         badge={{ text: "All 4 ML Engines Fused", variant: "rose" }}
       />
+
+      <AnalyzeModeTabs />
 
       {/* Security Architecture Principle */}
       <div className="p-4 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-300 flex items-start space-x-3">

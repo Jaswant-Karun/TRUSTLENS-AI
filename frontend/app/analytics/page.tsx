@@ -88,7 +88,7 @@ export default function AnalyticsPage() {
   }, [loadAnalytics]);
 
   return (
-    <div className="min-h-screen bg-[#171C25] text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#181E28] text-[#F8FAFC] flex flex-col font-sans">
       <TopNavigation />
 
       <main className="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">

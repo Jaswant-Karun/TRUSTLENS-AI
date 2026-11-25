@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
+import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { scanUrl, ScanResult } from "@/lib/api";
 import {
   Globe,
@@ -125,6 +126,8 @@ export default function UrlAnalysisPage() {
         description="Safe, lexical URL decomposition without web crawler visits, DNS lookups, or script execution using Model 2 (XGBoost)."
         badge={{ text: "Model 2 Active (ROC-AUC 1.000)", variant: "green" }}
       />
+
+      <AnalyzeModeTabs />
 
       {/* Mandatory Security Alerts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

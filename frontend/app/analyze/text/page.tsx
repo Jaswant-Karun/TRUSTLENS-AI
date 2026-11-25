@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
+import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { scanText, ScanResult } from "@/lib/api";
 import {
   MessageSquare,
@@ -172,6 +173,8 @@ export default function TextAnalysisPage() {
         description="Linguistic decomposition of SMS, WhatsApp, Email, and Job Offer lures across English, Hindi (Devanagari), and romanized Hinglish."
         badge={{ text: "Models 1 & 3 Active", variant: "blue" }}
       />
+
+      <AnalyzeModeTabs />
 
       {/* Input Workbench Card */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 space-y-5">

@@ -10,10 +10,13 @@ import {
   adaptBackendNode,
   adaptBackendEdge,
 } from "./types";
+import Link from "next/link";
+import { LayoutGrid, Network, Search, Shield, History } from "lucide-react";
 import { TopNavigation } from "./TopNavigation";
 import { ThreatGraph } from "./ThreatGraph";
 import { GraphToolbar } from "./GraphToolbar";
 import { GraphMinimap } from "./GraphMinimap";
+import { GraphLegend } from "./GraphLegend";
 import { ObjectInspector } from "./ObjectInspector";
 import { InvestigationTimeline } from "./InvestigationTimeline";
 import { CreateInvestigationModal } from "./CreateInvestigationModal";
@@ -229,7 +232,7 @@ export function InvestigationWorkspace({
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-[#171C25] text-slate-100 overflow-hidden font-sans">
+    <div className="w-screen h-screen flex flex-col bg-[#181E28] text-[#F8FAFC] overflow-hidden font-sans">
       {/* 1. ThreatQ Persistent Top Navigation Bar */}
       <TopNavigation
         onCreateClick={() => setIsCreateModalOpen(true)}
@@ -239,11 +242,37 @@ export function InvestigationWorkspace({
         }}
       />
 
-      {/* 2. Main Workspace Body (Graph + Side Inspector) */}
+      {/* 2. Main Workspace Body (Left Rail + Graph + Side Inspector) */}
       <div className="flex-1 flex min-h-0 relative overflow-hidden">
+        {/* Slim Left SOC Tool Rail */}
+        <aside className="hidden sm:flex w-11 bg-[#252D38] border-r border-[#3A4553] flex-col items-center py-3 space-y-3 z-20 shrink-0">
+          <Link href="/dashboard" title="SOC Home" className="p-2 rounded-md text-[#94A3B8] hover:text-[#22D3EE] hover:bg-[#202936] transition-colors">
+            <LayoutGrid className="w-4 h-4" />
+          </Link>
+          <Link href="/investigations" title="Investigation Graph Directory" className="p-2 rounded-md text-[#60A5FA] bg-[#202936] border border-[#60A5FA]/40">
+            <Network className="w-4 h-4" />
+          </Link>
+          <Link href="/threat-library" title="Threat Library" className="p-2 rounded-md text-[#94A3B8] hover:text-[#22D3EE] hover:bg-[#202936] transition-colors">
+            <Search className="w-4 h-4" />
+          </Link>
+          <Link href="/analyze/text" title="Analyze New Threat" className="p-2 rounded-md text-[#94A3B8] hover:text-[#22D3EE] hover:bg-[#202936] transition-colors">
+            <Shield className="w-4 h-4" />
+          </Link>
+          <Link href="/history" title="Analysis History" className="p-2 rounded-md text-[#94A3B8] hover:text-[#22D3EE] hover:bg-[#202936] transition-colors">
+            <History className="w-4 h-4" />
+          </Link>
+        </aside>
+
         {/* Central Graph Canvas Container */}
-        <div className="flex-1 relative h-full overflow-hidden bg-[#181E28]">
-          {/* Floating Graph Controls Toolbar (Top Left) */}
+        <div
+          className="flex-1 relative h-full overflow-hidden bg-[#181E28]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 50% 45%, rgba(96, 165, 250, 0.06) 0%, rgba(24, 30, 40, 0) 60%), radial-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px)",
+            backgroundSize: "100% 100%, 24px 24px",
+          }}
+        >
+          {/* Floating Graph Controls Toolbar */}
           <GraphToolbar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -251,6 +280,11 @@ export function InvestigationWorkspace({
             onZoomOut={handleZoomOut}
             onFitScreen={handleFitScreen}
             onResetLayout={handleResetLayout}
+            onRefresh={() => {
+              setInvestigation({ ...initialInvestigation });
+              setSyncStatusMessage("Refreshed from persisted state");
+              setTimeout(() => setSyncStatusMessage("Live Intelligence Sync Active"), 3000);
+            }}
             showMinimap={showMinimap}
             onToggleMinimap={() => setShowMinimap(!showMinimap)}
             selectedTypes={selectedTypes}
@@ -261,14 +295,35 @@ export function InvestigationWorkspace({
             matchesCount={searchMatchesCount}
           />
 
-          {/* Floating Minimap Bird's-Eye (Top Left underneath toolbar) */}
-          {showMinimap && (
-            <GraphMinimap
+          {/* Floating Investigation Title Pill (Below Toolbar, Zero Overlap) */}
+          <div className="absolute top-14 left-4 z-20 pointer-events-none hidden md:flex flex-col bg-[#202936]/90 backdrop-blur-md border border-[#3A4553] rounded-lg px-3.5 py-2 shadow-xl max-w-md">
+            <div className="flex items-center space-x-2">
+              <span className="font-mono text-xs font-bold text-[#22D3EE]">{investigation.id}</span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-emerald-950/80 text-emerald-300 border border-emerald-700/60">
+                {investigation.status}
+              </span>
+            </div>
+            <div className="text-xs font-semibold text-[#F8FAFC] truncate mt-0.5">{investigation.title}</div>
+            <div className="text-[10px] text-[#94A3B8] mt-0.5">
+              Created: {investigation.created.date} • Updated: {investigation.lastModified.date}
+            </div>
+          </div>
+
+          {/* Floating Minimap + Live Legend Stack (Left Side Below Title Pill) */}
+          <div className="absolute top-32 left-4 z-20 hidden lg:flex flex-col space-y-2.5">
+            {showMinimap && (
+              <GraphMinimap
+                nodes={investigation.nodes}
+                viewState={viewState}
+                onClose={() => setShowMinimap(false)}
+              />
+            )}
+            <GraphLegend
               nodes={investigation.nodes}
-              viewState={viewState}
-              onClose={() => setShowMinimap(false)}
+              selectedTypes={selectedTypes}
+              onToggleType={handleToggleType}
             />
-          )}
+          </div>
 
           {/* Interactive Threat Graph Engine */}
           <ThreatGraph

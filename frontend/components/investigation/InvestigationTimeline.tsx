@@ -49,7 +49,7 @@ export function InvestigationTimeline({
 
   if (isCollapsed) {
     return (
-      <div className="h-7 bg-[#1E2631] border-t border-[#3A4553] flex items-center justify-between px-4 select-none z-20 text-slate-400 text-xs">
+      <div className="h-7 bg-[#0F172A] border-t border-[#1E293B] flex items-center justify-between px-4 select-none z-20 text-slate-400 text-xs">
         <div className="flex items-center space-x-2">
           <Clock className="w-3.5 h-3.5 text-cyan-400" />
           <span className="font-mono text-[11px] uppercase tracking-wider text-slate-300">

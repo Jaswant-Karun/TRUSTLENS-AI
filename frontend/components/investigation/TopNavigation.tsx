@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { getInvestigations, InvestigationSummaryItem } from "@/lib/api";
 import {
   Shield,
   Search,
@@ -29,10 +30,36 @@ interface TopNavigationProps {
 
 export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [threatLibraryOpen, setThreatLibraryOpen] = useState(false);
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [recentInvestigations, setRecentInvestigations] = useState<InvestigationSummaryItem[]>([]);
+
+  useEffect(() => {
+    if (notificationsOpen && recentInvestigations.length === 0) {
+      getInvestigations({ limit: 3 })
+        .then((items) => setRecentInvestigations(items || []))
+        .catch(() => setRecentInvestigations([]));
+    }
+  }, [notificationsOpen, recentInvestigations.length]);
+
+  const handleCreate = () => {
+    if (onCreateClick) {
+      onCreateClick();
+    } else {
+      router.push("/investigations");
+    }
+  };
+
+  const handleSearch = () => {
+    if (onSearchClick) {
+      onSearchClick();
+    } else {
+      router.push("/threat-library");
+    }
+  };
 
   const isHomeActive = pathname === "/" || pathname === "/dashboard";
   const isThreatLibraryActive =
@@ -46,7 +73,7 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
     pathname.startsWith("/reports");
 
   return (
-    <header className="h-[52px] bg-[#252D38] border-b border-[#3A4553] flex items-center justify-between px-4 select-none relative z-40 text-slate-200">
+    <header className="h-[52px] bg-[#171C25] border-b border-[#3A4553] flex items-center justify-between px-4 select-none relative z-40 text-[#F8FAFC]">
       {/* Left: Branding & Core Navigation Links */}
       <div className="flex items-center space-x-6">
         {/* TRUSTLENS AI Brand */}
@@ -54,7 +81,7 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
           href="/dashboard"
           className="flex items-center space-x-2.5 group focus:outline-none"
         >
-          <div className="w-8 h-8 rounded-md bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all border border-blue-400/30">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/35 transition-all border border-cyan-400/30">
             <Shield className="w-4 h-4 text-white" />
           </div>
           <div className="flex flex-col">
@@ -62,7 +89,7 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
               <span className="font-extrabold tracking-wider text-sm text-white font-mono">
                 TRUSTLENS
               </span>
-              <span className="text-[11px] font-bold text-cyan-400 font-mono tracking-widest bg-cyan-950/80 px-1 py-0.2 rounded border border-cyan-800/40">
+              <span className="text-[11px] font-bold text-cyan-300 font-mono tracking-widest bg-cyan-950/80 px-1.5 py-0.2 rounded border border-cyan-700/50">
                 AI
               </span>
             </div>
@@ -73,17 +100,17 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
         </Link>
 
         {/* Vertical Divider */}
-        <div className="h-6 w-px bg-[#3A4553]"></div>
+        <div className="h-6 w-px bg-[#1E293B]"></div>
 
         {/* Primary Tabs */}
         <nav className="flex items-center space-x-1">
           {/* 1. Home */}
           <Link
             href="/dashboard"
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center space-x-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center space-x-1.5 ${
               isHomeActive
-                ? "text-white bg-[#181E28] border border-[#3A4553]"
-                : "text-slate-300 hover:text-white hover:bg-[#1E2631]"
+                ? "text-cyan-300 bg-[#131C2E] border border-cyan-500/40"
+                : "text-slate-300 hover:text-white hover:bg-[#131C2E]"
             }`}
           >
             <span>Home</span>
@@ -230,7 +257,7 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
                   <History className="w-4 h-4 text-blue-400" />
                   <div>
                     <div className="font-medium">Analysis Audit Ledger</div>
-                    <div className="text-[10px] text-slate-400">115+ verified scan records</div>
+                    <div className="text-[10px] text-slate-400">Persisted scan history &amp; verdicts</div>
                   </div>
                 </Link>
                 <Link
@@ -254,8 +281,8 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
       <div className="flex items-center space-x-3">
         {/* "+ Create" Primary Action Button */}
         <button
-          onClick={onCreateClick}
-          className="h-8 px-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-semibold flex items-center space-x-1.5 shadow-md shadow-blue-600/30 transition-all border border-blue-400/30 hover:scale-[1.02]"
+          onClick={handleCreate}
+          className="h-8 px-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-semibold flex items-center space-x-1.5 shadow-md shadow-blue-600/30 transition-all border border-[#60A5FA]/40"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Create</span>
@@ -263,22 +290,24 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
 
         {/* Global Search Button */}
         <button
-          onClick={onSearchClick}
+          onClick={handleSearch}
           title="Search threat intelligence..."
-          className="w-8 h-8 rounded bg-[#1E2631] hover:bg-[#181E28] border border-[#3A4553] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+          className="w-8 h-8 rounded bg-[#202936] hover:bg-[#181E28] border border-[#3A4553] flex items-center justify-center text-slate-300 hover:text-white transition-colors"
         >
           <Search className="w-4 h-4" />
         </button>
 
-        {/* Notifications Button with Popover */}
+        {/* Notifications Button with Live Backend Popover */}
         <div className="relative">
           <button
             onClick={() => setNotificationsOpen(!notificationsOpen)}
-            title="System & Threat Notifications"
-            className="w-8 h-8 rounded bg-[#1E2631] hover:bg-[#181E28] border border-[#3A4553] flex items-center justify-center text-slate-300 hover:text-white transition-colors relative"
+            title="Recent Investigation Activity"
+            className="w-8 h-8 rounded bg-[#202936] hover:bg-[#181E28] border border-[#3A4553] flex items-center justify-center text-slate-300 hover:text-white transition-colors relative"
           >
             <Bell className="w-4 h-4" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-cyan-400 ring-2 ring-[#252D38]"></span>
+            {recentInvestigations.length > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#22D3EE] ring-2 ring-[#252D38]"></span>
+            )}
           </button>
 
           {notificationsOpen && (
@@ -287,40 +316,32 @@ export function TopNavigation({ onCreateClick, onSearchClick }: TopNavigationPro
               onMouseLeave={() => setNotificationsOpen(false)}
             >
               <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#3A4553]">
-                <span className="font-semibold text-white">Live Security Alerts</span>
-                <span className="text-[10px] text-cyan-400 font-mono">3 Unread</span>
+                <span className="font-semibold text-white">Recent Investigations</span>
+                <span className="text-[10px] text-[#22D3EE] font-mono">
+                  {recentInvestigations.length} Loaded
+                </span>
               </div>
               <div className="divide-y divide-[#3A4553]/60 max-h-64 overflow-y-auto">
-                <div className="p-3 hover:bg-[#181E28] transition-colors cursor-pointer">
-                  <div className="flex items-center space-x-2 text-rose-400 font-medium">
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                    <span>Critical Campaign Cluster #11 Spike</span>
+                {recentInvestigations.length === 0 ? (
+                  <div className="p-4 text-center text-[11px] text-[#94A3B8]">
+                    No recent investigation alerts loaded.
                   </div>
-                  <p className="text-[11px] text-slate-300 mt-1">
-                    254 messages observed spoofing banking KYC. Cohesion: 88.4%.
-                  </p>
-                  <span className="text-[10px] text-slate-500 font-mono">10m ago</span>
-                </div>
-                <div className="p-3 hover:bg-[#181E28] transition-colors cursor-pointer">
-                  <div className="flex items-center space-x-2 text-amber-400 font-medium">
-                    <Activity className="w-3.5 h-3.5" />
-                    <span>Phishing Domain Flagged: sbi-kyc.top</span>
-                  </div>
-                  <p className="text-[11px] text-slate-300 mt-1">
-                    Model 2 (XGBoost) isolated domain with 100% confidence.
-                  </p>
-                  <span className="text-[10px] text-slate-500 font-mono">25m ago</span>
-                </div>
-                <div className="p-3 hover:bg-[#181E28] transition-colors cursor-pointer">
-                  <div className="flex items-center space-x-2 text-emerald-400 font-medium">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>All 4 ML Inference Engines Online</span>
-                  </div>
-                  <p className="text-[11px] text-slate-300 mt-1">
-                    Latency: 0.024ms. Zero synthetic indicators detected.
-                  </p>
-                  <span className="text-[10px] text-slate-500 font-mono">1h ago</span>
-                </div>
+                ) : (
+                  recentInvestigations.map((inv) => (
+                    <Link
+                      key={inv.id}
+                      href={`/investigations/${inv.id}`}
+                      onClick={() => setNotificationsOpen(false)}
+                      className="block p-3 hover:bg-[#181E28] transition-colors"
+                    >
+                      <div className="flex items-center justify-between text-[#60A5FA] font-mono text-[11px] font-semibold">
+                        <span>{inv.id}</span>
+                        <span className="uppercase text-[10px] text-[#22D3EE]">{inv.severity}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-200 mt-0.5 truncate">{inv.title}</p>
+                    </Link>
+                  ))
+                )}
               </div>
             </div>
           )}

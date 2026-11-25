@@ -488,11 +488,19 @@ class InvestigationService:
             })
         return results
 
+    LEGACY_ALIASES: Dict[str, str] = {
+        "INV-2026-KYC-11": "INV-2026-0011",
+    }
+
+    def _resolve_id(self, investigation_id: str) -> str:
+        return self.LEGACY_ALIASES.get(investigation_id.strip().upper(), investigation_id)
+
     async def get_investigation_by_id(self, investigation_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves single investigation metadata dossier."""
         await self._ensure_seeded()
+        resolved_id = self._resolve_id(investigation_id)
         coll = get_investigations_collection()
-        doc = await coll.find_one({"investigation_id": investigation_id})
+        doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
 
@@ -516,8 +524,9 @@ class InvestigationService:
     async def get_investigation_graph(self, investigation_id: str) -> Optional[Dict[str, Any]]:
         """Returns the full graph nodes and edges for an investigation."""
         await self._ensure_seeded()
+        resolved_id = self._resolve_id(investigation_id)
         coll = get_investigations_collection()
-        doc = await coll.find_one({"investigation_id": investigation_id})
+        doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
 
@@ -559,8 +568,9 @@ class InvestigationService:
     async def get_investigation_timeline(self, investigation_id: str) -> Optional[Dict[str, Any]]:
         """Returns the chronological multi-track timeline for an investigation."""
         await self._ensure_seeded()
+        resolved_id = self._resolve_id(investigation_id)
         coll = get_investigations_collection()
-        doc = await coll.find_one({"investigation_id": investigation_id})
+        doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
 

@@ -16,14 +16,18 @@
     "grep": {},
     "grepInvert": null,
     "maxFailures": 0,
-    "metadata": {},
+    "metadata": {
+      "actualWorkers": 1
+    },
     "preserveOutput": "always",
     "projects": [
       {
         "outputDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "desktop",
         "name": "desktop",
         "testDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/e2e",
@@ -37,7 +41,9 @@
         "outputDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "tablet",
         "name": "tablet",
         "testDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/e2e",
@@ -51,7 +57,9 @@
         "outputDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "mobile",
         "name": "mobile",
         "testDir": "C:/Users/jaswant karun/TRUSTLENS AI/frontend/e2e",
@@ -69,7 +77,9 @@
         "outputDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "name": "desktop",
         "testDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
         "snapshotDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
@@ -104,7 +114,9 @@
         "outputDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "name": "tablet",
         "testDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
         "snapshotDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
@@ -139,7 +151,9 @@
         "outputDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results",
         "repeatEach": 1,
         "retries": 0,
-        "metadata": {},
+        "metadata": {
+          "actualWorkers": 1
+        },
         "name": "mobile",
         "testDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
         "snapshotDir": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e",
@@ -194,19 +208,1540 @@
     "workers": 1,
     "webServer": null
   },
-  "suites": [],
-  "errors": [
+  "suites": [
     {
-      "message": "Error: Process from config.webServer was not able to start. Exit code: 1",
-      "stack": "Error: Process from config.webServer was not able to start. Exit code: 1"
+      "title": "01-navigation-and-radial.spec.ts",
+      "file": "01-navigation-and-radial.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Navigation, Radial Wheel & All Routes",
+          "file": "01-navigation-and-radial.spec.ts",
+          "line": 28,
+          "column": 6,
+          "specs": [
+            {
+              "title": "radial navigation opens, navigates to target route, and closes on Escape",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 18883,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                          "column": 30,
+                          "line": 41
+                        },
+                        "snippet": " \u001b[90m 39 |\u001b[39m     \u001b[90m// Verify radial sector items appear and click Message Scanner\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m messageNav \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/message scanner|messages/i\u001b[39m })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 44 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                            "column": 30,
+                            "line": 41
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n\n  39 |     // Verify radial sector items appear and click Message Scanner\n  40 |     const messageNav = page.getByRole(\"button\", { name: /message scanner|messages/i }).first();\n> 41 |     await expect(messageNav).toBeVisible();\n     |                              ^\n  42 |     await messageNav.click();\n  43 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  44 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:07:36.204Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                        "column": 30,
+                        "line": 41
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 14549,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                          "column": 30,
+                          "line": 41
+                        },
+                        "snippet": " \u001b[90m 39 |\u001b[39m     \u001b[90m// Verify radial sector items appear and click Message Scanner\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m messageNav \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/message scanner|messages/i\u001b[39m })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 44 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                            "column": 30,
+                            "line": 41
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n\n  39 |     // Verify radial sector items appear and click Message Scanner\n  40 |     const messageNav = page.getByRole(\"button\", { name: /message scanner|messages/i }).first();\n> 41 |     await expect(messageNav).toBeVisible();\n     |                              ^\n  42 |     await messageNav.click();\n  43 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  44 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:18.132Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                        "column": 30,
+                        "line": 41
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 15772,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                          "column": 30,
+                          "line": 41
+                        },
+                        "snippet": " \u001b[90m 39 |\u001b[39m     \u001b[90m// Verify radial sector items appear and click Message Scanner\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m messageNav \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/message scanner|messages/i\u001b[39m })\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 44 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                            "column": 30,
+                            "line": 41
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /message scanner|messages/i }).first()\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('button', { name: /message scanner|messages/i }).first() with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /message scanner|messages/i }).first()\u001b[22m\n\n\n  39 |     // Verify radial sector items appear and click Message Scanner\n  40 |     const messageNav = page.getByRole(\"button\", { name: /message scanner|messages/i }).first();\n> 41 |     await expect(messageNav).toBeVisible();\n     |                              ^\n  42 |     await messageNav.click();\n  43 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  44 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:41:30"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:11:56.124Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                        "column": 30,
+                        "line": 41
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "b579507117b21015ce0a-591107821e22ecdc3384",
+              "file": "01-navigation-and-radial.spec.ts",
+              "line": 29,
+              "column": 3
+            },
+            {
+              "title": "all navigation routes render without uncaught errors",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 49449,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:07:58.502Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-98ac9-der-without-uncaught-errors-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-98ac9-der-without-uncaught-errors-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-98ac9-der-without-uncaught-errors-desktop\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11123,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:34.351Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12785,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:14.192Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b579507117b21015ce0a-bff41affae775b564872",
+              "file": "01-navigation-and-radial.spec.ts",
+              "line": 52,
+              "column": 3
+            },
+            {
+              "title": "mobile bottom navigation bar works on mobile viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mobile bottom nav bar is mobile-only",
+                      "location": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                        "line": 69,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 616,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:08:56.985Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mobile bottom nav bar is mobile-only",
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                            "line": 69,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mobile bottom nav bar is mobile-only",
+                      "location": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                        "line": 69,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 286,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:45.668Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mobile bottom nav bar is mobile-only",
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
+                            "line": 69,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3769,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:27.192Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "b579507117b21015ce0a-27c12a2114260396a0cd",
+              "file": "01-navigation-and-radial.spec.ts",
+              "line": 65,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "02-auth-forms-and-profile.spec.ts",
+      "file": "02-auth-forms-and-profile.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Authentication, Form Validation, Profile & Notifications",
+          "file": "02-auth-forms-and-profile.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "login form validates invalid email and empty password",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3771,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 43,
+                          "line": 9
+                        },
+                        "snippet": " \u001b[90m  7 |\u001b[39m     \u001b[90m// Empty submit\u001b[39m\n \u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"alert\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[35m/valid email/i\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 |\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[90m// Invalid email format\u001b[39m\n \u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"not-an-email\"\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 43,
+                            "line": 9
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n\n   7 |     // Empty submit\n   8 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n>  9 |     await expect(page.getByRole(\"alert\")).toContainText(/valid email/i);\n     |                                           ^\n  10 |\n  11 |     // Invalid email format\n  12 |     await page.getByLabel(/email/i).fill(\"not-an-email\");\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:08:57.936Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-desktop\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 43,
+                        "line": 9
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1823,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 43,
+                          "line": 9
+                        },
+                        "snippet": " \u001b[90m  7 |\u001b[39m     \u001b[90m// Empty submit\u001b[39m\n \u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"alert\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[35m/valid email/i\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 |\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[90m// Invalid email format\u001b[39m\n \u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"not-an-email\"\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 43,
+                            "line": 9
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n\n   7 |     // Empty submit\n   8 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n>  9 |     await expect(page.getByRole(\"alert\")).toContainText(/valid email/i);\n     |                                           ^\n  10 |\n  11 |     // Invalid email format\n  12 |     await page.getByLabel(/email/i).fill(\"not-an-email\");\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:45.996Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-tablet\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 43,
+                        "line": 9
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1808,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 43,
+                          "line": 9
+                        },
+                        "snippet": " \u001b[90m  7 |\u001b[39m     \u001b[90m// Empty submit\u001b[39m\n \u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"alert\"\u001b[39m))\u001b[33m.\u001b[39mtoContainText(\u001b[35m/valid email/i\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 |\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[90m// Invalid email format\u001b[39m\n \u001b[90m 12 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"not-an-email\"\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 43,
+                            "line": 9
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert')\nExpected pattern: \u001b[32m/valid email/i\u001b[39m\nError: strict mode violation: getByRole('alert') resolved to 2 elements:\n    1) <div role=\"alert\" class=\"mb-4 flex items-start gap-2.5 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/10 p-3 text-xs text-[#FF3D70]\">…</div> aka getByRole('alert').filter({ hasText: 'Please enter a valid email' })\n    2) <div role=\"alert\" aria-live=\"assertive\" id=\"__next-route-announcer__\"></div> aka locator('[id=\"__next-route-announcer__\"]')\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" getByRole('alert') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert')\u001b[22m\n\n\n   7 |     // Empty submit\n   8 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n>  9 |     await expect(page.getByRole(\"alert\")).toContainText(/valid email/i);\n     |                                           ^\n  10 |\n  11 |     // Invalid email format\n  12 |     await page.getByLabel(/email/i).fill(\"not-an-email\");\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:9:43"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:30.992Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-mobile\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-mobile\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--3b856-id-email-and-empty-password-mobile\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 43,
+                        "line": 9
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d1bafe3c4919dc3a1b94-7fc272dc655321fe0505",
+              "file": "02-auth-forms-and-profile.spec.ts",
+              "line": 4,
+              "column": 3
+            },
+            {
+              "title": "login, profile update, notification preferences, and logout persist properly",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3489,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |\n  30 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:09:05.860Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-desktop\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1783,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |\n  30 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:48.986Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2446,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m\n \u001b[90m 30 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |\n  30 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:34.047Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-mobile\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-mobile\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-mobile\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d1bafe3c4919dc3a1b94-70ccdbc0adf677256ea5",
+              "file": "02-auth-forms-and-profile.spec.ts",
+              "line": 22,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "03-analysis-and-uploads.spec.ts",
+      "file": "03-analysis-and-uploads.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Message Analysis, URL Analysis & Image Upload Validation",
+          "file": "03-analysis-and-uploads.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "message analysis validates empty input and scans scam text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3764,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:09:12.505Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2522,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:52.120Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2876,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:38.284Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e06bf7f9a6227080b23f-f731093c8873761d34af",
+              "file": "03-analysis-and-uploads.spec.ts",
+              "line": 10,
+              "column": 3
+            },
+            {
+              "title": "url analysis validates malformed URLs and inspects phishing URL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3651,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:09:16.574Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2776,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:54.854Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3841,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:41.469Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e06bf7f9a6227080b23f-a0cd51da15be68c972ed",
+              "file": "03-analysis-and-uploads.spec.ts",
+              "line": 31,
+              "column": 3
+            },
+            {
+              "title": "image upload rejects spoofed magic bytes and accepts valid PNG",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3346,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:09:20.255Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1954,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:57.647Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2523,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:45.373Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "e06bf7f9a6227080b23f-718d98a183c90290c12e",
+              "file": "03-analysis-and-uploads.spec.ts",
+              "line": 47,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "04-investigations-graph-timeline.spec.ts",
+      "file": "04-investigations-graph-timeline.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Investigations, Graph Interactions, Filters, Search & Timeline Sync",
+          "file": "04-investigations-graph-timeline.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "investigations directory search and workspace interactive controls",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 46662,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts",
+                            "column": 41,
+                            "line": 27
+                          },
+                          "message": "Error: locator.click: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTitle('Fit Screen')\u001b[22m\n\n\n  25 |     await page.getByTitle(\"Zoom In\").click();\n  26 |     await page.getByTitle(\"Zoom Out\").click();\n> 27 |     await page.getByTitle(\"Fit Screen\").click();\n     |                                         ^\n  28 |     await page.getByTitle(\"Reset Layout & Positions\").click();\n  29 |\n  30 |     // Minimap toggle\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts:27:41"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:09:23.639Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-desktop\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 47569,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts",
+                            "column": 41,
+                            "line": 27
+                          },
+                          "message": "Error: locator.click: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTitle('Fit Screen')\u001b[22m\n\n\n  25 |     await page.getByTitle(\"Zoom In\").click();\n  26 |     await page.getByTitle(\"Zoom Out\").click();\n> 27 |     await page.getByTitle(\"Fit Screen\").click();\n     |                                         ^\n  28 |     await page.getByTitle(\"Reset Layout & Positions\").click();\n  29 |\n  30 |     // Minimap toggle\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts:27:41"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:59.633Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-tablet\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 47648,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts",
+                            "column": 41,
+                            "line": 27
+                          },
+                          "message": "Error: locator.click: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByTitle('Fit Screen')\u001b[22m\n\n\n  25 |     await page.getByTitle(\"Zoom In\").click();\n  26 |     await page.getByTitle(\"Zoom Out\").click();\n> 27 |     await page.getByTitle(\"Fit Screen\").click();\n     |                                         ^\n  28 |     await page.getByTitle(\"Reset Layout & Positions\").click();\n  29 |\n  30 |     // Minimap toggle\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\04-investigations-graph-timeline.spec.ts:27:41"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:12:47.938Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-mobile\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-mobile\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\04-investigations-graph-ti-2b1e5-kspace-interactive-controls-mobile\\trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "eba63e4af33bf34c3c19-1349bfa36d07f8568f5d",
+              "file": "04-investigations-graph-timeline.spec.ts",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "05-reports-and-exports.spec.ts",
+      "file": "05-reports-and-exports.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Community Reports & Report Exports",
+          "file": "05-reports-and-exports.spec.ts",
+          "line": 3,
+          "column": 6,
+          "specs": [
+            {
+              "title": "reports page search, filter, submission validation, and export controls",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 4067,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 30 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  30 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:10:12.607Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "tablet",
+                  "projectName": "tablet",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 4391,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 30 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  30 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:11:50.075Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile",
+                  "projectName": "mobile",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 4004,
+                      "error": {
+                        "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n",
+                        "stack": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                          "column": 40,
+                          "line": 27
+                        },
+                        "snippet": " \u001b[90m 25 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/login\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 26 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"admin@trustlens.ai\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[32m\"Admin@TrustLens2026!\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 29 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 30 |\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                            "column": 40,
+                            "line": 27
+                          },
+                          "message": "Error: locator.fill: Error: strict mode violation: getByLabel(/password/i) resolved to 2 elements:\n    1) <input value=\"\" required=\"\" type=\"password\" id=\"login-password\" placeholder=\"••••••••••••\" autocomplete=\"current-password\" class=\"cyber-input pl-10 pr-10\"/> aka getByRole('textbox', { name: 'Password' })\n    2) <button type=\"button\" aria-label=\"Show password\" class=\"absolute right-3 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white\">…</button> aka getByRole('button', { name: 'Show password' })\n\nCall log:\n\u001b[2m  - waiting for getByLabel(/password/i)\u001b[22m\n\n\n  25 |     await page.goto(\"/login\");\n  26 |     await page.getByLabel(/email/i).fill(\"admin@trustlens.ai\");\n> 27 |     await page.getByLabel(/password/i).fill(\"Admin@TrustLens2026!\");\n     |                                        ^\n  28 |     await page.getByRole(\"button\", { name: /sign in/i }).click();\n  29 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  30 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:27:40"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-11-25T17:13:38.029Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-mobile\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-mobile\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-mobile\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                        "column": 40,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1cf766ea821b3643494a-79a01ef8aaa056822c7b",
+              "file": "05-reports-and-exports.spec.ts",
+              "line": 4,
+              "column": 3
+            }
+          ]
+        }
+      ]
     }
   ],
+  "errors": [],
   "stats": {
-    "startTime": "2026-11-25T17:05:47.573Z",
-    "duration": 1229.2869999999998,
-    "expected": 0,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2026-11-25T17:06:13.767Z",
+    "duration": 452790.701,
+    "expected": 12,
+    "skipped": 2,
+    "unexpected": 16,
     "flaky": 0
   }
 }

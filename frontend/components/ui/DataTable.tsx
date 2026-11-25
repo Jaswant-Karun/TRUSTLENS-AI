@@ -42,12 +42,12 @@ export function DataTable<T = any>({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-white rounded-xl border border-slate-200 shadow-subtle p-12 text-center flex flex-col items-center justify-center">
-        <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3">
+      <div className="cyber-panel p-12 text-center flex flex-col items-center justify-center">
+        <div className="w-12 h-12 rounded-full bg-[#170A12] border border-[#481326] flex items-center justify-center text-[#FF3D70] mb-3">
           <Inbox className="w-6 h-6" />
         </div>
-        <h4 className="text-sm font-semibold text-slate-900 mb-1">{emptyTitle}</h4>
-        <p className="text-xs text-slate-500 max-w-sm">{emptyDescription}</p>
+        <h4 className="text-sm font-semibold text-white mb-1">{emptyTitle}</h4>
+        <p className="text-xs text-[#A1A1AA] max-w-sm">{emptyDescription}</p>
       </div>
     );
   }
@@ -59,10 +59,10 @@ export function DataTable<T = any>({
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-subtle overflow-hidden">
+    <div className="cyber-panel overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs font-sans">
-          <thead className="bg-slate-50/80 text-slate-600 font-semibold border-b border-slate-200 tracking-wider font-mono uppercase text-[11px]">
+          <thead className="bg-[#170A12] text-[#A1A1AA] font-semibold border-b border-[#481326] tracking-wider font-mono uppercase text-[11px]">
             <tr>
               {columns.map((col, idx) => (
                 <th
@@ -74,15 +74,15 @@ export function DataTable<T = any>({
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-slate-700">
+          <tbody className="divide-y divide-[#481326]/50 text-white/90">
             {data.map((row, rowIdx) => (
               <tr
                 key={rowIdx}
                 onClick={() => onRowClick && onRowClick(row)}
                 className={`transition-colors ${
                   onRowClick
-                    ? "cursor-pointer hover:bg-slate-50/80"
-                    : "hover:bg-slate-50/40"
+                    ? "cursor-pointer hover:bg-[#170A12]/80"
+                    : "hover:bg-[#170A12]/40"
                 }`}
               >
                 {columns.map((col, colIdx) => {
@@ -109,7 +109,7 @@ export function DataTable<T = any>({
       </div>
 
       {pagination && pagination.totalPages > 1 && (
-        <div className="px-4 py-3 bg-slate-50/60 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 font-medium">
+        <div className="px-4 py-3 bg-[#170A12]/80 border-t border-[#481326] flex items-center justify-between text-xs text-[#A1A1AA] font-medium">
           <div>
             Page {pagination.currentPage} of {pagination.totalPages}
             {pagination.totalItems !== undefined && ` (${pagination.totalItems} total items)`}
@@ -118,14 +118,16 @@ export function DataTable<T = any>({
             <button
               onClick={() => pagination.onPageChange(pagination.currentPage - 1)}
               disabled={pagination.currentPage <= 1}
-              className="p-1 rounded border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              aria-label="Previous page"
+              className="p-1.5 rounded border border-[#481326] bg-[#050306] text-white hover:border-[#FF174F] disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => pagination.onPageChange(pagination.currentPage + 1)}
               disabled={pagination.currentPage >= pagination.totalPages}
-              className="p-1 rounded border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none transition-colors"
+              aria-label="Next page"
+              className="p-1.5 rounded border border-[#481326] bg-[#050306] text-white hover:border-[#FF174F] disabled:opacity-40 disabled:pointer-events-none transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -135,4 +137,3 @@ export function DataTable<T = any>({
     </div>
   );
 }
-

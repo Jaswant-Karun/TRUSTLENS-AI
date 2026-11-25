@@ -51,21 +51,21 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast, success, error, warning, info }}>
       {children}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full">
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm w-full px-4 sm:px-0">
         <AnimatePresence>
           {toasts.map((toast) => {
             const icons = {
-              success: <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />,
-              error: <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />,
-              warning: <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0" />,
-              info: <Info className="w-5 h-5 text-sky-600 shrink-0" />,
+              success: <CheckCircle2 className="w-5 h-5 text-[#00D68F] shrink-0" />,
+              error: <AlertCircle className="w-5 h-5 text-[#FF174F] shrink-0" />,
+              warning: <AlertTriangle className="w-5 h-5 text-[#FFB020] shrink-0" />,
+              info: <Info className="w-5 h-5 text-[#FF3D70] shrink-0" />,
             };
 
             const borderColors = {
-              success: "border-emerald-200 bg-white text-slate-800",
-              error: "border-rose-200 bg-white text-slate-800",
-              warning: "border-amber-200 bg-white text-slate-800",
-              info: "border-sky-200 bg-white text-slate-800",
+              success: "border-[#00D68F]/50 bg-[#10070D]/95 text-white",
+              error: "border-[#FF174F]/70 bg-[#10070D]/95 text-white",
+              warning: "border-[#FFB020]/60 bg-[#10070D]/95 text-white",
+              info: "border-[#481326] bg-[#10070D]/95 text-white",
             };
 
             return (
@@ -75,16 +75,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className={`pointer-events-auto p-4 rounded-lg border shadow-lg flex items-start space-x-3 ${borderColors[toast.type]}`}
+                className={`pointer-events-auto p-4 rounded-xl border backdrop-blur-md shadow-[0_8px_28px_rgba(0,0,0,0.75)] flex items-start space-x-3 ${borderColors[toast.type]}`}
               >
                 {icons[toast.type]}
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold">{toast.title}</h4>
-                  {toast.message && <p className="text-xs text-slate-600 mt-0.5">{toast.message}</p>}
+                  <h4 className="text-sm font-semibold text-white">{toast.title}</h4>
+                  {toast.message && <p className="text-xs text-[#A1A1AA] mt-0.5">{toast.message}</p>}
                 </div>
                 <button
                   onClick={() => removeToast(toast.id)}
-                  className="text-slate-400 hover:text-slate-600 p-0.5 rounded transition-colors"
+                  aria-label="Dismiss notification"
+                  className="text-[#A1A1AA] hover:text-white p-0.5 rounded transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -98,10 +99,9 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useToast() {
-  const context = useContext(ToastContext);
-  if (!context) {
+  const ctx = useContext(ToastContext);
+  if (!ctx) {
     throw new Error("useToast must be used within a ToastProvider");
   }
-  return context;
+  return ctx;
 }
-

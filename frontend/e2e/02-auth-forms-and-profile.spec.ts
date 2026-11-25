@@ -6,17 +6,17 @@ test.describe("Authentication, Form Validation, Profile & Notifications", () => 
 
     // Empty submit
     await page.getByRole("button", { name: /sign in/i }).click();
-    await expect(page.getByRole("alert")).toContainText(/valid email/i);
+    await expect(page.getByText(/Please enter a valid email address/i)).toBeVisible();
 
     // Invalid email format
     await page.getByLabel(/email/i).fill("not-an-email");
     await page.getByRole("button", { name: /sign in/i }).click();
-    await expect(page.getByRole("alert")).toContainText(/valid email/i);
+    await expect(page.getByText(/Please enter a valid email address/i)).toBeVisible();
 
     // Valid email but empty password
     await page.getByLabel(/email/i).fill("admin@trustlens.ai");
     await page.getByRole("button", { name: /sign in/i }).click();
-    await expect(page.getByRole("alert")).toContainText(/password/i);
+    await expect(page.getByText(/Please enter your password/i)).toBeVisible();
   });
 
   test("login, profile update, notification preferences, and logout persist properly", async ({
@@ -24,7 +24,7 @@ test.describe("Authentication, Form Validation, Profile & Notifications", () => 
   }) => {
     await page.goto("/login");
     await page.getByLabel(/email/i).fill("admin@trustlens.ai");
-    await page.getByLabel(/password/i).fill("Admin@TrustLens2026!");
+    await page.locator('input[type="password"]').fill("Admin@TrustLens2026!");
     await page.getByRole("button", { name: /sign in/i }).click();
 
     await expect(page).toHaveURL(/\/analyze\/text/);

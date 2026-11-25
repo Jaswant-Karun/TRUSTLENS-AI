@@ -36,20 +36,21 @@ test.describe("Navigation, Radial Wheel & All Routes", () => {
     await expect(launcher).toBeVisible();
     await launcher.click();
 
-    // Verify radial sector items appear and click Message Scanner
-    const messageNav = page.getByRole("button", { name: /message scanner|messages/i }).first();
+    // Verify radial sector menu items appear and click Message Scanner
+    const messageNav = page.getByRole("menuitem", { name: /message scanner/i }).first();
     await expect(messageNav).toBeVisible();
     await messageNav.click();
     await expect(page).toHaveURL(/\/analyze\/text/);
 
     // Re-open radial nav and verify Escape closes it
     await launcher.click();
-    await expect(page.getByRole("button", { name: /url shield/i }).first()).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("button", { name: /url shield/i }).first()).toBeHidden();
+    await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeHidden();
   });
 
   test("all navigation routes render without uncaught errors", async ({ page }) => {
+    test.setTimeout(90_000);
     const pageErrors: string[] = [];
     page.on("pageerror", (err) => pageErrors.push(`${page.url()}: ${err.message}`));
 

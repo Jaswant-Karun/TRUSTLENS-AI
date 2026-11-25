@@ -24,7 +24,7 @@ test.describe("Community Reports & Report Exports", () => {
     // Verify backend STIX & JSON export endpoints directly with authenticated session
     await page.goto("/login");
     await page.getByLabel(/email/i).fill("admin@trustlens.ai");
-    await page.getByLabel(/password/i).fill("Admin@TrustLens2026!");
+    await page.locator('input[type="password"]').fill("Admin@TrustLens2026!");
     await page.getByRole("button", { name: /sign in/i }).click();
     await expect(page).toHaveURL(/\/analyze\/text/);
 

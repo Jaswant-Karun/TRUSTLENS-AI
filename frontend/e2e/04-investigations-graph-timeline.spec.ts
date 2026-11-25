@@ -24,11 +24,11 @@ test.describe("Investigations, Graph Interactions, Filters, Search & Timeline Sy
     // Graph zoom & layout controls
     await page.getByTitle("Zoom In").click();
     await page.getByTitle("Zoom Out").click();
-    await page.getByTitle("Fit Screen").click();
+    await page.getByTitle("Fit to Screen").click();
     await page.getByTitle("Reset Layout & Positions").click();
 
     // Minimap toggle
-    const minimapBtn = page.getByTitle(/minimap/i).first();
+    const minimapBtn = page.getByTitle("Toggle Bird's-Eye Minimap");
     await minimapBtn.click();
     await minimapBtn.click();
 

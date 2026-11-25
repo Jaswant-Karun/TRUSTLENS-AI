@@ -1,1 +1,0 @@
-{"version":10,"type":"context-options","origin":"library","browserName":"","playwrightVersion":"1.65.1","options":{},"platform":"win32","wallTime":1795627727347,"monotonicTime":289407.424,"sdkLanguage":"javascript","title":"02-auth-forms-and-profile.spec.ts:4 › Authentication, Form Validation, Profile & Notifications › login form validates invalid email and empty password"}

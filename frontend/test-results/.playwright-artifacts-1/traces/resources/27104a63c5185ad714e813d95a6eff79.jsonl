@@ -1,0 +1,5 @@
+{"type":"receive","time":1795627562866.308,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"489c4efcb786dc26\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
+{"type":"send","time":1795627562867.44,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795627562762}"}
+{"type":"receive","time":1795627563622.685,"opcode":1,"data":"{\"action\":\"building\"}"}
+{"type":"receive","time":1795627564574.266,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"80db34bd8180f04d\",\"warnings\":[],\"errors\":[]}"}
+{"type":"send","time":1795627564574.412,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795627562762}"}

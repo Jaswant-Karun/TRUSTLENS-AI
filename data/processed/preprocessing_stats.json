@@ -1,0 +1,34 @@
+{
+  "text_preprocessing": {
+    "scamshield_raw_rows": 85680,
+    "mendeley_raw_rows": 5971,
+    "empty_or_malformed_dropped": 0,
+    "missing_labels_dropped": 0,
+    "exact_raw_duplicates_removed": 5756,
+    "mendeley_overlapping_with_scamshield": 5756,
+    "final_clean_text_rows": 85895,
+    "unique_near_duplicate_groups": 84917,
+    "near_duplicate_templates_count": 978,
+    "class_distribution": {
+      "0": 54724,
+      "1": 31171
+    },
+    "language_distribution": {
+      "English": 78255,
+      "Hindi": 6342,
+      "Hinglish": 1298
+    }
+  },
+  "url_preprocessing": {
+    "raw_rows": 101219,
+    "missing_labels_dropped": 1,
+    "empty_urls_dropped": 0,
+    "duplicate_urls_removed": 346,
+    "final_clean_url_rows": 100872,
+    "unique_domain_groups": 63962,
+    "class_distribution": {
+      "1": 63492,
+      "0": 37380
+    }
+  }
+}

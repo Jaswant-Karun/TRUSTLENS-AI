@@ -1,0 +1,64 @@
+{
+  "phase": "2.2",
+  "dataset_version": "2.0.5",
+  "random_seed": 42,
+  "train_samples": 72051,
+  "val_samples": 14410,
+  "scale_pos_weight": 0.5887,
+  "feature_count": 16,
+  "features": [
+    "url_length",
+    "has_ip_address",
+    "dot_count",
+    "https_flag",
+    "url_entropy",
+    "token_count",
+    "subdomain_count",
+    "query_param_count",
+    "tld_length",
+    "path_length",
+    "has_hyphen_in_domain",
+    "number_of_digits",
+    "tld_popularity",
+    "suspicious_file_extension",
+    "domain_name_length",
+    "percentage_numeric_chars"
+  ],
+  "labels": {
+    "0": "legitimate",
+    "1": "phishing"
+  },
+  "trained_at_utc": "2026-11-25T05:33:20.970530+00:00",
+  "models": {
+    "logistic_regression": {
+      "display_name": "Logistic Regression (Scaled, Balanced)",
+      "requires_scaler": true,
+      "train_duration_seconds": 0.18,
+      "val_accuracy": 0.9944,
+      "val_macro_f1": 0.994,
+      "size_mb": 0.0009
+    },
+    "random_forest": {
+      "display_name": "Random Forest Classifier (100 Trees, Balanced)",
+      "requires_scaler": false,
+      "train_duration_seconds": 0.66,
+      "val_accuracy": 0.999,
+      "val_macro_f1": 0.9989,
+      "size_mb": 2.3531
+    },
+    "xgboost_model": {
+      "display_name": "XGBoost Classifier (GBDT)",
+      "requires_scaler": false,
+      "train_duration_seconds": 0.82,
+      "val_accuracy": 0.9985,
+      "val_macro_f1": 0.9984,
+      "size_mb": 0.2999
+    }
+  },
+  "artifact_sha256": {
+    "scaler.joblib": "15983600df7c772983ec5b63b05d0301c80dba82730e9e2144ab5fefa5749e10",
+    "logistic_regression.joblib": "0abc712c75db7aed5a2cebf75ef0ac1bef0b7a746b5196f5e0a6ed2357aaf6e8",
+    "random_forest.joblib": "55c74f3c82a0292c90135f4ab039af398f74099f40651767050de5f499e9257d",
+    "xgboost_model.joblib": "b7ed50c6fe1a3c8aa79bd87c129b8a969cd320a057b111e41ad30be63d52cd3f"
+  }
+}

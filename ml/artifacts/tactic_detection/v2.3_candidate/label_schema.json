@@ -1,0 +1,78 @@
+{
+  "supported_labels": [
+    "urgency_time_pressure",
+    "threats_intimidation",
+    "otp_credential_requests",
+    "bank_impersonation",
+    "government_impersonation",
+    "fake_employment",
+    "prize_reward_manipulation",
+    "account_suspension_threats",
+    "refund_payment_manipulation"
+  ],
+  "unsupported_labels": [
+    "fake_investment"
+  ],
+  "taxonomy": {
+    "urgency_time_pressure": {
+      "name": "Urgency and Time Pressure",
+      "code": "TACTIC_URGENCY",
+      "supported": true,
+      "source": "ScamShield head1_social_engineering.urgency == 1"
+    },
+    "threats_intimidation": {
+      "name": "Threats and Intimidation",
+      "code": "TACTIC_INTIMIDATION",
+      "supported": true,
+      "source": "ScamShield head1.fear == 1 OR head2 in ['Electricity Disconnection', 'Traffic e-Challan']"
+    },
+    "otp_credential_requests": {
+      "name": "OTP or Credential Requests",
+      "code": "TACTIC_CREDENTIAL_THEFT",
+      "supported": true,
+      "source": "ScamShield head2 == 'OTP / Credential Theft' OR metadata.has_otp == True"
+    },
+    "bank_impersonation": {
+      "name": "Bank Impersonation",
+      "code": "TACTIC_BANK_IMPERSONATION",
+      "supported": true,
+      "source": "ScamShield head1.authority_impersonation == 1 AND head2 in ['Fake KYC', 'Bank Account Freeze', 'Loan Scam']"
+    },
+    "government_impersonation": {
+      "name": "Government Impersonation",
+      "code": "TACTIC_GOV_IMPERSONATION",
+      "supported": true,
+      "source": "ScamShield head2 in ['Traffic e-Challan', 'Electricity Disconnection']"
+    },
+    "fake_employment": {
+      "name": "Fake Employment",
+      "code": "TACTIC_FAKE_EMPLOYMENT",
+      "supported": true,
+      "source": "ScamShield head2 == 'Telegram Job'"
+    },
+    "fake_investment": {
+      "name": "Fake Investment",
+      "code": "TACTIC_FAKE_INVESTMENT",
+      "supported": false,
+      "source": "UNAVAILABLE: Zero verified ground-truth annotations in ScamShield/Mendeley. Blocked pending human annotation."
+    },
+    "prize_reward_manipulation": {
+      "name": "Prize and Reward Manipulation",
+      "code": "TACTIC_REWARD_BAIT",
+      "supported": true,
+      "source": "ScamShield head1.reward_bait == 1 OR head2 == 'Lottery / Prize'"
+    },
+    "account_suspension_threats": {
+      "name": "Account Suspension Threats",
+      "code": "TACTIC_ACCOUNT_SUSPENSION",
+      "supported": true,
+      "source": "ScamShield head2 == 'Bank Account Freeze' OR (head2 == 'Fake KYC' AND head1.fear == 1)"
+    },
+    "refund_payment_manipulation": {
+      "name": "Refund and Payment Manipulation",
+      "code": "TACTIC_PAYMENT_MANIPULATION",
+      "supported": true,
+      "source": "ScamShield head2 in ['UPI Fraud', 'Courier Scam']"
+    }
+  }
+}

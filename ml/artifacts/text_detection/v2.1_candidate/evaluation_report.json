@@ -1,0 +1,355 @@
+{
+  "phase": "2.1",
+  "dataset_version": "2.0.5",
+  "test_samples": 8590,
+  "labels": {
+    "0": "legitimate",
+    "1": "spam",
+    "2": "smishing",
+    "3": "scam"
+  },
+  "selection_criteria": "Macro F1, per-class recall, FNR, FPR, inference latency, and artifact size",
+  "selected_model_key": "union_tfidf_linearsvc",
+  "selected_model_summary": {
+    "model_key": "union_tfidf_linearsvc",
+    "display_name": "Word+Char FeatureUnion TF-IDF + Calibrated LinearSVC",
+    "accuracy": 0.9783,
+    "macro_f1": 0.9629,
+    "weighted_f1": 0.9783,
+    "roc_auc_ovr_macro": 0.9974,
+    "pr_auc_ovr_macro": 0.987,
+    "threat_false_positive_rate": 0.0139,
+    "threat_false_negative_rate": 0.0221,
+    "inference_latency_ms_per_sample": 0.3166,
+    "artifact_size_mb": 10.184,
+    "per_class": {
+      "legitimate": {
+        "precision": 0.9874,
+        "recall": 0.9861,
+        "f1": 0.9867,
+        "support": 5473
+      },
+      "spam": {
+        "precision": 0.9614,
+        "recall": 0.9724,
+        "f1": 0.9669,
+        "support": 2461
+      },
+      "smishing": {
+        "precision": 0.9679,
+        "recall": 0.9469,
+        "f1": 0.9573,
+        "support": 414
+      },
+      "scam": {
+        "precision": 0.9652,
+        "recall": 0.9174,
+        "f1": 0.9407,
+        "support": 242
+      }
+    },
+    "per_language": {
+      "English": {
+        "samples": 7797,
+        "accuracy": 0.9765,
+        "macro_f1": 0.9583,
+        "threat_recall": 0.9771
+      },
+      "Hindi": {
+        "samples": 675,
+        "accuracy": 0.9956,
+        "macro_f1": 0.9653,
+        "threat_recall": 0.9855
+      },
+      "Hinglish": {
+        "samples": 118,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "threat_recall": 1.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        5397,
+        65,
+        6,
+        5
+      ],
+      [
+        63,
+        2393,
+        4,
+        1
+      ],
+      [
+        2,
+        18,
+        392,
+        2
+      ],
+      [
+        4,
+        13,
+        3,
+        222
+      ]
+    ]
+  },
+  "experiments": [
+    {
+      "model_key": "word_tfidf_logreg",
+      "display_name": "Word TF-IDF (1-2) + Logistic Regression",
+      "accuracy": 0.9601,
+      "macro_f1": 0.9394,
+      "weighted_f1": 0.9603,
+      "roc_auc_ovr_macro": 0.9929,
+      "pr_auc_ovr_macro": 0.9708,
+      "threat_false_positive_rate": 0.0354,
+      "threat_false_negative_rate": 0.0263,
+      "inference_latency_ms_per_sample": 0.0474,
+      "artifact_size_mb": 3.374,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9847,
+          "recall": 0.9646,
+          "f1": 0.9745,
+          "support": 5473
+        },
+        "spam": {
+          "precision": 0.919,
+          "recall": 0.959,
+          "f1": 0.9386,
+          "support": 2461
+        },
+        "smishing": {
+          "precision": 0.9274,
+          "recall": 0.9251,
+          "f1": 0.9262,
+          "support": 414
+        },
+        "scam": {
+          "precision": 0.9073,
+          "recall": 0.9298,
+          "f1": 0.9184,
+          "support": 242
+        }
+      },
+      "per_language": {
+        "English": {
+          "samples": 7797,
+          "accuracy": 0.9572,
+          "macro_f1": 0.9327,
+          "threat_recall": 0.9741
+        },
+        "Hindi": {
+          "samples": 675,
+          "accuracy": 0.9896,
+          "macro_f1": 0.8206,
+          "threat_recall": 0.9275
+        },
+        "Hinglish": {
+          "samples": 118,
+          "accuracy": 0.9831,
+          "macro_f1": 0.9842,
+          "threat_recall": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          5279,
+          167,
+          13,
+          14
+        ],
+        [
+          80,
+          2360,
+          14,
+          7
+        ],
+        [
+          0,
+          29,
+          383,
+          2
+        ],
+        [
+          2,
+          12,
+          3,
+          225
+        ]
+      ]
+    },
+    {
+      "model_key": "char_tfidf_logreg",
+      "display_name": "Char_wb TF-IDF (3-5) + Logistic Regression",
+      "accuracy": 0.9683,
+      "macro_f1": 0.951,
+      "weighted_f1": 0.9685,
+      "roc_auc_ovr_macro": 0.9958,
+      "pr_auc_ovr_macro": 0.9774,
+      "threat_false_positive_rate": 0.0292,
+      "threat_false_negative_rate": 0.0209,
+      "inference_latency_ms_per_sample": 0.2026,
+      "artifact_size_mb": 3.826,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9879,
+          "recall": 0.9708,
+          "f1": 0.9793,
+          "support": 5473
+        },
+        "spam": {
+          "precision": 0.9392,
+          "recall": 0.9659,
+          "f1": 0.9523,
+          "support": 2461
+        },
+        "smishing": {
+          "precision": 0.9344,
+          "recall": 0.9638,
+          "f1": 0.9489,
+          "support": 414
+        },
+        "scam": {
+          "precision": 0.9016,
+          "recall": 0.9463,
+          "f1": 0.9234,
+          "support": 242
+        }
+      },
+      "per_language": {
+        "English": {
+          "samples": 7797,
+          "accuracy": 0.9663,
+          "macro_f1": 0.9463,
+          "threat_recall": 0.9798
+        },
+        "Hindi": {
+          "samples": 675,
+          "accuracy": 0.9896,
+          "macro_f1": 0.8172,
+          "threat_recall": 0.9275
+        },
+        "Hinglish": {
+          "samples": 118,
+          "accuracy": 0.9831,
+          "macro_f1": 0.9809,
+          "threat_recall": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          5313,
+          135,
+          13,
+          12
+        ],
+        [
+          61,
+          2377,
+          14,
+          9
+        ],
+        [
+          0,
+          11,
+          399,
+          4
+        ],
+        [
+          4,
+          8,
+          1,
+          229
+        ]
+      ]
+    },
+    {
+      "model_key": "union_tfidf_linearsvc",
+      "display_name": "Word+Char FeatureUnion TF-IDF + Calibrated LinearSVC",
+      "accuracy": 0.9783,
+      "macro_f1": 0.9629,
+      "weighted_f1": 0.9783,
+      "roc_auc_ovr_macro": 0.9974,
+      "pr_auc_ovr_macro": 0.987,
+      "threat_false_positive_rate": 0.0139,
+      "threat_false_negative_rate": 0.0221,
+      "inference_latency_ms_per_sample": 0.3166,
+      "artifact_size_mb": 10.184,
+      "per_class": {
+        "legitimate": {
+          "precision": 0.9874,
+          "recall": 0.9861,
+          "f1": 0.9867,
+          "support": 5473
+        },
+        "spam": {
+          "precision": 0.9614,
+          "recall": 0.9724,
+          "f1": 0.9669,
+          "support": 2461
+        },
+        "smishing": {
+          "precision": 0.9679,
+          "recall": 0.9469,
+          "f1": 0.9573,
+          "support": 414
+        },
+        "scam": {
+          "precision": 0.9652,
+          "recall": 0.9174,
+          "f1": 0.9407,
+          "support": 242
+        }
+      },
+      "per_language": {
+        "English": {
+          "samples": 7797,
+          "accuracy": 0.9765,
+          "macro_f1": 0.9583,
+          "threat_recall": 0.9771
+        },
+        "Hindi": {
+          "samples": 675,
+          "accuracy": 0.9956,
+          "macro_f1": 0.9653,
+          "threat_recall": 0.9855
+        },
+        "Hinglish": {
+          "samples": 118,
+          "accuracy": 1.0,
+          "macro_f1": 1.0,
+          "threat_recall": 1.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          5397,
+          65,
+          6,
+          5
+        ],
+        [
+          63,
+          2393,
+          4,
+          1
+        ],
+        [
+          2,
+          18,
+          392,
+          2
+        ],
+        [
+          4,
+          13,
+          3,
+          222
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "manifest_version": "2.0.5",
+  "generated_at_utc": "2026-11-25T05:25:41.356800+00:00",
+  "random_seed": 42,
+  "leakage_prevention": "Group-aware splitting enforced via text_group_id and domain_group_id",
+  "text_corpus": {
+    "method": "StratifiedGroupKFold(n_splits=10, shuffle=True)",
+    "group_key": "text_group_id",
+    "random_seed": 42,
+    "train_rows": 68716,
+    "val_rows": 8589,
+    "test_rows": 8590,
+    "train_threat_ratio": 0.3629,
+    "val_threat_ratio": 0.3629,
+    "test_threat_ratio": 0.3629,
+    "language_distribution": {
+      "train": {
+        "English": 62604,
+        "Hindi": 5042,
+        "Hinglish": 1070
+      },
+      "val": {
+        "English": 7854,
+        "Hindi": 625,
+        "Hinglish": 110
+      },
+      "test": {
+        "English": 7797,
+        "Hindi": 675,
+        "Hinglish": 118
+      }
+    }
+  },
+  "url_corpus": {
+    "method": "StratifiedGroupKFold(n_splits=7, shuffle=True)",
+    "group_key": "domain_group_id",
+    "random_seed": 42,
+    "train_rows": 72051,
+    "val_rows": 14410,
+    "test_rows": 14411,
+    "train_phishing_ratio": 0.6294,
+    "val_phishing_ratio": 0.6294,
+    "test_phishing_ratio": 0.6294
+  },
+  "processed_files": {
+    "scamshield_test.parquet": {
+      "sha256": "638d52ad991d29c3d327feaad1d56d75d04c32293c2d834e3b7bf4808fd143aa",
+      "size_bytes": 1275661
+    },
+    "scamshield_train.parquet": {
+      "sha256": "8ed2264a6de893a170ad5d4ece80fb172d6bdd5d0a407e5b85ec2fc9c705221e",
+      "size_bytes": 11500186
+    },
+    "scamshield_val.parquet": {
+      "sha256": "b0d1a3cd9793cfe811246c67ef125a12edbe72f1b2f723da6d6caf5cea8f08b3",
+      "size_bytes": 1250074
+    },
+    "sms_phishing_clean.parquet": {
+      "sha256": "79ab540c1a1c41aaf2221f79f815bedc4efea17d7a79abd81805ef4ddb394e09",
+      "size_bytes": 791530
+    },
+    "text_clean.parquet": {
+      "sha256": "705e281b2dec60f9551bcd312585dbf270adf6680cd6a2b1fd38156ed565f8c6",
+      "size_bytes": 15532874
+    },
+    "text_test.parquet": {
+      "sha256": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "size_bytes": 1604856
+    },
+    "text_train.parquet": {
+      "sha256": "10c700ddca59bd0381b725ff8e13b971a369f73d5f387881f849c7fd550971d3",
+      "size_bytes": 12448259
+    },
+    "text_val.parquet": {
+      "sha256": "e5f69d7e6b1cb6d84cc33a6d860f40d010d905fd27b1c6f53044a3e72e25e2b5",
+      "size_bytes": 1594829
+    },
+    "urls_clean.parquet": {
+      "sha256": "431d39ef6cd07a51a3e8c272741f51247331ea1b3a1f2b9a6ac62fb2a423db83",
+      "size_bytes": 3351351
+    },
+    "urls_test.parquet": {
+      "sha256": "17a54068ffd3eed7c4e765ba84b84f97f23f6bfefe43f572d759cbfba4578179",
+      "size_bytes": 512733
+    },
+    "urls_train.parquet": {
+      "sha256": "620fa2520edb0332349c46e7eb4675b50c39955eabb11218c682babe040bdb29",
+      "size_bytes": 2441493
+    },
+    "urls_val.parquet": {
+      "sha256": "f914135036d79910dd4665cc1d636f0cefeb2b7958e153a6c36adae17e473324",
+      "size_bytes": 517884
+    }
+  }
+}

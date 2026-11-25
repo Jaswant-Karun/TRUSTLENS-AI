@@ -100,6 +100,10 @@ def extract_url_features(raw_url: str) -> Dict[str, Any]:
     # Entropy
     url_entropy = round(calculate_entropy(clean_url), 4)
     domain_entropy = round(calculate_entropy(domain_clean), 4)
+    path_entropy = round(calculate_entropy(path), 4)
+
+    # Encoded-character patterns (%XX)
+    encoded_char_count = len(re.findall(r"%[0-9a-fA-F]{2}", clean_url))
 
     # Suspicious file extension
     suspicious_file_extension = 1 if any(path.lower().endswith(ext) for ext in SUSPICIOUS_EXTENSIONS) else 0
@@ -130,6 +134,8 @@ def extract_url_features(raw_url: str) -> Dict[str, Any]:
         # API Schema Compatibility fields
         "domain_length": domain_name_length,
         "domain_entropy": domain_entropy,
+        "path_entropy": path_entropy,
+        "encoded_char_count": encoded_char_count,
         "count_dots": dot_count,
         "count_hyphens": clean_url.count("-"),
         "count_subdomains": subdomain_count,

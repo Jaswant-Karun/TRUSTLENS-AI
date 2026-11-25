@@ -1,0 +1,51 @@
+{
+  "phase": "2.1",
+  "dataset_version": "2.0.5",
+  "random_seed": 42,
+  "train_samples": 68716,
+  "val_samples": 8589,
+  "labels": {
+    "0": "legitimate",
+    "1": "spam",
+    "2": "smishing",
+    "3": "scam"
+  },
+  "trained_at_utc": "2026-11-25T05:30:31.250328+00:00",
+  "models": {
+    "word_tfidf_logreg": {
+      "display_name": "Word TF-IDF (1-2) + Logistic Regression",
+      "train_duration_seconds": 11.43,
+      "val_accuracy": 0.9594,
+      "val_macro_f1": 0.9366,
+      "vectorizer_size_mb": 1.848,
+      "model_size_mb": 1.527,
+      "total_artifact_size_mb": 3.375
+    },
+    "char_tfidf_logreg": {
+      "display_name": "Char_wb TF-IDF (3-5) + Logistic Regression",
+      "train_duration_seconds": 29.78,
+      "val_accuracy": 0.9644,
+      "val_macro_f1": 0.9465,
+      "vectorizer_size_mb": 1.994,
+      "model_size_mb": 1.832,
+      "total_artifact_size_mb": 3.826
+    },
+    "union_tfidf_linearsvc": {
+      "display_name": "Word+Char FeatureUnion TF-IDF + Calibrated LinearSVC",
+      "train_duration_seconds": 62.14,
+      "val_accuracy": 0.9725,
+      "val_macro_f1": 0.9535,
+      "vectorizer_size_mb": 2.857,
+      "model_size_mb": 7.327,
+      "total_artifact_size_mb": 10.184
+    }
+  },
+  "artifact_sha256": {
+    "word_tfidf_logreg_vectorizer.joblib": "7b2c3e00d3067bc3b8271e6e64644a59f0043623f81ebda884f8714d10c297a3",
+    "word_tfidf_logreg_model.joblib": "44d96c18f641326a7cc076f754a291c36ae06f97be8aedba4c86bda8a135c202",
+    "char_tfidf_logreg_vectorizer.joblib": "cb70fc651f7c1215a3363c5824a29e3eb7ce3f9d019d288e3561c88cdbc60399",
+    "char_tfidf_logreg_model.joblib": "6b3fe6ade6bbb2427a718528e03aa25c5fa98a54cb29e1feb33121e4478443f4",
+    "union_tfidf_linearsvc_vectorizer.joblib": "d5b7d1fcfb018d6318256e1dc6f1450dfb8368852f7149c2b651c0a492f49225",
+    "union_tfidf_linearsvc_model.joblib": "46b6f2235ccecc83224b611f8a7f195c2f064acdb10e1d0549f6e15d1df70b8b"
+  }
+}

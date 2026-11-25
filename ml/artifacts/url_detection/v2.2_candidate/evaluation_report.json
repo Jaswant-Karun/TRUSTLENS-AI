@@ -1,0 +1,197 @@
+{
+  "phase": "2.2",
+  "dataset_version": "2.0.5",
+  "test_samples": 14411,
+  "unique_test_domains": 9076,
+  "selected_model_key": "xgboost_model",
+  "selected_model_summary": {
+    "model_key": "xgboost_model",
+    "display_name": "XGBoost Classifier (GBDT)",
+    "accuracy": 0.999,
+    "precision": 0.9983,
+    "recall": 1.0,
+    "f1_binary": 0.9992,
+    "macro_f1": 0.9989,
+    "roc_auc": 1.0,
+    "pr_auc": 1.0,
+    "false_positive_rate": 0.0028,
+    "false_negative_rate": 0.0,
+    "inference_latency_ms_per_sample": 0.00261,
+    "size_mb": 0.2999,
+    "confusion_matrix": [
+      [
+        5325,
+        15
+      ],
+      [
+        0,
+        9071
+      ]
+    ]
+  },
+  "domain_generalization": {
+    "Popular TLDs (.com/.org/.net/.in etc.)": {
+      "samples": 5598,
+      "macro_f1": 0.997,
+      "recall_phishing": 1.0
+    },
+    "Non-Popular / Long-Tail TLDs": {
+      "samples": 8813,
+      "macro_f1": 1.0,
+      "recall_phishing": 1.0
+    },
+    "HTTPS Scheme URLs": {
+      "samples": 5654,
+      "macro_f1": 0.9876,
+      "recall_phishing": 1.0
+    },
+    "HTTP / Non-HTTPS URLs": {
+      "samples": 8757,
+      "macro_f1": 1.0,
+      "recall_phishing": 1.0
+    }
+  },
+  "shap_feature_importance": [
+    {
+      "feature": "path_length",
+      "mean_abs_shap": 4.3603
+    },
+    {
+      "feature": "https_flag",
+      "mean_abs_shap": 3.626
+    },
+    {
+      "feature": "percentage_numeric_chars",
+      "mean_abs_shap": 1.1429
+    },
+    {
+      "feature": "tld_popularity",
+      "mean_abs_shap": 0.9468
+    },
+    {
+      "feature": "dot_count",
+      "mean_abs_shap": 0.6443
+    },
+    {
+      "feature": "number_of_digits",
+      "mean_abs_shap": 0.5391
+    },
+    {
+      "feature": "subdomain_count",
+      "mean_abs_shap": 0.3664
+    },
+    {
+      "feature": "suspicious_file_extension",
+      "mean_abs_shap": 0.3583
+    },
+    {
+      "feature": "url_length",
+      "mean_abs_shap": 0.3097
+    },
+    {
+      "feature": "url_entropy",
+      "mean_abs_shap": 0.3075
+    },
+    {
+      "feature": "token_count",
+      "mean_abs_shap": 0.2237
+    },
+    {
+      "feature": "domain_name_length",
+      "mean_abs_shap": 0.1637
+    },
+    {
+      "feature": "tld_length",
+      "mean_abs_shap": 0.1604
+    },
+    {
+      "feature": "query_param_count",
+      "mean_abs_shap": 0.0566
+    },
+    {
+      "feature": "has_hyphen_in_domain",
+      "mean_abs_shap": 0.0559
+    },
+    {
+      "feature": "has_ip_address",
+      "mean_abs_shap": 0.0
+    }
+  ],
+  "experiments": [
+    {
+      "model_key": "logistic_regression",
+      "display_name": "Logistic Regression (Scaled, Balanced)",
+      "accuracy": 0.9966,
+      "precision": 0.9992,
+      "recall": 0.9954,
+      "f1_binary": 0.9973,
+      "macro_f1": 0.9964,
+      "roc_auc": 0.9997,
+      "pr_auc": 0.9999,
+      "false_positive_rate": 0.0013,
+      "false_negative_rate": 0.0046,
+      "inference_latency_ms_per_sample": 0.00016,
+      "size_mb": 0.0009,
+      "confusion_matrix": [
+        [
+          5333,
+          7
+        ],
+        [
+          42,
+          9029
+        ]
+      ]
+    },
+    {
+      "model_key": "random_forest",
+      "display_name": "Random Forest Classifier (100 Trees, Balanced)",
+      "accuracy": 0.997,
+      "precision": 0.9953,
+      "recall": 1.0,
+      "f1_binary": 0.9976,
+      "macro_f1": 0.9968,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "false_positive_rate": 0.0081,
+      "false_negative_rate": 0.0,
+      "inference_latency_ms_per_sample": 0.00772,
+      "size_mb": 2.3531,
+      "confusion_matrix": [
+        [
+          5297,
+          43
+        ],
+        [
+          0,
+          9071
+        ]
+      ]
+    },
+    {
+      "model_key": "xgboost_model",
+      "display_name": "XGBoost Classifier (GBDT)",
+      "accuracy": 0.999,
+      "precision": 0.9983,
+      "recall": 1.0,
+      "f1_binary": 0.9992,
+      "macro_f1": 0.9989,
+      "roc_auc": 1.0,
+      "pr_auc": 1.0,
+      "false_positive_rate": 0.0028,
+      "false_negative_rate": 0.0,
+      "inference_latency_ms_per_sample": 0.00261,
+      "size_mb": 0.2999,
+      "confusion_matrix": [
+        [
+          5325,
+          15
+        ],
+        [
+          0,
+          9071
+        ]
+      ]
+    }
+  ]
+}

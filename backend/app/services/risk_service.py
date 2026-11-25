@@ -98,7 +98,12 @@ class TransparentRiskAggregationService:
             active_tactics = [t.get("tactic_name") or t.get("name") for t in tactics]
             
             # Coercive tactics that indicate active social engineering
-            coercive_malicious_tactics = {"Threats and Intimidation", "OTP and Credential Requests", "Account Suspension Threats"}
+            coercive_malicious_tactics = {
+                "Threats and Intimidation",
+                "OTP and Credential Requests",
+                "OTP or Credential Requests",
+                "Account Suspension Threats",
+            }
             has_coercive = any(t in coercive_malicious_tactics for t in active_tactics)
             
             # If Model 1 confirmed message is legitimate, bank/financial terms represent normal branding, not fraud
@@ -107,7 +112,11 @@ class TransparentRiskAggregationService:
                 tactic_score = 0.10
                 has_high_severity = False
             else:
-                high_severity_tactics = coercive_malicious_tactics | {"Bank or Government Impersonation"}
+                high_severity_tactics = coercive_malicious_tactics | {
+                    "Bank or Government Impersonation",
+                    "Bank Impersonation",
+                    "Government Impersonation",
+                }
                 has_high_severity = any(t in high_severity_tactics for t in active_tactics)
                 tactic_score = 0.85 if has_high_severity else (0.50 if len(active_tactics) >= 2 else 0.30)
 

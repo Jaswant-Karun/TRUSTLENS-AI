@@ -142,7 +142,7 @@
         "Hinglish"
       ],
       "limitations": "9 of 10 tactics supported. 'fake_investment' is Blocked due to missing ground-truth labels.",
-      "deployment_status": "Evaluated"
+      "deployment_status": "Production"
     },
     "trustlens-tactics-v1.0-prod": {
       "model_id": "trustlens-tactics-v1.0-prod",
@@ -168,7 +168,7 @@
         "Hinglish"
       ],
       "limitations": "9 of 10 tactics supported; fake_investment unavailable.",
-      "deployment_status": "Production"
+      "deployment_status": "Superseded"
     },
     "trustlens-tactic-fake-investment": {
       "model_id": "trustlens-tactic-fake-investment",

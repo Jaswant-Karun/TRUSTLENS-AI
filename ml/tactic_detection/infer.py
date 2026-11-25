@@ -25,6 +25,7 @@ from ml.tactic_detection.taxonomy import (
     SUPPORTED_TACTIC_KEYS,
     ALL_TACTIC_KEYS,
 )
+from ml.tactic_detection.labels import TACTIC_LABELS, SUPPORTED_LABELS
 
 
 class ScamTacticInferenceEngine:
@@ -32,10 +33,27 @@ class ScamTacticInferenceEngine:
 
     def __init__(self, artifacts_dir: Optional[str] = None):
         self.artifacts_dir = Path(artifacts_dir or "ml/artifacts/tactic_detection")
-        self.model_path = self.artifacts_dir / "best_tactic_model.joblib"
-        self.vectorizer_path = self.artifacts_dir / "vectorizer.joblib"
-        self.thresholds_path = self.artifacts_dir / "thresholds.json"
-        self.metadata_path = self.artifacts_dir / "tactic_metadata.json"
+        v2_dir = self.artifacts_dir / "v2.3_candidate"
+        v2_model = v2_dir / "ovr_linearsvc.joblib"
+        v2_vec = v2_dir / "vectorizer.joblib"
+        v2_eval = v2_dir / "evaluation_report.json"
+
+        if v2_model.exists() and v2_vec.exists():
+            self.model_path = v2_model
+            self.vectorizer_path = v2_vec
+            self.eval_report_path = v2_eval
+            self.thresholds_path = self.artifacts_dir / "thresholds.json"
+            self.is_v23 = True
+            self.active_keys = SUPPORTED_LABELS
+            self.model_version_tag = "trustlens-model3-calibrated-linear-v2.3"
+        else:
+            self.model_path = self.artifacts_dir / "best_tactic_model.joblib"
+            self.vectorizer_path = self.artifacts_dir / "vectorizer.joblib"
+            self.eval_report_path = None
+            self.thresholds_path = self.artifacts_dir / "thresholds.json"
+            self.is_v23 = False
+            self.active_keys = SUPPORTED_TACTIC_KEYS
+            self.model_version_tag = "trustlens-model3-calibrated-linear-v1.0"
 
         self.model = None
         self.vectorizer = None
@@ -48,11 +66,15 @@ class ScamTacticInferenceEngine:
             try:
                 self.model = joblib.load(self.model_path)
                 self.vectorizer = joblib.load(self.vectorizer_path)
-                if self.thresholds_path.exists():
+                if self.is_v23 and self.eval_report_path and self.eval_report_path.exists():
+                    rep = json.loads(self.eval_report_path.read_text(encoding="utf-8"))
+                    per_lbl = rep.get("selected_model_summary", {}).get("per_label", {})
+                    self.thresholds = {k: float(per_lbl[k]["threshold"]) for k in self.active_keys if k in per_lbl}
+                elif self.thresholds_path.exists():
                     with open(self.thresholds_path, "r", encoding="utf-8") as f:
                         self.thresholds = json.load(f)
                 else:
-                    self.thresholds = {k: 0.50 for k in SUPPORTED_TACTIC_KEYS}
+                    self.thresholds = {k: 0.50 for k in self.active_keys}
                 self.is_loaded = True
             except Exception as e:
                 print(f"[WARN] Failed to load tactic artifacts: {e}")
@@ -60,35 +82,76 @@ class ScamTacticInferenceEngine:
         else:
             self.is_loaded = False
 
+    def extract_model_evidence(self, X_vec, label_idx: int, top_k: int = 4) -> List[str]:
+        """Extracts model-grounded top contributing TF-IDF n-grams for the predicted tactic."""
+        try:
+            est = self.model.estimators_[label_idx]
+            if hasattr(est, "calibrated_classifiers_"):
+                coef = est.calibrated_classifiers_[0].estimator.coef_[0]
+            elif hasattr(est, "coef_"):
+                coef = est.coef_[0]
+            else:
+                return []
+            nonzero_idx = X_vec.nonzero()[1]
+            if len(nonzero_idx) == 0:
+                return []
+            feature_names = np.array(self.vectorizer.get_feature_names_out())
+            contributions = X_vec.data * coef[nonzero_idx]
+            pos_mask = contributions > 0
+            if not np.any(pos_mask):
+                return []
+            pos_indices = nonzero_idx[pos_mask]
+            pos_contribs = contributions[pos_mask]
+            top_idx = pos_indices[np.argsort(pos_contribs)[-top_k:]]
+            return [
+                str(feature_names[i]).replace("word__", "").replace("char__", "")
+                for i in reversed(top_idx)
+            ]
+        except Exception:
+            return []
+
     def extract_evidence(self, text: str, tactic_key: str) -> List[str]:
-        """Extracts key evidence words and salient tokens from the message."""
+        """Fallback characteristic threat keywords per tactic."""
         text_lower = text.lower()
         evidence = []
-
-        # Characteristic threat keywords per tactic for context extraction
         evidence_clues = {
             "urgency_time_pressure": ["immediate", "turant", "today", "24 hours", "24 hrs", "now", "urgent", "deadline", "last date", "jaldi"],
             "threats_intimidation": ["disconnect", "block", "freeze", "police", "legal", "arrest", "action", "penalty", "challan", "court"],
             "otp_credential_requests": ["otp", "pin", "password", "cvv", "verification", "secret code", "credentials", "share"],
             "financial_manipulation": ["debit", "credited", "transfer", "amount", "charge", "refund", "fee", "loan", "rs", "inr"],
             "authority_impersonation": ["sbi", "hdfc", "icici", "pnb", "rbi", "income tax", "customs", "govt", "police", "electricity"],
+            "bank_impersonation": ["sbi", "hdfc", "icici", "pnb", "rbi", "bank", "kyc", "loan", "account"],
+            "government_impersonation": ["police", "income tax", "customs", "govt", "challan", "electricity", "uidai", "aadhaar"],
             "fake_employment": ["part-time", "job", "salary", "daily income", "telegram", "task", "youtube", "earn", "work from home"],
             "account_suspension": ["blocked", "block", "suspend", "kyc", "pan", "deactivat", "freeze", "band"],
+            "account_suspension_threats": ["blocked", "block", "suspend", "kyc", "pan", "deactivat", "freeze", "band"],
             "prize_reward_scams": ["won", "winner", "lottery", "prize", "cash", "lucky", "crore", "lakhs", "congratulations", "gift", "reward"],
+            "prize_reward_manipulation": ["won", "winner", "lottery", "prize", "cash", "lucky", "crore", "lakhs", "congratulations", "gift", "reward"],
             "refund_payment_manipulation": ["refund", "upi", "collect", "cashback", "courier", "delivery", "pay", "qr code"],
         }
-
-        clues = evidence_clues.get(tactic_key, [])
-        for clue in clues:
+        for clue in evidence_clues.get(tactic_key, []):
             if clue in text_lower:
                 evidence.append(clue)
-
         return evidence[:5]
+
+    def _get_meta(self, key: str) -> Dict[str, Any]:
+        if key in TACTIC_REGISTRY:
+            return TACTIC_REGISTRY[key]
+        lbl = TACTIC_LABELS.get(key, {})
+        threat_lvl = "critical" if key in {"threats_intimidation", "otp_credential_requests"} else (
+            "medium" if key in {"fake_employment", "prize_reward_manipulation"} else "high"
+        )
+        return {
+            "name": lbl.get("name", key),
+            "code": lbl.get("code", key.upper()),
+            "threat_level": threat_lvl,
+            "description": lbl.get("source", lbl.get("name", key)),
+        }
 
     def predict(self, text: str) -> Dict[str, Any]:
         """
         Analyzes a message and returns all detected psychological manipulation tactics,
-        confidence scores, supporting evidence, and plain-English explanations.
+        calibrated confidence scores, model-grounded evidence tokens, and plain-English explanations.
         """
         start_time = time.perf_counter()
         clean_text = str(text).strip()
@@ -110,13 +173,14 @@ class ScamTacticInferenceEngine:
         probs = self.model.predict_proba(X_vec)[0]
 
         detected = []
-        for idx, key in enumerate(SUPPORTED_TACTIC_KEYS):
+        for idx, key in enumerate(self.active_keys):
             conf = float(probs[idx])
             thresh = self.thresholds.get(key, 0.50)
-            meta = TACTIC_REGISTRY[key]
+            meta = self._get_meta(key)
 
             if conf >= thresh:
-                evidence = self.extract_evidence(clean_text, key)
+                model_tokens = self.extract_model_evidence(X_vec, idx, top_k=4)
+                evidence = model_tokens if model_tokens else self.extract_evidence(clean_text, key)
                 detected.append({
                     "tactic_id": key,
                     "tactic_name": meta["name"],
@@ -126,6 +190,7 @@ class ScamTacticInferenceEngine:
                     "threshold_applied": thresh,
                     "explanation": meta["description"],
                     "evidence_tokens": evidence,
+                    "evidence_source": "linear_saliency" if model_tokens else "keyword_clue",
                 })
 
         # Sort detected tactics by confidence descending
@@ -155,7 +220,7 @@ class ScamTacticInferenceEngine:
             "tactic_count": len(detected),
             "primary_vector": primary_vector,
             "investment_advisory": investment_advisory,
-            "model_version": "trustlens-model3-calibrated-linear-v1.0",
+            "model_version": self.model_version_tag,
             "processing_time_ms": latency_ms,
         }
 

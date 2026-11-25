@@ -477,3 +477,240 @@
 {"type":"log","callId":"dwyc@53","time":374743.381,"message":"  waiting 500ms"}
 {"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627812853.jpeg","width":390,"height":844,"timestamp":374914.112,"frameSwapWallTime":1795627812841.1912}
 {"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627813063.jpeg","width":390,"height":844,"timestamp":375124.708,"frameSwapWallTime":1795627813057.8499}
+{"type":"log","callId":"dwyc@53","time":375242.636,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":375270.145,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":375270.169,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":375271.909,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":375273.687,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":375273.709,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":375273.714,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627813273.jpeg","width":390,"height":844,"timestamp":375334.578,"frameSwapWallTime":1795627813257.842}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627813502.jpeg","width":390,"height":844,"timestamp":375562.851,"frameSwapWallTime":1795627813491.165}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627813718.jpeg","width":390,"height":844,"timestamp":375779.08,"frameSwapWallTime":1795627813707.824}
+{"type":"log","callId":"dwyc@53","time":375779.992,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":375818.171,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":375818.197,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":375819.497,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":375821.416,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":375821.444,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":375821.453,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627813939.jpeg","width":390,"height":844,"timestamp":375999.953,"frameSwapWallTime":1795627813924.4822}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627814159.jpeg","width":390,"height":844,"timestamp":376220.415,"frameSwapWallTime":1795627814141.14}
+{"type":"log","callId":"dwyc@53","time":376320.65,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":376346.264,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":376346.292,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":376348.853,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":376350.529,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":376350.553,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":376350.56,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627814388.jpeg","width":390,"height":844,"timestamp":376448.941,"frameSwapWallTime":1795627814374.464}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627814611.jpeg","width":390,"height":844,"timestamp":376671.966,"frameSwapWallTime":1795627814591.1208}
+{"type":"log","callId":"dwyc@53","time":376852.706,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627814813.jpeg","width":390,"height":844,"timestamp":376874.095,"frameSwapWallTime":1795627814791.114}
+{"type":"log","callId":"dwyc@53","time":376890.502,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":376890.533,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":376892.942,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":376896.786,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":376896.819,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":376896.829,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627815018.jpeg","width":390,"height":844,"timestamp":377078.769,"frameSwapWallTime":1795627814991.106}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627815232.jpeg","width":390,"height":844,"timestamp":377293.494,"frameSwapWallTime":1795627815224.4302}
+{"type":"log","callId":"dwyc@53","time":377403.552,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":377446.613,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":377446.651,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":377449.013,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":377452.378,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":377452.406,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":377452.416,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627815439.jpeg","width":390,"height":844,"timestamp":377500.057,"frameSwapWallTime":1795627815407.756}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627815653.jpeg","width":390,"height":844,"timestamp":377714.225,"frameSwapWallTime":1795627815641.0798}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627815861.jpeg","width":390,"height":844,"timestamp":377922.39,"frameSwapWallTime":1795627815841.072}
+{"type":"log","callId":"dwyc@53","time":377966.643,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":378015.426,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":378015.46,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":378016.558,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":378019.392,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":378019.419,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":378019.427,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627816077.jpeg","width":390,"height":844,"timestamp":378138.097,"frameSwapWallTime":1795627816057.73}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627816305.jpeg","width":390,"height":844,"timestamp":378366.524,"frameSwapWallTime":1795627816274.3882}
+{"type":"log","callId":"dwyc@53","time":378526.751,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":378562.351,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":378562.377,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":378564.567,"message":"  done scrolling"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627816507.jpeg","width":390,"height":844,"timestamp":378567.809,"frameSwapWallTime":1795627816491.046}
+{"type":"log","callId":"dwyc@53","time":378568.844,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":378568.87,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":378568.879,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627816729.jpeg","width":390,"height":844,"timestamp":378790.307,"frameSwapWallTime":1795627816707.704}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627816947.jpeg","width":390,"height":844,"timestamp":379008.105,"frameSwapWallTime":1795627816941.0269}
+{"type":"log","callId":"dwyc@53","time":379081.4,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":379106.642,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":379106.671,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":379108.449,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":379111.035,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":379111.051,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":379111.056,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627817163.jpeg","width":390,"height":844,"timestamp":379224.436,"frameSwapWallTime":1795627817157.686}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627817375.jpeg","width":390,"height":844,"timestamp":379436.608,"frameSwapWallTime":1795627817374.344}
+{"type":"log","callId":"dwyc@53","time":379613.816,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":379640.629,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":379640.651,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":379642.473,"message":"  done scrolling"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627817583.jpeg","width":390,"height":844,"timestamp":379644.365,"frameSwapWallTime":1795627817574.336}
+{"type":"log","callId":"dwyc@53","time":379645.262,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":379645.284,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":379645.289,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627817788.jpeg","width":390,"height":844,"timestamp":379849.484,"frameSwapWallTime":1795627817774.328}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627818002.jpeg","width":390,"height":844,"timestamp":380063.134,"frameSwapWallTime":1795627817957.653}
+{"type":"log","callId":"dwyc@53","time":380150.224,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":380207.485,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":380207.508,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":380208.327,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":380210.371,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":380210.398,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":380210.407,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627818228.jpeg","width":390,"height":844,"timestamp":380289.202,"frameSwapWallTime":1795627818207.644}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627818440.jpeg","width":390,"height":844,"timestamp":380501.435,"frameSwapWallTime":1795627818424.302}
+{"type":"log","callId":"dwyc@53","time":380711.414,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627818670.jpeg","width":390,"height":844,"timestamp":380731.038,"frameSwapWallTime":1795627818657.626}
+{"type":"log","callId":"dwyc@53","time":380749.226,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":380749.267,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":380752.376,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":380754.147,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":380754.171,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":380754.178,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627818879.jpeg","width":390,"height":844,"timestamp":380940.006,"frameSwapWallTime":1795627818874.284}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627819094.jpeg","width":390,"height":844,"timestamp":381155.235,"frameSwapWallTime":1795627819074.276}
+{"type":"log","callId":"dwyc@53","time":381256.144,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":381304.118,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":381304.141,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":381305.697,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":381306.972,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":381306.988,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":381306.994,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627819298.jpeg","width":390,"height":844,"timestamp":381358.828,"frameSwapWallTime":1795627819290.934}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627819507.jpeg","width":390,"height":844,"timestamp":381568.366,"frameSwapWallTime":1795627819490.926}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627819722.jpeg","width":390,"height":844,"timestamp":381783.484,"frameSwapWallTime":1795627819707.584}
+{"type":"log","callId":"dwyc@53","time":381815.106,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":381842.39,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":381842.413,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":381843.963,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":381845.903,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":381845.919,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":381845.924,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627819941.jpeg","width":390,"height":844,"timestamp":382002.31,"frameSwapWallTime":1795627819940.907}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627820158.jpeg","width":390,"height":844,"timestamp":382219.513,"frameSwapWallTime":1795627820157.5662}
+{"type":"log","callId":"dwyc@53","time":382348.577,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":382370.507,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":382370.523,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":382371.161,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":382372.258,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":382372.271,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":382372.276,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627820376.jpeg","width":390,"height":844,"timestamp":382436.813,"frameSwapWallTime":1795627820374.2239}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627820591.jpeg","width":390,"height":844,"timestamp":382652.265,"frameSwapWallTime":1795627820590.882}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627820809.jpeg","width":390,"height":844,"timestamp":382870.667,"frameSwapWallTime":1795627820807.54}
+{"type":"log","callId":"dwyc@53","time":382871.555,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":382903.179,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":382903.21,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":382905.105,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":382906.662,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":382906.687,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":382906.694,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627821028.jpeg","width":390,"height":844,"timestamp":383089.265,"frameSwapWallTime":1795627821024.198}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627821243.jpeg","width":390,"height":844,"timestamp":383304.733,"frameSwapWallTime":1795627821240.856}
+{"type":"log","callId":"dwyc@53","time":383412.79,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":383435.997,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":383436.017,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":383437.297,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":383438.476,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":383438.491,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":383438.495,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627821461.jpeg","width":390,"height":844,"timestamp":383522.058,"frameSwapWallTime":1795627821457.5142}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627821674.jpeg","width":390,"height":844,"timestamp":383735.153,"frameSwapWallTime":1795627821674.1719}
+{"type":"log","callId":"dwyc@53","time":383943.602,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627821893.jpeg","width":390,"height":844,"timestamp":383954.18,"frameSwapWallTime":1795627821890.83}
+{"type":"log","callId":"dwyc@53","time":383969.723,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":383969.747,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":383971.397,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":383972.384,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":383972.398,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":383972.402,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627822110.jpeg","width":390,"height":844,"timestamp":384170.806,"frameSwapWallTime":1795627822107.488}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627822328.jpeg","width":390,"height":844,"timestamp":384389.702,"frameSwapWallTime":1795627822324.146}
+{"type":"log","callId":"dwyc@53","time":384473.877,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":384503.269,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":384503.289,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":384504.006,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":384505.196,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":384505.213,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":384505.229,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627822542.jpeg","width":390,"height":844,"timestamp":384603.074,"frameSwapWallTime":1795627822540.804}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627822755.jpeg","width":390,"height":844,"timestamp":384816.654,"frameSwapWallTime":1795627822740.7961}
+{"type":"log","callId":"dwyc@53","time":385009.877,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627822971.jpeg","width":390,"height":844,"timestamp":385032.027,"frameSwapWallTime":1795627822957.4539}
+{"type":"log","callId":"dwyc@53","time":385047.535,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":385047.573,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":385049.565,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":385052.161,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":385052.181,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":385052.187,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627823184.jpeg","width":390,"height":844,"timestamp":385245.376,"frameSwapWallTime":1795627823157.4458}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627823411.jpeg","width":390,"height":844,"timestamp":385472.63,"frameSwapWallTime":1795627823390.77}
+{"type":"log","callId":"dwyc@53","time":385552.105,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":385606.648,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":385606.682,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":385609.247,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":385611.349,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":385611.38,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":385611.39,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627823636.jpeg","width":390,"height":844,"timestamp":385697.462,"frameSwapWallTime":1795627823607.428}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627823865.jpeg","width":390,"height":844,"timestamp":385925.851,"frameSwapWallTime":1795627823857.418}
+{"type":"log","callId":"dwyc@53","time":386110.841,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627824080.jpeg","width":390,"height":844,"timestamp":386141.595,"frameSwapWallTime":1795627824057.41}
+{"type":"log","callId":"dwyc@53","time":386157.039,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":386157.124,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":386160.012,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":386163.616,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":386163.638,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":386163.645,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627824294.jpeg","width":390,"height":844,"timestamp":386355.442,"frameSwapWallTime":1795627824290.7341}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627824508.jpeg","width":390,"height":844,"timestamp":386569.704,"frameSwapWallTime":1795627824474.06}
+{"type":"log","callId":"dwyc@53","time":386665.681,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":386693.507,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":386693.528,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":386694.414,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":386695.952,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":386695.973,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":386695.978,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627824725.jpeg","width":390,"height":844,"timestamp":386786.288,"frameSwapWallTime":1795627824707.384}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627824950.jpeg","width":390,"height":844,"timestamp":387011.003,"frameSwapWallTime":1795627824924.042}
+{"type":"log","callId":"dwyc@53","time":387201.647,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":387235.57,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":387235.606,"message":"  scrolling into view if needed"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627825176.jpeg","width":390,"height":844,"timestamp":387237.032,"frameSwapWallTime":1795627825174.031}
+{"type":"log","callId":"dwyc@53","time":387237.647,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":387239.107,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":387239.128,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":387239.133,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627825391.jpeg","width":390,"height":844,"timestamp":387451.967,"frameSwapWallTime":1795627825390.6902}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627825607.jpeg","width":390,"height":844,"timestamp":387668.424,"frameSwapWallTime":1795627825607.348}
+{"type":"log","callId":"dwyc@53","time":387742.796,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":387769.06,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":387769.093,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":387771.336,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":387773.539,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":387773.554,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":387773.559,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627825823.jpeg","width":390,"height":844,"timestamp":387884.25,"frameSwapWallTime":1795627825807.3398}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627826040.jpeg","width":390,"height":844,"timestamp":388100.816,"frameSwapWallTime":1795627826023.998}
+{"type":"log","callId":"dwyc@53","time":388274.206,"message":"  waiting for element to be visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":388303.323,"message":"  element is visible, enabled and stable"}
+{"type":"log","callId":"dwyc@53","time":388303.34,"message":"  scrolling into view if needed"}
+{"type":"log","callId":"dwyc@53","time":388304.966,"message":"  done scrolling"}
+{"type":"log","callId":"dwyc@53","time":388307.018,"message":"  element is outside of the viewport"}
+{"type":"log","callId":"dwyc@53","time":388307.041,"message":"retrying click action"}
+{"type":"log","callId":"dwyc@53","time":388307.048,"message":"  waiting 500ms"}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627826259.jpeg","width":390,"height":844,"timestamp":388319.8,"frameSwapWallTime":1795627826257.322}
+{"type":"screencast-frame","pageId":"page@de8d1a45b0275142e684db85e76173ea","file":"screencast/page@de8d1a45b0275142e684db85e76173ea-1795627826469.jpeg","width":390,"height":844,"timestamp":388530.215,"frameSwapWallTime":1795627826457.314}

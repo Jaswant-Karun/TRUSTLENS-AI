@@ -1,34 +1,73 @@
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeOff, Lock, Mail, ShieldCheck, AlertCircle } from "lucide-react";
-import { loginUser } from "@/lib/api";
+import { Eye, EyeOff, Lock, Mail, AlertCircle } from "lucide-react";
+import {
+  clearStoredToken,
+  getCurrentUser,
+  getStoredToken,
+  loginUser,
+} from "@/lib/api";
 import { NeonFrame } from "@/components/product/NeonFrame";
 import { GlowButton } from "@/components/product/GlowButton";
+import { TrustLensMark } from "@/components/product/BrandLogo";
+
+function sanitizeNextPath(rawNext: string | null): string {
+  if (!rawNext || !rawNext.startsWith("/") || rawNext.startsWith("//")) {
+    return "/analyze/text";
+  }
+  return rawNext;
+}
 
 function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const nextPath = searchParams.get("next") || "/analyze/text";
+  const nextPath = sanitizeNextPath(searchParams.get("next"));
+  const reason = searchParams.get("reason");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    reason === "session_expired"
+      ? "Your session has expired. Please sign in again."
+      : null
+  );
+
+  // Verify existing token on mount; clear expired/invalid tokens instead of trusting blindly
+  useEffect(() => {
+    const token = getStoredToken();
+    if (!token) return;
+    getCurrentUser()
+      .then(() => {
+        router.replace(nextPath);
+      })
+      .catch(() => {
+        clearStoredToken();
+        setError("Your previous session expired or is invalid. Please sign in again.");
+      });
+  }, [router, nextPath]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email.trim() || !password) {
-      setError("Please enter both your email address and password.");
+
+    const normalizedEmail = email.trim();
+    if (!normalizedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      setError("Please enter a valid email address.");
       return;
     }
+    if (!password) {
+      setError("Please enter your password.");
+      return;
+    }
+
     setLoading(true);
     try {
-      await loginUser(email.trim(), password);
+      await loginUser(normalizedEmail, password);
       router.push(nextPath);
     } catch (err: any) {
       setError(err?.message || "Invalid email or password.");
@@ -41,8 +80,8 @@ function LoginFormContent() {
     <div className="mx-auto flex w-full max-w-md flex-1 items-center justify-center px-4 py-12">
       <NeonFrame className="w-full p-6 sm:p-8">
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full border border-[#FF174F]/70 bg-[#170A12] shadow-[0_0_20px_rgba(255,23,79,0.3)]">
-            <ShieldCheck className="h-6 w-6 text-[#FF3D70]" />
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center">
+            <TrustLensMark className="h-11 w-11 drop-shadow-[0_0_14px_rgba(255,23,79,0.4)]" />
           </div>
           <h1 className="font-mono text-xl font-bold uppercase tracking-widest text-white">
             Sign In
@@ -62,7 +101,7 @@ function LoginFormContent() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} noValidate className="space-y-4">
           <div>
             <label
               htmlFor="login-email"
@@ -80,7 +119,7 @@ function LoginFormContent() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="analyst@organization.com"
-                className="w-full rounded-lg border border-[#481326] bg-[#050306] py-2.5 pl-10 pr-3 text-sm text-white placeholder-[#A1A1AA]/50 focus:border-[#FF174F] focus:outline-none"
+                className="cyber-input pl-10"
               />
             </div>
           </div>
@@ -110,7 +149,7 @@ function LoginFormContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full rounded-lg border border-[#481326] bg-[#050306] py-2.5 pl-10 pr-10 text-sm text-white placeholder-[#A1A1AA]/50 focus:border-[#FF174F] focus:outline-none"
+                className="cyber-input pl-10 pr-10"
               />
               <button
                 type="button"

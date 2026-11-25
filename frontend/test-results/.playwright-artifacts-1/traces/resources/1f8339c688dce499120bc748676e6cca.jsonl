@@ -1,6 +1,0 @@
-{"type":"receive","time":1795628097545.0332,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"4320698591e7de4f\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
-{"type":"send","time":1795628097545.913,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628097093}"}
-{"type":"send","time":1795628099551.0942,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"methodology\",{\"children\":[\"__PAGE__\",{},\"/methodology\",\"refresh\"]}]},null,null,true],\"appDirRoute\":true}"}
-{"type":"send","time":1795628102057.841,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"methodology\",{\"children\":[\"__PAGE__\",{},\"/methodology\",\"refresh\"]}]},null,null,true],\"appDirRoute\":true}"}
-{"type":"receive","time":1795628102874.258,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"cfb6ff65484c5867\",\"warnings\":[],\"errors\":[]}"}
-{"type":"send","time":1795628102874.4512,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628097093}"}

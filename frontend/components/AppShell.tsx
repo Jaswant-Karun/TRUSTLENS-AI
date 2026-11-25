@@ -1,11 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Lock } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { CyberBackground } from "@/components/product/CyberBackground";
 import { ProductHeader } from "@/components/product/ProductHeader";
+import { NeonFrame } from "@/components/product/NeonFrame";
+import { GlowButton } from "@/components/product/GlowButton";
+import { getStoredToken } from "@/lib/api";
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -21,8 +25,24 @@ const PUBLIC_OR_STANDALONE_ROUTES = new Set([
   "/profile",
 ]);
 
+const AUTH_REQUIRED_ROUTES = new Set(["/history"]);
+
+const QUICK_NAV_LINKS = [
+  { href: "/analyze/text", label: "Messages" },
+  { href: "/analyze/url", label: "URLs" },
+  { href: "/analyze/image", label: "OCR" },
+  { href: "/history", label: "History" },
+  { href: "/investigations", label: "Investigations" },
+  { href: "/reports", label: "Reports" },
+];
+
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
+  const [hasToken, setHasToken] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setHasToken(Boolean(getStoredToken()));
+  }, [pathname]);
 
   const getRouteInfo = (path: string) => {
     switch (path) {
@@ -96,6 +116,8 @@ export function AppShell({ children }: AppShellProps) {
     pathname === "/threat-library" ||
     pathname === "/analytics";
 
+  const isAuthBlocked = AUTH_REQUIRED_ROUTES.has(pathname) && hasToken === false;
+
   if (isStandalone) {
     return (
       <CyberBackground showHudFrame={true}>
@@ -136,42 +158,57 @@ export function AppShell({ children }: AppShellProps) {
     <CyberBackground showHudFrame={true}>
       <ProductHeader />
       <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-        <div className="mb-5 flex flex-col gap-1 border-b border-[#481326]/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex flex-col gap-3 border-b border-[#481326]/60 pb-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Breadcrumb items={routeInfo.breadcrumbs} />
             <h1 className="mt-1 font-mono text-lg sm:text-xl font-bold uppercase tracking-wider text-white">
               {routeInfo.title}
             </h1>
           </div>
-          <div className="flex flex-wrap gap-2 text-xs font-mono">
-            <Link
-              href="/analyze/text"
-              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
-            >
-              Messages
-            </Link>
-            <Link
-              href="/analyze/url"
-              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
-            >
-              URLs
-            </Link>
-            <Link
-              href="/analyze/image"
-              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
-            >
-              OCR
-            </Link>
-            <Link
-              href="/history"
-              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
-            >
-              History
-            </Link>
-          </div>
+          <nav aria-label="Quick workflow navigation" className="flex flex-wrap gap-2 text-xs font-mono">
+            {QUICK_NAV_LINKS.map((item) => {
+              const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`rounded border px-2.5 py-1 transition-colors ${
+                    active
+                      ? "border-[#FF174F] bg-[#FF174F]/15 text-white font-semibold"
+                      : "border-[#481326] bg-[#10070D] text-[#A1A1AA] hover:border-[#FF174F]/60 hover:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
-        {children}
+        {isAuthBlocked ? (
+          <div className="mx-auto max-w-md py-12">
+            <NeonFrame className="p-6 text-center space-y-4">
+              <Lock className="mx-auto h-9 w-9 text-[#FF3D70]" />
+              <h2 className="font-mono text-base font-bold uppercase tracking-wider text-white">
+                Authentication Required
+              </h2>
+              <p className="text-xs text-[#A1A1AA]">
+                Sign in to access your personal scan history and protected records.
+              </p>
+              <div className="flex justify-center gap-3">
+                <Link href={`/login?next=${encodeURIComponent(pathname)}`}>
+                  <GlowButton variant="primary" size="sm">SIGN IN</GlowButton>
+                </Link>
+                <Link href="/register">
+                  <GlowButton variant="secondary" size="sm">GET STARTED</GlowButton>
+                </Link>
+              </div>
+            </NeonFrame>
+          </div>
+        ) : (
+          children
+        )}
       </main>
     </CyberBackground>
   );

@@ -111,7 +111,7 @@ export default function ThreatIntelligencePage() {
           brand: <ShieldAlert className="w-3.5 h-3.5 text-purple-600" />,
         };
         return (
-          <span className="flex items-center space-x-1.5 font-mono text-xs uppercase text-slate-700">
+          <span className="flex items-center space-x-1.5 font-mono text-xs uppercase text-white">
             {icons[row.type]}
             <span>{row.type}</span>
           </span>
@@ -122,15 +122,15 @@ export default function ThreatIntelligencePage() {
       header: "Indicator (IOC)",
       accessorKey: "indicator",
       cell: (row) => (
-        <div className="flex items-center space-x-2 font-mono text-xs font-bold text-slate-900">
+        <div className="flex items-center space-x-2 font-mono text-xs font-bold text-white">
           <span>{row.indicator}</span>
           <button
             onClick={() => handleCopy(row.indicator)}
-            className="p-1 text-slate-400 hover:text-slate-700 rounded hover:bg-slate-100"
-            title="Copy indicator"
+            aria-label="Copy indicator"
+            className="p-1 text-[#A1A1AA] hover:text-white rounded hover:bg-[#170A12]"
           >
             {copiedText === row.indicator ? (
-              <Check className="w-3 h-3 text-emerald-600" />
+              <Check className="w-3 h-3 text-[#00D68F]" />
             ) : (
               <Copy className="w-3 h-3" />
             )}
@@ -143,9 +143,9 @@ export default function ThreatIntelligencePage() {
       accessorKey: "threatLevel",
       cell: (row) => {
         const styles = {
-          critical: "bg-red-50 text-red-700 border-red-200",
-          high: "bg-orange-50 text-orange-700 border-orange-200",
-          medium: "bg-amber-50 text-amber-700 border-amber-200",
+          critical: "bg-[#FF174F]/15 text-[#FF174F] border-[#FF174F]/50",
+          high: "bg-[#FF3D70]/15 text-[#FF3D70] border-[#FF3D70]/40",
+          medium: "bg-[#FFB020]/15 text-[#FFB020] border-[#FFB020]/40",
         };
         return (
           <span
@@ -159,13 +159,13 @@ export default function ThreatIntelligencePage() {
     {
       header: "Associated Campaign",
       accessorKey: "associatedCampaign",
-      className: "text-xs text-slate-600 font-medium",
+      className: "text-xs text-[#A1A1AA] font-medium",
     },
     {
       header: "Observed Hits",
       accessorKey: "hits",
       align: "right",
-      className: "font-mono font-bold text-slate-900 text-xs",
+      className: "font-mono font-bold text-white text-xs",
     },
   ];
 
@@ -174,7 +174,7 @@ export default function ThreatIntelligencePage() {
       <PageHeader
         title="Threat Indicators & IOC Intelligence"
         description="Curated indicators of compromise extracted across analyzed deceptive communications, phishing domains, and bulk SMS sender headers."
-        badge={{ text: "Active IOC Feed", variant: "blue" }}
+        badge={{ text: "Active IOC Feed", variant: "rose" }}
       />
 
       {/* Real-time Threat Distribution & Trend Charts */}
@@ -184,13 +184,15 @@ export default function ThreatIntelligencePage() {
       </div>
 
       {/* IOC Search & Table Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+      <div className="cyber-panel p-6 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-[#481326]">
           <div className="flex items-center space-x-2">
-            <AlertTriangle className="w-4 h-4 text-rose-600" />
-            <h3 className="text-sm font-bold text-slate-900">Extracted Threat Indicators of Compromise</h3>
+            <AlertTriangle className="w-4 h-4 text-[#FF174F]" />
+            <h3 className="text-sm font-mono font-bold uppercase text-white">
+              Extracted Threat Indicators of Compromise
+            </h3>
           </div>
-          <span className="text-xs font-mono text-slate-500">{filtered.length} Indicators Listed</span>
+          <span className="text-xs font-mono text-[#A1A1AA]">{filtered.length} Indicators Listed</span>
         </div>
 
         <SearchFilterBar

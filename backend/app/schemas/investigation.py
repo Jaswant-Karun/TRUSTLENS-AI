@@ -63,6 +63,7 @@ class InvestigationBase(BaseModel):
 
 
 class InvestigationCreate(InvestigationBase):
+    visibility: str = Field(default="Organization", description="Organization | Private")
     tags: Optional[List[str]] = Field(default_factory=list, description="Categorical threat tags")
     seed_campaign_id: Optional[int] = Field(None, description="Seed from an existing HDBSCAN Campaign Cluster ID")
     seed_analysis_id: Optional[str] = Field(None, description="Seed from an existing Analysis UUID")
@@ -70,18 +71,42 @@ class InvestigationCreate(InvestigationBase):
 
 class InvestigationSummary(InvestigationBase):
     id: str = Field(..., description="Unique investigation identifier (e.g. INV-2026-0011)")
+    owner_id: Optional[str] = Field(None, description="Authenticated owner user_id")
     created_at: datetime = Field(..., description="Creation timestamp")
     updated_at: datetime = Field(..., description="Last modified timestamp")
     objects_count: int = Field(default=0, description="Total graph nodes in dossier")
     tasks_count: int = Field(default=0, description="Associated analyst tasks")
-    comments_count: int = Field(default=0, description="Analyst comments")
+    comments_count: int = Field(default=0, description="Analyst comments / notes")
     tags: List[str] = Field(default_factory=list, description="Threat tags")
+    visibility: str = Field(default="Organization", description="Organization | Private")
 
 
 class InvestigationDetail(InvestigationSummary):
     sources: List[str] = Field(default_factory=list, description="Validated intelligence sources")
     attributes: Dict[str, Any] = Field(default_factory=dict, description="Dossier attributes (e.g. Targeted Sector, Campaign Hub)")
     visibility: str = Field(default="Organization", description="Access visibility scope")
+
+
+# ---------------------------------------------------------
+# Investigation Notes Contracts
+# ---------------------------------------------------------
+
+class InvestigationNoteCreate(BaseModel):
+    content: str = Field(..., min_length=1, max_length=2000, description="Analyst investigation note")
+
+
+class InvestigationNoteUpdate(BaseModel):
+    content: str = Field(..., min_length=1, max_length=2000, description="Updated note content")
+
+
+class InvestigationNoteResponse(BaseModel):
+    note_id: str
+    investigation_id: str
+    author_id: str
+    author_role: str
+    content: str
+    created_at: datetime
+    updated_at: Optional[datetime] = None
 
 
 # ---------------------------------------------------------

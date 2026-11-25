@@ -76,6 +76,7 @@ INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
     ],
     COLL_INVESTIGATIONS: [
         {"keys": [("investigation_id", 1)], "unique": True},
+        {"keys": [("owner_id", 1)]},
         {"keys": [("status", 1)]},
         {"keys": [("severity", 1)]},
         {"keys": [("created_at", -1)]},

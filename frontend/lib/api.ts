@@ -734,4 +734,32 @@ export async function exportInvestigationStix(targetType: string, targetId: stri
   return apiFetch<any>(`/exports/stix?${query.toString()}`);
 }
 
+export interface InvestigationNoteItem {
+  note_id: string;
+  investigation_id: string;
+  author_id: string;
+  author_role: string;
+  content: string;
+  created_at: string;
+  updated_at?: string | null;
+}
+
+export async function getInvestigationNotes(investigationId: string): Promise<InvestigationNoteItem[]> {
+  return apiFetch<InvestigationNoteItem[]>(`/investigations/${encodeURIComponent(investigationId)}/notes`);
+}
+
+export async function addInvestigationNote(investigationId: string, content: string): Promise<InvestigationNoteItem> {
+  return apiFetch<InvestigationNoteItem>(`/investigations/${encodeURIComponent(investigationId)}/notes`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content }),
+  });
+}
+
+export async function deleteInvestigationNote(investigationId: string, noteId: string): Promise<void> {
+  await apiFetch(`/investigations/${encodeURIComponent(investigationId)}/notes/${encodeURIComponent(noteId)}`, {
+    method: "DELETE",
+  });
+}
+
 

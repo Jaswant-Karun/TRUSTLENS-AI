@@ -16,6 +16,7 @@ from backend.app.database.collections import (
     get_urls_collection,
     get_reports_collection,
     get_campaigns_collection,
+    get_audit_collection,
 )
 from backend.app.services.campaign_service import campaign_service
 
@@ -453,13 +454,29 @@ class InvestigationService:
         await coll.insert_one(inv_live_doc)
         logger.info("Successfully seeded baseline investigations (INV-2026-0011, INV-2026-0006, INV-2026-0138).")
 
+    def _check_read_access(self, doc: Dict[str, Any], current_user: Optional[Dict[str, Any]]) -> None:
+        if doc.get("visibility", "Organization") == "Private":
+            if not current_user:
+                raise PermissionError("Authentication required to access this private investigation.")
+            role = current_user.get("role", "user")
+            if role not in ("analyst", "admin") and doc.get("owner_id") != current_user.get("user_id"):
+                raise PermissionError("Access denied: You do not have permission to view this private investigation.")
+
+    def _check_write_access(self, doc: Dict[str, Any], current_user: Optional[Dict[str, Any]]) -> None:
+        if not current_user:
+            raise PermissionError("Authentication required to modify this investigation.")
+        role = current_user.get("role", "user")
+        if role not in ("analyst", "admin") and doc.get("owner_id") != current_user.get("user_id"):
+            raise PermissionError("Access denied: You do not have permission to modify this investigation.")
+
     async def list_investigations(
         self,
         status: Optional[str] = None,
         severity: Optional[str] = None,
         limit: int = 50,
+        current_user: Optional[Dict[str, Any]] = None,
     ) -> List[Dict[str, Any]]:
-        """Lists active investigation summaries."""
+        """Lists investigation summaries visible to the caller."""
         await self._ensure_seeded()
         coll = get_investigations_collection()
         query: Dict[str, Any] = {}
@@ -468,24 +485,35 @@ class InvestigationService:
         if severity:
             query["severity"] = severity
 
-        cursor = coll.find(query).sort("created_at", -1).limit(limit)
-        items = await cursor.to_list(length=limit)
+        cursor = coll.find(query).sort("created_at", -1).limit(limit * 2)
+        items = await cursor.to_list(length=limit * 2)
 
         results = []
+        role = current_user.get("role", "user") if current_user else None
+        user_id = current_user.get("user_id") if current_user else None
         for it in items:
+            if it.get("visibility", "Organization") == "Private":
+                if not current_user:
+                    continue
+                if role not in ("analyst", "admin") and it.get("owner_id") != user_id:
+                    continue
             results.append({
                 "id": it.get("investigation_id"),
+                "owner_id": it.get("owner_id"),
                 "title": it.get("title"),
                 "description": it.get("description"),
                 "status": it.get("status", "active"),
                 "severity": it.get("severity", "high"),
+                "visibility": it.get("visibility", "Organization"),
                 "created_at": it.get("created_at"),
                 "updated_at": it.get("updated_at"),
                 "objects_count": len(it.get("nodes", [])),
                 "tasks_count": len([t for t in it.get("timeline", []) if t.get("event_type") == "task"]),
-                "comments_count": 0,
+                "comments_count": len(it.get("notes", [])),
                 "tags": it.get("tags", []),
             })
+            if len(results) >= limit:
+                break
         return results
 
     LEGACY_ALIASES: Dict[str, str] = {
@@ -495,7 +523,11 @@ class InvestigationService:
     def _resolve_id(self, investigation_id: str) -> str:
         return self.LEGACY_ALIASES.get(investigation_id.strip().upper(), investigation_id)
 
-    async def get_investigation_by_id(self, investigation_id: str) -> Optional[Dict[str, Any]]:
+    async def get_investigation_by_id(
+        self,
+        investigation_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """Retrieves single investigation metadata dossier."""
         await self._ensure_seeded()
         resolved_id = self._resolve_id(investigation_id)
@@ -503,9 +535,11 @@ class InvestigationService:
         doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
+        self._check_read_access(doc, current_user)
 
         return {
             "id": doc.get("investigation_id"),
+            "owner_id": doc.get("owner_id"),
             "title": doc.get("title"),
             "description": doc.get("description"),
             "status": doc.get("status", "active"),
@@ -514,14 +548,18 @@ class InvestigationService:
             "updated_at": doc.get("updated_at"),
             "objects_count": len(doc.get("nodes", [])),
             "tasks_count": len([t for t in doc.get("timeline", []) if t.get("event_type") == "task"]),
-            "comments_count": 0,
+            "comments_count": len(doc.get("notes", [])),
             "tags": doc.get("tags", []),
             "sources": doc.get("sources", []),
             "attributes": doc.get("attributes", {}),
             "visibility": doc.get("visibility", "Organization"),
         }
 
-    async def get_investigation_graph(self, investigation_id: str) -> Optional[Dict[str, Any]]:
+    async def get_investigation_graph(
+        self,
+        investigation_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """Returns the full graph nodes and edges for an investigation."""
         await self._ensure_seeded()
         resolved_id = self._resolve_id(investigation_id)
@@ -529,6 +567,7 @@ class InvestigationService:
         doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
+        self._check_read_access(doc, current_user)
 
         raw_nodes = doc.get("nodes", [])
         raw_edges = doc.get("edges", [])
@@ -558,14 +597,18 @@ class InvestigationService:
             })
 
         return {
-            "investigation_id": investigation_id,
+            "investigation_id": doc.get("investigation_id", investigation_id),
             "nodes": nodes,
             "edges": edges,
             "total_nodes": len(nodes),
             "total_edges": len(edges),
         }
 
-    async def get_investigation_timeline(self, investigation_id: str) -> Optional[Dict[str, Any]]:
+    async def get_investigation_timeline(
+        self,
+        investigation_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """Returns the chronological multi-track timeline for an investigation."""
         await self._ensure_seeded()
         resolved_id = self._resolve_id(investigation_id)
@@ -573,6 +616,7 @@ class InvestigationService:
         doc = await coll.find_one({"investigation_id": resolved_id})
         if not doc:
             return None
+        self._check_read_access(doc, current_user)
 
         raw_timeline = doc.get("timeline", [])
         timeline = []
@@ -588,14 +632,19 @@ class InvestigationService:
             })
 
         return {
-            "investigation_id": investigation_id,
+            "investigation_id": doc.get("investigation_id", investigation_id),
             "timeline": timeline,
             "total_events": len(timeline),
         }
 
-    async def get_object_by_id(self, investigation_id: str, object_id: str) -> Optional[Dict[str, Any]]:
+    async def get_object_by_id(
+        self,
+        investigation_id: str,
+        object_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+    ) -> Optional[Dict[str, Any]]:
         """Retrieves single object details from an investigation graph."""
-        graph = await self.get_investigation_graph(investigation_id)
+        graph = await self.get_investigation_graph(investigation_id, current_user=current_user)
         if not graph:
             return None
 
@@ -607,7 +656,7 @@ class InvestigationService:
                     if e["source"] == object_id or e["target"] == object_id
                 ])
                 return {
-                    "investigation_id": investigation_id,
+                    "investigation_id": graph["investigation_id"],
                     "object": n,
                     "relationships_count": rel_count,
                 }
@@ -617,13 +666,14 @@ class InvestigationService:
         self,
         investigation_id: str,
         object_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
     ) -> Optional[Dict[str, Any]]:
         """
         One-Hop Graph Expansion:
         Retrieves all objects currently connected, PLUS queries MongoDB for newly discovered
         real entities that share the same domain, phone, or tactic.
         """
-        graph = await self.get_investigation_graph(investigation_id)
+        graph = await self.get_investigation_graph(investigation_id, current_user=current_user)
         if not graph:
             return None
 
@@ -724,19 +774,30 @@ class InvestigationService:
             "total_connected": len(connected_nodes),
         }
 
-    async def create_investigation(self, payload: Dict[str, Any]) -> Dict[str, Any]:
-        """Creates and persists a new investigation dossier."""
+    async def create_investigation(
+        self,
+        payload: Dict[str, Any],
+        current_user: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Creates and persists a new investigation dossier owned by the authenticated user."""
         await self._ensure_seeded()
         coll = get_investigations_collection()
+        audit_coll = get_audit_collection()
         now = datetime.now(timezone.utc)
         inv_id = f"INV-{now.strftime('%Y')}-{uuid.uuid4().hex[:4].upper()}"
+
+        owner_id = current_user["user_id"]
+        owner_role = current_user.get("role", "user")
+        visibility = payload.get("visibility") or "Organization"
+        if visibility not in ("Organization", "Private"):
+            raise ValueError("visibility must be 'Organization' or 'Private'.")
 
         nodes = [
             {
                 "id": f"node-{inv_id.lower()}-central",
                 "type": "campaign_cluster",
                 "label": payload.get("title"),
-                "source": "Analyst Dossier Creation",
+                "source": f"User {owner_id}",
                 "verification_status": "under_review",
                 "created_at": now.isoformat(),
                 "properties": {
@@ -753,24 +814,25 @@ class InvestigationService:
                 "id": f"t-{inv_id.lower()}-1",
                 "event_type": "task",
                 "title": "Investigation Dossier Initialized",
-                "description": payload.get("description", "Security incident opened by SOC analyst."),
+                "description": payload.get("description") or "Investigation opened.",
                 "related_object_ids": [f"node-{inv_id.lower()}-central"],
                 "timestamp": now.isoformat(),
-                "source": "SOC Incident Management",
+                "source": f"{owner_role}:{owner_id}",
             }
         ]
 
         doc = {
             "investigation_id": inv_id,
+            "owner_id": owner_id,
             "title": payload.get("title"),
-            "description": payload.get("description", "Active cyber threat investigation."),
+            "description": payload.get("description") or "Active cyber threat investigation.",
             "status": payload.get("status", "active"),
             "severity": payload.get("severity", "high"),
-            "visibility": "Organization",
-            "tags": payload.get("tags", ["analyst_investigation"]),
-            "sources": ["Analyst Submissions", "TRUSTLENS Real-Time Telemetry"],
+            "visibility": visibility,
+            "tags": payload.get("tags") or ["analyst_investigation"],
+            "sources": ["Authenticated User Submission", "TRUSTLENS Telemetry"],
             "attributes": {
-                "Investigator": "SOC Threat Lead",
+                "Owner": owner_id,
                 "Incident ID": inv_id,
                 "Status": "Active Investigation",
             },
@@ -779,13 +841,25 @@ class InvestigationService:
             "nodes": nodes,
             "edges": edges,
             "timeline": timeline,
+            "notes": [],
+            "attached_analysis_ids": [],
         }
 
         await coll.insert_one(doc)
-        logger.info(f"Created new investigation dossier {inv_id}")
+        await audit_coll.insert_one({
+            "audit_id": f"aud-{uuid.uuid4().hex[:10]}",
+            "user_id": owner_id,
+            "action": "investigation_created",
+            "resource_type": "investigations",
+            "resource_id": inv_id,
+            "details": {"visibility": visibility, "severity": doc["severity"]},
+            "timestamp": now,
+        })
+        logger.info(f"Created new investigation dossier {inv_id} for owner {owner_id}")
 
         return {
             "id": inv_id,
+            "owner_id": owner_id,
             "title": doc["title"],
             "description": doc["description"],
             "status": doc["status"],
@@ -800,6 +874,163 @@ class InvestigationService:
             "attributes": doc["attributes"],
             "visibility": doc["visibility"],
         }
+
+    async def list_notes(
+        self,
+        investigation_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+    ) -> Optional[List[Dict[str, Any]]]:
+        await self._ensure_seeded()
+        resolved_id = self._resolve_id(investigation_id)
+        coll = get_investigations_collection()
+        doc = await coll.find_one({"investigation_id": resolved_id})
+        if not doc:
+            return None
+        self._check_read_access(doc, current_user)
+        notes = list(doc.get("notes", []))
+        notes.sort(key=lambda n: str(n.get("created_at", "")), reverse=True)
+        return notes
+
+    async def add_note(
+        self,
+        investigation_id: str,
+        content: str,
+        current_user: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        await self._ensure_seeded()
+        clean_content = content.strip()
+        if not clean_content:
+            raise ValueError("Note content cannot be empty or whitespace only.")
+
+        resolved_id = self._resolve_id(investigation_id)
+        coll = get_investigations_collection()
+        audit_coll = get_audit_collection()
+        doc = await coll.find_one({"investigation_id": resolved_id})
+        if not doc:
+            return None
+        self._check_write_access(doc, current_user)
+
+        now = datetime.now(timezone.utc)
+        author_id = current_user["user_id"]
+        author_role = current_user.get("role", "user")
+
+        # Duplicate write protection: if latest note from same author has identical content within 10s
+        existing_notes = doc.get("notes", [])
+        if existing_notes:
+            latest = existing_notes[-1]
+            if latest.get("author_id") == author_id and latest.get("content") == clean_content:
+                prev_ts = latest.get("created_at")
+                if isinstance(prev_ts, str):
+                    try:
+                        prev_ts = datetime.fromisoformat(prev_ts.replace("Z", "+00:00"))
+                    except Exception:
+                        prev_ts = None
+                if isinstance(prev_ts, datetime) and abs((now - prev_ts.replace(tzinfo=timezone.utc)).total_seconds()) < 10:
+                    return latest
+
+        note_id = f"note-{uuid.uuid4().hex[:10]}"
+        note_doc = {
+            "note_id": note_id,
+            "investigation_id": resolved_id,
+            "author_id": author_id,
+            "author_role": author_role,
+            "content": clean_content,
+            "created_at": now,
+            "updated_at": None,
+        }
+        timeline_event = {
+            "id": f"t-note-{uuid.uuid4().hex[:8]}",
+            "event_type": "task",
+            "title": f"Note Added ({author_role})",
+            "description": clean_content[:160],
+            "related_object_ids": [],
+            "timestamp": now.isoformat(),
+            "source": f"{author_role}:{author_id}",
+        }
+
+        await coll.update_one(
+            {"investigation_id": resolved_id},
+            {
+                "$push": {"notes": note_doc, "timeline": timeline_event},
+                "$set": {"updated_at": now},
+            },
+        )
+        await audit_coll.insert_one({
+            "audit_id": f"aud-{uuid.uuid4().hex[:10]}",
+            "user_id": author_id,
+            "action": "investigation_note_added",
+            "resource_type": "investigations",
+            "resource_id": resolved_id,
+            "details": {"note_id": note_id},
+            "timestamp": now,
+        })
+        return note_doc
+
+    async def update_note(
+        self,
+        investigation_id: str,
+        note_id: str,
+        content: str,
+        current_user: Dict[str, Any],
+    ) -> Optional[Dict[str, Any]]:
+        clean_content = content.strip()
+        if not clean_content:
+            raise ValueError("Note content cannot be empty or whitespace only.")
+
+        resolved_id = self._resolve_id(investigation_id)
+        coll = get_investigations_collection()
+        doc = await coll.find_one({"investigation_id": resolved_id})
+        if not doc:
+            return None
+        self._check_write_access(doc, current_user)
+
+        notes = list(doc.get("notes", []))
+        target_idx = next((i for i, n in enumerate(notes) if n.get("note_id") == note_id), None)
+        if target_idx is None:
+            return None
+
+        target_note = notes[target_idx]
+        if current_user.get("role") != "admin" and target_note.get("author_id") != current_user.get("user_id"):
+            raise PermissionError("Access denied: You may only edit your own notes.")
+
+        now = datetime.now(timezone.utc)
+        target_note["content"] = clean_content
+        target_note["updated_at"] = now
+        notes[target_idx] = target_note
+
+        await coll.update_one(
+            {"investigation_id": resolved_id},
+            {"$set": {"notes": notes, "updated_at": now}},
+        )
+        return target_note
+
+    async def delete_note(
+        self,
+        investigation_id: str,
+        note_id: str,
+        current_user: Dict[str, Any],
+    ) -> bool:
+        resolved_id = self._resolve_id(investigation_id)
+        coll = get_investigations_collection()
+        doc = await coll.find_one({"investigation_id": resolved_id})
+        if not doc:
+            return False
+        self._check_write_access(doc, current_user)
+
+        notes = list(doc.get("notes", []))
+        target_note = next((n for n in notes if n.get("note_id") == note_id), None)
+        if not target_note:
+            return False
+
+        if current_user.get("role") != "admin" and target_note.get("author_id") != current_user.get("user_id"):
+            raise PermissionError("Access denied: You may only delete your own notes.")
+
+        remaining = [n for n in notes if n.get("note_id") != note_id]
+        await coll.update_one(
+            {"investigation_id": resolved_id},
+            {"$set": {"notes": remaining, "updated_at": datetime.now(timezone.utc)}},
+        )
+        return True
 
 
 investigation_service = InvestigationService()

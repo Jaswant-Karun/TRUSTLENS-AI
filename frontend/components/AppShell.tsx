@@ -1,37 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Sidebar } from "@/components/ui/Sidebar";
-import { TopNavbar } from "@/components/ui/TopNavbar";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
+import { CyberBackground } from "@/components/product/CyberBackground";
+import { ProductHeader } from "@/components/product/ProductHeader";
 
 interface AppShellProps {
   children: React.ReactNode;
 }
 
+const PUBLIC_OR_STANDALONE_ROUTES = new Set([
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+  "/verify-email",
+  "/profile",
+]);
+
 export function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Derive dynamic page metadata and breadcrumbs from pathname
   const getRouteInfo = (path: string) => {
     switch (path) {
       case "/analyze/text":
         return {
           title: "Multilingual Text Scam Analysis",
-          breadcrumbs: [{ label: "Analysis" }, { label: "Text Scam Detection" }],
+          breadcrumbs: [{ label: "Analysis" }, { label: "Message Scanner" }],
         };
       case "/analyze/url":
         return {
           title: "Zero-Hop Phishing URL Inspection",
-          breadcrumbs: [{ label: "Analysis" }, { label: "URL Inspection" }],
+          breadcrumbs: [{ label: "Analysis" }, { label: "URL Shield" }],
         };
       case "/analyze/image":
         return {
           title: "Screenshot Forensic OCR Analysis",
-          breadcrumbs: [{ label: "Analysis" }, { label: "Screenshot OCR" }],
+          breadcrumbs: [{ label: "Analysis" }, { label: "Screenshot Analyzer" }],
         };
       case "/investigation":
         return {
@@ -41,12 +49,12 @@ export function AppShell({ children }: AppShellProps) {
       case "/intelligence/tactics":
         return {
           title: "Social Engineering Tactic Intelligence",
-          breadcrumbs: [{ label: "Intelligence" }, { label: "10-Tactic Taxonomy" }],
+          breadcrumbs: [{ label: "Intelligence" }, { label: "Tactic Taxonomy" }],
         };
       case "/intelligence/campaigns":
         return {
           title: "Scam Campaign Discovery & Attribution",
-          breadcrumbs: [{ label: "Intelligence" }, { label: "HDBSCAN Clusters" }],
+          breadcrumbs: [{ label: "Intelligence" }, { label: "Campaign Clusters" }],
         };
       case "/intelligence/threats":
         return {
@@ -56,7 +64,7 @@ export function AppShell({ children }: AppShellProps) {
       case "/models":
         return {
           title: "ML Center & Model Governance",
-          breadcrumbs: [{ label: "ML Center" }, { label: "Model Performance & Benchmarks" }],
+          breadcrumbs: [{ label: "ML Center" }, { label: "Model Benchmarks" }],
         };
       case "/history":
         return {
@@ -66,79 +74,105 @@ export function AppShell({ children }: AppShellProps) {
       case "/reports":
         return {
           title: "Community Threat Reports & Review",
-          breadcrumbs: [{ label: "Records" }, { label: "Community Reports" }],
+          breadcrumbs: [{ label: "Records" }, { label: "Reports" }],
         };
       case "/settings":
         return {
-          title: "Platform Settings & Engine Configuration",
-          breadcrumbs: [{ label: "Settings" }, { label: "System Config" }],
+          title: "Platform Settings & Configuration",
+          breadcrumbs: [{ label: "Account" }, { label: "Settings" }],
         };
       case "/dashboard":
-      case "/":
       default:
         return {
-          title: "SOC Threat Intelligence Cockpit",
-          breadcrumbs: [{ label: "Overview" }, { label: "Executive Dashboard" }],
+          title: "Threat Intelligence Overview",
+          breadcrumbs: [{ label: "Overview" }, { label: "Intelligence Hub" }],
         };
     }
   };
 
-  const routeInfo = getRouteInfo(pathname);
-
-  // Full-width ThreatQ Cybersecurity Workspace & Hub routes bypass the traditional sidebar layout
-  const isThreatQRoute =
+  const isStandalone = PUBLIC_OR_STANDALONE_ROUTES.has(pathname);
+  const isFullWidthWorkspace =
     pathname.startsWith("/investigations") ||
     pathname === "/threat-library" ||
     pathname === "/analytics";
 
-  if (isThreatQRoute) {
-    return <div className="min-h-screen w-full bg-[#171C25] text-slate-100">{children}</div>;
-  }
-
-  return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex">
-      {/* 1. Persistent Dark Navy Sidebar */}
-      <Sidebar
-        isCollapsed={isCollapsed}
-        onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
-        isMobileOpen={isMobileOpen}
-        onMobileClose={() => setIsMobileOpen(false)}
-      />
-
-      {/* Main Content Layout Container */}
-      <div
-        className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
-          isCollapsed ? "lg:pl-20" : "lg:pl-64"
-        }`}
-      >
-        {/* 2. Top Navigation Bar */}
-        <TopNavbar
-          onOpenMobileSidebar={() => setIsMobileOpen(true)}
-          title={routeInfo.title}
-        />
-
-        {/* 3. Main Page Content Canvas */}
-        <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          {/* Dynamic Breadcrumb Navigation */}
-          <div className="mb-4">
-            <Breadcrumb items={routeInfo.breadcrumbs} />
-          </div>
-
-          {/* Page Body Render */}
-          {children}
-        </main>
-
-        {/* Persistent Enterprise Footer */}
-        <footer className="mt-auto py-4 px-6 border-t border-slate-200/80 bg-white text-xs font-mono text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span>TRUSTLENS AI Platform | Production Core v1.0.0</span>
-          </div>
-          <div className="text-slate-400">
-            Multilingual Fraud Intelligence & Deception Attribution
+  if (isStandalone) {
+    return (
+      <CyberBackground showHudFrame={true}>
+        <ProductHeader />
+        <main className="flex-1 flex flex-col">{children}</main>
+        <footer className="mt-auto border-t border-[#481326]/60 bg-[#050306]/80 py-4 px-6 text-[11px] font-mono text-[#A1A1AA]">
+          <div className="mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between gap-2">
+            <span>TRUSTLENS AI — Multilingual Digital Fraud Intelligence</span>
+            <div className="flex items-center gap-4">
+              <Link href="/analyze/text" className="hover:text-white">
+                Scanner
+              </Link>
+              <Link href="/investigations" className="hover:text-white">
+                Investigations
+              </Link>
+              <Link href="/reports" className="hover:text-white">
+                Reports
+              </Link>
+            </div>
           </div>
         </footer>
-      </div>
-    </div>
+      </CyberBackground>
+    );
+  }
+
+  if (isFullWidthWorkspace) {
+    return (
+      <CyberBackground showHudFrame={false}>
+        <ProductHeader />
+        <div className="flex-1 w-full bg-[#050306]/90 text-white">{children}</div>
+      </CyberBackground>
+    );
+  }
+
+  const routeInfo = getRouteInfo(pathname);
+
+  return (
+    <CyberBackground showHudFrame={true}>
+      <ProductHeader />
+      <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <div className="mb-5 flex flex-col gap-1 border-b border-[#481326]/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <Breadcrumb items={routeInfo.breadcrumbs} />
+            <h1 className="mt-1 font-mono text-lg sm:text-xl font-bold uppercase tracking-wider text-white">
+              {routeInfo.title}
+            </h1>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs font-mono">
+            <Link
+              href="/analyze/text"
+              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
+            >
+              Messages
+            </Link>
+            <Link
+              href="/analyze/url"
+              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
+            >
+              URLs
+            </Link>
+            <Link
+              href="/analyze/image"
+              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
+            >
+              OCR
+            </Link>
+            <Link
+              href="/history"
+              className="rounded border border-[#481326] bg-[#10070D] px-2.5 py-1 text-[#A1A1AA] hover:border-[#FF174F] hover:text-white"
+            >
+              History
+            </Link>
+          </div>
+        </div>
+
+        {children}
+      </main>
+    </CyberBackground>
   );
 }

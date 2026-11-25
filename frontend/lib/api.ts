@@ -215,7 +215,16 @@ export interface UserProfile {
   full_name: string;
   role: string;
   is_active: boolean;
+  email_verified?: boolean;
+  onboarding_preferences?: {
+    preferred_language?: string;
+    primary_focus?: string;
+    threat_alerts_opt_in?: boolean;
+    email_notifications?: boolean;
+    in_app_notifications?: boolean;
+  };
   created_at: string;
+  last_login?: string | null;
 }
 
 /** Token Management */
@@ -451,6 +460,73 @@ export async function loginUser(email: string, password: string): Promise<{ acce
 
 export async function getCurrentUser(): Promise<UserProfile> {
   return apiFetch<UserProfile>("/auth/me");
+}
+
+export async function registerUser(payload: {
+  email: string;
+  password: string;
+  full_name: string;
+  privacy_accepted?: boolean;
+  terms_accepted?: boolean;
+  onboarding_preferences?: {
+    preferred_language: string;
+    primary_focus: string;
+    threat_alerts_opt_in: boolean;
+  };
+}): Promise<{
+  user_id: string;
+  email: string;
+  role: string;
+  verification_token?: string | null;
+  message?: string;
+}> {
+  return apiFetch("/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function verifyEmailToken(token: string): Promise<{ verified: boolean; user_id: string }> {
+  return apiFetch("/auth/verify-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+}
+
+export async function updateUserProfile(payload: {
+  full_name?: string;
+  preferred_language?: string;
+  primary_focus?: string;
+  threat_alerts_opt_in?: boolean;
+  email_notifications?: boolean;
+  in_app_notifications?: boolean;
+}): Promise<UserProfile> {
+  return apiFetch<UserProfile>("/auth/me", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getUserSessions(): Promise<{
+  user_id: string;
+  sessions: Array<{ audit_id: string; action: string; client_ip?: string; timestamp: string }>;
+}> {
+  return apiFetch("/auth/sessions");
+}
+
+export async function logoutUser(): Promise<void> {
+  try {
+    if (getStoredToken()) {
+      await apiFetch("/auth/logout", { method: "POST" });
+    }
+  } catch {
+    // Always clear client token even if backend token already expired
+  } finally {
+    clearStoredToken();
+  }
 }
 
 /* -------------------------------------------------------------------------- */
@@ -732,6 +808,34 @@ export async function exportInvestigationJson(targetType: string, targetId: stri
 export async function exportInvestigationStix(targetType: string, targetId: string): Promise<any> {
   const query = new URLSearchParams({ target_type: targetType, target_id: targetId });
   return apiFetch<any>(`/exports/stix?${query.toString()}`);
+}
+
+export interface InvestigationNoteItem {
+  note_id: string;
+  investigation_id: string;
+  author_id: string;
+  author_role: string;
+  content: string;
+  created_at: string;
+  updated_at?: string | null;
+}
+
+export async function getInvestigationNotes(investigationId: string): Promise<InvestigationNoteItem[]> {
+  return apiFetch<InvestigationNoteItem[]>(`/investigations/${encodeURIComponent(investigationId)}/notes`);
+}
+
+export async function addInvestigationNote(investigationId: string, content: string): Promise<InvestigationNoteItem> {
+  return apiFetch<InvestigationNoteItem>(`/investigations/${encodeURIComponent(investigationId)}/notes`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ content }),
+  });
+}
+
+export async function deleteInvestigationNote(investigationId: string, noteId: string): Promise<void> {
+  await apiFetch(`/investigations/${encodeURIComponent(investigationId)}/notes/${encodeURIComponent(noteId)}`, {
+    method: "DELETE",
+  });
 }
 
 

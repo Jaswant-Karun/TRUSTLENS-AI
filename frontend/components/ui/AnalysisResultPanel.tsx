@@ -482,7 +482,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                       <span>Evidence Tokens:</span>
                       {tac.evidence_tokens.map((tok: string, idx: number) => (
                         <span key={idx} className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300 font-bold">
-                          "{tok}"
+                          &ldquo;{tok}&rdquo;
                         </span>
                       ))}
                     </div>
@@ -535,7 +535,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                   <div className="flex flex-wrap gap-1.5">
                     {result.campaign_association.shared_phrases.map((phrase: string, i: number) => (
                       <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">
-                        "{phrase}"
+                        &ldquo;{phrase}&rdquo;
                       </span>
                     ))}
                   </div>

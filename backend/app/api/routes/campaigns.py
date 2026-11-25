@@ -5,10 +5,11 @@ GET /api/v1/campaigns/{id}
 """
 
 from typing import List, Optional, Dict, Any
-from fastapi import APIRouter, Query, HTTPException, status
+from fastapi import APIRouter, Depends, Query, HTTPException, status
 
 from backend.app.schemas.common import CampaignSummary, CampaignDetailResponse
 from backend.app.services.campaign_service import campaign_service
+from backend.app.security.dependencies import require_admin
 
 router = APIRouter(prefix="/campaigns", tags=["Campaign Intelligence"])
 
@@ -42,4 +43,18 @@ async def get_campaign(campaign_id: int):
             detail=f"Campaign Cluster #{campaign_id} was not found.",
         )
     return dossier
+
+
+@router.post("/sync", response_model=Dict[str, Any])
+async def sync_campaigns(
+    dry_run: bool = Query(False, description="Validate and preview sync counts without modifying MongoDB"),
+    current_user: Dict[str, Any] = Depends(require_admin),
+):
+    """
+    Admin-only idempotent synchronization of campaign_dossiers.json into MongoDB scam_campaigns.
+    """
+    return await campaign_service.sync_campaigns_from_dossiers(
+        dry_run=dry_run,
+        actor_id=current_user["user_id"],
+    )
 

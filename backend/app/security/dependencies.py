@@ -3,6 +3,7 @@ TRUSTLENS AI - Security & Authentication Dependencies
 Provides user extraction, role enforcement, and token validation for FastAPI routes.
 """
 
+from datetime import timezone
 from typing import Optional, Dict, Any
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -41,6 +42,20 @@ async def get_current_user(token: Optional[str] = Depends(oauth2_scheme)) -> Dic
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User account is deactivated.",
         )
+    revoked_before = user.get("session_revoked_before")
+    iat = payload.get("iat")
+    if revoked_before is not None and iat is not None:
+        revoked_dt = (
+            revoked_before.replace(tzinfo=timezone.utc)
+            if revoked_before.tzinfo is None
+            else revoked_before
+        )
+        if float(iat) <= revoked_dt.timestamp():
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Session has been logged out. Please sign in again.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
     return user
 
 

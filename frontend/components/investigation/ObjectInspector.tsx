@@ -12,6 +12,7 @@ import {
 import { InvestigationHeader } from "./InvestigationHeader";
 import { RelationshipInspector } from "./RelationshipInspector";
 import { EvidencePanel } from "./EvidencePanel";
+import { InvestigationNotesPanel } from "./InvestigationNotesPanel";
 
 interface ObjectInspectorProps {
   investigation: InvestigationData;
@@ -23,6 +24,7 @@ interface ObjectInspectorProps {
   onToggleCollapse: () => void;
   onExpandNode?: (id: string) => void;
   isExpanding?: boolean;
+  onTimelineRefresh?: () => void;
 }
 
 export function ObjectInspector({
@@ -35,6 +37,7 @@ export function ObjectInspector({
   onToggleCollapse,
   onExpandNode,
   isExpanding,
+  onTimelineRefresh,
 }: ObjectInspectorProps) {
   // Collapsed Sidebar View (ThreatQ right rail)
   if (isCollapsed) {
@@ -140,8 +143,11 @@ export function ObjectInspector({
             </div>
           </div>
         ) : (
-          /* CASE C: No selection -> Compose InvestigationHeader */
-          <InvestigationHeader investigation={investigation} />
+          /* CASE C: No selection -> Compose InvestigationHeader + Notes */
+          <>
+            <InvestigationHeader investigation={investigation} />
+            <InvestigationNotesPanel investigationId={investigation.id} onNotesChanged={onTimelineRefresh} />
+          </>
         )}
       </div>
     </aside>

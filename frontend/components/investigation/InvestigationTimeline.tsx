@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { TimelineEvent } from "./types";
 import {
   ChevronUp,
   ChevronDown,
   Clock,
-  Calendar,
-  Filter,
-  CheckCircle2,
-  AlertTriangle,
-  Zap,
+  RefreshCw,
 } from "lucide-react";
 
 interface InvestigationTimelineProps {
@@ -19,6 +15,9 @@ interface InvestigationTimelineProps {
   onSelectEvent: (event: TimelineEvent | null) => void;
   isCollapsed: boolean;
   onToggleCollapse: () => void;
+  onRefresh?: () => void;
+  loading?: boolean;
+  error?: string | null;
 }
 
 export function InvestigationTimeline({
@@ -27,25 +26,27 @@ export function InvestigationTimeline({
   onSelectEvent,
   isCollapsed,
   onToggleCollapse,
+  onRefresh,
+  loading = false,
+  error = null,
 }: InvestigationTimelineProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Group events into 3 chronological tracks (matching ThreatQ screenshot)
   const taskEvents = events.filter((e) => e.track === "tasks");
   const situationEvents = events.filter((e) => e.track === "situation");
   const indicatorEvents = events.filter((e) => e.track === "indicators");
 
-  const dates = [
-    "JAN 9",
-    "JAN 16",
-    "JAN 23",
-    "JAN 30",
-    "FEB 6",
-    "FEB 13",
-    "FEB 20",
-    "FEB 27",
-    "MAR 6",
-  ];
+  const dates = useMemo(() => {
+    const validDates = events
+      .map((e) => new Date(e.timestamp))
+      .filter((d) => !isNaN(d.getTime()))
+      .sort((a, b) => a.getTime() - b.getTime());
+    if (validDates.length === 0) return [];
+    const labels = validDates.map((d) =>
+      d.toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase()
+    );
+    return Array.from(new Set(labels)).slice(0, 8);
+  }, [events]);
 
   if (isCollapsed) {
     return (
@@ -94,7 +95,17 @@ export function InvestigationTimeline({
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
+          {onRefresh && (
+            <button
+              onClick={onRefresh}
+              title="Refresh Timeline"
+              className="flex items-center space-x-1 text-slate-400 hover:text-cyan-300"
+            >
+              <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} />
+              <span className="text-[10px] uppercase font-mono">Refresh</span>
+            </button>
+          )}
           <button
             onClick={onToggleCollapse}
             title="Collapse Timeline"
@@ -120,6 +131,16 @@ export function InvestigationTimeline({
           ref={scrollRef}
           className="flex-1 overflow-x-auto relative flex flex-col justify-between py-2 px-4 cursor-ew-resize"
         >
+          {error ? (
+            <div className="flex-1 flex items-center justify-center text-xs font-mono text-rose-400">
+              {error}
+            </div>
+          ) : events.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center text-xs font-mono text-slate-500 italic">
+              No persisted timeline events recorded for this investigation yet.
+            </div>
+          ) : (
+            <>
           {/* Vertical Time Grid Guide Lines */}
           <div className="absolute inset-0 flex justify-between pointer-events-none px-6">
             {dates.map((d) => (
@@ -197,6 +218,8 @@ export function InvestigationTimeline({
               </span>
             ))}
           </div>
+          </>
+          )}
         </div>
       </div>
     </div>

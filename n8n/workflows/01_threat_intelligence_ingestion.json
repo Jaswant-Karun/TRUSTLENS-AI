@@ -24,7 +24,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Schedule Trigger (Every 6h) (n8n-nodes-base.scheduleTrigger)"
     },
     {
       "id": "node-auth",
@@ -51,7 +52,8 @@
             }
           }
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Authenticate Admin (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w1-prep",
@@ -64,7 +66,8 @@
       ],
       "parameters": {
         "jsCode": "const now = new Date().toISOString();\nreturn [{ json: { source_name: \"URLhaus_Threat_Feed\", feed_timestamp: now, workflow_id: $execution.id, indicators: [{ indicator_type: \"url\", indicator_value: \"http://secure-update-sbi-portal.top/login.php\", confidence: 0.96, tags: [\"phishing\", \"banking\"] }] } }];"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Prepare Permitted Feed Payload (n8n-nodes-base.code)"
     },
     {
       "id": "w1-ingest",
@@ -101,7 +104,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($json) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Ingest & Deduplicate Feed (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w1-log",
@@ -138,7 +142,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ workflow_name: \"threat_intelligence_ingestion\", trigger_event: \"schedule_6h\", status: \"success\", payload_summary: $json }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Log Execution Audit (n8n-nodes-base.httpRequest)"
     }
   ],
   "connections": {

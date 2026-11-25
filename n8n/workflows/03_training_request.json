@@ -19,7 +19,8 @@
         "httpMethod": "POST",
         "path": "trigger-ml-training",
         "responseMode": "onReceived"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Admin Training Webhook (n8n-nodes-base.webhook)"
     },
     {
       "id": "w3-if",
@@ -49,7 +50,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Verify Webhook Secret (n8n-nodes-base.if)"
     },
     {
       "id": "node-auth",
@@ -76,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Authenticate Admin (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w3-submit",
@@ -113,7 +116,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ model_name: $node[\"Admin Training Webhook\"].json.body.model_name, dataset_version: $node[\"Admin Training Webhook\"].json.body.dataset_version || \"v1.2-cleaned\" }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Submit Controlled Training Job (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w3-poll",
@@ -147,7 +151,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Poll Training Job Status (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w3-log",
@@ -184,7 +189,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ workflow_name: \"training_request\", trigger_event: \"admin_webhook\", status: $json.status, payload_summary: $json }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Log Training Completion (n8n-nodes-base.httpRequest)"
     }
   ],
   "connections": {

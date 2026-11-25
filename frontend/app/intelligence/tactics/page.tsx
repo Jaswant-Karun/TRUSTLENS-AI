@@ -105,7 +105,7 @@ export default function TacticsIntelligencePage() {
               </div>
               <p className="text-xs text-slate-600 leading-relaxed">{tac.desc}</p>
               <div className="p-2 rounded bg-white border border-slate-200/80 text-[11px] font-mono text-slate-500 italic">
-                "{tac.exemplar}"
+                &ldquo;{tac.exemplar}&rdquo;
               </div>
             </div>
           ))}

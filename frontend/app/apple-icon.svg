@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <rect width="180" height="180" rx="38" fill="#050306" />
+  <path
+    d="M90 22L148 49V94C148 127 123 151 90 162C57 151 32 127 32 94V49L90 22Z"
+    fill="#10070D"
+    stroke="#FF174F"
+    stroke-width="8"
+  />
+  <circle cx="90" cy="90" r="31" stroke="#FF3D70" stroke-width="6" stroke-dasharray="74 16" />
+  <circle cx="90" cy="90" r="12" fill="#FFFFFF" />
+  <circle cx="90" cy="90" r="5" fill="#FF174F" />
+</svg>

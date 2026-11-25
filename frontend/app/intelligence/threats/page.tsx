@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getThreatIntelStatus } from "@/lib/api";
 import {
   PageHeader,
   ThreatTrendChart,
@@ -82,6 +83,11 @@ const INITIAL_INDICATORS: ThreatIndicator[] = [
 export default function ThreatIntelligencePage() {
   const [search, setSearch] = useState("");
   const [threatLevel, setThreatLevel] = useState("");
+  const [syncStatus, setSyncStatus] = useState<any>(null);
+
+  useEffect(() => {
+    getThreatIntelStatus(10).then(setSyncStatus).catch(() => null);
+  }, []);
   const [copiedText, setCopiedText] = useState<string | null>(null);
 
   const filtered = INITIAL_INDICATORS.filter((item) => {
@@ -213,6 +219,39 @@ export default function ThreatIntelligencePage() {
           emptyDescription="Try clearing your search filters."
         />
       </div>
+
+      {/* Scheduled Threat Intelligence Synchronization & Source Health */}
+      {syncStatus && (
+        <div className="cyber-panel p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#481326]">
+            <div>
+              <h3 className="text-sm font-mono font-bold uppercase text-white">
+                Threat Intelligence Sync &amp; Source Health
+              </h3>
+              <p className="text-xs text-[#A1A1AA]">
+                {syncStatus.sync_mode_notice || "Scheduled polling synchronization (not instantaneous real-time detection)."}
+              </p>
+            </div>
+            <span className="text-xs font-mono text-cyan-300">
+              Last Successful Sync: {syncStatus.last_successful_sync_utc ? new Date(syncStatus.last_successful_sync_utc).toLocaleString() : "Never synced"}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs font-mono">
+            {(syncStatus.source_health || []).map((src: any) => (
+              <div key={src.source_id} className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-100 font-semibold truncate">{src.name}</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] ${src.health_status === "healthy" ? "bg-emerald-500/20 text-emerald-300" : src.health_status === "error" ? "bg-rose-500/20 text-rose-300" : "bg-slate-800 text-slate-300"}`}>
+                    {src.health_status}
+                  </span>
+                </div>
+                <div className="text-slate-400">Cadence: {src.update_frequency} (Scheduled Polling)</div>
+                <div className="text-slate-400">Last Sync: {src.last_successful_sync_utc || "—"}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

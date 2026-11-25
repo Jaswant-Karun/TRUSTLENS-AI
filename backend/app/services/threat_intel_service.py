@@ -21,10 +21,12 @@ from urllib.parse import urlparse
 import httpx
 
 from backend.app.core.logging import logger
-from backend.app.database.collections import get_indicators_collection
+from backend.app.database.collections import get_indicators_collection, get_campaigns_collection
 from backend.app.database.manager import db_manager
 
 COLL_THREAT_INTEL_RUNS = "threat_intel_runs"
+COLL_THREAT_INTEL_EVENTS = "threat_intel_events"
+COLL_THREAT_INTEL_HEALTH = "threat_intel_source_health"
 
 THREAT_INTEL_SOURCES: Dict[str, Dict[str, Any]] = {
     "phishtank_online_valid": {
@@ -129,9 +131,24 @@ THREAT_INTEL_SOURCES: Dict[str, Dict[str, Any]] = {
 class ThreatIntelIngestionService:
     """Ingests, normalizes, and schedules real threat intelligence feeds with license gating."""
 
+    SOURCE_MAX_PER_HOUR = 12
+    MAX_RETRIES = 3
+
     def __init__(self):
         self._scheduler_task: Optional[asyncio.Task] = None
         self._last_run_by_source: Dict[str, float] = {}
+        self._rate_limit_windows: Dict[str, List[float]] = {}
+
+    def _check_source_rate_limit(self, source_id: str) -> bool:
+        import time
+        now = time.monotonic()
+        window = [ts for ts in self._rate_limit_windows.get(source_id, []) if (now - ts) < 3600.0]
+        if len(window) >= self.SOURCE_MAX_PER_HOUR:
+            self._rate_limit_windows[source_id] = window
+            return False
+        window.append(now)
+        self._rate_limit_windows[source_id] = window
+        return True
 
     def list_sources(self, commercial_only: Optional[bool] = None) -> List[Dict[str, Any]]:
         sources = list(THREAT_INTEL_SOURCES.values())
@@ -247,7 +264,7 @@ class ThreatIntelIngestionService:
         allow_non_commercial: bool = False,
         max_items: int = 250,
     ) -> Dict[str, Any]:
-        """Fetches, normalizes, and upserts a live feed. Never fabricates data on failure."""
+        """Fetches with retries & rate limiting, tracks deltas & campaign correlations, and never fabricates data."""
         spec = self.check_commercial_gate(source_id, allow_non_commercial=allow_non_commercial)
         run_id = f"tirun-{uuid.uuid4().hex[:10]}"
         started = datetime.now(timezone.utc).isoformat()
@@ -256,60 +273,269 @@ class ThreatIntelIngestionService:
         if source_id == "phishtank_online_valid" and os.getenv("PHISHTANK_APP_KEY"):
             url = f"https://data.phishtank.com/data/{os.getenv('PHISHTANK_APP_KEY')}/online-valid.json"
 
-        try:
-            async with httpx.AsyncClient(follow_redirects=True, timeout=30.0) as client:
-                resp = await client.get(url, headers=headers)
-                resp.raise_for_status()
-                raw_body = resp.text
+        health_coll = db_manager.get_collection(COLL_THREAT_INTEL_HEALTH)
+        prev_health = await health_coll.find_one({"source_id": source_id}) or {}
+        prev_health.pop("_id", None)
 
-            records = self.normalize_payload(source_id, raw_body, max_items=max_items)
-            ind_coll = get_indicators_collection()
-            upserted = 0
-            for rec in records:
-                existing = await ind_coll.find_one({"indicator_id": rec["indicator_id"]})
-                if existing:
-                    await ind_coll.update_one({"indicator_id": rec["indicator_id"]}, {"$set": rec})
-                else:
-                    await ind_coll.insert_one(dict(rec))
-                upserted += 1
-
+        if not self._check_source_rate_limit(source_id):
             run_doc = {
                 "run_id": run_id,
                 "source_id": source_id,
-                "status": "success",
-                "records_normalized": len(records),
-                "records_persisted": upserted,
+                "status": "rate_limited",
+                "records_normalized": 0,
+                "records_persisted": 0,
+                "new_indicators": 0,
+                "status_changes": 0,
+                "unchanged_indicators": 0,
+                "correlated_campaigns": [],
+                "attempts": 0,
                 "started_at_utc": started,
                 "completed_at_utc": datetime.now(timezone.utc).isoformat(),
-                "error": None,
+                "error": "Per-source hourly rate limit exceeded.",
             }
-        except Exception as exc:
-            logger.error(f"Threat intel ingestion failed for {source_id}: {exc}")
+            await db_manager.get_collection(COLL_THREAT_INTEL_RUNS).insert_one(dict(run_doc))
+            return run_doc
+
+        raw_body = ""
+        last_exc: Optional[Exception] = None
+        attempts = 0
+        for attempt in range(1, self.MAX_RETRIES + 1):
+            attempts = attempt
+            try:
+                async with httpx.AsyncClient(follow_redirects=True, timeout=30.0) as client:
+                    resp = await client.get(url, headers=headers)
+                    resp.raise_for_status()
+                    raw_body = resp.text
+                    last_exc = None
+                    break
+            except Exception as exc:
+                last_exc = exc
+                if attempt < self.MAX_RETRIES:
+                    await asyncio.sleep(min(2.0, 0.25 * (2 ** (attempt - 1))))
+
+        if last_exc is not None:
+            logger.error(f"Threat intel ingestion failed for {source_id} after {attempts} attempts: {last_exc}")
+            consec = int(prev_health.get("consecutive_failures", 0)) + 1
+            completed = datetime.now(timezone.utc).isoformat()
             run_doc = {
                 "run_id": run_id,
                 "source_id": source_id,
                 "status": "error",
                 "records_normalized": 0,
                 "records_persisted": 0,
+                "new_indicators": 0,
+                "status_changes": 0,
+                "unchanged_indicators": 0,
+                "correlated_campaigns": [],
+                "attempts": attempts,
                 "started_at_utc": started,
-                "completed_at_utc": datetime.now(timezone.utc).isoformat(),
+                "completed_at_utc": completed,
+                "error": str(last_exc),
+            }
+            health_doc = {
+                "source_id": source_id,
+                "name": spec["name"],
+                "sync_mode": "scheduled_polling",
+                "update_frequency": spec["update_frequency"],
+                "last_attempt_utc": completed,
+                "last_successful_sync_utc": prev_health.get("last_successful_sync_utc"),
+                "health_status": "error" if consec >= 2 else "degraded",
+                "consecutive_failures": consec,
+                "last_error": str(last_exc),
+            }
+            if prev_health:
+                await health_coll.update_one({"source_id": source_id}, {"$set": health_doc})
+            else:
+                await health_coll.insert_one(dict(health_doc))
+            await db_manager.get_collection(COLL_THREAT_INTEL_RUNS).insert_one(dict(run_doc))
+            return run_doc
+
+        try:
+            records = self.normalize_payload(source_id, raw_body, max_items=max_items)
+            ind_coll = get_indicators_collection()
+            events_coll = db_manager.get_collection(COLL_THREAT_INTEL_EVENTS)
+            campaigns_coll = get_campaigns_collection()
+
+            # Preload campaign domains for lightweight correlation
+            camp_docs = await campaigns_coll.find({}, {"_id": 0}).limit(100).to_list(length=100)
+            domain_to_campaigns: Dict[str, List[str]] = {}
+            for cd in camp_docs:
+                cid = str(cd.get("cluster_id") or cd.get("campaign_id") or "")
+                cname = cd.get("campaign_name") or (f"Cluster #{cid}" if cid else "")
+                si = cd.get("shared_indicators", {})
+                for dom in (si.get("top_domains") or si.get("sample_domains") or []):
+                    domain_to_campaigns.setdefault(str(dom).lower(), []).append(cname)
+
+            new_count = 0
+            status_changes = 0
+            unchanged_count = 0
+            correlated_campaigns: set = set()
+            completed = datetime.now(timezone.utc).isoformat()
+
+            for rec in records:
+                existing = await ind_coll.find_one({"indicator_id": rec["indicator_id"]})
+                # Check campaign correlation via URL domain
+                if rec.get("indicator_type") == "url":
+                    host = urlparse(rec["value"]).netloc.lower().split(":")[0]
+                    for cname in domain_to_campaigns.get(host, []):
+                        correlated_campaigns.add(cname)
+
+                if not existing:
+                    await ind_coll.insert_one(dict(rec))
+                    new_count += 1
+                    await events_coll.insert_one({
+                        "event_id": f"tievt-{uuid.uuid4().hex[:10]}",
+                        "event_type": "indicator_discovered",
+                        "indicator_id": rec["indicator_id"],
+                        "value": rec["value"],
+                        "source_id": source_id,
+                        "severity": rec["severity"],
+                        "timestamp_utc": completed,
+                    })
+                elif (
+                    existing.get("severity") != rec["severity"]
+                    or existing.get("threat_type") != rec["threat_type"]
+                    or existing.get("verification_status") != rec["verification_status"]
+                ):
+                    await ind_coll.update_one({"indicator_id": rec["indicator_id"]}, {"$set": rec})
+                    status_changes += 1
+                    await events_coll.insert_one({
+                        "event_id": f"tievt-{uuid.uuid4().hex[:10]}",
+                        "event_type": "threat_status_changed",
+                        "indicator_id": rec["indicator_id"],
+                        "value": rec["value"],
+                        "source_id": source_id,
+                        "previous_severity": existing.get("severity"),
+                        "new_severity": rec["severity"],
+                        "timestamp_utc": completed,
+                    })
+                else:
+                    unchanged_count += 1
+
+            corr_list = sorted(correlated_campaigns)
+            run_doc = {
+                "run_id": run_id,
+                "source_id": source_id,
+                "status": "success",
+                "records_normalized": len(records),
+                "records_persisted": new_count + status_changes,
+                "new_indicators": new_count,
+                "status_changes": status_changes,
+                "unchanged_indicators": unchanged_count,
+                "correlated_campaigns": corr_list,
+                "attempts": attempts,
+                "started_at_utc": started,
+                "completed_at_utc": completed,
+                "error": None,
+            }
+            health_doc = {
+                "source_id": source_id,
+                "name": spec["name"],
+                "sync_mode": "scheduled_polling",
+                "update_frequency": spec["update_frequency"],
+                "last_attempt_utc": completed,
+                "last_successful_sync_utc": completed,
+                "health_status": "healthy",
+                "consecutive_failures": 0,
+                "last_error": None,
+                "new_indicators_last_run": new_count,
+                "status_changes_last_run": status_changes,
+                "correlated_campaigns_last_run": len(corr_list),
+            }
+            if prev_health:
+                await health_coll.update_one({"source_id": source_id}, {"$set": health_doc})
+            else:
+                await health_coll.insert_one(dict(health_doc))
+        except Exception as exc:
+            logger.error(f"Threat intel normalization/persistence failed for {source_id}: {exc}")
+            completed = datetime.now(timezone.utc).isoformat()
+            run_doc = {
+                "run_id": run_id,
+                "source_id": source_id,
+                "status": "error",
+                "records_normalized": 0,
+                "records_persisted": 0,
+                "new_indicators": 0,
+                "status_changes": 0,
+                "unchanged_indicators": 0,
+                "correlated_campaigns": [],
+                "attempts": attempts,
+                "started_at_utc": started,
+                "completed_at_utc": completed,
                 "error": str(exc),
             }
 
-        runs_coll = db_manager.get_collection(COLL_THREAT_INTEL_RUNS)
-        await runs_coll.insert_one(dict(run_doc))
+        await db_manager.get_collection(COLL_THREAT_INTEL_RUNS).insert_one(dict(run_doc))
         return run_doc
 
     async def get_status(self, limit: int = 20) -> Dict[str, Any]:
         runs_coll = db_manager.get_collection(COLL_THREAT_INTEL_RUNS)
+        events_coll = db_manager.get_collection(COLL_THREAT_INTEL_EVENTS)
+        health_coll = db_manager.get_collection(COLL_THREAT_INTEL_HEALTH)
         ind_coll = get_indicators_collection()
+
         recent_runs = await runs_coll.find({}, {"_id": 0}).sort("started_at_utc", -1).limit(limit).to_list(length=limit)
+        recent_events = await events_coll.find({}, {"_id": 0}).sort("timestamp_utc", -1).limit(limit).to_list(length=limit)
+        health_rows = await health_coll.find({}, {"_id": 0}).to_list(length=50)
+        health_by_id = {h["source_id"]: h for h in health_rows}
+
+        source_health: List[Dict[str, Any]] = []
+        last_successful_sync_global: Optional[str] = None
+        for sid, spec in THREAT_INTEL_SOURCES.items():
+            h = health_by_id.get(sid)
+            if h:
+                ls = h.get("last_successful_sync_utc")
+                if ls and (last_successful_sync_global is None or ls > last_successful_sync_global):
+                    last_successful_sync_global = ls
+                source_health.append(h)
+            else:
+                source_health.append({
+                    "source_id": sid,
+                    "name": spec["name"],
+                    "sync_mode": "scheduled_polling",
+                    "update_frequency": spec["update_frequency"],
+                    "last_attempt_utc": None,
+                    "last_successful_sync_utc": None,
+                    "health_status": "never_synced" if spec["permitted_commercial_use"]["allowed"] else "commercial_gated",
+                    "consecutive_failures": 0,
+                    "last_error": None,
+                })
+
         total_indicators = await ind_coll.count_documents({"provenance": "threat_intel"})
         return {
+            "sync_mode": "scheduled_polling",
+            "sync_mode_notice": "Scheduled polling synchronization (not instantaneous real-time detection).",
+            "last_successful_sync_utc": last_successful_sync_global,
             "total_threat_intel_indicators": total_indicators,
+            "source_health": source_health,
+            "recent_events": recent_events,
             "recent_runs": recent_runs,
             "scheduler_running": bool(self._scheduler_task and not self._scheduler_task.done()),
         }
+
+    async def _scheduler_loop(self, poll_interval_seconds: int = 300, allow_non_commercial: bool = False) -> None:
+        while True:
+            try:
+                await self.run_scheduled_cycle(allow_non_commercial=allow_non_commercial)
+            except asyncio.CancelledError:
+                break
+            except Exception as exc:
+                logger.error(f"Scheduled threat intel cycle error: {exc}")
+            await asyncio.sleep(poll_interval_seconds)
+
+    def start_scheduler(self, poll_interval_seconds: int = 300, allow_non_commercial: bool = False) -> None:
+        if self._scheduler_task is None or self._scheduler_task.done():
+            self._scheduler_task = asyncio.create_task(
+                self._scheduler_loop(poll_interval_seconds=poll_interval_seconds, allow_non_commercial=allow_non_commercial)
+            )
+
+    async def stop_scheduler(self) -> None:
+        if self._scheduler_task and not self._scheduler_task.done():
+            self._scheduler_task.cancel()
+            try:
+                await self._scheduler_task
+            except asyncio.CancelledError:
+                pass
 
     async def run_scheduled_cycle(self, allow_non_commercial: bool = False) -> List[Dict[str, Any]]:
         """Runs due feeds based on their configured update_interval_seconds."""

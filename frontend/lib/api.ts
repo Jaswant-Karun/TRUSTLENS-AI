@@ -331,6 +331,11 @@ export async function getCampaigns(limit = 20): Promise<CampaignSummary[]> {
   return apiFetch<CampaignSummary[]>(`/campaigns?limit=${limit}`);
 }
 
+/** Get threat intelligence synchronization status and per-source health */
+export async function getThreatIntelStatus(limit = 20): Promise<any> {
+  return apiFetch<any>(`/threat-intel/status?limit=${limit}`);
+}
+
 /** Get single campaign dossier */
 export async function getCampaignDetail(id: number): Promise<CampaignDetail> {
   return apiFetch<CampaignDetail>(`/campaigns/${id}`);

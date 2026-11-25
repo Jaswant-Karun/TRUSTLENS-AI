@@ -21,6 +21,7 @@ from backend.app.api.routes import (
     exports,
     notifications,
     threat_intel,
+    ioc_enrichment,
 )
 
 api_v1_router = APIRouter()
@@ -41,6 +42,7 @@ api_v1_router.include_router(analytics.router)
 api_v1_router.include_router(exports.router)
 api_v1_router.include_router(notifications.router)
 api_v1_router.include_router(threat_intel.router)
+api_v1_router.include_router(ioc_enrichment.router)
 
 __all__ = ["api_v1_router"]
 

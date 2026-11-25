@@ -198,9 +198,10 @@ class MLMonitoringService:
             raise ValueError("verified_label is required when approving feedback as verified_ground_truth")
 
         coll = self.get_feedback_collection()
-        existing = await coll.find_one({"feedback_id": feedback_id}, {"_id": 0})
+        existing = await coll.find_one({"feedback_id": feedback_id})
         if not existing:
             return None
+        existing.pop("_id", None)
 
         updates = {
             "review_status": decision,

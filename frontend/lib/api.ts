@@ -215,7 +215,16 @@ export interface UserProfile {
   full_name: string;
   role: string;
   is_active: boolean;
+  email_verified?: boolean;
+  onboarding_preferences?: {
+    preferred_language?: string;
+    primary_focus?: string;
+    threat_alerts_opt_in?: boolean;
+    email_notifications?: boolean;
+    in_app_notifications?: boolean;
+  };
   created_at: string;
+  last_login?: string | null;
 }
 
 /** Token Management */
@@ -486,8 +495,38 @@ export async function verifyEmailToken(token: string): Promise<{ verified: boole
   });
 }
 
-export function logoutUser(): void {
-  clearStoredToken();
+export async function updateUserProfile(payload: {
+  full_name?: string;
+  preferred_language?: string;
+  primary_focus?: string;
+  threat_alerts_opt_in?: boolean;
+  email_notifications?: boolean;
+  in_app_notifications?: boolean;
+}): Promise<UserProfile> {
+  return apiFetch<UserProfile>("/auth/me", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function getUserSessions(): Promise<{
+  user_id: string;
+  sessions: Array<{ audit_id: string; action: string; client_ip?: string; timestamp: string }>;
+}> {
+  return apiFetch("/auth/sessions");
+}
+
+export async function logoutUser(): Promise<void> {
+  try {
+    if (getStoredToken()) {
+      await apiFetch("/auth/logout", { method: "POST" });
+    }
+  } catch {
+    // Always clear client token even if backend token already expired
+  } finally {
+    clearStoredToken();
+  }
 }
 
 /* -------------------------------------------------------------------------- */

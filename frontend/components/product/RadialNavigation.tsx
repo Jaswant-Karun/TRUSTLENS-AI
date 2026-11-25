@@ -102,7 +102,18 @@ export function RadialNavigation({ variant = "hero" }: RadialNavigationProps) {
     };
   }, [isOpen, closeMenu]);
 
-  // Keyboard navigation (Escape, ArrowLeft/Right/Up/Down)
+  // Move focus to first radial item when opened for seamless keyboard navigation
+  useEffect(() => {
+    if (isOpen) {
+      setFocusedIdx(0);
+      const timer = setTimeout(() => {
+        itemBtnRefs.current[0]?.focus();
+      }, 40);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Keyboard navigation (Escape, ArrowLeft/Right/Up/Down, Home/End)
   useEffect(() => {
     if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -120,6 +131,15 @@ export function RadialNavigation({ variant = "hero" }: RadialNavigationProps) {
         const prev = (focusedIdx - 1 + RADIAL_NAV_ITEMS.length) % RADIAL_NAV_ITEMS.length;
         setFocusedIdx(prev);
         itemBtnRefs.current[prev]?.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        setFocusedIdx(0);
+        itemBtnRefs.current[0]?.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        const last = RADIAL_NAV_ITEMS.length - 1;
+        setFocusedIdx(last);
+        itemBtnRefs.current[last]?.focus();
       }
     };
     window.addEventListener("keydown", handleKey);

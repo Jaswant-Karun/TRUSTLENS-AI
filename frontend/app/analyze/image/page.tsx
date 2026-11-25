@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
 import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
@@ -9,9 +9,18 @@ import { scanImage, ImageAnalysisResponse } from "@/lib/api";
 import { Capacitor } from "@capacitor/core";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import {
+  PermissionRationaleModal,
+  SensitivePermissionKind,
+} from "@/components/android/PermissionRationaleModal";
+import {
+  hasMediaPermission,
+  requestMediaPermission,
+} from "@/lib/androidCapabilities";
+import {
   AlertTriangle,
   Camera as CameraIcon,
   Check,
+  Image as ImageIcon,
   Copy,
   FileCheck,
   FileText,
@@ -48,6 +57,39 @@ export default function ImageAnalysisPage() {
   const [error, setError] = useState<string | null>(null);
   const [ocrResponse, setOcrResponse] = useState<ImageAnalysisResponse | null>(null);
   const [copiedText, setCopiedText] = useState(false);
+  const [pendingMediaSource, setPendingMediaSource] = useState<"camera" | "photos" | null>(null);
+  const [rationaleKind, setRationaleKind] = useState<SensitivePermissionKind | null>(null);
+
+  const loadBase64Image = async (base64Data: string, mimeTypeHint = "image/jpeg") => {
+    const mime =
+      mimeTypeHint === "image/png" || mimeTypeHint === "image/webp"
+        ? mimeTypeHint
+        : "image/jpeg";
+    const ext = mime === "image/png" ? "png" : mime === "image/webp" ? "webp" : "jpg";
+    const binary = atob(base64Data);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    const file = new File([bytes], `capture_${Date.now()}.${ext}`, { type: mime });
+    await processSelectedFile(file);
+  };
+
+  // Load any screenshot shared via Android Share-Sheet (ACTION_SEND)
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("trustlens_shared_image");
+      if (!raw) return;
+      sessionStorage.removeItem("trustlens_shared_image");
+      const parsed = JSON.parse(raw);
+      if (parsed?.base64) {
+        void loadBase64Image(parsed.base64, parsed.mimeType || "image/jpeg");
+      }
+    } catch {
+      // Ignore malformed transient share payload.
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const processSelectedFile = async (file: File) => {
     if (file.size > 10 * 1024 * 1024) {
@@ -86,29 +128,51 @@ export default function ImageAnalysisPage() {
     await processSelectedFile(file);
   };
 
-  const handleNativeCameraCapture = async () => {
+  const launchNativePicker = async (mode: "camera" | "photos") => {
     try {
       const photo = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
         resultType: CameraResultType.Base64,
-        source: CameraSource.Prompt,
+        source: mode === "camera" ? CameraSource.Camera : CameraSource.Photos,
       });
       if (!photo.base64String) return;
       const format = (photo.format || "jpeg").toLowerCase();
       const mime = format === "png" ? "image/png" : format === "webp" ? "image/webp" : "image/jpeg";
-      const binary = atob(photo.base64String);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-      const file = new File([bytes], `capture_${Date.now()}.${format}`, { type: mime });
-      await processSelectedFile(file);
+      await loadBase64Image(photo.base64String, mime);
     } catch (err: any) {
       if (err?.message && !String(err.message).toLowerCase().includes("cancel")) {
         setError(err.message);
       }
     }
+  };
+
+  const handleNativeMediaClick = async (mode: "camera" | "photos") => {
+    const granted = await hasMediaPermission(mode);
+    if (granted) {
+      await launchNativePicker(mode);
+      return;
+    }
+    // Show clear explanation before Android requests sensitive permission
+    setPendingMediaSource(mode);
+    setRationaleKind(mode);
+  };
+
+  const handleConfirmPermission = async () => {
+    const mode = pendingMediaSource;
+    setRationaleKind(null);
+    setPendingMediaSource(null);
+    if (!mode) return;
+    const granted = await requestMediaPermission(mode);
+    if (!granted) {
+      setError(
+        mode === "camera"
+          ? "Camera permission is required to capture a photo. You can enable it in Android Settings."
+          : "Photo library permission is required to pick a screenshot from gallery."
+      );
+      return;
+    }
+    await launchNativePicker(mode);
   };
 
   const handleScan = async () => {
@@ -203,15 +267,33 @@ export default function ImageAnalysisPage() {
                 />
               </label>
               {Capacitor.isNativePlatform() && (
-                <button
-                  type="button"
-                  onClick={handleNativeCameraCapture}
-                  className="w-full flex items-center justify-center gap-2 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/15 px-4 py-2.5 text-xs font-mono font-semibold text-white hover:bg-[#FF174F]/25 transition-colors"
-                >
-                  <CameraIcon className="w-4 h-4 text-[#FF3D70]" />
-                  <span>Capture Camera Photo / Pick from Gallery</span>
-                </button>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleNativeMediaClick("camera")}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/15 px-4 py-2.5 text-xs font-mono font-semibold text-white hover:bg-[#FF174F]/25 transition-colors"
+                  >
+                    <CameraIcon className="w-4 h-4 text-[#FF3D70]" />
+                    <span>Take Photo (Camera)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleNativeMediaClick("photos")}
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[#481326] bg-[#10070D] px-4 py-2.5 text-xs font-mono font-semibold text-white hover:border-[#FF174F]/60 transition-colors"
+                  >
+                    <ImageIcon className="w-4 h-4 text-[#FF3D70]" />
+                    <span>Choose from Gallery</span>
+                  </button>
+                </div>
               )}
+              <PermissionRationaleModal
+                kind={rationaleKind}
+                onConfirm={handleConfirmPermission}
+                onCancel={() => {
+                  setRationaleKind(null);
+                  setPendingMediaSource(null);
+                }}
+              />
             </div>
           ) : (
             <div className="relative border border-[#481326] rounded-xl p-4 bg-[#050306]/80 flex items-center justify-between gap-4">

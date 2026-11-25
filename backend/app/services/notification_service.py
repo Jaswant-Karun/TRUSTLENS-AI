@@ -30,6 +30,51 @@ class NotificationService:
     def _delivery_coll(self):
         return db_manager.db["notification_deliveries"]
 
+    def _device_tokens_coll(self):
+        return db_manager.db["device_push_tokens"]
+
+    async def register_device_token(
+        self,
+        user_id: str,
+        platform: str,
+        device_token: str,
+    ) -> Dict[str, Any]:
+        clean_platform = platform.strip().lower()
+        if clean_platform not in {"android", "ios", "web"}:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Unsupported push platform.",
+            )
+        token_clean = device_token.strip()
+        if len(token_clean) < 16 or len(token_clean) > 512:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Invalid device push token format.",
+            )
+        now = datetime.now(timezone.utc)
+        await self._device_tokens_coll().update_one(
+            {"user_id": user_id, "device_token": token_clean},
+            {
+                "$set": {
+                    "user_id": user_id,
+                    "platform": clean_platform,
+                    "device_token": token_clean,
+                    "active": True,
+                    "updated_at": now,
+                },
+                "$setOnInsert": {"created_at": now},
+            },
+            upsert=True,
+        )
+        return {"registered": True, "platform": clean_platform}
+
+    async def unregister_device_token(self, user_id: str, device_token: str) -> Dict[str, Any]:
+        await self._device_tokens_coll().update_one(
+            {"user_id": user_id, "device_token": device_token.strip()},
+            {"$set": {"active": False, "updated_at": datetime.now(timezone.utc)}},
+        )
+        return {"unregistered": True}
+
     async def get_preferences(self, user: Dict[str, Any]) -> Dict[str, Any]:
         prefs = user.get("onboarding_preferences") or {}
         return {

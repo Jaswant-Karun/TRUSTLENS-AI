@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
 import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { GlowButton } from "@/components/product/GlowButton";
@@ -99,6 +99,18 @@ export default function TextAnalysisPage() {
   const [progressStep, setProgressStep] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
+
+  useEffect(() => {
+    try {
+      const shared = sessionStorage.getItem("trustlens_shared_text");
+      if (shared) {
+        sessionStorage.removeItem("trustlens_shared_text");
+        setContent(shared);
+      }
+    } catch {
+      // Ignore storage errors.
+    }
+  }, []);
 
   const filteredPresets =
     selectedCategory === "All"

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Capacitor } from "@capacitor/core";
 import { App as CapApp } from "@capacitor/app";
+import { Network } from "@capacitor/network";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { SplashScreen } from "@capacitor/splash-screen";
 import {
@@ -14,8 +15,14 @@ import {
   Image as ImageIcon,
   MessageSquareWarning,
   User,
+  WifiOff,
 } from "lucide-react";
 import { initAuthStorage } from "@/lib/api";
+import {
+  parseDeepLinkToRoute,
+  SharedPayload,
+  TrustLensShareIntent,
+} from "@/lib/androidCapabilities";
 
 const ROOT_EXIT_ROUTES = new Set(["/", "/dashboard", "/analyze/text", "/login"]);
 
@@ -36,27 +43,105 @@ export function AndroidShellBridge({ onAuthHydrated }: AndroidShellBridgeProps) 
   const pathname = usePathname();
   const router = useRouter();
   const [isNative, setIsNative] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
   const [exitHintVisible, setExitHintVisible] = useState(false);
   const lastBackPressRef = useRef<number>(0);
 
-  // Hydrate Keystore-backed auth token and configure native status bar / splash screen
+  const handleIncomingShare = React.useCallback(
+    (payload: SharedPayload) => {
+      if (!payload?.kind) return;
+      if (payload.kind === "text" && payload.text) {
+        const trimmed = payload.text.trim();
+        if (/^https?:\/\/\S+$/i.test(trimmed)) {
+          sessionStorage.setItem("trustlens_shared_url", trimmed);
+          router.push("/analyze/url");
+        } else {
+          sessionStorage.setItem("trustlens_shared_text", trimmed);
+          router.push("/analyze/text");
+        }
+      } else if (payload.kind === "image" && payload.base64) {
+        sessionStorage.setItem(
+          "trustlens_shared_image",
+          JSON.stringify({
+            base64: payload.base64,
+            mimeType: payload.mimeType || "image/jpeg",
+          })
+        );
+        router.push("/analyze/image");
+      }
+    },
+    [router]
+  );
+
+  // Hydrate Keystore-backed auth token, network status, deep links, and share intents
   useEffect(() => {
     let mounted = true;
     initAuthStorage().finally(() => {
       if (mounted) onAuthHydrated?.();
     });
 
+    // Network connectivity monitoring (works on both native Android and Web)
+    let netHandle: { remove: () => Promise<void> } | null = null;
+    if (Capacitor.isNativePlatform()) {
+      Network.getStatus()
+        .then((s) => {
+          if (mounted) setIsOffline(!s.connected);
+        })
+        .catch(() => {});
+      Network.addListener("networkStatusChange", (s) => {
+        if (mounted) setIsOffline(!s.connected);
+      })
+        .then((h) => {
+          netHandle = h;
+        })
+        .catch(() => {});
+    } else if (typeof window !== "undefined") {
+      setIsOffline(!window.navigator.onLine);
+      const goOnline = () => setIsOffline(false);
+      const goOffline = () => setIsOffline(true);
+      window.addEventListener("online", goOnline);
+      window.addEventListener("offline", goOffline);
+    }
+
+    let urlHandle: { remove: () => Promise<void> } | null = null;
+    let shareHandle: { remove: () => Promise<void> } | null = null;
+
     if (Capacitor.isNativePlatform()) {
       setIsNative(true);
       StatusBar.setStyle({ style: Style.Dark }).catch(() => {});
       StatusBar.setBackgroundColor({ color: "#050306" }).catch(() => {});
       SplashScreen.hide().catch(() => {});
+
+      // Deep links (trustlens://analyze/url, https://trustlens.ai/investigations, etc.)
+      CapApp.addListener("appUrlOpen", ({ url }) => {
+        const target = parseDeepLinkToRoute(url);
+        if (target) router.push(target);
+      })
+        .then((h) => {
+          urlHandle = h;
+        })
+        .catch(() => {});
+
+      // Inbound Android Share-Sheet (ACTION_SEND)
+      TrustLensShareIntent.getPendingShare()
+        .then((p) => handleIncomingShare(p))
+        .catch(() => {});
+      TrustLensShareIntent.addListener("shareReceived", (p) => {
+        handleIncomingShare(p);
+      })
+        .then((h) => {
+          shareHandle = h;
+        })
+        .catch(() => {});
     }
 
     return () => {
       mounted = false;
+      if (netHandle) void netHandle.remove();
+      if (urlHandle) void urlHandle.remove();
+      if (shareHandle) void shareHandle.remove();
     };
-  }, [onAuthHydrated]);
+  }, [onAuthHydrated, router, handleIncomingShare]);
 
   // Handle Android hardware / gesture back button properly
   useEffect(() => {
@@ -96,6 +181,16 @@ export function AndroidShellBridge({ onAuthHydrated }: AndroidShellBridgeProps) 
 
   return (
     <>
+      {isOffline && (
+        <div
+          role="alert"
+          className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-2 border-b border-[#FF174F]/60 bg-[#2B0610]/95 px-3 py-1.5 font-mono text-[11px] text-[#FF85A1]"
+        >
+          <WifiOff className="h-3.5 w-3.5 shrink-0" />
+          <span>Offline mode — connect to the internet to run scans or sync intelligence.</span>
+        </div>
+      )}
+
       {exitHintVisible && (
         <div
           role="status"

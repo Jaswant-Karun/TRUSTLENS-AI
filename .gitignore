@@ -29,6 +29,14 @@ frontend/.env.development.local
 .env.*.local
 *.pem
 *.key
+*.jks
+*.keystore
+keystore.properties
+frontend/android/keystore.properties
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/app/release/
 
 # Data & Large Artifacts (preserve structure, exclude heavy binaries)
 data/raw/*

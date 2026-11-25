@@ -26,6 +26,11 @@ class NotificationDispatchRequest(BaseModel):
     reference_id: Optional[str] = None
 
 
+class DeviceTokenRequest(BaseModel):
+    platform: str = "android"
+    device_token: str
+
+
 @router.get("", response_model=Dict[str, Any])
 async def list_my_notifications(
     unread_only: bool = Query(False),
@@ -98,4 +103,28 @@ async def get_my_delivery_history(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     items = await notification_service.get_delivery_history(user_id=current_user["user_id"], limit=limit)
+    return {"items": items}
+
+
+@router.post("/device-token", response_model=Dict[str, Any])
+async def register_device_push_token(
+    payload: DeviceTokenRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    return await notification_service.register_device_token(
+        user_id=current_user["user_id"],
+        platform=payload.platform,
+        device_token=payload.device_token,
+    )
+
+
+@router.delete("/device-token", response_model=Dict[str, Any])
+async def unregister_device_push_token(
+    device_token: str = Query(..., min_length=16, max_length=512),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    return await notification_service.unregister_device_token(
+        user_id=current_user["user_id"],
+        device_token=device_token,
+    )
     return {"items": items, "total_count": len(items)}

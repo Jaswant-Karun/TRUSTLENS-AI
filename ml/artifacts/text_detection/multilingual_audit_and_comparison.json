@@ -1,0 +1,1220 @@
+{
+  "test_samples": 8590,
+  "test_language_counts": {
+    "English": 7797,
+    "Hindi": 675,
+    "Hinglish": 118
+  },
+  "unsupported_languages_zero_samples": [
+    "Tamil",
+    "Bengali"
+  ],
+  "models_full_test": {
+    "v1.0_prod_binary_linearsvc": {
+      "overall_binary": {
+        "samples": 8590,
+        "threat_support": 3117,
+        "legit_support": 5473,
+        "accuracy": 0.9931,
+        "precision_threat": 0.9898,
+        "recall_threat": 0.9913,
+        "f1_threat": 0.9905,
+        "macro_f1": 0.9926,
+        "false_negative_rate": 0.0087,
+        "false_positive_rate": 0.0058,
+        "confusion_matrix_2x2": [
+          [
+            5441,
+            32
+          ],
+          [
+            27,
+            3090
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 7797,
+          "threat_support": 2969,
+          "legit_support": 4828,
+          "accuracy": 0.9928,
+          "precision_threat": 0.9896,
+          "recall_threat": 0.9916,
+          "f1_threat": 0.9906,
+          "macro_f1": 0.9924,
+          "false_negative_rate": 0.0084,
+          "false_positive_rate": 0.0064,
+          "confusion_matrix_2x2": [
+            [
+              4797,
+              31
+            ],
+            [
+              25,
+              2944
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.9956,
+          "precision_threat": 0.9853,
+          "recall_threat": 0.971,
+          "f1_threat": 0.9781,
+          "macro_f1": 0.9878,
+          "false_negative_rate": 0.029,
+          "false_positive_rate": 0.0017,
+          "confusion_matrix_2x2": [
+            [
+              605,
+              1
+            ],
+            [
+              2,
+              67
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 1.0,
+          "precision_threat": 1.0,
+          "recall_threat": 1.0,
+          "f1_threat": 1.0,
+          "macro_f1": 1.0,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0,
+          "confusion_matrix_2x2": [
+            [
+              39,
+              0
+            ],
+            [
+              0,
+              79
+            ]
+          ]
+        }
+      },
+      "latency_ms_per_sample": 0.2611
+    },
+    "v2.1_word_tfidf_logreg": {
+      "overall_binary": {
+        "samples": 8590,
+        "threat_support": 3117,
+        "legit_support": 5473,
+        "accuracy": 0.9679,
+        "precision_threat": 0.9399,
+        "recall_threat": 0.9737,
+        "f1_threat": 0.9565,
+        "macro_f1": 0.9655,
+        "false_negative_rate": 0.0263,
+        "false_positive_rate": 0.0354,
+        "confusion_matrix_2x2": [
+          [
+            5279,
+            194
+          ],
+          [
+            82,
+            3035
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 7797,
+          "threat_support": 2969,
+          "legit_support": 4828,
+          "accuracy": 0.9656,
+          "precision_threat": 0.938,
+          "recall_threat": 0.9741,
+          "f1_threat": 0.9557,
+          "macro_f1": 0.9638,
+          "false_negative_rate": 0.0259,
+          "false_positive_rate": 0.0396,
+          "confusion_matrix_2x2": [
+            [
+              4637,
+              191
+            ],
+            [
+              77,
+              2892
+            ]
+          ],
+          "4class_macro_f1": 0.9327,
+          "4class_confusion_matrix": [
+            [
+              4637,
+              166,
+              12,
+              13
+            ],
+            [
+              76,
+              2319,
+              14,
+              6
+            ],
+            [
+              0,
+              29,
+              336,
+              2
+            ],
+            [
+              1,
+              12,
+              3,
+              171
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.9896,
+          "precision_threat": 0.9697,
+          "recall_threat": 0.9275,
+          "f1_threat": 0.9481,
+          "macro_f1": 0.9712,
+          "false_negative_rate": 0.0725,
+          "false_positive_rate": 0.0033,
+          "confusion_matrix_2x2": [
+            [
+              604,
+              2
+            ],
+            [
+              5,
+              64
+            ]
+          ],
+          "4class_macro_f1": 0.8206,
+          "4class_confusion_matrix": [
+            [
+              604,
+              0,
+              1,
+              1
+            ],
+            [
+              4,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              28,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              35
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 0.9915,
+          "precision_threat": 0.9875,
+          "recall_threat": 1.0,
+          "f1_threat": 0.9937,
+          "macro_f1": 0.9904,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0256,
+          "confusion_matrix_2x2": [
+            [
+              38,
+              1
+            ],
+            [
+              0,
+              79
+            ]
+          ],
+          "4class_macro_f1": 0.9842,
+          "4class_confusion_matrix": [
+            [
+              38,
+              1,
+              0,
+              0
+            ],
+            [
+              0,
+              40,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              19
+            ]
+          ]
+        }
+      },
+      "overall_4class_macro_f1": 0.9394,
+      "overall_4class_confusion_matrix": [
+        [
+          5279,
+          167,
+          13,
+          14
+        ],
+        [
+          80,
+          2360,
+          14,
+          7
+        ],
+        [
+          0,
+          29,
+          383,
+          2
+        ],
+        [
+          2,
+          12,
+          3,
+          225
+        ]
+      ],
+      "latency_ms_per_sample": 0.0407
+    },
+    "v2.1_char_tfidf_logreg": {
+      "overall_binary": {
+        "samples": 8590,
+        "threat_support": 3117,
+        "legit_support": 5473,
+        "accuracy": 0.9738,
+        "precision_threat": 0.9502,
+        "recall_threat": 0.9791,
+        "f1_threat": 0.9644,
+        "macro_f1": 0.9719,
+        "false_negative_rate": 0.0209,
+        "false_positive_rate": 0.0292,
+        "confusion_matrix_2x2": [
+          [
+            5313,
+            160
+          ],
+          [
+            65,
+            3052
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 7797,
+          "threat_support": 2969,
+          "legit_support": 4828,
+          "accuracy": 0.9722,
+          "precision_threat": 0.9488,
+          "recall_threat": 0.9798,
+          "f1_threat": 0.964,
+          "macro_f1": 0.9707,
+          "false_negative_rate": 0.0202,
+          "false_positive_rate": 0.0325,
+          "confusion_matrix_2x2": [
+            [
+              4671,
+              157
+            ],
+            [
+              60,
+              2909
+            ]
+          ],
+          "4class_macro_f1": 0.9463,
+          "4class_confusion_matrix": [
+            [
+              4671,
+              135,
+              10,
+              12
+            ],
+            [
+              58,
+              2335,
+              14,
+              8
+            ],
+            [
+              0,
+              11,
+              352,
+              4
+            ],
+            [
+              2,
+              8,
+              1,
+              176
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.9911,
+          "precision_threat": 0.9846,
+          "recall_threat": 0.9275,
+          "f1_threat": 0.9552,
+          "macro_f1": 0.9751,
+          "false_negative_rate": 0.0725,
+          "false_positive_rate": 0.0017,
+          "confusion_matrix_2x2": [
+            [
+              605,
+              1
+            ],
+            [
+              5,
+              64
+            ]
+          ],
+          "4class_macro_f1": 0.8172,
+          "4class_confusion_matrix": [
+            [
+              605,
+              0,
+              1,
+              0
+            ],
+            [
+              3,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              28,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              34
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 0.9831,
+          "precision_threat": 0.9753,
+          "recall_threat": 1.0,
+          "f1_threat": 0.9875,
+          "macro_f1": 0.9806,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0513,
+          "confusion_matrix_2x2": [
+            [
+              37,
+              2
+            ],
+            [
+              0,
+              79
+            ]
+          ],
+          "4class_macro_f1": 0.9809,
+          "4class_confusion_matrix": [
+            [
+              37,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              41,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              19
+            ]
+          ]
+        }
+      },
+      "overall_4class_macro_f1": 0.951,
+      "overall_4class_confusion_matrix": [
+        [
+          5313,
+          135,
+          13,
+          12
+        ],
+        [
+          61,
+          2377,
+          14,
+          9
+        ],
+        [
+          0,
+          11,
+          399,
+          4
+        ],
+        [
+          4,
+          8,
+          1,
+          229
+        ]
+      ],
+      "latency_ms_per_sample": 0.1709
+    },
+    "v2.1_union_tfidf_linearsvc": {
+      "overall_binary": {
+        "samples": 8590,
+        "threat_support": 3117,
+        "legit_support": 5473,
+        "accuracy": 0.9831,
+        "precision_threat": 0.9757,
+        "recall_threat": 0.9779,
+        "f1_threat": 0.9768,
+        "macro_f1": 0.9818,
+        "false_negative_rate": 0.0221,
+        "false_positive_rate": 0.0139,
+        "confusion_matrix_2x2": [
+          [
+            5397,
+            76
+          ],
+          [
+            69,
+            3048
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 7797,
+          "threat_support": 2969,
+          "legit_support": 4828,
+          "accuracy": 0.9817,
+          "precision_threat": 0.9748,
+          "recall_threat": 0.9771,
+          "f1_threat": 0.9759,
+          "macro_f1": 0.9806,
+          "false_negative_rate": 0.0229,
+          "false_positive_rate": 0.0155,
+          "confusion_matrix_2x2": [
+            [
+              4753,
+              75
+            ],
+            [
+              68,
+              2901
+            ]
+          ],
+          "4class_macro_f1": 0.9583,
+          "4class_confusion_matrix": [
+            [
+              4753,
+              65,
+              5,
+              5
+            ],
+            [
+              63,
+              2347,
+              4,
+              1
+            ],
+            [
+              2,
+              18,
+              345,
+              2
+            ],
+            [
+              3,
+              12,
+              3,
+              169
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.997,
+          "precision_threat": 0.9855,
+          "recall_threat": 0.9855,
+          "f1_threat": 0.9855,
+          "macro_f1": 0.9919,
+          "false_negative_rate": 0.0145,
+          "false_positive_rate": 0.0017,
+          "confusion_matrix_2x2": [
+            [
+              605,
+              1
+            ],
+            [
+              1,
+              68
+            ]
+          ],
+          "4class_macro_f1": 0.9653,
+          "4class_confusion_matrix": [
+            [
+              605,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              28,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              34
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 1.0,
+          "precision_threat": 1.0,
+          "recall_threat": 1.0,
+          "f1_threat": 1.0,
+          "macro_f1": 1.0,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0,
+          "confusion_matrix_2x2": [
+            [
+              39,
+              0
+            ],
+            [
+              0,
+              79
+            ]
+          ],
+          "4class_macro_f1": 1.0,
+          "4class_confusion_matrix": [
+            [
+              39,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              41,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              19
+            ]
+          ]
+        }
+      },
+      "overall_4class_macro_f1": 0.9629,
+      "overall_4class_confusion_matrix": [
+        [
+          5397,
+          65,
+          6,
+          5
+        ],
+        [
+          63,
+          2393,
+          4,
+          1
+        ],
+        [
+          2,
+          18,
+          392,
+          2
+        ],
+        [
+          4,
+          13,
+          3,
+          222
+        ]
+      ],
+      "latency_ms_per_sample": 0.2698
+    }
+  },
+  "transformer_comparison_slice": {
+    "train_slice_size": 4000,
+    "test_slice_size": 2000,
+    "test_slice_languages": {
+      "English": 1207,
+      "Hindi": 675,
+      "Hinglish": 118
+    },
+    "multilingual_minilm_l12_v2_linearsvc": {
+      "overall_binary": {
+        "samples": 2000,
+        "threat_support": 593,
+        "legit_support": 1407,
+        "accuracy": 0.9505,
+        "precision_threat": 0.9475,
+        "recall_threat": 0.882,
+        "f1_threat": 0.9135,
+        "macro_f1": 0.9394,
+        "false_negative_rate": 0.118,
+        "false_positive_rate": 0.0206,
+        "confusion_matrix_2x2": [
+          [
+            1378,
+            29
+          ],
+          [
+            70,
+            523
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 1207,
+          "threat_support": 445,
+          "legit_support": 762,
+          "accuracy": 0.9263,
+          "precision_threat": 0.9363,
+          "recall_threat": 0.8584,
+          "f1_threat": 0.8957,
+          "macro_f1": 0.9193,
+          "false_negative_rate": 0.1416,
+          "false_positive_rate": 0.0341,
+          "confusion_matrix_2x2": [
+            [
+              736,
+              26
+            ],
+            [
+              63,
+              382
+            ]
+          ],
+          "4class_macro_f1": 0.7197,
+          "4class_confusion_matrix": [
+            [
+              736,
+              23,
+              1,
+              2
+            ],
+            [
+              53,
+              288,
+              10,
+              8
+            ],
+            [
+              6,
+              16,
+              33,
+              0
+            ],
+            [
+              4,
+              14,
+              1,
+              12
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.9852,
+          "precision_threat": 0.9538,
+          "recall_threat": 0.8986,
+          "f1_threat": 0.9254,
+          "macro_f1": 0.9586,
+          "false_negative_rate": 0.1014,
+          "false_positive_rate": 0.005,
+          "confusion_matrix_2x2": [
+            [
+              603,
+              3
+            ],
+            [
+              7,
+              62
+            ]
+          ],
+          "4class_macro_f1": 0.7577,
+          "4class_confusion_matrix": [
+            [
+              603,
+              2,
+              1,
+              0
+            ],
+            [
+              3,
+              1,
+              0,
+              1
+            ],
+            [
+              2,
+              0,
+              26,
+              0
+            ],
+            [
+              2,
+              3,
+              0,
+              31
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 1.0,
+          "precision_threat": 1.0,
+          "recall_threat": 1.0,
+          "f1_threat": 1.0,
+          "macro_f1": 1.0,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0,
+          "confusion_matrix_2x2": [
+            [
+              39,
+              0
+            ],
+            [
+              0,
+              79
+            ]
+          ],
+          "4class_macro_f1": 0.9566,
+          "4class_confusion_matrix": [
+            [
+              39,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              41,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              18,
+              1
+            ],
+            [
+              0,
+              3,
+              0,
+              16
+            ]
+          ]
+        }
+      },
+      "overall_4class_macro_f1": 0.837,
+      "overall_4class_confusion_matrix": [
+        [
+          1378,
+          25,
+          2,
+          2
+        ],
+        [
+          56,
+          330,
+          10,
+          9
+        ],
+        [
+          8,
+          16,
+          77,
+          1
+        ],
+        [
+          6,
+          20,
+          1,
+          59
+        ]
+      ],
+      "train_seconds": 51.69,
+      "latency_ms_per_sample": 17.7015
+    },
+    "v2.1_union_tfidf_linearsvc_same_slice": {
+      "overall_binary": {
+        "samples": 2000,
+        "threat_support": 593,
+        "legit_support": 1407,
+        "accuracy": 0.986,
+        "precision_threat": 0.9748,
+        "recall_threat": 0.9781,
+        "f1_threat": 0.9764,
+        "macro_f1": 0.9832,
+        "false_negative_rate": 0.0219,
+        "false_positive_rate": 0.0107,
+        "confusion_matrix_2x2": [
+          [
+            1392,
+            15
+          ],
+          [
+            13,
+            580
+          ]
+        ]
+      },
+      "by_language": {
+        "English": {
+          "samples": 1207,
+          "threat_support": 445,
+          "legit_support": 762,
+          "accuracy": 0.9785,
+          "precision_threat": 0.9687,
+          "recall_threat": 0.973,
+          "f1_threat": 0.9709,
+          "macro_f1": 0.9769,
+          "false_negative_rate": 0.027,
+          "false_positive_rate": 0.0184,
+          "confusion_matrix_2x2": [
+            [
+              748,
+              14
+            ],
+            [
+              12,
+              433
+            ]
+          ],
+          "4class_macro_f1": 0.9553,
+          "4class_confusion_matrix": [
+            [
+              748,
+              12,
+              1,
+              1
+            ],
+            [
+              11,
+              348,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              54,
+              1
+            ],
+            [
+              1,
+              2,
+              1,
+              27
+            ]
+          ]
+        },
+        "Hindi": {
+          "samples": 675,
+          "threat_support": 69,
+          "legit_support": 606,
+          "accuracy": 0.997,
+          "precision_threat": 0.9855,
+          "recall_threat": 0.9855,
+          "f1_threat": 0.9855,
+          "macro_f1": 0.9919,
+          "false_negative_rate": 0.0145,
+          "false_positive_rate": 0.0017,
+          "confusion_matrix_2x2": [
+            [
+              605,
+              1
+            ],
+            [
+              1,
+              68
+            ]
+          ],
+          "4class_macro_f1": 0.9653,
+          "4class_confusion_matrix": [
+            [
+              605,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              5,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              28,
+              0
+            ],
+            [
+              1,
+              1,
+              0,
+              34
+            ]
+          ]
+        },
+        "Hinglish": {
+          "samples": 118,
+          "threat_support": 79,
+          "legit_support": 39,
+          "accuracy": 1.0,
+          "precision_threat": 1.0,
+          "recall_threat": 1.0,
+          "f1_threat": 1.0,
+          "macro_f1": 1.0,
+          "false_negative_rate": 0.0,
+          "false_positive_rate": 0.0,
+          "confusion_matrix_2x2": [
+            [
+              39,
+              0
+            ],
+            [
+              0,
+              79
+            ]
+          ],
+          "4class_macro_f1": 1.0,
+          "4class_confusion_matrix": [
+            [
+              39,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              41,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              19,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              19
+            ]
+          ]
+        }
+      },
+      "overall_4class_macro_f1": 0.9728,
+      "overall_4class_confusion_matrix": [
+        [
+          1392,
+          12,
+          2,
+          1
+        ],
+        [
+          11,
+          394,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          101,
+          1
+        ],
+        [
+          2,
+          3,
+          1,
+          80
+        ]
+      ],
+      "latency_ms_per_sample": 0.4095
+    }
+  },
+  "linguistic_stress_test": [
+    {
+      "probe_id": "hinglish_translit_kyc",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 2,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "hinglish_spelling_var",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 0,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 1,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "hinglish_electricity",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 0,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "hinglish_challan",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 3,
+      "minilm_pred_threat": 1
+    },
+    {
+      "probe_id": "hinglish_lottery",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 3,
+      "minilm_pred_threat": 1
+    },
+    {
+      "probe_id": "hinglish_legit",
+      "expected_threat": 0,
+      "v1.0_pred_threat": 0,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 1
+    },
+    {
+      "probe_id": "hindi_devanagari_kyc",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 1
+    },
+    {
+      "probe_id": "hindi_devanagari_upi",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "hindi_devanagari_legit",
+      "expected_threat": 0,
+      "v1.0_pred_threat": 0,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "english_regional_upi",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 2,
+      "minilm_pred_threat": 0
+    },
+    {
+      "probe_id": "english_regional_aadhaar",
+      "expected_threat": 1,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 1,
+      "v2.1_pred_class": 2,
+      "minilm_pred_threat": 1
+    },
+    {
+      "probe_id": "english_legit_bank",
+      "expected_threat": 0,
+      "v1.0_pred_threat": 1,
+      "v2.1_pred_threat": 0,
+      "v2.1_pred_class": 0,
+      "minilm_pred_threat": 1
+    }
+  ]
+}

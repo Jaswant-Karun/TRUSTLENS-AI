@@ -35,7 +35,7 @@
         "Hinglish"
       ],
       "limitations": "Linear TF-IDF baseline; Tamil and Bengali unsupported (0 samples).",
-      "deployment_status": "Evaluated"
+      "deployment_status": "Production"
     },
     "trustlens-text-v1.0-prod": {
       "model_id": "trustlens-text-v1.0-prod",
@@ -61,7 +61,7 @@
         "Hinglish"
       ],
       "limitations": "Trained on v1.0.0 splits; Hindi threat recall 54.55%.",
-      "deployment_status": "Production"
+      "deployment_status": "Superseded"
     },
     "trustlens-url-v2.2-candidate": {
       "model_id": "trustlens-url-v2.2-candidate",
@@ -90,7 +90,7 @@
         "URL-Agnostic (Lexical/Structural)"
       ],
       "limitations": "Zero-hop lexical features alone do not prove malice or safety.",
-      "deployment_status": "Evaluated"
+      "deployment_status": "Production"
     },
     "trustlens-url-v1.0-prod": {
       "model_id": "trustlens-url-v1.0-prod",
@@ -114,7 +114,7 @@
         "URL-Agnostic"
       ],
       "limitations": "Trained on v1.0.0 ungrouped URL splits.",
-      "deployment_status": "Production"
+      "deployment_status": "Superseded"
     },
     "trustlens-tactics-v2.3-candidate": {
       "model_id": "trustlens-tactics-v2.3-candidate",

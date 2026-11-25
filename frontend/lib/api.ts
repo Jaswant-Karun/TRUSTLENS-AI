@@ -453,6 +453,22 @@ export async function getCurrentUser(): Promise<UserProfile> {
   return apiFetch<UserProfile>("/auth/me");
 }
 
+export async function registerUser(payload: {
+  email: string;
+  password: string;
+  full_name: string;
+}): Promise<{ user_id: string; email: string; role: string; message?: string }> {
+  return apiFetch("/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function logoutUser(): void {
+  clearStoredToken();
+}
+
 /* -------------------------------------------------------------------------- */
 /* Investigation Graph API Client (Phase 1.2 Contract)                        */
 /* -------------------------------------------------------------------------- */

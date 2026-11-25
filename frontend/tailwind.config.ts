@@ -9,46 +9,55 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Dark Navy Sidebar Palette
-        navy: {
-          950: "#070d1e",
-          900: "#0b1329",
-          850: "#0f172a",
-          800: "#17233f",
-          700: "#1e2e50",
-          600: "#2a3d66",
+        cyber: {
+          bg: "#050306",
+          panel: "#10070D",
+          panelAlt: "#170A12",
+          red: "#FF174F",
+          crimson: "#C2185B",
+          pink: "#FF3D70",
+          border: "#481326",
+          muted: "#A1A1AA",
+          success: "#00D68F",
+          warning: "#FFB020",
         },
-        // Restrained Cyan & Blue Accents
+        // Preserved aliases mapped into dark cyber tokens for seamless component compatibility
+        navy: {
+          950: "#050306",
+          900: "#0A0408",
+          850: "#10070D",
+          800: "#170A12",
+          700: "#260E1B",
+          600: "#481326",
+        },
         brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
+          50: "#fff1f4",
+          100: "#ffe4ea",
+          500: "#FF174F",
+          600: "#C2185B",
+          700: "#9E1248",
         },
         accent: {
-          50: "#ecfeff",
-          100: "#cffafe",
-          500: "#06b6d4",
-          600: "#0284c7",
-          700: "#0369a1",
+          50: "#fff1f5",
+          100: "#ffe4ec",
+          500: "#FF3D70",
+          600: "#FF174F",
+          700: "#C2185B",
         },
-        // Clean Content Background & Surfaces
-        canvas: "#f8fafc",
-        cardLight: "#ffffff",
-        subtleBorder: "#e2e8f0",
-        // ThreatQ-Inspired Advanced Cyber Investigation Workspace Palette
+        canvas: "#050306",
+        cardLight: "#10070D",
+        subtleBorder: "#481326",
         threatq: {
-          bg: "#171C25",
-          nav: "#252D38",
-          canvas: "#181E28",
-          panel: "#252D38",
-          border: "#3A4553",
-          timeline: "#1E2631",
-          accent: "#3B82F6",
-          cyan: "#38BDF8",
-          text: "#F1F5F9",
-          muted: "#AAB4C2",
+          bg: "#050306",
+          nav: "#10070D",
+          canvas: "#050306",
+          panel: "#10070D",
+          border: "#481326",
+          timeline: "#170A12",
+          accent: "#FF174F",
+          cyan: "#FF3D70",
+          text: "#FFFFFF",
+          muted: "#A1A1AA",
         },
       },
       fontFamily: {
@@ -56,12 +65,13 @@ const config: Config = {
         mono: ["JetBrains Mono", "Fira Code", "Courier New", "monospace"],
       },
       boxShadow: {
-        subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)",
-        card: "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)",
+        subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.4)",
+        card: "0 8px 24px -4px rgba(0, 0, 0, 0.65)",
+        neon: "0 0 22px rgba(255, 23, 79, 0.25)",
+        "neon-strong": "0 0 32px rgba(255, 23, 79, 0.42)",
       },
     },
   },
   plugins: [],
 };
 export default config;
-

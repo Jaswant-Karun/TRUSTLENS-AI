@@ -3,46 +3,100 @@
 @tailwind utilities;
 
 :root {
-  --background: #181e28;
-  --foreground: #f8fafc;
-  --sidebar: #252d38;
-  --topnav: #171c25;
-  --panel: #202936;
-  --border-soc: #3a4553;
-  --accent-primary: #60a5fa;
-  --accent-secondary: #22d3ee;
-  --text-secondary: #94a3b8;
+  --bg-cyber: #050306;
+  --panel-cyber: #10070d;
+  --panel-cyber-secondary: #170a12;
+  --primary-red: #ff174f;
+  --secondary-red: #c2185b;
+  --neon-pink: #ff3d70;
+  --border-cyber: #481326;
+  --text-white: #ffffff;
+  --text-muted: #a1a1aa;
+  --status-success: #00d68f;
+  --status-warning: #ffb020;
+
+  /* Compatibility mappings for existing components */
+  --background: #050306;
+  --foreground: #ffffff;
+  --sidebar: #10070d;
+  --topnav: #050306;
+  --panel: #10070d;
+  --border-soc: #481326;
+  --accent-primary: #ff174f;
+  --accent-secondary: #ff3d70;
+  --text-secondary: #a1a1aa;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-cyber);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Dark SOC Scrollbars */
+/* Cyber Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #171c25;
+  background: #050306;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3a4553;
-  border-radius: 4px;
+  background: #481326;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b5563;
+  background: #ff174f;
 }
 
-/* Restrained blue/cyan focus ring */
+/* Accessible Neon Focus Ring */
 *:focus-visible {
-  outline: 2px solid #60a5fa;
-  outline-offset: 1px;
+  outline: 2px solid #ff3d70;
+  outline-offset: 2px;
+}
+
+@keyframes cyberPulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes traceFlow {
+  0% {
+    stroke-dashoffset: 240;
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.15;
+  }
+}
+
+.cyber-pulse-ring {
+  animation: cyberPulse 3.2s ease-in-out infinite;
+}
+
+.cyber-trace-flow {
+  stroke-dasharray: 24 216;
+  animation: traceFlow 7s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-pulse-ring,
+  .cyber-trace-flow {
+    animation: none !important;
+  }
 }

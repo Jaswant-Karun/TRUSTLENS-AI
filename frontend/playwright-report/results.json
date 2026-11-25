@@ -224,7 +224,7 @@
           "specs": [
             {
               "title": "radial navigation opens, navigates to target route, and closes on Escape",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
@@ -237,58 +237,18 @@
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 2413,
-                      "error": {
-                        "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n",
-                        "stack": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22",
-                        "location": {
-                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                          "column": 22,
-                          "line": 43
-                        },
-                        "snippet": " \u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m250\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick({ force\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m     \u001b[90m// Re-open radial nav and verify Escape closes it\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                            "column": 22,
-                            "line": 43
-                          },
-                          "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n\n  41 |     await expect(messageNav).toBeVisible();\n  42 |     await page.waitForTimeout(250);\n> 43 |     await messageNav.click({ force: true });\n     |                      ^\n  44 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  45 |\n  46 |     // Re-open radial nav and verify Escape closes it\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 9121,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:34:05.910Z",
+                      "startTime": "2026-11-25T17:42:06.496Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-desktop\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                        "column": 22,
-                        "line": 43
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 },
                 {
                   "timeout": 45000,
@@ -298,60 +258,20 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 4291,
-                      "error": {
-                        "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n",
-                        "stack": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22",
-                        "location": {
-                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                          "column": 22,
-                          "line": 43
-                        },
-                        "snippet": " \u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m250\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick({ force\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m     \u001b[90m// Re-open radial nav and verify Escape closes it\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                            "column": 22,
-                            "line": 43
-                          },
-                          "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n\n  41 |     await expect(messageNav).toBeVisible();\n  42 |     await page.waitForTimeout(250);\n> 43 |     await messageNav.click({ force: true });\n     |                      ^\n  44 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  45 |\n  46 |     // Re-open radial nav and verify Escape closes it\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3410,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:55.567Z",
+                      "startTime": "2026-11-25T17:43:39.845Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-tablet\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                        "column": 22,
-                        "line": 43
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 },
                 {
                   "timeout": 45000,
@@ -361,60 +281,20 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 4,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 4280,
-                      "error": {
-                        "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n",
-                        "stack": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22",
-                        "location": {
-                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                          "column": 22,
-                          "line": 43
-                        },
-                        "snippet": " \u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(messageNav)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m250\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 43 |\u001b[39m     \u001b[36mawait\u001b[39m messageNav\u001b[33m.\u001b[39mclick({ force\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/\\/analyze\\/text/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m     \u001b[90m// Re-open radial nav and verify Escape closes it\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                            "column": 22,
-                            "line": 43
-                          },
-                          "message": "Error: locator.click: Element is outside of the viewport\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: /message scanner/i }).first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" role=\"menuitem\" title=\"Message Scanner\" aria-label=\"Message Scanner\" class=\"absolute z-10 flex flex-col items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF3D70] transition-transform duration-150 hover:scale-105\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\n\n  41 |     await expect(messageNav).toBeVisible();\n  42 |     await page.waitForTimeout(250);\n> 43 |     await messageNav.click({ force: true });\n     |                      ^\n  44 |     await expect(page).toHaveURL(/\\/analyze\\/text/);\n  45 |\n  46 |     // Re-open radial nav and verify Escape closes it\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts:43:22"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3501,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:37:17.616Z",
+                      "startTime": "2026-11-25T17:44:32.438Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\01-navigation-and-radial-N-bc7ad--route-and-closes-on-Escape-mobile\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                        "column": 22,
-                        "line": 43
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 }
               ],
               "id": "b579507117b21015ce0a-591107821e22ecdc3384",
@@ -435,15 +315,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 66576,
+                      "duration": 50801,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:34:09.874Z",
+                      "startTime": "2026-11-25T17:42:15.908Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -458,15 +338,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 15346,
+                      "duration": 10222,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:04.456Z",
+                      "startTime": "2026-11-25T17:43:43.478Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -481,15 +361,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 31650,
+                      "duration": 11325,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:37:24.226Z",
+                      "startTime": "2026-11-25T17:44:36.219Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -499,7 +379,7 @@
               ],
               "id": "b579507117b21015ce0a-bff41affae775b564872",
               "file": "01-navigation-and-radial.spec.ts",
-              "line": 54,
+              "line": 53,
               "column": 3
             },
             {
@@ -515,7 +395,7 @@
                       "description": "Mobile bottom nav bar is mobile-only",
                       "location": {
                         "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                        "line": 72,
+                        "line": 71,
                         "column": 10
                       }
                     }
@@ -525,22 +405,22 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "skipped",
-                      "duration": 322,
+                      "duration": 384,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:16.692Z",
+                      "startTime": "2026-11-25T17:43:06.751Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "description": "Mobile bottom nav bar is mobile-only",
                           "location": {
                             "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                            "line": 72,
+                            "line": 71,
                             "column": 10
                           }
                         }
@@ -558,7 +438,7 @@
                       "description": "Mobile bottom nav bar is mobile-only",
                       "location": {
                         "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                        "line": 72,
+                        "line": 71,
                         "column": 10
                       }
                     }
@@ -568,22 +448,22 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "skipped",
-                      "duration": 278,
+                      "duration": 201,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:20.728Z",
+                      "startTime": "2026-11-25T17:43:53.715Z",
                       "annotations": [
                         {
                           "type": "skip",
                           "description": "Mobile bottom nav bar is mobile-only",
                           "location": {
                             "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\01-navigation-and-radial.spec.ts",
-                            "line": 72,
+                            "line": 71,
                             "column": 10
                           }
                         }
@@ -601,15 +481,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5660,
+                      "duration": 3962,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:37:56.561Z",
+                      "startTime": "2026-11-25T17:44:47.572Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -619,7 +499,7 @@
               ],
               "id": "b579507117b21015ce0a-27c12a2114260396a0cd",
               "file": "01-navigation-and-radial.spec.ts",
-              "line": 68,
+              "line": 67,
               "column": 3
             }
           ]
@@ -652,15 +532,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2586,
+                      "duration": 2574,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:17.065Z",
+                      "startTime": "2026-11-25T17:43:07.190Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -675,15 +555,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2827,
+                      "duration": 2067,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:21.055Z",
+                      "startTime": "2026-11-25T17:43:53.944Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -698,15 +578,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2535,
+                      "duration": 2607,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:38:02.467Z",
+                      "startTime": "2026-11-25T17:44:51.571Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -732,15 +612,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13176,
+                      "duration": 9900,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:19.671Z",
+                      "startTime": "2026-11-25T17:43:09.784Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -755,20 +635,60 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 1,
                       "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 13446,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 17548,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:41:29",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 29,
+                          "line": 41
+                        },
+                        "snippet": " \u001b[90m 39 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/profile\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 40 |\u001b[39m     \u001b[36mconst\u001b[39m nameInput \u001b[33m=\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m\"#profile-name\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m     \u001b[36mawait\u001b[39m expect(nameInput)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m     \u001b[36mconst\u001b[39m originalName \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m nameInput\u001b[33m.\u001b[39minputValue()\u001b[33m;\u001b[39m\n \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m     \u001b[36mawait\u001b[39m nameInput\u001b[33m.\u001b[39mfill(\u001b[32m\"TrustLens QA Analyst\"\u001b[39m)\u001b[33m;\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                            "column": 29,
+                            "line": 41
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: visible\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n\n\n  39 |     await page.goto(\"/profile\");\n  40 |     const nameInput = page.locator(\"#profile-name\");\n> 41 |     await expect(nameInput).toBeVisible();\n     |                             ^\n  42 |     const originalName = await nameInput.inputValue();\n  43 |\n  44 |     await nameInput.fill(\"TrustLens QA Analyst\");\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:41:29"
+                        }
+                      ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:23.908Z",
+                      "startTime": "2026-11-25T17:43:56.025Z",
                       "annotations": [],
-                      "attachments": []
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-tablet\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 29,
+                        "line": 41
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 },
                 {
                   "timeout": 45000,
@@ -778,33 +698,41 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 5,
+                      "workerIndex": 3,
                       "parallelIndex": 0,
-                      "status": "timedOut",
-                      "duration": 60580,
+                      "status": "failed",
+                      "duration": 19923,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: \u001b[32m\"TrustLens QA Analyst\"\u001b[39m\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: \u001b[32m\"TrustLens QA Analyst\"\u001b[39m\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:52:49",
+                        "location": {
+                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                          "column": 49,
+                          "line": 52
+                        },
+                        "snippet": " \u001b[90m 50 |\u001b[39m     \u001b[90m// Reload and verify persisted in backend\u001b[39m\n \u001b[90m 51 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mreload({ waitUntil\u001b[33m:\u001b[39m \u001b[32m\"domcontentloaded\"\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 52 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"#profile-name\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveValue(\u001b[32m\"TrustLens QA Analyst\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 53 |\u001b[39m     \u001b[36mawait\u001b[39m expect(\n \u001b[90m 54 |\u001b[39m       page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/Consented emerging scam campaign advisories/i\u001b[39m)\n \u001b[90m 55 |\u001b[39m     )\u001b[33m.\u001b[39mtoBeChecked()\u001b[33m;\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 45000ms exceeded.\u001b[39m"
-                        },
-                        {
                           "location": {
                             "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
-                            "column": 16,
-                            "line": 51
+                            "column": 49,
+                            "line": 52
                           },
-                          "message": "Error: page.reload: Test timeout of 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:3000/profile\"\u001b[22m\n\n\n  49 |\n  50 |     // Reload and verify persisted in backend\n> 51 |     await page.reload();\n     |                ^\n  52 |     await expect(page.locator(\"#profile-name\")).toHaveValue(\"TrustLens QA Analyst\");\n  53 |     await expect(\n  54 |       page.getByLabel(/Consented emerging scam campaign advisories/i)\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:51:16"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveValue\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#profile-name')\nExpected: \u001b[32m\"TrustLens QA Analyst\"\u001b[39m\nTimeout: 12000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toHaveValue\" locator('#profile-name') with timeout 12000ms\u001b[22m\n\u001b[2m  - waiting for locator('#profile-name')\u001b[22m\n\n\n  50 |     // Reload and verify persisted in backend\n  51 |     await page.reload({ waitUntil: \"domcontentloaded\" });\n> 52 |     await expect(page.locator(\"#profile-name\")).toHaveValue(\"TrustLens QA Analyst\");\n     |                                                 ^\n  53 |     await expect(\n  54 |       page.getByLabel(/Consented emerging scam campaign advisories/i)\n  55 |     ).toBeChecked();\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts:52:49"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:38:05.027Z",
+                      "startTime": "2026-11-25T17:44:54.193Z",
                       "annotations": [],
                       "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-mobile\\test-failed-1.png"
+                        },
                         {
                           "name": "error-context",
                           "contentType": "text/markdown",
@@ -815,7 +743,12 @@
                           "contentType": "application/zip",
                           "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\02-auth-forms-and-profile--51574-and-logout-persist-properly-mobile\\trace.zip"
                         }
-                      ]
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\02-auth-forms-and-profile.spec.ts",
+                        "column": 49,
+                        "line": 52
+                      }
                     }
                   ],
                   "status": "unexpected"
@@ -856,15 +789,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3181,
+                      "duration": 2674,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:32.887Z",
+                      "startTime": "2026-11-25T17:43:19.713Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -879,15 +812,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5591,
+                      "duration": 2380,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:37.395Z",
+                      "startTime": "2026-11-25T17:44:14.993Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -902,15 +835,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 12685,
+                      "duration": 2732,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:39:24.855Z",
+                      "startTime": "2026-11-25T17:45:15.814Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -936,15 +869,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3419,
+                      "duration": 3523,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:36.092Z",
+                      "startTime": "2026-11-25T17:43:22.409Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -959,15 +892,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3871,
+                      "duration": 2423,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:43.027Z",
+                      "startTime": "2026-11-25T17:44:17.578Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -982,15 +915,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 11674,
+                      "duration": 2538,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:39:38.327Z",
+                      "startTime": "2026-11-25T17:45:18.800Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1016,15 +949,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2481,
+                      "duration": 2895,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:39.538Z",
+                      "startTime": "2026-11-25T17:43:25.957Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1039,15 +972,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5033,
+                      "duration": 1912,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:46.998Z",
+                      "startTime": "2026-11-25T17:44:20.022Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1062,15 +995,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5177,
+                      "duration": 2221,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:39:50.119Z",
+                      "startTime": "2026-11-25T17:45:21.367Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1113,15 +1046,15 @@
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 6666,
+                      "duration": 7125,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:42.049Z",
+                      "startTime": "2026-11-25T17:43:28.883Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1136,15 +1069,15 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 2,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 10334,
+                      "duration": 5354,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:36:52.150Z",
+                      "startTime": "2026-11-25T17:44:21.962Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1159,15 +1092,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 13374,
+                      "duration": 5871,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:39:55.604Z",
+                      "startTime": "2026-11-25T17:45:23.615Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1199,71 +1132,51 @@
           "specs": [
             {
               "title": "reports page search, filter, submission validation, and export controls",
-              "ok": false,
+              "ok": true,
               "tags": [],
               "tests": [
                 {
                   "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked by backend AUTH_RATE_LIMIT_PER_MINUTE",
+                      "location": {
+                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                        "line": 54,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
                   "projectId": "desktop",
                   "projectName": "desktop",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3505,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:49:37",
-                        "location": {
-                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                          "column": 37,
-                          "line": 49
-                        },
-                        "snippet": " \u001b[90m 47 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 49 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mloginStatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 50 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mstixStatus)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 51 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mjsonStatus)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                            "column": 37,
-                            "line": 49
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m\n\n  47 |     });\n  48 |\n> 49 |     expect(exportCheck.loginStatus).toBe(200);\n     |                                     ^\n  50 |     expect(exportCheck.stixStatus).toBeLessThan(500);\n  51 |     expect(exportCheck.jsonStatus).toBeLessThan(500);\n  52 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:49:37"
-                        }
-                      ],
+                      "status": "skipped",
+                      "duration": 2219,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:35:48.751Z",
-                      "annotations": [],
-                      "attachments": [
+                      "startTime": "2026-11-25T17:43:36.032Z",
+                      "annotations": [
                         {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-desktop\\trace.zip"
+                          "type": "skip",
+                          "description": "Blocked by backend AUTH_RATE_LIMIT_PER_MINUTE",
+                          "location": {
+                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
+                            "line": 54,
+                            "column": 10
+                          }
                         }
                       ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                        "column": 37,
-                        "line": 49
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "skipped"
                 },
                 {
                   "timeout": 45000,
@@ -1273,60 +1186,20 @@
                   "projectName": "tablet",
                   "results": [
                     {
-                      "workerIndex": 3,
+                      "workerIndex": 2,
                       "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 3775,
-                      "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:49:37",
-                        "location": {
-                          "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                          "column": 37,
-                          "line": 49
-                        },
-                        "snippet": " \u001b[90m 47 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 49 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mloginStatus)\u001b[33m.\u001b[39mtoBe(\u001b[35m200\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 50 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mstixStatus)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 51 |\u001b[39m     expect(exportCheck\u001b[33m.\u001b[39mjsonStatus)\u001b[33m.\u001b[39mtoBeLessThan(\u001b[35m500\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m"
-                      },
-                      "errors": [
-                        {
-                          "location": {
-                            "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                            "column": 37,
-                            "line": 49
-                          },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m429\u001b[39m\n\n  47 |     });\n  48 |\n> 49 |     expect(exportCheck.loginStatus).toBe(200);\n     |                                     ^\n  50 |     expect(exportCheck.stixStatus).toBeLessThan(500);\n  51 |     expect(exportCheck.jsonStatus).toBeLessThan(500);\n  52 |\n    at C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts:49:37"
-                        }
-                      ],
+                      "status": "passed",
+                      "duration": 3768,
+                      "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:37:02.697Z",
+                      "startTime": "2026-11-25T17:44:27.343Z",
                       "annotations": [],
-                      "attachments": [
-                        {
-                          "name": "screenshot",
-                          "contentType": "image/png",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\test-failed-1.png"
-                        },
-                        {
-                          "name": "error-context",
-                          "contentType": "text/markdown",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\error-context.md"
-                        },
-                        {
-                          "name": "trace",
-                          "contentType": "application/zip",
-                          "path": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\test-results\\05-reports-and-exports-Com-7f181-idation-and-export-controls-tablet\\trace.zip"
-                        }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\jaswant karun\\TRUSTLENS AI\\frontend\\e2e\\05-reports-and-exports.spec.ts",
-                        "column": 37,
-                        "line": 49
-                      }
+                      "attachments": []
                     }
                   ],
-                  "status": "unexpected"
+                  "status": "expected"
                 },
                 {
                   "timeout": 45000,
@@ -1336,15 +1209,15 @@
                   "projectName": "mobile",
                   "results": [
                     {
-                      "workerIndex": 6,
+                      "workerIndex": 4,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 5917,
+                      "duration": 4837,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-11-25T17:40:09.055Z",
+                      "startTime": "2026-11-25T17:45:29.547Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1364,11 +1237,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-11-25T17:32:29.974Z",
-    "duration": 479417.903,
-    "expected": 22,
-    "skipped": 2,
-    "unexpected": 6,
+    "startTime": "2026-11-25T17:41:27.693Z",
+    "duration": 248963.40899999999,
+    "expected": 25,
+    "skipped": 3,
+    "unexpected": 2,
     "flaky": 0
   }
 }

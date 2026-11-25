@@ -140,6 +140,86 @@ class AuthenticationService:
         })
         return {"verified": True, "user_id": user_id}
 
+    async def update_profile(
+        self,
+        user_id: str,
+        updates: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Updates authenticated user's own profile name and preferences."""
+        users_coll = get_users_collection()
+        audit_coll = get_audit_collection()
+        user = await users_coll.find_one({"user_id": user_id})
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+
+        now = datetime.now(timezone.utc)
+        prefs = dict(user.get("onboarding_preferences") or {})
+        set_fields: Dict[str, Any] = {"updated_at": now}
+
+        if updates.get("full_name") is not None:
+            set_fields["full_name"] = updates["full_name"].strip()
+        for key in (
+            "preferred_language",
+            "primary_focus",
+            "threat_alerts_opt_in",
+            "email_notifications",
+            "in_app_notifications",
+        ):
+            if updates.get(key) is not None:
+                prefs[key] = updates[key]
+
+        set_fields["onboarding_preferences"] = prefs
+        await users_coll.update_one({"user_id": user_id}, {"$set": set_fields})
+
+        await audit_coll.insert_one({
+            "audit_id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "action": "profile_updated",
+            "resource_type": "user",
+            "resource_id": user_id,
+            "timestamp": now,
+        })
+
+        updated = await users_coll.find_one({"user_id": user_id})
+        return {
+            "user_id": updated["user_id"],
+            "email": updated["email"],
+            "full_name": updated["full_name"],
+            "role": updated["role"],
+            "is_active": updated["is_active"],
+            "email_verified": updated.get("email_verified", False),
+            "onboarding_preferences": updated.get("onboarding_preferences"),
+            "created_at": updated["created_at"],
+            "last_login": updated.get("last_login"),
+        }
+
+    async def get_user_sessions(self, user_id: str) -> Dict[str, Any]:
+        """Returns real login/session audit history for the authenticated user only."""
+        audit_coll = get_audit_collection()
+        cursor = audit_coll.find(
+            {"user_id": user_id, "action": {"$in": ["user_login", "user_logout", "user_registration"]}},
+            {"_id": 0, "audit_id": 1, "action": 1, "client_ip": 1, "timestamp": 1},
+        ).sort("timestamp", -1).limit(10)
+        events = await cursor.to_list(length=10)
+        return {"user_id": user_id, "sessions": events}
+
+    async def logout_user(self, user_id: str, client_ip: Optional[str] = None) -> Dict[str, Any]:
+        """Revokes prior JWTs for user_id by setting session_revoked_before and recording audit event."""
+        users_coll = get_users_collection()
+        audit_coll = get_audit_collection()
+        now = datetime.now(timezone.utc)
+        await users_coll.update_one({"user_id": user_id}, {"$set": {"session_revoked_before": now}})
+        await audit_coll.insert_one({
+            "audit_id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "action": "user_logout",
+            "resource_type": "user",
+            "resource_id": user_id,
+            "client_ip": client_ip,
+            "timestamp": now,
+        })
+        return {"logged_out": True, "revoked_at": now.isoformat()}
+
     async def authenticate_user(
         self, email: str, password: str, client_ip: Optional[str] = None
     ) -> Dict[str, Any]:

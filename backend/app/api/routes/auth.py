@@ -13,6 +13,7 @@ from backend.app.schemas.auth import (
     EmailVerificationRequest,
     UserRegisterRequest,
     UserLoginRequest,
+    UserProfileUpdateRequest,
     TokenResponse,
     UserProfileResponse,
 )
@@ -93,7 +94,40 @@ async def get_my_profile(current_user: Dict[str, Any] = Depends(get_current_user
         "full_name": current_user["full_name"],
         "role": current_user["role"],
         "is_active": current_user["is_active"],
+        "email_verified": current_user.get("email_verified", False),
+        "onboarding_preferences": current_user.get("onboarding_preferences"),
         "created_at": current_user["created_at"],
         "last_login": current_user.get("last_login"),
     }
+
+
+@router.patch("/me", response_model=UserProfileResponse)
+async def update_my_profile(
+    payload: UserProfileUpdateRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Updates the authenticated user's own profile and preferences."""
+    return await auth_service.update_profile(
+        user_id=current_user["user_id"],
+        updates=payload.model_dump(exclude_none=True),
+    )
+
+
+@router.get("/sessions", response_model=Dict[str, Any])
+async def list_my_sessions(current_user: Dict[str, Any] = Depends(get_current_user)):
+    """Returns real session/auth audit events for the authenticated user."""
+    return await auth_service.get_user_sessions(user_id=current_user["user_id"])
+
+
+@router.post("/logout", response_model=Dict[str, Any])
+async def logout_current_session(
+    request: Request,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Revokes current user's active JWT session."""
+    client_ip = request.client.host if request.client else "unknown"
+    return await auth_service.logout_user(
+        user_id=current_user["user_id"],
+        client_ip=client_ip,
+    )
 

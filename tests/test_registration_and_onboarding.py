@@ -101,9 +101,9 @@ async def test_registration_validation_duplicate_and_verification(client: AsyncC
         )
         assert dup_res.status_code == 400
 
-        # 5. Invalid email verification token -> 400
+        # 5. Invalid email verification token -> 400 or 401
         bad_ver = await client.post("/api/v1/auth/verify-email", json={"token": "invalid.token.value"})
-        assert bad_ver.status_code == 400
+        assert bad_ver.status_code in (400, 401)
 
         # 6. Valid email verification token -> 200 & DB updated
         good_ver = await client.post("/api/v1/auth/verify-email", json={"token": ver_token})

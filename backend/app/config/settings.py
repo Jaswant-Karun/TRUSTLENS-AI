@@ -33,7 +33,11 @@ class AppSettings(BaseSettings):
     ADMIN_DEFAULT_PASSWORD: str = "Admin@TrustLens2026!"
 
     # CORS
-    ALLOWED_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,https://trustlens.vercel.app"
+    ALLOWED_ORIGINS: str = (
+        "http://localhost:3000,http://127.0.0.1:3000,"
+        "https://localhost,capacitor://localhost,http://localhost,"
+        "https://trustlens.vercel.app"
+    )
 
     @property
     def cors_origins(self) -> List[str]:

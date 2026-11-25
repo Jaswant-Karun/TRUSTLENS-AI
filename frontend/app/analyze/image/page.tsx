@@ -6,8 +6,11 @@ import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
 import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
 import { GlowButton } from "@/components/product/GlowButton";
 import { scanImage, ImageAnalysisResponse } from "@/lib/api";
+import { Capacitor } from "@capacitor/core";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import {
   AlertTriangle,
+  Camera as CameraIcon,
   Check,
   Copy,
   FileCheck,
@@ -46,10 +49,7 @@ export default function ImageAnalysisPage() {
   const [ocrResponse, setOcrResponse] = useState<ImageAnalysisResponse | null>(null);
   const [copiedText, setCopiedText] = useState(false);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const processSelectedFile = async (file: File) => {
     if (file.size > 10 * 1024 * 1024) {
       setError("Uploaded image exceeds the maximum allowable limit of 10 MB.");
       return;
@@ -78,6 +78,37 @@ export default function ImageAnalysisPage() {
     const reader = new FileReader();
     reader.onload = (ev) => setFilePreview(ev.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    await processSelectedFile(file);
+  };
+
+  const handleNativeCameraCapture = async () => {
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Prompt,
+      });
+      if (!photo.base64String) return;
+      const format = (photo.format || "jpeg").toLowerCase();
+      const mime = format === "png" ? "image/png" : format === "webp" ? "image/webp" : "image/jpeg";
+      const binary = atob(photo.base64String);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+      const file = new File([bytes], `capture_${Date.now()}.${format}`, { type: mime });
+      await processSelectedFile(file);
+    } catch (err: any) {
+      if (err?.message && !String(err.message).toLowerCase().includes("cancel")) {
+        setError(err.message);
+      }
+    }
   };
 
   const handleScan = async () => {
@@ -155,21 +186,33 @@ export default function ImageAnalysisPage() {
           </label>
 
           {!filePreview ? (
-            <label className="border-2 border-dashed border-[#481326] hover:border-[#FF174F] rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[#050306]/70">
-              <UploadCloud className="w-10 h-10 text-[#FF3D70] mb-2" />
-              <span className="text-xs font-mono font-semibold text-white">
-                Click to select screenshot for OCR inspection
-              </span>
-              <span className="text-[11px] text-[#A1A1AA] mt-1 font-mono">
-                PNG, JPG, JPEG, WEBP (Magic-byte &amp; PIL verified, max 10 MB)
-              </span>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </label>
+            <div className="space-y-3">
+              <label className="border-2 border-dashed border-[#481326] hover:border-[#FF174F] rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition-colors bg-[#050306]/70">
+                <UploadCloud className="w-10 h-10 text-[#FF3D70] mb-2" />
+                <span className="text-xs font-mono font-semibold text-white">
+                  Click to select screenshot for OCR inspection
+                </span>
+                <span className="text-[11px] text-[#A1A1AA] mt-1 font-mono">
+                  PNG, JPG, JPEG, WEBP (Magic-byte &amp; PIL verified, max 10 MB)
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
+              {Capacitor.isNativePlatform() && (
+                <button
+                  type="button"
+                  onClick={handleNativeCameraCapture}
+                  className="w-full flex items-center justify-center gap-2 rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/15 px-4 py-2.5 text-xs font-mono font-semibold text-white hover:bg-[#FF174F]/25 transition-colors"
+                >
+                  <CameraIcon className="w-4 h-4 text-[#FF3D70]" />
+                  <span>Capture Camera Photo / Pick from Gallery</span>
+                </button>
+              )}
+            </div>
           ) : (
             <div className="relative border border-[#481326] rounded-xl p-4 bg-[#050306]/80 flex items-center justify-between gap-4">
               <div className="flex items-center space-x-4 min-w-0">

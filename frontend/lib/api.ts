@@ -4,6 +4,13 @@
  * Never fabricates synthetic statistics; handles loading and error states cleanly.
  */
 
+import {
+  clearStoredTokenSecure,
+  getStoredTokenSync,
+  initAuthStorage,
+  setStoredTokenSecure,
+} from "./secureStorage";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 export interface SystemHealth {
@@ -227,26 +234,23 @@ export interface UserProfile {
   last_login?: string | null;
 }
 
-/** Token Management */
+/** Token Management (Android Keystore EncryptedSharedPreferences on native, localStorage on web) */
+export { initAuthStorage };
+
 export function getStoredToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("trustlens_token");
+  return getStoredTokenSync();
 }
 
 export function setStoredToken(token: string): void {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("trustlens_token", token);
-  }
+  setStoredTokenSecure(token);
 }
 
 export function clearStoredToken(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("trustlens_token");
-  }
+  clearStoredTokenSecure();
 }
 
 /** Helper for resilient fetch */
-async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
+export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const token = getStoredToken();
   const headers: Record<string, string> = {
     Accept: "application/json",

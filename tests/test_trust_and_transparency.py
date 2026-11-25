@@ -37,7 +37,7 @@ def test_trust_and_transparency_endpoint_and_artifacts():
 
     assert "Tamil" in d["supported_languages"]["unsupported_unverified"]
     assert "fake_investment" in d["model_limitations"]["model_3_tactics"]
-    assert "100%" not in " ".join(d["disclaimers"])
+    assert "does not guarantee universal fraud detection" in " ".join(d["disclaimers"])
     assert d["security_contact"]["email"] == "security@trustlens.ai"
 
     assert Path("docs/TRUST_AND_TRANSPARENCY_FRAMEWORK.md").exists()

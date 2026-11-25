@@ -9,6 +9,7 @@ import { CyberBackground } from "@/components/product/CyberBackground";
 import { ProductHeader } from "@/components/product/ProductHeader";
 import { NeonFrame } from "@/components/product/NeonFrame";
 import { GlowButton } from "@/components/product/GlowButton";
+import { AndroidShellBridge } from "@/components/android/AndroidShellBridge";
 import { getStoredToken } from "@/lib/api";
 
 interface AppShellProps {
@@ -122,8 +123,8 @@ export function AppShell({ children }: AppShellProps) {
     return (
       <CyberBackground showHudFrame={true}>
         <ProductHeader />
-        <main className="flex-1 flex flex-col">{children}</main>
-        <footer className="mt-auto border-t border-[#481326]/60 bg-[#050306]/80 py-4 px-6 text-[11px] font-mono text-[#A1A1AA]">
+        <main className="flex-1 flex flex-col pb-20 md:pb-0">{children}</main>
+        <footer className="mt-auto border-t border-[#481326]/60 bg-[#050306]/80 py-4 px-6 pb-20 md:pb-4 text-[11px] font-mono text-[#A1A1AA]">
           <div className="mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between gap-2">
             <span>TRUSTLENS AI — Multilingual Digital Fraud Intelligence</span>
             <div className="flex items-center gap-4">
@@ -139,6 +140,7 @@ export function AppShell({ children }: AppShellProps) {
             </div>
           </div>
         </footer>
+        <AndroidShellBridge onAuthHydrated={() => setHasToken(Boolean(getStoredToken()))} />
       </CyberBackground>
     );
   }
@@ -147,7 +149,8 @@ export function AppShell({ children }: AppShellProps) {
     return (
       <CyberBackground showHudFrame={false}>
         <ProductHeader />
-        <div className="flex-1 w-full bg-[#050306]/90 text-white">{children}</div>
+        <div className="flex-1 w-full bg-[#050306]/90 pb-20 md:pb-0 text-white">{children}</div>
+        <AndroidShellBridge onAuthHydrated={() => setHasToken(Boolean(getStoredToken()))} />
       </CyberBackground>
     );
   }
@@ -157,7 +160,7 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <CyberBackground showHudFrame={true}>
       <ProductHeader />
-      <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+      <main className="flex-1 p-4 pb-24 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
         <div className="mb-5 flex flex-col gap-3 border-b border-[#481326]/60 pb-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Breadcrumb items={routeInfo.breadcrumbs} />
@@ -210,6 +213,7 @@ export function AppShell({ children }: AppShellProps) {
           children
         )}
       </main>
+      <AndroidShellBridge onAuthHydrated={() => setHasToken(Boolean(getStoredToken()))} />
     </CyberBackground>
   );
 }

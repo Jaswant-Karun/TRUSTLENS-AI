@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: trustlens-ai-backend
+    runtime: python
+    plan: standard # 2 GB RAM required (measured ML runtime RSS ~959 MB; 512 MB starter/free will OOM)
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+      - key: SECRET_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB_NAME
+        value: trustlens_ai
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: ADMIN_DEFAULT_EMAIL
+        sync: false
+      - key: ADMIN_DEFAULT_PASSWORD
+        sync: false
+      - key: N8N_WEBHOOK_SECRET
+        sync: false

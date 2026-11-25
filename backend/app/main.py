@@ -39,6 +39,8 @@ async def lifespan(app: FastAPI):
     await db_manager.disconnect()
 
 
+is_prod = settings.APP_ENV.lower() == "production" and not settings.DEBUG
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
@@ -47,9 +49,9 @@ app = FastAPI(
         "Detects scam communications, phishing URLs, and psychological coercion across SMS, WhatsApp, and emails. "
         "Provides transparent risk aggregation, forensic explainability, and campaign intelligence."
     ),
-    docs_url="/docs",
-    redoc_url="/redoc",
-    openapi_url="/openapi.json",
+    docs_url=None if is_prod else "/docs",
+    redoc_url=None if is_prod else "/redoc",
+    openapi_url=None if is_prod else "/openapi.json",
     lifespan=lifespan,
 )
 

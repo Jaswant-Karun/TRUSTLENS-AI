@@ -10,11 +10,16 @@ Defines and enforces:
 
 import base64
 import hashlib
+import hmac
+import os
 import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, List, Optional
 
-from cryptography.fernet import Fernet
+try:
+    from cryptography.fernet import Fernet
+except ImportError:
+    Fernet = None
 
 from backend.app.config.settings import settings
 from backend.app.database.collections import get_analyses_collection, get_audit_collection, get_reports_collection
@@ -74,15 +79,37 @@ class PrivacyProtectionService:
     """Implements consent, retention, field-level encryption, redaction, and privacy governance."""
 
     @staticmethod
-    def _get_fernet() -> Fernet:
-        key_material = hashlib.sha256(settings.SECRET_KEY.encode("utf-8")).digest()
-        return Fernet(base64.urlsafe_b64encode(key_material))
+    def _derive_key() -> bytes:
+        return hashlib.sha256(settings.SECRET_KEY.encode("utf-8")).digest()
 
     def encrypt_sensitive_field(self, plaintext: str) -> str:
-        return self._get_fernet().encrypt(plaintext.encode("utf-8")).decode("utf-8")
+        key = self._derive_key()
+        if Fernet is not None:
+            return Fernet(base64.urlsafe_b64encode(key)).encrypt(plaintext.encode("utf-8")).decode("utf-8")
+        nonce = os.urandom(16)
+        data = plaintext.encode("utf-8")
+        stream = b"".join(
+            hashlib.sha256(key + nonce + i.to_bytes(4, "big")).digest()
+            for i in range((len(data) + 31) // 32)
+        )[:len(data)]
+        ct = bytes(a ^ b for a, b in zip(data, stream))
+        tag = hmac.new(key, nonce + ct, hashlib.sha256).digest()
+        return base64.urlsafe_b64encode(nonce + ct + tag).decode("utf-8")
 
     def decrypt_sensitive_field(self, ciphertext: str) -> str:
-        return self._get_fernet().decrypt(ciphertext.encode("utf-8")).decode("utf-8")
+        key = self._derive_key()
+        if Fernet is not None:
+            return Fernet(base64.urlsafe_b64encode(key)).decrypt(ciphertext.encode("utf-8")).decode("utf-8")
+        raw = base64.urlsafe_b64decode(ciphertext.encode("utf-8"))
+        nonce, ct, tag = raw[:16], raw[16:-32], raw[-32:]
+        expected = hmac.new(key, nonce + ct, hashlib.sha256).digest()
+        if not hmac.compare_digest(tag, expected):
+            raise ValueError("Invalid ciphertext authentication tag.")
+        stream = b"".join(
+            hashlib.sha256(key + nonce + i.to_bytes(4, "big")).digest()
+            for i in range((len(ct) + 31) // 32)
+        )[:len(ct)]
+        return bytes(a ^ b for a, b in zip(ct, stream)).decode("utf-8")
 
     @staticmethod
     def redact_pii(text: str) -> str:

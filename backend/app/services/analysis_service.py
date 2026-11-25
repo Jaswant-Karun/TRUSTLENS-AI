@@ -296,10 +296,15 @@ class ThreatAnalysisService:
         role: str = "user",
         threat_level: Optional[str] = None,
         channel: Optional[str] = None,
+        search: Optional[str] = None,
+        sort_by: str = "created_at",
+        sort_order: str = "desc",
         page: int = 1,
         page_size: int = 20,
     ) -> Dict[str, Any]:
-        """Retrieves paginated scan history from MongoDB."""
+        """Retrieves paginated, sorted, and filtered scan history from MongoDB."""
+        import re
+
         analyses_coll = get_analyses_collection()
         query: Dict[str, Any] = {}
 
@@ -311,11 +316,28 @@ class ThreatAnalysisService:
             query["threat_level"] = threat_level
         if channel:
             query["input_payload.channel"] = channel
+        if search and search.strip():
+            safe_pat = re.escape(search.strip())
+            query["$or"] = [
+                {"analysis_id": {"$regex": safe_pat, "$options": "i"}},
+                {"analysis_type": {"$regex": safe_pat, "$options": "i"}},
+                {"threat_level": {"$regex": safe_pat, "$options": "i"}},
+                {"input_payload.channel": {"$regex": safe_pat, "$options": "i"}},
+            ]
+
+        allowed_sorts = {"created_at", "risk_score", "threat_level", "analysis_type"}
+        sort_field = sort_by if sort_by in allowed_sorts else "created_at"
+        sort_dir = 1 if sort_order.lower() == "asc" else -1
 
         skip = (page - 1) * page_size
         total_count = await analyses_coll.count_documents(query)
 
-        cursor = analyses_coll.find(query).sort("created_at", -1).skip(skip).limit(page_size)
+        cursor = (
+            analyses_coll.find(query)
+            .sort(sort_field, sort_dir)
+            .skip(skip)
+            .limit(page_size)
+        )
         items = await cursor.to_list(length=page_size)
 
         # Remove internal MongoDB _id from returned items

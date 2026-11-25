@@ -349,6 +349,41 @@ class ThreatAnalysisService:
             doc.pop("_id", None)
         return doc
 
+    async def delete_analysis_by_id(
+        self,
+        analysis_id: str,
+        user_id: str,
+        role: str = "user",
+    ) -> Dict[str, Any]:
+        """Deletes an analysis record if owned by user_id or caller is admin."""
+        from fastapi import HTTPException, status
+
+        analyses_coll = get_analyses_collection()
+        audit_coll = get_audit_collection()
+
+        doc = await analyses_coll.find_one({"analysis_id": analysis_id})
+        if not doc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Analysis '{analysis_id}' not found.",
+            )
+        if doc.get("user_id") != user_id and role != "admin":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to delete this analysis record.",
+            )
+
+        await analyses_coll.delete_one({"analysis_id": analysis_id})
+        await audit_coll.insert_one({
+            "audit_id": f"aud-{uuid.uuid4().hex[:10]}",
+            "user_id": user_id,
+            "action": "analysis_deleted",
+            "resource_type": "analysis",
+            "resource_id": analysis_id,
+            "timestamp": datetime.now(timezone.utc),
+        })
+        return {"deleted": True, "analysis_id": analysis_id}
+
 
 analysis_service = ThreatAnalysisService()
 threat_analysis_service = analysis_service

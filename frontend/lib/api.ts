@@ -388,14 +388,30 @@ export async function getAnalysesHistory(params?: {
   page_size?: number;
   threat_level?: string;
   channel?: string;
+  search?: string;
+  sort_by?: string;
+  sort_order?: string;
 }): Promise<PaginatedAnalyses> {
   const query = new URLSearchParams();
   if (params?.page) query.set("page", params.page.toString());
   if (params?.page_size) query.set("page_size", params.page_size.toString());
   if (params?.threat_level) query.set("threat_level", params.threat_level);
   if (params?.channel) query.set("channel", params.channel);
+  if (params?.search) query.set("search", params.search);
+  if (params?.sort_by) query.set("sort_by", params.sort_by);
+  if (params?.sort_order) query.set("sort_order", params.sort_order);
 
   return apiFetch<PaginatedAnalyses>(`/analyses?${query.toString()}`);
+}
+
+export async function getAnalysisDetail(analysisId: string): Promise<any> {
+  return apiFetch(`/analyses/${encodeURIComponent(analysisId)}`);
+}
+
+export async function deleteAnalysis(analysisId: string): Promise<{ deleted: boolean; analysis_id: string }> {
+  return apiFetch(`/analyses/${encodeURIComponent(analysisId)}`, {
+    method: "DELETE",
+  });
 }
 
 /** Community Reports */

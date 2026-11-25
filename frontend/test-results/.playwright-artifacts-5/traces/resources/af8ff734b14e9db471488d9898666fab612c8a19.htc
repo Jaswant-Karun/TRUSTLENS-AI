@@ -1,0 +1,9 @@
+2:I["(app-pages-browser)/./node_modules/next/dist/client/components/client-page.js",["app-pages-internals","static/chunks/app-pages-internals.js"],"ClientPageRoot"]
+3:I["(app-pages-browser)/./app/analyze/url/page.tsx",["app/analyze/url/page","static/chunks/app/analyze/url/page.js"],"default",1]
+1:D{"name":"","env":"Server"}
+4:D{"name":"","env":"Server"}
+5:D{"name":"r6","env":"Server"}
+5:null
+0:["development",[["children","analyze","children","url","children","__PAGE__",["__PAGE__",{}],["__PAGE__",{},[["$L1",["$","$L2",null,{"props":{"params":{},"searchParams":{}},"Component":"$3"}],null],null],null],["$L4","$5"]]]]
+4:[["$","meta","0",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","1",{"charSet":"utf-8"}],["$","title","2",{"children":"TRUSTLENS AI â€” Multilingual Digital Fraud Intelligence Platform"}],["$","meta","3",{"name":"description","content":"Detect suspicious messages, malicious URLs and emerging digital fraud campaigns using intelligent multilingual analysis and real-world threat intelligence."}],["$","meta","4",{"name":"application-name","content":"TRUSTLENS AI"}],["$","link","5",{"rel":"manifest","href":"/manifest.webmanifest","crossOrigin":"use-credentials"}],["$","link","6",{"rel":"icon","href":"/icon.svg"}],["$","link","7",{"rel":"apple-touch-icon","href":"/apple-icon.svg"}]]
+1:null

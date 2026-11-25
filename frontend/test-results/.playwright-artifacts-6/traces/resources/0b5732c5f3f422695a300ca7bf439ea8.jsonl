@@ -1,3 +1,0 @@
-{"type":"receive","time":1795628404269.076,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"17250f2a174eaba9\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
-{"type":"send","time":1795628404270.092,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628404167}"}
-{"type":"send","time":1795628406715.04,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"investigations\",{\"children\":[[\"id\",\"INV-2026-0011\",\"d\"],{\"children\":[\"__PAGE__\",{},\"/investigations/INV-2026-0011\",\"refresh\"]}]}]},null,null,true],\"appDirRoute\":true}"}

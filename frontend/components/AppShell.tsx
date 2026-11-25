@@ -24,6 +24,8 @@ const PUBLIC_OR_STANDALONE_ROUTES = new Set([
   "/reset-password",
   "/verify-email",
   "/profile",
+  "/privacy-policy",
+  "/methodology",
 ]);
 
 const AUTH_REQUIRED_ROUTES = new Set(["/history"]);

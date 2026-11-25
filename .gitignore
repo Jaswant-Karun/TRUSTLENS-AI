@@ -18,8 +18,11 @@ htmlcov/
 # Node & Next.js
 frontend/node_modules/
 frontend/.next/
+frontend/android/.next/
 frontend/out/
 frontend/build/
+frontend/test-results/
+frontend/playwright-report/
 frontend/.env.local
 frontend/.env.production.local
 frontend/.env.development.local

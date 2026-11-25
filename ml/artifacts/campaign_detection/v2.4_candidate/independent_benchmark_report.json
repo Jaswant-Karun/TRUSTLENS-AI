@@ -1,0 +1,64 @@
+{
+  "v1.0_47_clusters": {
+    "model": "v1.0_47_clusters",
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "num_clusters": 47,
+    "inter_centroid_mean_sim": 0.4211,
+    "inter_centroid_max_sim": 0.9223,
+    "eval_samples": 1593,
+    "threat_samples": 548,
+    "legit_samples": 1045,
+    "threat_high_match_rate_070": 0.3157,
+    "threat_moderate_plus_match_rate_050": 0.6296,
+    "legit_false_correlation_rate_070": 0.4115,
+    "legit_false_correlation_rate_050": 0.6048,
+    "by_language_threat_match_050": {
+      "English": {
+        "samples": 400,
+        "match_050": 0.495,
+        "match_070": 0.105
+      },
+      "Hindi": {
+        "samples": 69,
+        "match_050": 1.0,
+        "match_070": 1.0
+      },
+      "Hinglish": {
+        "samples": 79,
+        "match_050": 0.9873,
+        "match_070": 0.7848
+      }
+    }
+  },
+  "v2.4_43_clusters": {
+    "model": "v2.4_43_clusters",
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "num_clusters": 43,
+    "inter_centroid_mean_sim": 0.376,
+    "inter_centroid_max_sim": 0.8881,
+    "eval_samples": 1593,
+    "threat_samples": 548,
+    "legit_samples": 1045,
+    "threat_high_match_rate_070": 0.25,
+    "threat_moderate_plus_match_rate_050": 0.635,
+    "legit_false_correlation_rate_070": 0.0086,
+    "legit_false_correlation_rate_050": 0.156,
+    "by_language_threat_match_050": {
+      "English": {
+        "samples": 400,
+        "match_050": 0.515,
+        "match_070": 0.1175
+      },
+      "Hindi": {
+        "samples": 69,
+        "match_050": 0.9855,
+        "match_070": 0.7681
+      },
+      "Hinglish": {
+        "samples": 79,
+        "match_050": 0.9367,
+        "match_070": 0.4684
+      }
+    }
+  }
+}

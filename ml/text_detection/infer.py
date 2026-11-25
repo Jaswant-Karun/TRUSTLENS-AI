@@ -25,11 +25,25 @@ import numpy as np
 from ml.preprocessing.text_preprocessor import text_preprocessor
 
 
+CLASSES_4 = ("legitimate", "spam", "smishing", "scam")
+EVALUATED_LANGUAGES = {"English", "Hindi", "Hinglish"}
+
+
 class ScamMessageInferenceEngine:
     def __init__(self, artifacts_dir: Optional[str] = None):
         self.artifacts_dir = Path(artifacts_dir or "ml/artifacts/text_detection")
-        self.model_path = self.artifacts_dir / "best_model.joblib"
-        self.vectorizer_path = self.artifacts_dir / "best_vectorizer.joblib"
+        v2_dir = self.artifacts_dir / "v2.1_candidate"
+        v2_model = v2_dir / "union_tfidf_linearsvc_model.joblib"
+        v2_vec = v2_dir / "union_tfidf_linearsvc_vectorizer.joblib"
+
+        if v2_model.exists() and v2_vec.exists():
+            self.model_path = v2_model
+            self.vectorizer_path = v2_vec
+            self.model_version_tag = "trustlens-model1-v2.1"
+        else:
+            self.model_path = self.artifacts_dir / "best_model.joblib"
+            self.vectorizer_path = self.artifacts_dir / "best_vectorizer.joblib"
+            self.model_version_tag = "trustlens-model1-v1.0"
 
         self.model = None
         self.vectorizer = None
@@ -48,7 +62,7 @@ class ScamMessageInferenceEngine:
         else:
             self.is_loaded = False
 
-    def explain_prediction(self, text: str, top_k: int = 5) -> List[str]:
+    def explain_prediction(self, text: str, top_k: int = 5, class_idx: int = 0) -> List[str]:
         """Extracts top contributing n-grams/tokens from message for explainability."""
         if not self.is_loaded:
             return []
@@ -57,9 +71,11 @@ class ScamMessageInferenceEngine:
             if hasattr(self.model, "calibrated_classifiers_"):
                 # Calibrated LinearSVC
                 base_clf = self.model.calibrated_classifiers_[0].estimator
-                coef = base_clf.coef_[0]
+                coef_idx = class_idx if class_idx < base_clf.coef_.shape[0] else 0
+                coef = base_clf.coef_[coef_idx]
             elif hasattr(self.model, "coef_"):
-                coef = self.model.coef_[0]
+                coef_idx = class_idx if class_idx < self.model.coef_.shape[0] else 0
+                coef = self.model.coef_[coef_idx]
             else:
                 return []
 
@@ -73,7 +89,7 @@ class ScamMessageInferenceEngine:
             # Contribution = tfidf_value * coefficient
             contributions = X.data * coef[nonzero_idx]
             top_indices = nonzero_idx[np.argsort(contributions)[-top_k:]]
-            return [str(feature_names[i]).replace("char__", "").replace("word__", "") for i in reversed(top_indices)]
+            return [str(feature_names[i]).replace("char__", "").replace("word__", "").replace("char_tfidf__", "").replace("word_tfidf__", "") for i in reversed(top_indices)]
         except Exception:
             return []
 
@@ -85,6 +101,7 @@ class ScamMessageInferenceEngine:
         norm = text_preprocessor.preprocess(raw_text, mask_personal_data=True)
         cleaned_text = norm["cleaned_text"]
         detected_language = norm["language"]
+        lang_support_status = "evaluated" if detected_language in EVALUATED_LANGUAGES else "unsupported_unverified"
 
         if not self.is_loaded:
             latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
@@ -96,6 +113,7 @@ class ScamMessageInferenceEngine:
                 "confidence": 0.0,
                 "model_version": "uninitialized",
                 "detected_language": detected_language,
+                "language_support_status": lang_support_status,
                 "supporting_evidence": [],
                 "processing_time_ms": latency_ms,
                 "status": "Awaiting Model 1 baseline training",
@@ -103,29 +121,47 @@ class ScamMessageInferenceEngine:
 
         # Step 2: Vectorization & Inference
         X = self.vectorizer.transform([cleaned_text])
+        class_probs: Dict[str, float] = {}
         if hasattr(self.model, "predict_proba"):
             probs = self.model.predict_proba(X)[0]
-            pred_idx = int(probs.argmax())
-            confidence = float(probs[pred_idx])
+            if len(probs) == 4:
+                class_probs = {CLASSES_4[i]: round(float(probs[i]), 4) for i in range(4)}
+                threat_prob = float(1.0 - probs[0])
+                pred_idx = int(probs.argmax())
+                if pred_idx != 0 or threat_prob >= 0.45:
+                    is_threat = True
+                    threat_sub_idx = 1 + int(np.argmax(probs[1:]))
+                    predicted_class = CLASSES_4[threat_sub_idx]
+                    confidence = threat_prob
+                    explain_idx = threat_sub_idx
+                else:
+                    is_threat = False
+                    predicted_class = "legitimate"
+                    confidence = float(probs[0])
+                    explain_idx = 0
+            else:
+                pred_idx = int(probs.argmax())
+                confidence = float(probs[pred_idx])
+                is_threat = bool(pred_idx == 1)
+                explain_idx = pred_idx
+                if not is_threat:
+                    predicted_class = "legitimate"
+                elif norm["extracted_urls"] or "http" in raw_text.lower():
+                    predicted_class = "smishing"
+                elif any(w in raw_text.lower() for w in ["upi", "kyc", "bank", "khata", "blocked"]):
+                    predicted_class = "scam"
+                else:
+                    predicted_class = "spam"
         else:
             decision = self.model.decision_function(X)[0]
             pred_idx = 1 if decision > 0 else 0
             confidence = float(1.0 / (1.0 + np.exp(-decision)))
-
-        is_threat = bool(pred_idx == 1)
-
-        # Fine-grained class mapping based on heuristics and extracted tokens
-        if not is_threat:
-            predicted_class = "legitimate"
-        elif norm["extracted_urls"] or "http" in raw_text.lower():
-            predicted_class = "smishing"
-        elif any(w in raw_text.lower() for w in ["upi", "kyc", "bank", "khata", "blocked"]):
-            predicted_class = "scam"
-        else:
-            predicted_class = "spam"
+            is_threat = bool(pred_idx == 1)
+            predicted_class = "scam" if is_threat else "legitimate"
+            explain_idx = pred_idx
 
         # Step 3: Evidence Extraction
-        evidence = self.explain_prediction(cleaned_text, top_k=4)
+        evidence = self.explain_prediction(cleaned_text, top_k=4, class_idx=explain_idx)
 
         latency_ms = round((time.perf_counter() - start_time) * 1000, 2)
 
@@ -135,8 +171,10 @@ class ScamMessageInferenceEngine:
             "predicted_class": predicted_class,
             "is_threat": is_threat,
             "confidence": round(confidence, 4),
-            "model_version": "trustlens-model1-v1.0",
+            "model_version": self.model_version_tag,
             "detected_language": detected_language,
+            "language_support_status": lang_support_status,
+            "class_probabilities": class_probs,
             "supporting_evidence": evidence,
             "processing_time_ms": latency_ms,
             "extracted_urls": norm["extracted_urls"],

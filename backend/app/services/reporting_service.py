@@ -52,9 +52,10 @@ class ReportingService:
 
     async def _fetch_analysis(self, target_id: str, current_user: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         coll = get_analyses_collection()
-        doc = await coll.find_one({"analysis_id": target_id}, {"_id": 0})
+        doc = await coll.find_one({"analysis_id": target_id})
         if not doc:
             return None
+        doc.pop("_id", None)
         role = current_user.get("role", "user")
         if role not in ("analyst", "admin") and doc.get("user_id") != current_user.get("user_id"):
             raise PermissionError("Access denied: You may only access your own analysis records.")
@@ -327,9 +328,13 @@ class ReportingService:
         object_refs: List[str] = [identity_id]
         unmapped_fields: List[str] = []
 
-        def add_indicator_and_sco(kind: str, value: str, label: str, valid_from: str):
+        def add_indicator_and_sco(kind: str, value: str, label: str, valid_from: str, confidence: int = 85, source_ref: str = "TRUSTLENS AI"):
+            from backend.app.services.ti_sharing_service import is_private_or_pii
             val = value.strip()
             if not val:
+                return
+            if is_private_or_pii(val, kind):
+                unmapped_fields.append(f"pii_scrubbed:{kind}")
                 return
             if kind == "url":
                 sco_id = _stix_id("url", val)
@@ -359,6 +364,8 @@ class ReportingService:
                 "pattern": pattern,
                 "pattern_type": "stix",
                 "valid_from": valid_from,
+                "confidence": max(0, min(100, int(confidence))),
+                "external_references": [{"source_name": source_ref}],
             })
             rel_id = _stix_id("relationship", f"{ind_id}-indicates-{sco_id}")
             objects.append({
@@ -370,6 +377,7 @@ class ReportingService:
                 "relationship_type": "based-on",
                 "source_ref": ind_id,
                 "target_ref": sco_id,
+                "confidence": max(0, min(100, int(confidence))),
             })
             object_refs.extend([sco_id, ind_id, rel_id])
 
@@ -482,18 +490,23 @@ class ReportingService:
             "object_refs": unique_refs,
         })
 
+        from backend.app.services.ti_sharing_service import validate_stix_21_bundle
         bundle_id = f"bundle--{uuid.uuid4()}"
-        return {
+        bundle = {
             "type": "bundle",
             "id": bundle_id,
             "objects": unique_objects,
             "x_trustlens_stix_validation": {
                 "spec_version": "2.1",
-                "misp_interoperability_claimed": False,
+                "misp_interoperability_available": True,
                 "mapped_objects_count": len(unique_objects),
                 "unmapped_non_stix_attributes": list(dict.fromkeys(unmapped_fields)),
             },
         }
+        valid, errs = validate_stix_21_bundle(bundle)
+        bundle["x_trustlens_stix_validation"]["schema_valid"] = valid
+        bundle["x_trustlens_stix_validation"]["validation_errors"] = errs
+        return bundle
 
 
 reporting_service = ReportingService()

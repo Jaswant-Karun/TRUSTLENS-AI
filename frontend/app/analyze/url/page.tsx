@@ -1,115 +1,118 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PageHeader, AnalysisResultPanel, ErrorState } from "@/components/ui";
 import { AnalyzeModeTabs } from "@/components/ui/AnalyzeModeTabs";
+import { GlowButton } from "@/components/product/GlowButton";
 import { scanUrl, ScanResult } from "@/lib/api";
 import {
-  Globe,
-  Sparkles,
-  RefreshCw,
-  Link as LinkIcon,
-  ShieldAlert,
-  ShieldCheck,
   AlertTriangle,
-  Lock,
   ClipboardPaste,
+  Link as LinkIcon,
+  Lock,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
   Trash2,
-  Info,
-  CheckCircle2,
-  ExternalLink,
 } from "lucide-react";
 
 interface URLPreset {
   label: string;
   url: string;
   type: string;
-  severity: "critical" | "high" | "clean";
 }
 
 const URL_PRESETS: URLPreset[] = [
   {
-    label: "Direct IP Banking Phish (SBI Clone)",
+    label: "Direct IP Banking Phish",
     url: "http://192.168.1.50/sbi-kyc/update.php",
-    type: "Malicious Direct IPv4",
-    severity: "critical",
+    type: "Direct IPv4",
   },
   {
-    label: "Typo-Squatted HDFC Account Trap",
+    label: "Typo-Squatted Bank Trap",
     url: "http://secure-login-hdfcbank-account-update.xyz/login.php",
-    type: "Suspicious TLD & Typo-squat",
-    severity: "critical",
+    type: "Suspicious TLD",
   },
   {
-    label: "Complex Query Token Harvester",
+    label: "Query Token Harvester",
     url: "http://203.0.113.15/secure-login-portal/auth.php?account_id=98214&kyc=required",
-    type: "Credential Extraction Trap",
-    severity: "critical",
+    type: "Credential Trap",
   },
   {
     label: "India Post Parcel Phish",
     url: "http://indiapost-parcel-tracking.xyz/address/update",
-    type: "Courier Impersonation",
-    severity: "high",
+    type: "Courier Phish",
   },
   {
-    label: "Legitimate State Bank Portal",
+    label: "Legitimate Bank Portal",
     url: "https://www.onlinesbi.sbi/portal/index.html",
-    type: "Verified Corporate Banking",
-    severity: "clean",
+    type: "Legitimate",
   },
 ];
 
 export default function UrlAnalysisPage() {
-  const [url, setUrl] = useState(URL_PRESETS[0].url);
+  const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
 
-  const executeScan = async (targetUrl?: string) => {
-    const candidate = targetUrl || url;
-    const trimmed = candidate.trim();
-    if (!trimmed) {
-      setError("Please provide a target URL or domain to inspect.");
-      return;
-    }
-
-    if (trimmed.length < 4) {
-      setError("URL string is too short to extract lexical features.");
-      return;
-    }
-
-    // Ensure scheme is present for parsing
-    let normalized = trimmed;
-    if (!normalized.startsWith("http://") && !normalized.startsWith("https://")) {
-      normalized = "http://" + normalized;
-    }
-
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await scanUrl(normalized);
-      setResult(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to inspect URL.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleScan = () => executeScan();
-
-  // Initial scan on mount
   useEffect(() => {
-    executeScan(URL_PRESETS[0].url);
+    try {
+      const shared = sessionStorage.getItem("trustlens_shared_url");
+      if (shared) {
+        sessionStorage.removeItem("trustlens_shared_url");
+        setUrl(shared);
+      }
+    } catch {
+      // Ignore storage errors.
+    }
   }, []);
+
+  const executeScan = useCallback(
+    async (targetUrl?: string) => {
+      const candidate = targetUrl !== undefined ? targetUrl : url;
+      const trimmed = candidate.trim();
+      if (!trimmed) {
+        setError("Please provide a target URL or domain to inspect.");
+        return;
+      }
+      if (trimmed.length < 4 || /\s/.test(trimmed)) {
+        setError("Enter a valid URL without spaces (minimum 4 characters).");
+        return;
+      }
+
+      let normalized = trimmed;
+      if (!/^https?:\/\//i.test(normalized)) {
+        normalized = `http://${normalized}`;
+      }
+
+      try {
+        new URL(normalized);
+      } catch {
+        setError("Malformed URL syntax. Please check the address and try again.");
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await scanUrl(normalized);
+        setResult(data);
+      } catch (err: any) {
+        setError(err?.message || "Failed to inspect URL.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [url]
+  );
 
   const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText();
       if (text) setUrl(text.trim());
     } catch {
-      // Clipboard access denied
+      setError("Clipboard access was blocked by the browser. Paste manually with Ctrl+V.");
     }
   };
 
@@ -122,65 +125,62 @@ export default function UrlAnalysisPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Zero-Hop Offline Phishing URL Inspection"
-        description="Safe, lexical URL decomposition without web crawler visits, DNS lookups, or script execution using Model 2 (XGBoost)."
-        badge={{ text: "Model 2 Active (ROC-AUC 1.000)", variant: "green" }}
+        title="URL Shield"
+        description="Zero-hop offline phishing inspection using 16 lexical & structural features with SHAP explanations. Submitted URLs are treated as untrusted text and never visited."
+        badge={{ text: "Model 2: Zero-Hop XGBoost", variant: "green" }}
       />
 
       <AnalyzeModeTabs />
 
-      {/* Mandatory Security Alerts */}
+      {/* Safety & Model Limitations Banners */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Banner 1: Zero-Hop Rule */}
-        <div className="p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-start space-x-3 text-xs text-emerald-800">
-          <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+        <div className="cyber-panel p-4 border-[#00D68F]/40 flex items-start space-x-3 text-xs text-[#A1A1AA]">
+          <ShieldCheck className="w-5 h-5 text-[#00D68F] shrink-0 mt-0.5" />
           <div className="leading-relaxed">
-            <strong className="block font-semibold">100% Zero-Hop Lexical Inspection</strong>
-            TRUSTLENS AI decomposes URLs purely through offline structural and entropy analysis. Target servers are <strong>never visited, pinged, or resolved</strong>.
+            <strong className="block font-mono uppercase text-white mb-0.5">
+              Zero-Hop Untrusted Input Policy
+            </strong>
+            TRUSTLENS AI never visits, resolves, or executes submitted URLs. All
+            analysis is performed purely offline on lexical and structural tokens.
           </div>
         </div>
 
-        {/* Banner 2: Fallback Caution Rule */}
-        <div className="p-3.5 bg-amber-50 rounded-xl border border-amber-200 flex items-start space-x-3 text-xs text-amber-800">
-          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+        <div className="cyber-panel p-4 border-[#FFB020]/40 flex items-start space-x-3 text-xs text-[#A1A1AA]">
+          <AlertTriangle className="w-5 h-5 text-[#FFB020] shrink-0 mt-0.5" />
           <div className="leading-relaxed">
-            <strong className="block font-semibold">Heuristic Verification Rule</strong>
-            Never classify a newly submitted URL as safe solely because it has no prior threat-intelligence record or public blocklist match.
+            <strong className="block font-mono uppercase text-white mb-0.5">
+              Model Limitations &amp; Uncertainty
+            </strong>
+            Lexical inspection cannot verify live TLS certificates, DNS age, or
+            compromised legitimate hosts, and may flag long SaaS/CDN paths as
+            elevated risk. Treat results as decision support, not absolute proof.
           </div>
         </div>
       </div>
 
-      {/* Input Workbench Card */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-subtle p-6 space-y-5">
-        {/* Preset Selector */}
+      {/* URL Input Workbench */}
+      <div className="cyber-panel p-5 sm:p-6 space-y-5">
         <div>
-          <span className="text-[11px] font-mono uppercase text-slate-500 font-semibold tracking-wider block mb-2">
-            Preset URL Test Benchmarks
+          <span className="text-[11px] font-mono uppercase text-[#A1A1AA] font-semibold tracking-wider block mb-2.5">
+            Sample URLs (Inert Test Strings)
           </span>
           <div className="flex flex-wrap gap-2">
             {URL_PRESETS.map((preset, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={() => {
                   setUrl(preset.url);
                   setError(null);
                   executeScan(preset.url);
                 }}
-                className={`text-xs px-3 py-1.5 rounded-lg border font-mono transition-colors text-left flex items-center space-x-2 ${
+                className={`text-xs px-3 py-1.5 rounded-lg border font-mono transition-colors flex items-center space-x-2 ${
                   url === preset.url
-                    ? "bg-cyan-50 border-cyan-400 text-cyan-800 font-semibold"
-                    : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
+                    ? "bg-[#FF174F]/15 border-[#FF174F] text-white font-semibold"
+                    : "bg-[#050306] border-[#481326] text-[#A1A1AA] hover:border-[#FF174F]/60 hover:text-white"
                 }`}
               >
-                <span
-                  className={`text-[9px] px-1.5 py-0.2 rounded font-semibold uppercase ${
-                    preset.severity === "critical"
-                      ? "bg-rose-100 text-rose-700"
-                      : preset.severity === "high"
-                      ? "bg-amber-100 text-amber-700"
-                      : "bg-emerald-100 text-emerald-700"
-                  }`}
-                >
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#170A12] border border-[#481326] text-[#FF3D70]">
                   {preset.type}
                 </span>
                 <span>{preset.label}</span>
@@ -189,18 +189,16 @@ export default function UrlAnalysisPage() {
           </div>
         </div>
 
-        {/* URL Target Input */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-semibold text-slate-700">
-              Suspicious Target URL or Domain String
+            <label htmlFor="url-input" className="text-[11px] font-mono uppercase text-[#A1A1AA]">
+              Target URL String (Never Auto-Opened)
             </label>
-            <div className="flex items-center space-x-3 text-[11px] font-mono text-slate-400">
+            <div className="flex items-center space-x-3 text-[11px] font-mono text-[#A1A1AA]">
               <button
                 type="button"
                 onClick={handlePaste}
-                className="hover:text-cyan-600 flex items-center space-x-1 transition-colors"
-                title="Paste from clipboard"
+                className="hover:text-[#FF3D70] flex items-center space-x-1 transition-colors"
               >
                 <ClipboardPaste className="w-3.5 h-3.5" />
                 <span>Paste</span>
@@ -209,8 +207,7 @@ export default function UrlAnalysisPage() {
               <button
                 type="button"
                 onClick={handleClear}
-                className="hover:text-rose-600 flex items-center space-x-1 transition-colors"
-                title="Clear input"
+                className="hover:text-[#FF174F] flex items-center space-x-1 transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Clear</span>
@@ -219,59 +216,55 @@ export default function UrlAnalysisPage() {
           </div>
 
           <div className="relative">
-            <Globe className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5 pointer-events-none" />
+            <LinkIcon className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA]" />
             <input
+              id="url-input"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="e.g. http://192.168.1.50/sbi-kyc/update.php"
-              className="w-full text-xs font-mono pl-10 pr-4 py-3 rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500 shadow-inner"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  executeScan();
+                }
+              }}
+              placeholder="Paste suspicious URL e.g. http://192.168.1.50/sbi-kyc/update.php"
+              className="cyber-input pl-10 font-mono"
             />
           </div>
         </div>
 
-        {/* Feature Preview Badges */}
-        <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex flex-wrap items-center gap-3 text-[11px] font-mono text-slate-600">
-          <span className="font-semibold text-slate-800">Model 2 Structural Extraction:</span>
-          <span>• Shannon Entropy</span>
-          <span>• Direct IPv4 / IPv6</span>
-          <span>• Subdomain Depth</span>
-          <span>• Script Extension Flag</span>
-          <span>• Numeric Character Ratio</span>
-          <span className="text-emerald-600 font-bold ml-auto">✓ High-Throughput Offline</span>
-        </div>
-
-        {/* Action Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-slate-100">
-          <div className="text-[11px] font-mono text-slate-500 flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
-            <span>Classifier: XGBoost (29 Extracted Features + TreeSHAP Explainer)</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#481326]/70">
+          <div className="text-[11px] font-mono text-[#A1A1AA] flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-[#00D68F] shrink-0" />
+            <span>Engine: XGBoost 16-Feature Lexical Classifier + SHAP TreeExplainer</span>
           </div>
 
-          <button
-            onClick={handleScan}
+          <GlowButton
+            type="button"
+            variant="primary"
+            onClick={() => executeScan()}
             disabled={loading}
-            className="flex items-center justify-center space-x-2 px-6 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-all disabled:opacity-50"
           >
             {loading ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Decomposing Lexical Features...</span>
+                <span>INSPECTING URL...</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-4 h-4" />
-                <span>Execute Zero-Hop URL Scan</span>
+                <span>Inspect URL</span>
               </>
             )}
-          </button>
+          </GlowButton>
         </div>
       </div>
 
       {/* Error State */}
-      {error && <ErrorState message={error} onRetry={handleScan} />}
+      {error && <ErrorState message={error} onRetry={() => executeScan()} />}
 
-      {/* Analysis Result Panel */}
+      {/* Real ML Inference Result */}
       {result && <AnalysisResultPanel result={result} />}
     </div>
   );

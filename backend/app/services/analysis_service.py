@@ -296,10 +296,15 @@ class ThreatAnalysisService:
         role: str = "user",
         threat_level: Optional[str] = None,
         channel: Optional[str] = None,
+        search: Optional[str] = None,
+        sort_by: str = "created_at",
+        sort_order: str = "desc",
         page: int = 1,
         page_size: int = 20,
     ) -> Dict[str, Any]:
-        """Retrieves paginated scan history from MongoDB."""
+        """Retrieves paginated, sorted, and filtered scan history from MongoDB."""
+        import re
+
         analyses_coll = get_analyses_collection()
         query: Dict[str, Any] = {}
 
@@ -311,11 +316,28 @@ class ThreatAnalysisService:
             query["threat_level"] = threat_level
         if channel:
             query["input_payload.channel"] = channel
+        if search and search.strip():
+            safe_pat = re.escape(search.strip())
+            query["$or"] = [
+                {"analysis_id": {"$regex": safe_pat, "$options": "i"}},
+                {"analysis_type": {"$regex": safe_pat, "$options": "i"}},
+                {"threat_level": {"$regex": safe_pat, "$options": "i"}},
+                {"input_payload.channel": {"$regex": safe_pat, "$options": "i"}},
+            ]
+
+        allowed_sorts = {"created_at", "risk_score", "threat_level", "analysis_type"}
+        sort_field = sort_by if sort_by in allowed_sorts else "created_at"
+        sort_dir = 1 if sort_order.lower() == "asc" else -1
 
         skip = (page - 1) * page_size
         total_count = await analyses_coll.count_documents(query)
 
-        cursor = analyses_coll.find(query).sort("created_at", -1).skip(skip).limit(page_size)
+        cursor = (
+            analyses_coll.find(query)
+            .sort(sort_field, sort_dir)
+            .skip(skip)
+            .limit(page_size)
+        )
         items = await cursor.to_list(length=page_size)
 
         # Remove internal MongoDB _id from returned items
@@ -348,6 +370,41 @@ class ThreatAnalysisService:
         if doc:
             doc.pop("_id", None)
         return doc
+
+    async def delete_analysis_by_id(
+        self,
+        analysis_id: str,
+        user_id: str,
+        role: str = "user",
+    ) -> Dict[str, Any]:
+        """Deletes an analysis record if owned by user_id or caller is admin."""
+        from fastapi import HTTPException, status
+
+        analyses_coll = get_analyses_collection()
+        audit_coll = get_audit_collection()
+
+        doc = await analyses_coll.find_one({"analysis_id": analysis_id})
+        if not doc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Analysis '{analysis_id}' not found.",
+            )
+        if doc.get("user_id") != user_id and role != "admin":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have permission to delete this analysis record.",
+            )
+
+        await analyses_coll.delete_one({"analysis_id": analysis_id})
+        await audit_coll.insert_one({
+            "audit_id": f"aud-{uuid.uuid4().hex[:10]}",
+            "user_id": user_id,
+            "action": "analysis_deleted",
+            "resource_type": "analysis",
+            "resource_id": analysis_id,
+            "timestamp": datetime.now(timezone.utc),
+        })
+        return {"deleted": True, "analysis_id": analysis_id}
 
 
 analysis_service = ThreatAnalysisService()

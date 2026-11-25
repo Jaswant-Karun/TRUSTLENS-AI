@@ -26,6 +26,15 @@ import {
 } from "@/lib/api";
 import { NeonFrame } from "@/components/product/NeonFrame";
 import { GlowButton } from "@/components/product/GlowButton";
+import { Capacitor } from "@capacitor/core";
+import {
+  PermissionRationaleModal,
+  SensitivePermissionKind,
+} from "@/components/android/PermissionRationaleModal";
+import {
+  registerAndroidPushNotifications,
+  shareSanitizedSummary,
+} from "@/lib/androidCapabilities";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -45,6 +54,8 @@ export default function ProfilePage() {
   const [threatAlertsOptIn, setThreatAlertsOptIn] = useState(false);
   const [emailNotifications, setEmailNotifications] = useState(false);
   const [inAppNotifications, setInAppNotifications] = useState(true);
+  const [pushRationale, setPushRationale] = useState<SensitivePermissionKind | null>(null);
+  const [pushStatus, setPushStatus] = useState<string | null>(null);
 
   useEffect(() => {
     const token = getStoredToken();
@@ -302,7 +313,45 @@ export default function ProfilePage() {
                 />
                 <span>Consented emerging scam campaign advisories</span>
               </label>
+
+              {Capacitor.isNativePlatform() && (
+                <div className="pt-2 border-t border-[#481326]/60 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPushRationale("notifications")}
+                    className="rounded-lg border border-[#FF174F]/60 bg-[#FF174F]/15 px-3 py-1.5 font-mono text-[11px] font-semibold text-white hover:bg-[#FF174F]/25"
+                  >
+                    Enable Android Push Notifications
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      void shareSanitizedSummary({
+                        title: "TRUSTLENS AI",
+                        text: "Inspect suspicious SMS, URLs, and screenshots with TRUSTLENS AI.",
+                        url: "https://trustlens.vercel.app/methodology",
+                      })
+                    }
+                    className="rounded-lg border border-[#481326] bg-[#10070D] px-3 py-1.5 font-mono text-[11px] text-[#A1A1AA] hover:text-white"
+                  >
+                    Share TRUSTLENS AI
+                  </button>
+                  {pushStatus && (
+                    <span className="text-[11px] font-mono text-[#00D68F]">{pushStatus}</span>
+                  )}
+                </div>
+              )}
             </div>
+
+            <PermissionRationaleModal
+              kind={pushRationale}
+              onConfirm={async () => {
+                setPushRationale(null);
+                const res = await registerAndroidPushNotifications();
+                setPushStatus(res.message);
+              }}
+              onCancel={() => setPushRationale(null)}
+            />
 
             <div className="flex justify-end">
               <GlowButton type="submit" variant="primary" size="sm" disabled={saving}>

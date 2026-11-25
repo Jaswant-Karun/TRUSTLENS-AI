@@ -223,14 +223,25 @@ class AuthenticationService:
     async def authenticate_user(
         self, email: str, password: str, client_ip: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Verifies credentials and returns JWT bearer token."""
+        """Verifies credentials with brute-force lockout and anti-enumeration protection."""
+        from backend.app.services.abuse_service import abuse_service
+
         users_coll = get_users_collection()
         audit_coll = get_audit_collection()
 
         norm_email = email.lower().strip()
+        rem_lock = abuse_service.is_locked_out(norm_email, client_ip)
+        if rem_lock is not None:
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Too many failed login attempts. Please try again later.",
+                headers={"Retry-After": str(rem_lock)},
+            )
+
         user = await users_coll.find_one({"email": norm_email})
 
         if not user or not verify_password(password, user.get("hashed_password", "")):
+            await abuse_service.record_login_failure(norm_email, client_ip)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect email or password.",
@@ -242,6 +253,8 @@ class AuthenticationService:
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Account is inactive or suspended. Contact security administrator.",
             )
+
+        abuse_service.clear_login_failures(norm_email, client_ip)
 
         now = datetime.now(timezone.utc)
         await users_coll.update_one(

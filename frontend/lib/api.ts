@@ -4,6 +4,13 @@
  * Never fabricates synthetic statistics; handles loading and error states cleanly.
  */
 
+import {
+  clearStoredTokenSecure,
+  getStoredTokenSync,
+  initAuthStorage,
+  setStoredTokenSecure,
+} from "./secureStorage";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 export interface SystemHealth {
@@ -227,26 +234,23 @@ export interface UserProfile {
   last_login?: string | null;
 }
 
-/** Token Management */
+/** Token Management (Android Keystore EncryptedSharedPreferences on native, localStorage on web) */
+export { initAuthStorage };
+
 export function getStoredToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("trustlens_token");
+  return getStoredTokenSync();
 }
 
 export function setStoredToken(token: string): void {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("trustlens_token", token);
-  }
+  setStoredTokenSecure(token);
 }
 
 export function clearStoredToken(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("trustlens_token");
-  }
+  clearStoredTokenSecure();
 }
 
 /** Helper for resilient fetch */
-async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
+export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const token = getStoredToken();
   const headers: Record<string, string> = {
     Accept: "application/json",
@@ -308,9 +312,32 @@ export async function getExperiments(): Promise<any> {
   return apiFetch<any>("/models/experiments");
 }
 
+/** Get live production ML monitoring snapshot */
+export async function getModelMonitoring(): Promise<any> {
+  return apiFetch<any>("/models/monitoring");
+}
+
+/** Submit FP/FN feedback (stored as pending_review) */
+export async function submitModelFeedback(payload: {
+  analysis_id: string;
+  feedback_type: "false_positive" | "false_negative";
+  suggested_label: string;
+  comment?: string;
+}): Promise<any> {
+  return apiFetch<any>("/models/feedback", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 /** List real HDBSCAN campaign clusters */
 export async function getCampaigns(limit = 20): Promise<CampaignSummary[]> {
   return apiFetch<CampaignSummary[]>(`/campaigns?limit=${limit}`);
+}
+
+/** Get threat intelligence synchronization status and per-source health */
+export async function getThreatIntelStatus(limit = 20): Promise<any> {
+  return apiFetch<any>(`/threat-intel/status?limit=${limit}`);
 }
 
 /** Get single campaign dossier */
@@ -388,14 +415,30 @@ export async function getAnalysesHistory(params?: {
   page_size?: number;
   threat_level?: string;
   channel?: string;
+  search?: string;
+  sort_by?: string;
+  sort_order?: string;
 }): Promise<PaginatedAnalyses> {
   const query = new URLSearchParams();
   if (params?.page) query.set("page", params.page.toString());
   if (params?.page_size) query.set("page_size", params.page_size.toString());
   if (params?.threat_level) query.set("threat_level", params.threat_level);
   if (params?.channel) query.set("channel", params.channel);
+  if (params?.search) query.set("search", params.search);
+  if (params?.sort_by) query.set("sort_by", params.sort_by);
+  if (params?.sort_order) query.set("sort_order", params.sort_order);
 
   return apiFetch<PaginatedAnalyses>(`/analyses?${query.toString()}`);
+}
+
+export async function getAnalysisDetail(analysisId: string): Promise<any> {
+  return apiFetch(`/analyses/${encodeURIComponent(analysisId)}`);
+}
+
+export async function deleteAnalysis(analysisId: string): Promise<{ deleted: boolean; analysis_id: string }> {
+  return apiFetch(`/analyses/${encodeURIComponent(analysisId)}`, {
+    method: "DELETE",
+  });
 }
 
 /** Community Reports */
@@ -568,6 +611,7 @@ export interface InvestigationSummaryItem {
   description?: string;
   status: string;
   severity?: string;
+  visibility?: string;
   created_at: string;
   updated_at: string;
   objects_count: number;
@@ -658,6 +702,7 @@ export async function createInvestigation(payload: {
   title: string;
   description?: string;
   severity?: string;
+  visibility?: string;
   tags?: string[];
 }): Promise<InvestigationDetailResponse> {
   return apiFetch<InvestigationDetailResponse>("/investigations", {
@@ -836,6 +881,20 @@ export async function deleteInvestigationNote(investigationId: string, noteId: s
   await apiFetch(`/investigations/${encodeURIComponent(investigationId)}/notes/${encodeURIComponent(noteId)}`, {
     method: "DELETE",
   });
+}
+
+export async function attachAnalysisToInvestigation(
+  investigationId: string,
+  analysisId: string
+): Promise<InvestigationDetailResponse> {
+  return apiFetch<InvestigationDetailResponse>(
+    `/investigations/${encodeURIComponent(investigationId)}/attach-analysis`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ analysis_id: analysisId }),
+    }
+  );
 }
 
 

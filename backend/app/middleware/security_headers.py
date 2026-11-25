@@ -15,5 +15,8 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+        if not request.url.path.startswith(("/docs", "/redoc")):
+            response.headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'"
         return response
 

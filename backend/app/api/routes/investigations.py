@@ -90,13 +90,24 @@ async def get_investigation(
 @router.get("/{investigation_id}/graph", response_model=InvestigationGraphResponse)
 async def get_investigation_graph(
     investigation_id: str,
+    node_type: Optional[str] = Query(None, description="Filter graph nodes by type"),
+    search: Optional[str] = Query(None, description="Search node labels, types, or sources"),
+    min_confidence: Optional[float] = Query(None, ge=0.0, le=1.0, description="Filter edges by minimum confidence"),
+    relationship_type: Optional[str] = Query(None, description="Filter edges by relationship_type"),
     current_user: Optional[Dict[str, Any]] = Depends(get_optional_current_user),
 ):
     """
-    Retrieves all graph nodes, technical properties, and evidence-backed edges for the investigation.
+    Retrieves graph nodes, provenance, and evidence-backed edges with optional filtering & search.
     """
     try:
-        graph = await investigation_service.get_investigation_graph(investigation_id, current_user=current_user)
+        graph = await investigation_service.get_investigation_graph(
+            investigation_id,
+            current_user=current_user,
+            node_type=node_type,
+            search=search,
+            min_confidence=min_confidence,
+            relationship_type=relationship_type,
+        )
     except PermissionError as exc:
         _handle_access_error(exc, current_user)
     if not graph:
@@ -110,13 +121,22 @@ async def get_investigation_graph(
 @router.get("/{investigation_id}/timeline", response_model=InvestigationTimelineResponse)
 async def get_investigation_timeline(
     investigation_id: str,
+    page: int = Query(1, ge=1, description="Timeline page number"),
+    page_size: int = Query(100, ge=1, le=200, description="Events per page"),
+    order: str = Query("asc", pattern="^(asc|desc)$", description="Chronological sort order: asc | desc"),
     current_user: Optional[Dict[str, Any]] = Depends(get_optional_current_user),
 ):
     """
     Retrieves chronological multi-track timeline events for the investigation.
     """
     try:
-        timeline = await investigation_service.get_investigation_timeline(investigation_id, current_user=current_user)
+        timeline = await investigation_service.get_investigation_timeline(
+            investigation_id,
+            current_user=current_user,
+            page=page,
+            page_size=page_size,
+            order=order,
+        )
     except PermissionError as exc:
         _handle_access_error(exc, current_user)
     if not timeline:
@@ -125,6 +145,31 @@ async def get_investigation_timeline(
             detail=f"Investigation timeline for ID '{investigation_id}' was not found.",
         )
     return timeline
+
+
+@router.get("/{investigation_id}/audit", response_model=Dict[str, Any])
+async def get_investigation_audit(
+    investigation_id: str,
+    page: int = Query(1, ge=1),
+    page_size: int = Query(50, ge=1, le=100),
+    current_user: Optional[Dict[str, Any]] = Depends(get_optional_current_user),
+):
+    """Retrieves verified audit_logs entries for the investigation."""
+    try:
+        audit_data = await investigation_service.get_investigation_audit_history(
+            investigation_id,
+            current_user=current_user,
+            page=page,
+            page_size=page_size,
+        )
+    except PermissionError as exc:
+        _handle_access_error(exc, current_user)
+    if not audit_data:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Investigation '{investigation_id}' was not found.",
+        )
+    return audit_data
 
 
 @router.get("/{investigation_id}/objects/{object_id}", response_model=ObjectDetailResponse)

@@ -1,0 +1,31 @@
+{
+  "run_id": "run-20261125T133840Z-616596",
+  "timestamp_utc": "2026-11-25T13:38:40.999902+00:00",
+  "dataset_verification": {
+    "dataset_version": "2.0.5",
+    "random_seed": 42,
+    "checksums_verified": 12,
+    "leakage_checks": {
+      "text": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      },
+      "urls": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    }
+  },
+  "execute_training": false,
+  "training_scripts_executed": [],
+  "tracked_experiments": 11,
+  "active_production_models": {
+    "trustlens-text-v2.1-candidate": "2.1.0-candidate",
+    "trustlens-url-v2.2-candidate": "2.2.0-candidate",
+    "trustlens-tactics-v2.3-candidate": "2.3.0-candidate",
+    "trustlens-campaign-v2.4-candidate": "2.4.0-candidate"
+  },
+  "auto_promotion_blocked": true
+}

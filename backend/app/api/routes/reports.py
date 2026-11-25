@@ -43,18 +43,20 @@ async def submit_scam_report(
         evidence_urls=payload.evidence_urls,
         reporter_user_id=user_id,
         client_ip=client_ip,
+        redact_sensitive_content=payload.redact_sensitive_content,
+        allow_public_listing=payload.allow_public_listing,
     )
 
 
 @router.get("", response_model=PaginatedResponse)
 async def list_reports(
-    status: Optional[str] = Query(None, description="pending | under_review | verified_scam | benign"),
-    target_type: Optional[str] = Query(None, description="sms | whatsapp | url | call | upi"),
+    status: Optional[str] = Query(None, description="pending | reviewed | confirmed | rejected | verified_scam | benign"),
+    target_type: Optional[str] = Query(None, description="sms | whatsapp | url | call | upi | email | message | fraud"),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
 ):
     """
-    Retrieves paginated community threat submissions.
+    Retrieves paginated community threat submissions (reporter identity redacted).
     """
     return await report_service.list_reports(
         status_filter=status,
@@ -62,6 +64,16 @@ async def list_reports(
         page=page,
         page_size=page_size,
     )
+
+
+@router.get("/verified-training-candidates", response_model=Dict[str, Any])
+async def get_verified_training_candidates(
+    limit: int = Query(100, ge=1, le=500),
+    reviewer: Dict[str, Any] = Depends(require_analyst_or_admin),
+):
+    """Returns ONLY analyst-confirmed reports eligible for ML training or trusted intelligence feeds."""
+    items = await report_service.get_verified_training_candidates(limit=limit)
+    return {"total": len(items), "items": items}
 
 
 @router.post("/{report_id}/review", response_model=ReportResponse)

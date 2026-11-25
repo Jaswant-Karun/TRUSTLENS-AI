@@ -20,10 +20,13 @@ async def list_analyses(
     page_size: int = Query(20, ge=1, le=100, description="Items per page"),
     threat_level: Optional[str] = Query(None, description="clean | low | medium | high | critical | inconclusive"),
     channel: Optional[str] = Query(None, description="sms | email | url | screenshot"),
+    search: Optional[str] = Query(None, description="Search by analysis_id, type, or threat_level"),
+    sort_by: str = Query("created_at", description="created_at | risk_score | threat_level | analysis_type"),
+    sort_order: str = Query("desc", description="asc | desc"),
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """
-    Retrieves paginated scan history. Users see own scans; analysts/admins see all scans.
+    Retrieves paginated, sorted, and filtered scan history. Users see own scans; analysts/admins see all scans.
     """
     user_id = current_user["user_id"]
     role = current_user.get("role", "user")
@@ -33,6 +36,9 @@ async def list_analyses(
         role=role,
         threat_level=threat_level,
         channel=channel,
+        search=search,
+        sort_by=sort_by,
+        sort_order=sort_order,
         page=page,
         page_size=page_size,
     )
@@ -60,4 +66,17 @@ async def get_analysis(
             detail=f"Analysis with ID '{analysis_id}' was not found.",
         )
     return doc
+
+
+@router.delete("/{analysis_id}", response_model=Dict[str, Any])
+async def delete_analysis(
+    analysis_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Deletes an analysis record owned by the authenticated user (or admin)."""
+    return await threat_analysis_service.delete_analysis_by_id(
+        analysis_id=analysis_id,
+        user_id=current_user["user_id"],
+        role=current_user.get("role", "user"),
+    )
 

@@ -1,0 +1,5 @@
+{
+  "/src/main/assets/public/icon.svg/route": "app/src/main/assets/public/icon.svg/route.js",
+  "/build/intermediates/assets/release/mergeReleaseAssets/public/icon.svg/route": "app/build/intermediates/assets/release/mergeReleaseAssets/public/icon.svg/route.js",
+  "/build/intermediates/assets/debug/mergeDebugAssets/public/icon.svg/route": "app/build/intermediates/assets/debug/mergeDebugAssets/public/icon.svg/route.js"
+}

@@ -1,0 +1,239 @@
+{
+  "tracker_version": "2.5.0",
+  "generated_at_utc": "2026-11-25T05:49:35.957516+00:00",
+  "total_experiments": 11,
+  "experiments": [
+    {
+      "experiment_id": "exp-2.1-word_tfidf_logreg",
+      "task": "text_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 68716,
+        "val": 8589,
+        "test": 8590
+      },
+      "dataset_hash_test": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "model_configuration": "Word TF-IDF (1-2) + Logistic Regression",
+      "training_duration_sec": 11.43,
+      "evaluation_metrics": {
+        "accuracy": 0.9601,
+        "macro_f1": 0.9394,
+        "weighted_f1": 0.9603,
+        "roc_auc_ovr_macro": 0.9929,
+        "threat_fpr": 0.0354,
+        "threat_fnr": 0.0263
+      },
+      "artifact_location": "ml/artifacts/text_detection/v2.1_candidate/word_tfidf_logreg_model.joblib"
+    },
+    {
+      "experiment_id": "exp-2.1-char_tfidf_logreg",
+      "task": "text_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 68716,
+        "val": 8589,
+        "test": 8590
+      },
+      "dataset_hash_test": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "model_configuration": "Char_wb TF-IDF (3-5) + Logistic Regression",
+      "training_duration_sec": 29.78,
+      "evaluation_metrics": {
+        "accuracy": 0.9683,
+        "macro_f1": 0.951,
+        "weighted_f1": 0.9685,
+        "roc_auc_ovr_macro": 0.9958,
+        "threat_fpr": 0.0292,
+        "threat_fnr": 0.0209
+      },
+      "artifact_location": "ml/artifacts/text_detection/v2.1_candidate/char_tfidf_logreg_model.joblib"
+    },
+    {
+      "experiment_id": "exp-2.1-union_tfidf_linearsvc",
+      "task": "text_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 68716,
+        "val": 8589,
+        "test": 8590
+      },
+      "dataset_hash_test": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "model_configuration": "Word+Char FeatureUnion TF-IDF + Calibrated LinearSVC",
+      "training_duration_sec": 62.14,
+      "evaluation_metrics": {
+        "accuracy": 0.9783,
+        "macro_f1": 0.9629,
+        "weighted_f1": 0.9783,
+        "roc_auc_ovr_macro": 0.9974,
+        "threat_fpr": 0.0139,
+        "threat_fnr": 0.0221
+      },
+      "artifact_location": "ml/artifacts/text_detection/v2.1_candidate/union_tfidf_linearsvc_model.joblib"
+    },
+    {
+      "experiment_id": "exp-2.2-logistic_regression",
+      "task": "url_phishing_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 72051,
+        "val": 14410,
+        "test": 14411
+      },
+      "dataset_hash_test": "17a54068ffd3eed7c4e765ba84b84f97f23f6bfefe43f572d759cbfba4578179",
+      "model_configuration": "Logistic Regression (Scaled, Balanced)",
+      "training_duration_sec": 0.18,
+      "evaluation_metrics": {
+        "accuracy": 0.9966,
+        "macro_f1": 0.9964,
+        "roc_auc": 0.9997,
+        "pr_auc": 0.9999,
+        "fpr": 0.0013,
+        "fnr": 0.0046
+      },
+      "artifact_location": "ml/artifacts/url_detection/v2.2_candidate/logistic_regression.joblib"
+    },
+    {
+      "experiment_id": "exp-2.2-random_forest",
+      "task": "url_phishing_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 72051,
+        "val": 14410,
+        "test": 14411
+      },
+      "dataset_hash_test": "17a54068ffd3eed7c4e765ba84b84f97f23f6bfefe43f572d759cbfba4578179",
+      "model_configuration": "Random Forest Classifier (100 Trees, Balanced)",
+      "training_duration_sec": 0.66,
+      "evaluation_metrics": {
+        "accuracy": 0.997,
+        "macro_f1": 0.9968,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "fpr": 0.0081,
+        "fnr": 0.0
+      },
+      "artifact_location": "ml/artifacts/url_detection/v2.2_candidate/random_forest.joblib"
+    },
+    {
+      "experiment_id": "exp-2.2-xgboost_model",
+      "task": "url_phishing_classification",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 72051,
+        "val": 14410,
+        "test": 14411
+      },
+      "dataset_hash_test": "17a54068ffd3eed7c4e765ba84b84f97f23f6bfefe43f572d759cbfba4578179",
+      "model_configuration": "XGBoost Classifier (GBDT)",
+      "training_duration_sec": 0.82,
+      "evaluation_metrics": {
+        "accuracy": 0.999,
+        "macro_f1": 0.9989,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "fpr": 0.0028,
+        "fnr": 0.0
+      },
+      "artifact_location": "ml/artifacts/url_detection/v2.2_candidate/xgboost_model.joblib"
+    },
+    {
+      "experiment_id": "exp-2.3-ovr_logreg",
+      "task": "multilabel_tactic_detection",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 68552,
+        "val": 8565,
+        "test": 8563
+      },
+      "dataset_hash_test": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "model_configuration": "One-vs-Rest Logistic Regression (Balanced)",
+      "training_duration_sec": 12.56,
+      "evaluation_metrics": {
+        "micro_f1": 0.9403,
+        "macro_f1": 0.9386,
+        "hamming_loss": 0.0041
+      },
+      "artifact_location": "ml/artifacts/tactic_detection/v2.3_candidate/ovr_logreg.joblib"
+    },
+    {
+      "experiment_id": "exp-2.3-ovr_linearsvc",
+      "task": "multilabel_tactic_detection",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train": 68552,
+        "val": 8565,
+        "test": 8563
+      },
+      "dataset_hash_test": "c0ff0931914b607cc644027aa998b692ca4cc406ca19b89304b14dca857a60d3",
+      "model_configuration": "One-vs-Rest Calibrated LinearSVC (Balanced)",
+      "training_duration_sec": 50.34,
+      "evaluation_metrics": {
+        "micro_f1": 0.9566,
+        "macro_f1": 0.9521,
+        "hamming_loss": 0.003
+      },
+      "artifact_location": "ml/artifacts/tactic_detection/v2.3_candidate/ovr_linearsvc.joblib"
+    },
+    {
+      "experiment_id": "exp-2.4-hdbscan-mcs20",
+      "task": "unsupervised_campaign_clustering",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train_threat_subset": 5488
+      },
+      "dataset_hash_train": "10c700ddca59bd0381b725ff8e13b971a369f73d5f387881f849c7fd550971d3",
+      "model_configuration": "paraphrase-multilingual-MiniLM-L12-v2 + HDBSCAN(mcs=20)",
+      "evaluation_metrics": {
+        "clusters": 53,
+        "noise_ratio": 0.5545,
+        "silhouette_score": 0.3485,
+        "davies_bouldin": 1.3768
+      },
+      "artifact_location": "ml/artifacts/campaign_detection/v2.4_candidate/cluster_artifacts.joblib"
+    },
+    {
+      "experiment_id": "exp-2.4-hdbscan-mcs25",
+      "task": "unsupervised_campaign_clustering",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train_threat_subset": 5488
+      },
+      "dataset_hash_train": "10c700ddca59bd0381b725ff8e13b971a369f73d5f387881f849c7fd550971d3",
+      "model_configuration": "paraphrase-multilingual-MiniLM-L12-v2 + HDBSCAN(mcs=25)",
+      "evaluation_metrics": {
+        "clusters": 43,
+        "noise_ratio": 0.5503,
+        "silhouette_score": 0.3163,
+        "davies_bouldin": 1.3828
+      },
+      "artifact_location": "ml/artifacts/campaign_detection/v2.4_candidate/cluster_artifacts.joblib"
+    },
+    {
+      "experiment_id": "exp-2.4-hdbscan-mcs35",
+      "task": "unsupervised_campaign_clustering",
+      "dataset_version": "2.0.5",
+      "random_seed": 42,
+      "splits": {
+        "train_threat_subset": 5488
+      },
+      "dataset_hash_train": "10c700ddca59bd0381b725ff8e13b971a369f73d5f387881f849c7fd550971d3",
+      "model_configuration": "paraphrase-multilingual-MiniLM-L12-v2 + HDBSCAN(mcs=35)",
+      "evaluation_metrics": {
+        "clusters": 34,
+        "noise_ratio": 0.5681,
+        "silhouette_score": 0.2843,
+        "davies_bouldin": 1.489
+      },
+      "artifact_location": "ml/artifacts/campaign_detection/v2.4_candidate/cluster_artifacts.joblib"
+    }
+  ]
+}

@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 
 from backend.app.core.logging import logger
+from backend.app.ml_engine.model_loader import CentralModelLoader
 
 # Import actual trained ML components
 try:
@@ -44,6 +45,8 @@ class ProductionMLEngine:
 
     def __init__(self):
         logger.info("Initializing Production ML Engine...")
+        self.loader = CentralModelLoader()
+        self.loader.verify_registry_artifacts()
         self.text_classifier = None
         self.url_detector = None
         self.tactic_detector = None
@@ -54,25 +57,25 @@ class ProductionMLEngine:
 
     def _init_models(self):
         try:
-            if MultilingualScamClassifier:
+            if MultilingualScamClassifier and self.loader.is_task_approved_and_verified("text_classification"):
                 self.text_classifier = MultilingualScamClassifier()
         except Exception as e:
             logger.warning(f"Model 1 (Text Scam) failed to initialize: {e}")
 
         try:
-            if PhishingURLDetector:
+            if PhishingURLDetector and self.loader.is_task_approved_and_verified("url_phishing_classification"):
                 self.url_detector = PhishingURLDetector()
         except Exception as e:
             logger.warning(f"Model 2 (URL Phishing) failed to initialize: {e}")
 
         try:
-            if ScamTacticDetector:
+            if ScamTacticDetector and self.loader.is_task_approved_and_verified("multilabel_tactic_detection"):
                 self.tactic_detector = ScamTacticDetector()
         except Exception as e:
             logger.warning(f"Model 3 (Scam Tactics) failed to initialize: {e}")
 
         try:
-            if CampaignClusterer:
+            if CampaignClusterer and self.loader.is_task_approved_and_verified("unsupervised_campaign_clustering"):
                 self.campaign_clusterer = CampaignClusterer()
         except Exception as e:
             logger.warning(f"Model 4 (Campaign Discovery) failed to initialize: {e}")

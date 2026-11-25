@@ -1,0 +1,246 @@
+{
+  "registry_version": "2.5.0",
+  "models": {
+    "trustlens-text-v2.1-candidate": {
+      "model_id": "trustlens-text-v2.1-candidate",
+      "model_name": "Word+Char FeatureUnion TF-IDF + Calibrated LinearSVC",
+      "version": "2.1.0-candidate",
+      "task": "text_classification",
+      "artifact_path": "ml/artifacts/text_detection/v2.1_candidate/union_tfidf_linearsvc_model.joblib",
+      "artifact_checksum": "46b6f2235ccecc83224b611f8a7f195c2f064acdb10e1d0549f6e15d1df70b8b",
+      "dataset_version": "2.0.5",
+      "training_date": "2026-11-25T05:30:31.250328+00:00",
+      "evaluation_date": "2026-11-25T05:30:31.250328+00:00",
+      "training_configuration": {
+        "random_seed": 42,
+        "classes": {
+          "0": "legitimate",
+          "1": "spam",
+          "2": "smishing",
+          "3": "scam"
+        }
+      },
+      "metrics": {
+        "accuracy": 0.9783,
+        "macro_f1": 0.9629,
+        "weighted_f1": 0.9783,
+        "roc_auc_ovr_macro": 0.9974,
+        "threat_fpr": 0.0139,
+        "threat_fnr": 0.0221,
+        "latency_ms": 0.3166
+      },
+      "supported_languages": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "limitations": "Linear TF-IDF baseline; Tamil and Bengali unsupported (0 samples).",
+      "deployment_status": "Evaluated"
+    },
+    "trustlens-text-v1.0-prod": {
+      "model_id": "trustlens-text-v1.0-prod",
+      "model_name": "FeatureUnion + Calibrated LinearSVC (v1.0)",
+      "version": "1.0.0",
+      "task": "text_classification",
+      "artifact_path": "ml/artifacts/text_detection/best_model.joblib",
+      "artifact_checksum": "85b9f8000d66627772ef0f00ae84b7d4fc768087ca89186ab873e008fa2509eb",
+      "dataset_version": "1.0.0",
+      "training_date": "2026-11-12T23:42:53Z",
+      "evaluation_date": "2026-11-12T23:42:53Z",
+      "training_configuration": {
+        "binary_classification": true
+      },
+      "metrics": {
+        "accuracy": 0.9777,
+        "macro_f1": 0.976,
+        "roc_auc": 0.996
+      },
+      "supported_languages": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "limitations": "Trained on v1.0.0 splits; Hindi threat recall 54.55%.",
+      "deployment_status": "Production"
+    },
+    "trustlens-url-v2.2-candidate": {
+      "model_id": "trustlens-url-v2.2-candidate",
+      "model_name": "XGBoost Classifier (GBDT)",
+      "version": "2.2.0-candidate",
+      "task": "url_phishing_classification",
+      "artifact_path": "ml/artifacts/url_detection/v2.2_candidate/xgboost_model.joblib",
+      "artifact_checksum": "b7ed50c6fe1a3c8aa79bd87c129b8a969cd320a057b111e41ad30be63d52cd3f",
+      "dataset_version": "2.0.5",
+      "training_date": "2026-11-25T05:33:20.970530+00:00",
+      "evaluation_date": "2026-11-25T05:33:20.970530+00:00",
+      "training_configuration": {
+        "random_seed": 42,
+        "feature_count": 16
+      },
+      "metrics": {
+        "accuracy": 0.999,
+        "macro_f1": 0.9989,
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "fpr": 0.0028,
+        "fnr": 0.0,
+        "latency_ms": 0.00261
+      },
+      "supported_languages": [
+        "URL-Agnostic (Lexical/Structural)"
+      ],
+      "limitations": "Zero-hop lexical features alone do not prove malice or safety.",
+      "deployment_status": "Evaluated"
+    },
+    "trustlens-url-v1.0-prod": {
+      "model_id": "trustlens-url-v1.0-prod",
+      "model_name": "XGBoost Classifier (v1.0)",
+      "version": "1.0.0",
+      "task": "url_phishing_classification",
+      "artifact_path": "ml/artifacts/url_detection/best_url_model.joblib",
+      "artifact_checksum": "71fc9267c819cd87ef4172736d223a1b84ba3c0ff2f246d2ad1a72cfc95b9107",
+      "dataset_version": "1.0.0",
+      "training_date": "2026-11-12T23:42:53Z",
+      "evaluation_date": "2026-11-12T23:42:53Z",
+      "training_configuration": {
+        "feature_count": 16
+      },
+      "metrics": {
+        "accuracy": 0.9998,
+        "macro_f1": 0.9998,
+        "roc_auc": 1.0
+      },
+      "supported_languages": [
+        "URL-Agnostic"
+      ],
+      "limitations": "Trained on v1.0.0 ungrouped URL splits.",
+      "deployment_status": "Production"
+    },
+    "trustlens-tactics-v2.3-candidate": {
+      "model_id": "trustlens-tactics-v2.3-candidate",
+      "model_name": "One-vs-Rest Calibrated LinearSVC (Balanced)",
+      "version": "2.3.0-candidate",
+      "task": "multilabel_tactic_detection",
+      "artifact_path": "ml/artifacts/tactic_detection/v2.3_candidate/ovr_linearsvc.joblib",
+      "artifact_checksum": "0216bc8c71504e6afe6eeefabeebc83881bc278969c3264f76ffd231f56ddcd4",
+      "dataset_version": "2.0.5",
+      "training_date": "2026-11-25T05:37:08.558344+00:00",
+      "evaluation_date": "2026-11-25T05:37:08.558344+00:00",
+      "training_configuration": {
+        "random_seed": 42,
+        "supported_labels": 9
+      },
+      "metrics": {
+        "micro_f1": 0.9566,
+        "macro_f1": 0.9521,
+        "hamming_loss": 0.003,
+        "latency_ms": 0.0162
+      },
+      "supported_languages": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "limitations": "9 of 10 tactics supported. 'fake_investment' is Blocked due to missing ground-truth labels.",
+      "deployment_status": "Evaluated"
+    },
+    "trustlens-tactics-v1.0-prod": {
+      "model_id": "trustlens-tactics-v1.0-prod",
+      "model_name": "One-vs-Rest Calibrated LinearSVC (v1.0)",
+      "version": "1.0.0",
+      "task": "multilabel_tactic_detection",
+      "artifact_path": "ml/artifacts/tactic_detection/best_tactic_model.joblib",
+      "artifact_checksum": "cf7b77c766fc4fc40fa5808f44ff1669f424ca4930c63b18f77ed780551554aa",
+      "dataset_version": "1.0.0",
+      "training_date": "2026-11-12T17:43:46Z",
+      "evaluation_date": "2026-11-12T17:43:46Z",
+      "training_configuration": {
+        "supported_labels": 9
+      },
+      "metrics": {
+        "micro_f1": 0.9513,
+        "macro_f1": 0.9313,
+        "hamming_loss": 0.0039
+      },
+      "supported_languages": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "limitations": "9 of 10 tactics supported; fake_investment unavailable.",
+      "deployment_status": "Production"
+    },
+    "trustlens-tactic-fake-investment": {
+      "model_id": "trustlens-tactic-fake-investment",
+      "model_name": "Fake Investment Tactic Classifier",
+      "version": "0.0.0-blocked",
+      "task": "multilabel_tactic_detection",
+      "artifact_path": "NONE",
+      "artifact_checksum": "NONE",
+      "dataset_version": "2.0.5",
+      "training_date": "NOT_TRAINED",
+      "evaluation_date": "NOT_EVALUATED",
+      "training_configuration": {
+        "status": "blocked_pending_human_annotation"
+      },
+      "metrics": {},
+      "supported_languages": [],
+      "limitations": "Blocked: 0 verified training annotations exist.",
+      "deployment_status": "Blocked"
+    },
+    "trustlens-campaign-v2.4-candidate": {
+      "model_id": "trustlens-campaign-v2.4-candidate",
+      "model_name": "Multilingual MiniLM-L12-v2 + HDBSCAN",
+      "version": "2.4.0-candidate",
+      "task": "unsupervised_campaign_clustering",
+      "artifact_path": "ml/artifacts/campaign_detection/v2.4_candidate/cluster_artifacts.joblib",
+      "artifact_checksum": "e98de5f8a03dfbb69530a4d56fa3b43aff7f784dad213e525bd4c1d51803cc49",
+      "dataset_version": "2.0.5",
+      "training_date": "2026-11-25T05:45:00Z",
+      "evaluation_date": "2026-11-25T05:47:00Z",
+      "training_configuration": {
+        "min_cluster_size": 25,
+        "min_samples": 5,
+        "embedding_dim": 384
+      },
+      "metrics": {
+        "clusters_discovered": 43,
+        "noise_ratio": 0.5503,
+        "silhouette_score": 0.3163,
+        "davies_bouldin": 1.3828
+      },
+      "supported_languages": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "limitations": "Unsupervised semantic similarity only; does not confirm shared criminal origin.",
+      "deployment_status": "Evaluated"
+    },
+    "trustlens-campaign-v1.0-prod": {
+      "model_id": "trustlens-campaign-v1.0-prod",
+      "model_name": "MiniLM-L6-v2 + HDBSCAN (v1.0)",
+      "version": "1.0.0",
+      "task": "unsupervised_campaign_clustering",
+      "artifact_path": "ml/artifacts/campaign_detection/cluster_artifacts.joblib",
+      "artifact_checksum": "67813bb12e3b81870d17ad2b90fce97b90af8a2f5ef9f4a4f4dc7ccfec774448",
+      "dataset_version": "1.0.0",
+      "training_date": "2026-11-12T18:00:00Z",
+      "evaluation_date": "2026-11-12T18:00:00Z",
+      "training_configuration": {
+        "min_cluster_size": 25,
+        "min_samples": 5
+      },
+      "metrics": {
+        "clusters_discovered": 47,
+        "silhouette_score": 0.3209
+      },
+      "supported_languages": [
+        "English"
+      ],
+      "limitations": "English-centric embeddings; similarity does not prove shared criminal source.",
+      "deployment_status": "Production"
+    }
+  },
+  "last_updated_utc": "2026-11-25T05:52:24.886448+00:00"
+}

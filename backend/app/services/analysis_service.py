@@ -7,6 +7,7 @@ and persistent record keeping across MongoDB Atlas collections.
 import re
 import uuid
 import time
+import asyncio
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from urllib.parse import urlparse
@@ -69,14 +70,20 @@ class ThreatAnalysisService:
         analysis_id = str(uuid.uuid4())
         now = datetime.now(timezone.utc)
 
-        # 1. Model 1: Multilingual Scam Classifier
-        text_res = ml_engine.predict_text(text, sender=sender, channel=channel)
+        # 1. Model 1: Multilingual Scam Classifier (Non-blocking with timeout)
+        text_res = await asyncio.wait_for(
+            asyncio.to_thread(ml_engine.predict_text, text, sender, channel), timeout=15.0
+        )
 
         # 2. Model 3: Multi-Label Scam Tactics
-        tactic_res = ml_engine.predict_tactics(text)
+        tactic_res = await asyncio.wait_for(
+            asyncio.to_thread(ml_engine.predict_tactics, text), timeout=15.0
+        )
 
         # 3. Model 4: Scam Campaign Discovery
-        campaign_res = ml_engine.match_campaign(text)
+        campaign_res = await asyncio.wait_for(
+            asyncio.to_thread(ml_engine.match_campaign, text), timeout=15.0
+        )
 
         # 4. Extract Technical IOCs
         iocs = self.extract_iocs(text)
@@ -85,7 +92,9 @@ class ThreatAnalysisService:
         url_res = None
         if iocs.get("urls"):
             primary_url = iocs["urls"][0]
-            url_res = ml_engine.predict_url(primary_url)
+            url_res = await asyncio.wait_for(
+                asyncio.to_thread(ml_engine.predict_url, primary_url), timeout=15.0
+            )
 
         # 6. Check Threat Intelligence for known IOC sightings
         indicators_coll = get_indicators_collection()
@@ -205,8 +214,10 @@ class ThreatAnalysisService:
         analysis_id = str(uuid.uuid4())
         now = datetime.now(timezone.utc)
 
-        # 1. Model 2: Phishing URL Detector
-        url_res = ml_engine.predict_url(url)
+        # 1. Model 2: Phishing URL Detector (Non-blocking with timeout)
+        url_res = await asyncio.wait_for(
+            asyncio.to_thread(ml_engine.predict_url, url), timeout=15.0
+        )
 
         # 2. Risk Assessment
         assessment = risk_service.assess_risk(

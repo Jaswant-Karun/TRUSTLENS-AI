@@ -19,7 +19,8 @@ import {
   getAnalysisDetail,
   getStoredToken,
 } from "@/lib/api";
-import { Eye, Trash2, X } from "lucide-react";
+import { AttachToInvestigationModal } from "@/components/investigation/AttachToInvestigationModal";
+import { Eye, FolderPlus, Trash2, X } from "lucide-react";
 
 export default function HistoryPage() {
   const router = useRouter();
@@ -41,6 +42,7 @@ export default function HistoryPage() {
 
   const [selectedDetail, setSelectedDetail] = useState<any | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [attachTargetId, setAttachTargetId] = useState<string | null>(null);
 
   const fetchHistory = useCallback(async () => {
     if (!getStoredToken()) {
@@ -158,6 +160,17 @@ export default function HistoryPage() {
             className="p-1.5 rounded border border-[#481326] bg-[#050306] text-[#A1A1AA] hover:border-[#FF174F] hover:text-white transition-colors"
           >
             <Eye className="w-3.5 h-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setAttachTargetId(row.analysis_id);
+            }}
+            aria-label={`Attach ${row.analysis_id} to investigation`}
+            className="p-1.5 rounded border border-[#481326] bg-[#050306] text-[#A1A1AA] hover:border-[#FF174F] hover:text-[#FF3D70] transition-colors"
+          >
+            <FolderPlus className="w-3.5 h-3.5" />
           </button>
           <button
             type="button"
@@ -320,6 +333,12 @@ export default function HistoryPage() {
         variant="danger"
         onConfirm={handleConfirmDelete}
         onCancel={() => setDeleteTargetId(null)}
+      />
+
+      <AttachToInvestigationModal
+        isOpen={Boolean(attachTargetId)}
+        analysisId={attachTargetId}
+        onClose={() => setAttachTargetId(null)}
       />
     </div>
   );

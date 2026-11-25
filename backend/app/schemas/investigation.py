@@ -53,6 +53,7 @@ class TimelineEventSchema(BaseModel):
     description: Optional[str] = Field(None, description="Detailed context or observation rationale")
     related_object_ids: List[str] = Field(default_factory=list, description="IDs of graph nodes linked to this event")
     metadata: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Safe event metadata")
+    evidence_reference: Optional[str] = Field(None, description="Verified source evidence reference (e.g. analyses/<id>)")
     timestamp: datetime = Field(..., description="Event occurrence or detection timestamp")
     source: str = Field(..., description="Event provenance source")
 
@@ -142,6 +143,9 @@ class InvestigationTimelineResponse(BaseModel):
     investigation_id: str
     timeline: List[TimelineEventSchema]
     total_events: int
+    page: int = 1
+    page_size: int = 100
+    total_pages: int = 1
 
 
 class ObjectDetailResponse(BaseModel):

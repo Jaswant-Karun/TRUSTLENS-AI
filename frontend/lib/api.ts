@@ -584,6 +584,7 @@ export interface InvestigationSummaryItem {
   description?: string;
   status: string;
   severity?: string;
+  visibility?: string;
   created_at: string;
   updated_at: string;
   objects_count: number;
@@ -674,6 +675,7 @@ export async function createInvestigation(payload: {
   title: string;
   description?: string;
   severity?: string;
+  visibility?: string;
   tags?: string[];
 }): Promise<InvestigationDetailResponse> {
   return apiFetch<InvestigationDetailResponse>("/investigations", {
@@ -852,6 +854,20 @@ export async function deleteInvestigationNote(investigationId: string, noteId: s
   await apiFetch(`/investigations/${encodeURIComponent(investigationId)}/notes/${encodeURIComponent(noteId)}`, {
     method: "DELETE",
   });
+}
+
+export async function attachAnalysisToInvestigation(
+  investigationId: string,
+  analysisId: string
+): Promise<InvestigationDetailResponse> {
+  return apiFetch<InvestigationDetailResponse>(
+    `/investigations/${encodeURIComponent(investigationId)}/attach-analysis`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ analysis_id: analysisId }),
+    }
+  );
 }
 
 

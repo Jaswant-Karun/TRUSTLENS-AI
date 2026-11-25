@@ -604,12 +604,26 @@ class InvestigationService:
             "total_edges": len(edges),
         }
 
+    def _normalize_utc_datetime(self, raw_ts: Any) -> datetime:
+        if isinstance(raw_ts, datetime):
+            return raw_ts.replace(tzinfo=timezone.utc) if raw_ts.tzinfo is None else raw_ts.astimezone(timezone.utc)
+        if isinstance(raw_ts, str) and raw_ts.strip():
+            try:
+                parsed = datetime.fromisoformat(raw_ts.strip().replace("Z", "+00:00"))
+                return parsed.replace(tzinfo=timezone.utc) if parsed.tzinfo is None else parsed.astimezone(timezone.utc)
+            except ValueError:
+                pass
+        return datetime.fromtimestamp(0, tz=timezone.utc)
+
     async def get_investigation_timeline(
         self,
         investigation_id: str,
         current_user: Optional[Dict[str, Any]] = None,
+        page: int = 1,
+        page_size: int = 100,
+        order: str = "asc",
     ) -> Optional[Dict[str, Any]]:
-        """Returns the chronological multi-track timeline for an investigation."""
+        """Returns the chronological multi-track timeline for an investigation with UTC ordering and pagination."""
         await self._ensure_seeded()
         resolved_id = self._resolve_id(investigation_id)
         coll = get_investigations_collection()
@@ -619,26 +633,75 @@ class InvestigationService:
         self._check_read_access(doc, current_user)
 
         raw_timeline = list(doc.get("timeline", []))
-        raw_timeline.sort(key=lambda ev: str(ev.get("timestamp", "")))
+        reverse = order.lower() == "desc"
+        raw_timeline.sort(
+            key=lambda ev: self._normalize_utc_datetime(ev.get("timestamp")),
+            reverse=reverse,
+        )
+
+        total_events = len(raw_timeline)
+        total_pages = (total_events + page_size - 1) // page_size if total_events > 0 else 1
+        start = (page - 1) * page_size
+        paged = raw_timeline[start : start + page_size]
+
         timeline = []
-        for t in raw_timeline:
+        for t in paged:
+            norm_ts = self._normalize_utc_datetime(t.get("timestamp"))
             timeline.append({
-                "id": t.get("id"),
+                "id": t.get("id") or f"evt-{uuid.uuid4().hex[:8]}",
                 "event_type": t.get("event_type", "situation"),
                 "action_type": t.get("action_type"),
                 "actor_id": t.get("actor_id"),
-                "title": t.get("title"),
+                "title": t.get("title") or "Recorded Event",
                 "description": t.get("description"),
                 "related_object_ids": t.get("related_object_ids", []),
                 "metadata": t.get("metadata", {}),
-                "timestamp": t.get("timestamp"),
+                "evidence_reference": t.get("evidence_reference") or (t.get("metadata") or {}).get("evidence_reference"),
+                "timestamp": norm_ts.isoformat(),
                 "source": t.get("source", "TRUSTLENS Intelligence"),
             })
 
         return {
             "investigation_id": doc.get("investigation_id", investigation_id),
             "timeline": timeline,
-            "total_events": len(timeline),
+            "total_events": total_events,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+        }
+
+    async def get_investigation_audit_history(
+        self,
+        investigation_id: str,
+        current_user: Optional[Dict[str, Any]] = None,
+        page: int = 1,
+        page_size: int = 50,
+    ) -> Optional[Dict[str, Any]]:
+        """Returns verified audit_logs entries associated with this investigation."""
+        await self._ensure_seeded()
+        resolved_id = self._resolve_id(investigation_id)
+        coll = get_investigations_collection()
+        doc = await coll.find_one({"investigation_id": resolved_id})
+        if not doc:
+            return None
+        self._check_read_access(doc, current_user)
+
+        audit_coll = get_audit_collection()
+        query = {
+            "$or": [
+                {"resource_id": resolved_id},
+                {"details.investigation_id": resolved_id},
+            ]
+        }
+        total = await audit_coll.count_documents(query)
+        skip = (page - 1) * page_size
+        events = await audit_coll.find(query, {"_id": 0}).sort("timestamp", -1).skip(skip).limit(page_size).to_list(length=page_size)
+        return {
+            "investigation_id": resolved_id,
+            "total_count": total,
+            "page": page,
+            "page_size": page_size,
+            "audit_events": events,
         }
 
     async def get_object_by_id(
@@ -1181,6 +1244,16 @@ class InvestigationService:
         label = payload.get("url") or (payload.get("text") or "")[:60] or f"Analysis {analysis_id[:8]}"
         node_id = f"node-ana-{analysis_id[:10]}"
 
+        created_raw = analysis_doc.get("created_at")
+        analysis_ts = created_raw.isoformat() if hasattr(created_raw, "isoformat") else (str(created_raw) if created_raw else None)
+        model_results = analysis_doc.get("model_results") or {}
+        model_ver = (
+            analysis_doc.get("model_version")
+            or (model_results.get("text_model") or {}).get("model_version")
+            or (model_results.get("url_model") or {}).get("model_version")
+            or "trustlens-v1.0"
+        )
+
         new_node = {
             "id": node_id,
             "type": node_type,
@@ -1194,6 +1267,9 @@ class InvestigationService:
                 "threat_level": analysis_doc.get("threat_level"),
                 "risk_score": analysis_doc.get("risk_score"),
                 "severity": analysis_doc.get("threat_level", "medium"),
+                "model_version": model_ver,
+                "analysis_created_at": analysis_ts,
+                "evidence_reference": f"analyses/{analysis_id}",
             },
         }
         nodes = doc.get("nodes", [])
@@ -1214,7 +1290,11 @@ class InvestigationService:
             actor_id=user_id,
             actor_role=role,
             related_object_ids=[node_id],
-            metadata={"analysis_id": analysis_id, "threat_level": analysis_doc.get("threat_level")},
+            metadata={
+                "analysis_id": analysis_id,
+                "threat_level": analysis_doc.get("threat_level"),
+                "evidence_reference": f"analyses/{analysis_id}",
+            },
             timestamp=now,
         )
 

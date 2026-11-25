@@ -1,0 +1,242 @@
+{
+  "name": "TRUSTLENS AI - Workflow 4: Model Evaluation & Human Approval",
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true
+  },
+  "nodes": [
+    {
+      "id": "w4-wh",
+      "name": "Evaluation Completed Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        160,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "model-evaluation-completed",
+        "responseMode": "onReceived"
+      }
+    },
+    {
+      "id": "w4-if",
+      "name": "Verify Webhook Secret",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        380,
+        300
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "sec-check",
+              "leftValue": "={{ $json.headers[\"x-trustlens-automation-secret\"] }}",
+              "rightValue": "={{ $env.TRUSTLENS_AUTOMATION_SECRET }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-auth",
+      "name": "Authenticate Admin",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        600,
+        240
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL }}/api/v1/auth/login",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ email: $env.TRUSTLENS_ADMIN_EMAIL, password: $env.TRUSTLENS_ADMIN_PASSWORD }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "w4-cmp",
+      "name": "Compare Candidate vs Production",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        820,
+        240
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL }}/api/v1/training/jobs/{{ $node[\"Evaluation Completed Webhook\"].json.body.job_id }}/compare",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ \"Bearer \" + $node[\"Authenticate Admin\"].json.access_token }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "w4-gate",
+      "name": "Require Authorized Human Approval",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        240
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "human-ok",
+              "leftValue": "={{ Boolean($node[\"Evaluation Completed Webhook\"].json.body.approved_by && $node[\"Evaluation Completed Webhook\"].json.body.approval_token) }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "w4-prom",
+      "name": "Promote Approved Artifact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        200
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 2000,
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.TRUSTLENS_API_URL }}/api/v1/training/jobs/{{ $node[\"Evaluation Completed Webhook\"].json.body.job_id }}/promote",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "timeout": 15000
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "={{ \"Bearer \" + $node[\"Authenticate Admin\"].json.access_token }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ approved_by: $node[\"Evaluation Completed Webhook\"].json.body.approved_by, approval_token: $node[\"Evaluation Completed Webhook\"].json.body.approval_token }) }}"
+      }
+    }
+  ],
+  "connections": {
+    "Evaluation Completed Webhook": {
+      "main": [
+        [
+          {
+            "node": "Verify Webhook Secret",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verify Webhook Secret": {
+      "main": [
+        [
+          {
+            "node": "Authenticate Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Authenticate Admin": {
+      "main": [
+        [
+          {
+            "node": "Compare Candidate vs Production",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compare Candidate vs Production": {
+      "main": [
+        [
+          {
+            "node": "Require Authorized Human Approval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Require Authorized Human Approval": {
+      "main": [
+        [
+          {
+            "node": "Promote Approved Artifact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  }
+}

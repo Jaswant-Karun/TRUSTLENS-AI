@@ -8,6 +8,7 @@ GET /api/v1/exports/stix
 from typing import Dict, Any, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException, status
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 from backend.app.services.reporting_service import reporting_service
 from backend.app.security.dependencies import get_optional_current_user
@@ -61,7 +62,7 @@ async def export_investigation_json(
         headers = {}
         if download:
             headers["Content-Disposition"] = f'attachment; filename="trustlens-{target_type}-{target_id}.json"'
-        return JSONResponse(content=payload, headers=headers)
+        return JSONResponse(content=jsonable_encoder(payload), headers=headers)
     except PermissionError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
     except LookupError as exc:
@@ -89,7 +90,7 @@ async def export_investigation_stix(
         headers = {}
         if download:
             headers["Content-Disposition"] = f'attachment; filename="trustlens-{target_type}-{target_id}.stix.json"'
-        return JSONResponse(content=bundle, headers=headers)
+        return JSONResponse(content=jsonable_encoder(bundle), headers=headers)
     except PermissionError as exc:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
     except LookupError as exc:

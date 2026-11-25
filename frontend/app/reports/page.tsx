@@ -10,6 +10,7 @@ import {
   MetricCard,
   SearchFilterBar,
 } from "@/components/ui";
+import { IntelligenceReportPanel } from "@/components/reports/IntelligenceReportPanel";
 import {
   getCommunityReports,
   submitCommunityReport,
@@ -539,6 +540,9 @@ export default function ReportsPage() {
           emptyTitle="No community reports match criteria"
           emptyDescription="Submit a new threat report using the button above."
         />
+
+        {/* Phase 4.1: Investigation Report Generator & JSON / STIX 2.1 Exports */}
+        <IntelligenceReportPanel />
       </div>
 
       {/* Submit Report Modal */}

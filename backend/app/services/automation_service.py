@@ -38,14 +38,48 @@ class AutomationService:
         workflow_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Validates and ingests external threat feed data with duplicate prevention.
+        Validates permitted source, timestamp, and ingests external threat feed data with duplicate prevention.
         """
-        if not source_name:
-            raise ValueError("source_name is required.")
-
+        permitted_sources = {
+            "URLhaus_Threat_Feed",
+            "PhishTank_Verified",
+            "Mendeley_Dataset_Monitor",
+            "OpenPhish_Community",
+            "TRUSTLENS_Internal_Feed",
+        }
         now = datetime.now(timezone.utc)
-        indicators_coll = get_threat_indicators_collection()
         auto_coll = get_automation_logs_collection()
+
+        if not source_name or source_name not in permitted_sources:
+            err_msg = f"Unpermitted or missing feed source '{source_name}'. Allowed: {sorted(permitted_sources)}"
+            await auto_coll.insert_one({
+                "log_id": f"auto-{uuid.uuid4().hex[:10]}",
+                "workflow_name": "threat_intelligence_ingestion",
+                "trigger_event": "threat_feed_sync",
+                "status": "failed",
+                "error_message": err_msg,
+                "payload_summary": {"source": source_name, "workflow_id": workflow_id},
+                "executed_at": now,
+            })
+            raise ValueError(err_msg)
+
+        if feed_timestamp:
+            try:
+                datetime.fromisoformat(feed_timestamp.replace("Z", "+00:00"))
+            except ValueError:
+                err_msg = f"Invalid ISO feed_timestamp '{feed_timestamp}'."
+                await auto_coll.insert_one({
+                    "log_id": f"auto-{uuid.uuid4().hex[:10]}",
+                    "workflow_name": "threat_intelligence_ingestion",
+                    "trigger_event": "threat_feed_sync",
+                    "status": "failed",
+                    "error_message": err_msg,
+                    "payload_summary": {"source": source_name, "feed_timestamp": feed_timestamp},
+                    "executed_at": now,
+                })
+                raise ValueError(err_msg)
+
+        indicators_coll = get_threat_indicators_collection()
 
         ingested_count = 0
         duplicates_skipped = 0
@@ -185,71 +219,147 @@ class AutomationService:
             "is_duplicate": False,
         }
 
-    async def get_daily_intelligence_summary(self) -> Dict[str, Any]:
+    async def process_analysis_notification(
+        self,
+        analysis_id: str,
+        notification_channel: str = "soc_webhook",
+    ) -> Dict[str, Any]:
         """
-        Retrieves actual verified statistics across analyses, reports, models,
-        and campaign clusters for executive daily intelligence dispatch.
+        Workflow 2: Validates analysis_id, checks evidence and risk status, avoids duplicate alerts,
+        and omits sensitive raw message content from notification payloads.
         """
         now = datetime.now(timezone.utc)
-        yesterday = now - timedelta(hours=24)
+        analyses_coll = get_analyses_collection()
+        auto_coll = get_automation_logs_collection()
+        audit_coll = get_audit_logs_collection()
 
+        doc = await analyses_coll.find_one({"analysis_id": analysis_id}, {"_id": 0})
+        if not doc:
+            raise LookupError(f"Analysis ID '{analysis_id}' was not found.")
+
+        # Persistent deduplication check in automation_logs
+        existing_alert = await auto_coll.find_one({
+            "workflow_name": "analysis_notification",
+            "payload_summary.analysis_id": analysis_id,
+            "status": "success",
+        })
+        if existing_alert:
+            return {
+                "status": "suppressed_duplicate",
+                "is_duplicate": True,
+                "analysis_id": analysis_id,
+                "message": f"Notification for analysis '{analysis_id}' was already dispatched.",
+            }
+
+        threat_level = str(doc.get("threat_level") or "inconclusive").lower()
+        risk_score = doc.get("risk_score")
+        tactics = (doc.get("tactic_model") or {}).get("detected_tactics") or []
+        iocs = doc.get("extracted_iocs") or {}
+        ioc_count = sum(len(v) for v in iocs.values() if isinstance(v, list))
+
+        if threat_level in ("critical", "high"):
+            priority = "high_alert" if threat_level == "high" else "critical_escalation"
+            dispatched = True
+        elif threat_level in ("medium", "moderate"):
+            priority = "standard_log"
+            dispatched = True
+        else:
+            priority = "no_alert_clean"
+            dispatched = False
+
+        notification_id = f"notif-{uuid.uuid4().hex[:10]}"
+        summary_payload = {
+            "notification_id": notification_id,
+            "analysis_id": analysis_id,
+            "analysis_type": doc.get("analysis_type"),
+            "threat_level": threat_level,
+            "risk_score": risk_score,
+            "tactics_detected_count": len(tactics),
+            "ioc_count": ioc_count,
+            "priority": priority,
+            "channel": notification_channel,
+            "message_content_redacted": True,
+        }
+
+        await auto_coll.insert_one({
+            "log_id": notification_id,
+            "workflow_name": "analysis_notification",
+            "trigger_event": "analysis_completed",
+            "status": "success",
+            "payload_summary": summary_payload,
+            "executed_at": now,
+        })
+        await audit_coll.insert_one({
+            "audit_id": f"aud-{uuid.uuid4().hex[:10]}",
+            "user_id": "n8n_analysis_notifier",
+            "action": "analysis_notification_processed",
+            "resource_type": "analyses",
+            "resource_id": analysis_id,
+            "details": summary_payload,
+            "timestamp": now,
+        })
+
+        return {
+            "status": "dispatched" if dispatched else "logged_low_risk",
+            "is_duplicate": False,
+            "dispatched": dispatched,
+            **summary_payload,
+            "processed_at": now.isoformat(),
+        }
+
+    async def get_daily_intelligence_summary(self) -> Dict[str, Any]:
+        """
+        Retrieves actual verified statistics across analyses, indicators, reports, models,
+        and campaign clusters for daily intelligence dispatch. Never fabricates counters.
+        """
+        from backend.app.services.campaign_service import campaign_service
+        from backend.app.services.ml_service import ml_service
+
+        now = datetime.now(timezone.utc)
         analyses_coll = get_analyses_collection()
         reports_coll = get_reports_collection()
-        campaigns_coll = get_campaigns_collection()
+        indicators_coll = get_threat_indicators_collection()
 
-        # Actual scan metrics
         total_scans = await analyses_coll.count_documents({})
-        high_risk_scans = await analyses_coll.count_documents({"risk_level": {"$in": ["high", "critical"]}})
+        high_risk_scans = await analyses_coll.count_documents({"threat_level": {"$in": ["high", "critical"]}})
+        clean_scans = await analyses_coll.count_documents({"threat_level": {"$in": ["clean", "low"]}})
 
-        # Verified community reports
-        verified_reports = await reports_coll.count_documents({"status": "verified"})
+        indicators_received = await indicators_coll.count_documents({})
+
+        verified_reports = await reports_coll.count_documents({"status": "verified_scam"})
+        under_review_reports = await reports_coll.count_documents({"status": "under_review"})
         pending_reports = await reports_coll.count_documents({"status": "pending"})
+        benign_reports = await reports_coll.count_documents({"status": "benign"})
 
-        # Active campaigns
-        active_campaigns = await campaigns_coll.count_documents({})
-        if active_campaigns == 0:
-            active_campaigns = 48  # Discovered cluster count from Model 4
+        campaigns = await campaign_service.list_campaigns(limit=100)
+        ml_health = ml_service.get_model_status() if hasattr(ml_service, "get_model_status") else {}
 
-        summary = {
+        return {
             "report_date": now.strftime("%Y-%m-%d"),
             "generated_at": now.isoformat(),
-            "telemetry_24h": {
-                "total_threat_scans": max(total_scans, 128),
-                "high_severity_threats": max(high_risk_scans, 42),
-                "clean_scans": max(total_scans - high_risk_scans, 86),
-                "threat_ratio": round(max(high_risk_scans, 42) / max(total_scans, 128), 3),
+            "analyses_performed": {
+                "total_scans": total_scans,
+                "high_or_critical_threats": high_risk_scans,
+                "clean_or_low_scans": clean_scans,
+                "threat_ratio": round(high_risk_scans / total_scans, 4) if total_scans > 0 else 0.0,
             },
-            "community_reports": {
-                "verified_scams": verified_reports,
-                "pending_review": pending_reports,
+            "indicators_received": {
+                "total_stored_indicators": indicators_received,
             },
-            "model_health": {
-                "model1_text_status": "healthy",
-                "model2_url_status": "healthy",
-                "model3_tactics_status": "healthy",
-                "model4_campaigns_status": "healthy",
-                "avg_latency_ms": 19.4,
+            "similarity_clusters": {
+                "active_clusters_count": len(campaigns),
             },
-            "top_emerging_threats": [
-                {
-                    "vector": "Bank KYC Suspension Smishing",
-                    "target": "State Bank of India / HDFC",
-                    "severity": "CRITICAL",
-                },
-                {
-                    "vector": "Fake Part-Time Employment Task Scam",
-                    "target": "Telegram / WhatsApp Recruits",
-                    "severity": "HIGH",
-                },
-                {
-                    "vector": "Electricity Power Cut Bill Impersonation",
-                    "target": "State Electricity Boards",
-                    "severity": "HIGH",
-                },
-            ],
-            "active_campaign_clusters": active_campaigns,
+            "human_review_activity": {
+                "verified_scam": verified_reports,
+                "under_review": under_review_reports,
+                "pending": pending_reports,
+                "benign": benign_reports,
+            },
+            "model_status": ml_health or {
+                "registry_source": "CentralModelLoader",
+                "status": "operational",
+            },
         }
-        return summary
 
     async def record_execution_log(
         self,

@@ -57,6 +57,12 @@ class AppSettings(BaseSettings):
     ENABLE_CALIBRATED_SCORES: bool = True
     SIMILARITY_THRESHOLD_DEFAULT: float = 0.55
 
+    # n8n Automation Security
+    N8N_WEBHOOK_SECRET: str = Field(
+        default="",
+        description="Shared secret for authenticating n8n webhook callbacks (set via env)",
+    )
+
     # Logging
     LOG_LEVEL: str = "INFO"
 

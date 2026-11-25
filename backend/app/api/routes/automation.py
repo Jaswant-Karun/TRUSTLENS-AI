@@ -32,6 +32,11 @@ class CampaignAlertRequest(BaseModel):
     exemplar_message: Optional[str] = None
 
 
+class AnalysisNotificationRequest(BaseModel):
+    analysis_id: str = Field(..., description="Completed analysis UUID")
+    notification_channel: str = Field("soc_webhook", description="Target notification channel")
+
+
 class ExecutionLogRequest(BaseModel):
     workflow_name: str
     trigger_event: str
@@ -56,6 +61,28 @@ async def ingest_threat_feed(
             indicators=request.indicators,
             workflow_id=request.workflow_id,
         )
+    except ValueError as verr:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(verr))
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc))
+
+
+@router.post("/analysis-notification")
+async def notify_analysis_completion(
+    request: AnalysisNotificationRequest,
+    current_user: Dict[str, Any] = Depends(require_analyst_or_admin),
+):
+    """
+    Workflow 2: Validates analysis_id, checks evidence and risk level, suppresses duplicates,
+    and dispatches redacted notifications without exposing sensitive raw message content.
+    """
+    try:
+        return await automation_service.process_analysis_notification(
+            analysis_id=request.analysis_id,
+            notification_channel=request.notification_channel,
+        )
+    except LookupError as lerr:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(lerr))
     except Exception as exc:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc))
 

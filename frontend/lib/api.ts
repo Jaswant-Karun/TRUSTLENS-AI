@@ -591,3 +591,147 @@ export async function createInvestigation(payload: {
   });
 }
 
+// =========================================================================
+// Phase 4.1: Threat Library, Database Analytics, Reports & STIX 2.1 Exports
+// =========================================================================
+
+export interface ThreatLibraryItem {
+  item_id: string;
+  raw_id: string;
+  entity_type:
+    | "suspicious_message"
+    | "url"
+    | "domain"
+    | "indicator"
+    | "tactic"
+    | "similarity_cluster"
+    | "community_report";
+  label: string;
+  summary: string;
+  severity: string;
+  confidence: number | null;
+  provenance: string;
+  source_name: string;
+  verification_status: string;
+  created_at: string;
+  metadata: Record<string, any>;
+}
+
+export interface ThreatLibraryResponse {
+  items: ThreatLibraryItem[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  facets: {
+    entity_types: Record<string, number>;
+  };
+}
+
+export async function queryThreatLibrary(params?: {
+  search?: string;
+  entity_type?: string;
+  severity?: string;
+  verification_status?: string;
+  provenance?: string;
+  sort_by?: string;
+  sort_order?: string;
+  page?: number;
+  page_size?: number;
+}): Promise<ThreatLibraryResponse> {
+  const query = new URLSearchParams();
+  if (params?.search) query.set("search", params.search);
+  if (params?.entity_type && params.entity_type !== "all") query.set("entity_type", params.entity_type);
+  if (params?.severity && params.severity !== "all") query.set("severity", params.severity);
+  if (params?.verification_status && params.verification_status !== "all")
+    query.set("verification_status", params.verification_status);
+  if (params?.provenance && params.provenance !== "all") query.set("provenance", params.provenance);
+  if (params?.sort_by) query.set("sort_by", params.sort_by);
+  if (params?.sort_order) query.set("sort_order", params.sort_order);
+  if (params?.page) query.set("page", params.page.toString());
+  if (params?.page_size) query.set("page_size", params.page_size.toString());
+  return apiFetch<ThreatLibraryResponse>(`/threat-library?${query.toString()}`);
+}
+
+export async function getThreatLibraryItem(itemId: string): Promise<ThreatLibraryItem> {
+  return apiFetch<ThreatLibraryItem>(`/threat-library/${encodeURIComponent(itemId)}`);
+}
+
+export interface AnalyticsOverviewResponse {
+  filters_applied: {
+    start_date: string | null;
+    end_date: string | null;
+    source: string;
+  };
+  summary: {
+    total_analyses: number;
+    total_suspicious_urls: number;
+    total_community_reports: number;
+    total_campaigns: number;
+    total_threat_indicators: number;
+    total_investigations: number;
+  };
+  analysis_volume_over_time: { date: string; total: number; threats: number }[];
+  model_prediction_distribution: { label: string; count: number }[];
+  language_distribution: { language: string; count: number }[];
+  scam_category_distribution: { category: string; count: number }[];
+  url_classification_distribution: { classification: string; count: number }[];
+  tactic_detection_distribution: { tactic: string; count: number }[];
+  campaign_cluster_sizes: {
+    cluster_id: number;
+    name: string;
+    size: number;
+    cohesion_score: number | null;
+    status: string;
+  }[];
+  human_review_outcomes: { outcome: string; count: number }[];
+  model_evaluation_metrics: Record<string, any>;
+  limitations: string[];
+}
+
+export async function getAnalyticsOverview(params?: {
+  start_date?: string;
+  end_date?: string;
+  source?: string;
+}): Promise<AnalyticsOverviewResponse> {
+  const query = new URLSearchParams();
+  if (params?.start_date) query.set("start_date", params.start_date);
+  if (params?.end_date) query.set("end_date", params.end_date);
+  if (params?.source && params.source !== "all") query.set("source", params.source);
+  return apiFetch<AnalyticsOverviewResponse>(`/analytics/overview?${query.toString()}`);
+}
+
+export interface IntelligenceReportResponse {
+  report_id: string;
+  report_type: string;
+  investigation_id: string;
+  sources: string[];
+  evidence: any[];
+  model_versions: Record<string, string>;
+  predictions: Record<string, any>;
+  review_status: string;
+  limitations: string[];
+  generated_at: string;
+  generated_by: string;
+}
+
+export async function generateIntelligenceReport(
+  reportType: string,
+  targetId?: string
+): Promise<IntelligenceReportResponse> {
+  const query = new URLSearchParams({ report_type: reportType });
+  if (targetId) query.set("target_id", targetId);
+  return apiFetch<IntelligenceReportResponse>(`/intelligence-reports/generate?${query.toString()}`);
+}
+
+export async function exportInvestigationJson(targetType: string, targetId: string): Promise<any> {
+  const query = new URLSearchParams({ target_type: targetType, target_id: targetId });
+  return apiFetch<any>(`/exports/json?${query.toString()}`);
+}
+
+export async function exportInvestigationStix(targetType: string, targetId: string): Promise<any> {
+  const query = new URLSearchParams({ target_type: targetType, target_id: targetId });
+  return apiFetch<any>(`/exports/stix?${query.toString()}`);
+}
+
+

@@ -79,6 +79,22 @@ export function EvidencePanel({ node }: EvidencePanelProps) {
             {node.metadata.description}
           </p>
         )}
+
+        {/* Source Provenance & Verification State Badges */}
+        <div className="pt-2 border-t border-[#2D3748] flex flex-wrap gap-1.5 text-[10px] font-mono">
+          <span className="px-1.5 py-0.5 rounded bg-cyan-950/60 border border-cyan-800/50 text-cyan-300">
+            Source: {node.metadata?.sources?.[0] || "TRUSTLENS Telemetry"}
+          </span>
+          <span
+            className={`px-1.5 py-0.5 rounded border ${
+              node.metadata?.status === "verified"
+                ? "bg-emerald-950/60 border-emerald-800/60 text-emerald-300"
+                : "bg-slate-800 border-slate-700 text-slate-300"
+            }`}
+          >
+            State: {node.metadata?.status || "automated_inference"}
+          </span>
+        </div>
       </div>
 
       {/* 2. Machine Learning Inference & Telemetry */}

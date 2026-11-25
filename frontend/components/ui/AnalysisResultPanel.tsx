@@ -32,9 +32,11 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
   const [activeSubTab, setActiveSubTab] = useState<"overview" | "ssl" | "content" | "campaign" | "evidence">("overview");
 
   const threatLevel = result.threat_level || "inconclusive";
-  const confidencePct = Math.round((result.confidence || 0.90) * 100);
-  const riskPct = Math.round((result.risk_score || 0.85) * 100);
-  const riskScore13 = ((result.risk_score || 0.85) * 13).toFixed(1);
+  const hasConfidence = typeof result.confidence === "number";
+  const hasRiskScore = typeof result.risk_score === "number";
+  const confidencePct = hasConfidence ? Math.round(result.confidence * 100) : 0;
+  const riskPct = hasRiskScore ? Math.round(result.risk_score * 100) : 0;
+  const riskScore13 = hasRiskScore ? (result.risk_score * 13).toFixed(1) : "N/A";
 
   const levelStyles: Record<string, any> = {
     critical: {
@@ -131,8 +133,20 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
           </div>
           <p className="text-xs mt-1 text-slate-300 leading-relaxed">
             {result.risk_assessment?.verdict ||
-              `This communication exhibits suspicious deception signatures impersonating '${detectedBrand}'. Flagged due to malicious heuristics and manipulative social engineering cues.`}
+              "Automated ML assessment completed. Inspect model provenance, evidence tokens, and limitations below."}
           </p>
+          {/* Distinct Source Provenance Badges: ML Model vs Threat Intel vs Human Review */}
+          <div className="flex flex-wrap gap-2 mt-2.5 text-[10px] font-mono">
+            <span className="px-2 py-0.5 rounded bg-cyan-950/80 border border-cyan-700/60 text-cyan-300">
+              ML Model: {result.text_model?.model_version || result.url_model?.model_version || "unavailable"}
+            </span>
+            <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300">
+              Threat Intel: {result.risk_assessment?.transparency_breakdown?.threat_intel_match ? "IOC Matched" : "No External Match (Not a Safety Guarantee)"}
+            </span>
+            <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-400">
+              Human Review: Automated Inference Only
+            </span>
+          </div>
         </div>
       </div>
 

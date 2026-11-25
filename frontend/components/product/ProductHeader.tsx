@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
+import { LogOut, User as UserIcon } from "lucide-react";
 import {
   getCurrentUser,
   getStoredToken,
@@ -12,6 +12,7 @@ import {
 } from "@/lib/api";
 import { RadialNavigation } from "./RadialNavigation";
 import { GlowButton } from "./GlowButton";
+import { BrandLogo } from "./BrandLogo";
 
 export function ProductHeader() {
   const pathname = usePathname();
@@ -52,14 +53,9 @@ export function ProductHeader() {
         {/* Center: Futuristic TRUSTLENS AI Brand Wordmark */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 focus-visible:outline-none"
+          className="group flex items-center focus-visible:outline-none"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border border-[#FF174F]/70 bg-[#170A12] shadow-[0_0_14px_rgba(255,23,79,0.28)] group-hover:shadow-[0_0_20px_rgba(255,23,79,0.5)] transition-shadow">
-            <ShieldCheck className="h-4 w-4 text-[#FF3D70]" />
-          </span>
-          <span className="font-mono text-sm sm:text-base font-bold tracking-[0.26em] text-white">
-            TRUST<span className="text-[#FF174F]">LENS</span> AI
-          </span>
+          <BrandLogo size="sm" />
         </Link>
 
         {/* Right: Auth State / Profile / Sign In / Logout */}

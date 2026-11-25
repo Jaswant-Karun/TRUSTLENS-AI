@@ -10,13 +10,13 @@ import {
   Link2,
   ScanSearch,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { getStoredToken, getHealth, SystemHealth } from "@/lib/api";
 import { RadialNavigation } from "@/components/product/RadialNavigation";
 import { NeonFrame } from "@/components/product/NeonFrame";
 import { GlowButton } from "@/components/product/GlowButton";
 import { GlowEffect } from "@/components/product/GlowEffect";
+import { TrustLensMark } from "@/components/product/BrandLogo";
 
 export function LandingExperience() {
   const [health, setHealth] = useState<SystemHealth | null>(null);
@@ -66,7 +66,7 @@ export function LandingExperience() {
         <div className="mb-4 inline-flex items-center justify-center">
           <GlowEffect intensity="medium" pulse={!shouldReduceMotion} className="rounded-full">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#FF174F]/60 bg-[#170A12]/90 px-4 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-white">
-              <Sparkles className="h-3.5 w-3.5 text-[#FF3D70]" />
+              <TrustLensMark className="h-4 w-4" />
               <span>TRUSTLENS AI</span>
             </div>
           </GlowEffect>

@@ -126,6 +126,11 @@ class DatabaseManager:
             self.client = AsyncIOMotorClient(
                 settings.MONGODB_URI,
                 serverSelectionTimeoutMS=settings.MONGODB_TIMEOUT_MS,
+                connectTimeoutMS=settings.MONGODB_TIMEOUT_MS,
+                socketTimeoutMS=15000,
+                maxPoolSize=50,
+                minPoolSize=5,
+                retryWrites=True,
             )
             # Verify connectivity via admin ping
             await self.client.admin.command("ping")

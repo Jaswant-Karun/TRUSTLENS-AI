@@ -81,6 +81,20 @@ INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
         {"keys": [("severity", 1)]},
         {"keys": [("created_at", -1)]},
     ],
+    "scam_campaigns": [
+        {"keys": [("cluster_size", -1)]},
+    ],
+    "organizations": [
+        {"keys": [("organization_id", 1)], "unique": True},
+    ],
+    "notifications": [
+        {"keys": [("notification_id", 1)], "unique": True},
+        {"keys": [("user_id", 1), ("read", 1), ("created_at", -1)]},
+    ],
+    "notification_deliveries": [
+        {"keys": [("delivery_id", 1)], "unique": True},
+        {"keys": [("user_id", 1), ("delivered_at", -1)]},
+    ],
 }
 
 

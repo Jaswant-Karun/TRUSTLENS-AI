@@ -19,6 +19,7 @@ from backend.app.api.routes import (
     threat_library,
     analytics,
     exports,
+    notifications,
 )
 
 api_v1_router = APIRouter()
@@ -37,6 +38,7 @@ api_v1_router.include_router(investigations.router)
 api_v1_router.include_router(threat_library.router)
 api_v1_router.include_router(analytics.router)
 api_v1_router.include_router(exports.router)
+api_v1_router.include_router(notifications.router)
 
 __all__ = ["api_v1_router"]
 

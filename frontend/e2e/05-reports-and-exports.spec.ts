@@ -15,27 +15,46 @@ test.describe("Community Reports & Report Exports", () => {
       await searchBox.fill("");
     }
 
-    // Test Intelligence Report / Export triggers if present on /reports
+    // Authenticate via /api/v1/auth/login inside browser context to test protected STIX/JSON exports
+    const exportCheck = await page.evaluate(async () => {
+      const loginRes = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "admin@trustlens.ai",
+          password: "Admin@TrustLens2026!",
+        }),
+      });
+      if (!loginRes.ok) {
+        return { loginStatus: loginRes.status, stixStatus: 0, jsonStatus: 0 };
+      }
+      const { access_token } = await loginRes.json();
+      localStorage.setItem("trustlens_token", access_token);
+
+      const stixRes = await fetch(
+        "/api/v1/exports/stix?target_type=investigation&target_id=INV-2026-0011",
+        { headers: { Authorization: `Bearer ${access_token}` } }
+      );
+      const jsonRes = await fetch(
+        "/api/v1/exports/json?target_type=investigation&target_id=INV-2026-0011",
+        { headers: { Authorization: `Bearer ${access_token}` } }
+      );
+      return {
+        loginStatus: loginRes.status,
+        stixStatus: stixRes.status,
+        jsonStatus: jsonRes.status,
+      };
+    });
+
+    expect(exportCheck.loginStatus).toBe(200);
+    expect(exportCheck.stixStatus).toBeLessThan(500);
+    expect(exportCheck.jsonStatus).toBeLessThan(500);
+
+    // Reload /reports authenticated and verify Intelligence Report / Export UI controls if present
+    await page.reload();
     const exportBtn = page.getByRole("button", { name: /export|generate report|stix|json/i }).first();
     if (await exportBtn.isVisible()) {
       await exportBtn.click();
     }
-
-    // Verify backend STIX & JSON export endpoints directly with authenticated session
-    await page.goto("/login", { waitUntil: "networkidle" });
-    await page.locator('input[type="email"]').fill("admin@trustlens.ai");
-    await page.locator('input[type="password"]').fill("Admin@TrustLens2026!");
-    await page.locator('form button[type="submit"]').click();
-    await expect(page).toHaveURL(/\/analyze\/text/);
-
-    const exportCheck = await page.evaluate(async () => {
-      const token = localStorage.getItem("trustlens_token");
-      const res = await fetch(
-        "/api/v1/exports/stix?target_type=investigation&target_id=INV-2026-0011",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      return { status: res.status, ok: res.ok };
-    });
-    expect(exportCheck.status).toBeLessThan(500);
   });
 });

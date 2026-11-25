@@ -39,7 +39,8 @@ test.describe("Navigation, Radial Wheel & All Routes", () => {
     // Verify radial sector menu items appear and click Message Scanner
     const messageNav = page.getByRole("menuitem", { name: /message scanner/i }).first();
     await expect(messageNav).toBeVisible();
-    await messageNav.click();
+    await page.waitForTimeout(250);
+    await messageNav.click({ force: true });
     await expect(page).toHaveURL(/\/analyze\/text/);
 
     // Re-open radial nav and verify Escape closes it

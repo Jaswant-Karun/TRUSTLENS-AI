@@ -49,12 +49,28 @@ class TransparentRiskAggregationService:
                 "risk_score": 0.0,
                 "verdict": "Insufficient Evidence: Input text contains too few tokens for reliable linguistic assessment.",
                 "primary_vector": None,
+                "model_probabilities": {},
+                "risk_normalization": {"raw_weighted_score": 0.0, "normalized_risk_score": 0.0, "method": "weighted_composite"},
+                "severity_classification": {"level": self.LEVEL_INCONCLUSIVE, "is_safety_guarantee": False},
+                "uncertainty_assessment": {
+                    "overall_uncertainty": 1.0,
+                    "calibrated_probability_verified": False,
+                    "uncertainty_reasons": ["Token count below minimum threshold for statistical confidence"],
+                    "requires_human_review": True,
+                },
+                "model_versions": {},
+                "human_readable_explanation": "Insufficient Evidence: Input text contains too few tokens for reliable linguistic assessment.",
                 "transparency_breakdown": {
                     "reason": "Token count below minimum threshold for statistical confidence",
                     "token_count": token_count,
                 },
                 "remedial_actions": ["Provide more context or the full message body for analysis."],
             }
+
+        model_probabilities: Dict[str, Any] = {}
+        model_versions: Dict[str, str] = {}
+        uncertainty_reasons: List[str] = []
+        per_model_uncertainties: List[float] = []
 
         # Step 2: Extract Model Evidence Signals
         text_prob = 0.0
@@ -65,6 +81,21 @@ class TransparentRiskAggregationService:
             is_threat = text_result.get("is_threat", False)
             text_prob = conf if is_threat else (1.0 - conf)
             text_weight = 0.35
+            text_unc = round(1.0 - abs(2.0 * text_prob - 1.0), 4)
+            per_model_uncertainties.append(text_unc)
+            text_ver = text_result.get("model_version", "unknown")
+            model_versions["text_model"] = text_ver
+            if text_result.get("language_support_status") == "unsupported_unverified":
+                uncertainty_reasons.append(
+                    f"Language '{text_result.get('detected_language')}' has 0 evaluated training/test samples."
+                )
+            model_probabilities["text_model"] = {
+                "threat_probability": round(text_prob, 4),
+                "calibrated": True,
+                "calibration_method": "platt_scaling_cv3",
+                "uncertainty": text_unc,
+                "model_version": text_ver,
+            }
             breakdown["text_signal"] = {
                 "threat_probability": round(text_prob, 4),
                 "is_threat": is_threat,
@@ -80,6 +111,18 @@ class TransparentRiskAggregationService:
             url_prob = float(url_result.get("risk_score", 0.0))
             # URLs provide very strong structural signals if present
             url_weight = 0.40 if text_result else 0.85
+            url_unc = round(1.0 - abs(2.0 * url_prob - 1.0), 4)
+            per_model_uncertainties.append(url_unc)
+            url_ver = url_result.get("model_version", "unknown")
+            model_versions["url_model"] = url_ver
+            uncertainty_reasons.append("URL model score reflects zero-hop lexical/structural risk, not a Platt-calibrated fraud probability.")
+            model_probabilities["url_model"] = {
+                "score": round(url_prob, 4),
+                "calibrated": False,
+                "calibration_method": "uncalibrated_gbdt_with_policy_guard",
+                "uncertainty": url_unc,
+                "model_version": url_ver,
+            }
             breakdown["url_signal"] = {
                 "phishing_risk_score": round(url_prob, 4),
                 "is_phishing": url_result.get("is_phishing", False),
@@ -232,12 +275,71 @@ class TransparentRiskAggregationService:
             for src, impact, rat in contributions
         ]
 
+        if tactic_result and tactic_result.get("model_version"):
+            model_versions["tactic_model"] = tactic_result["model_version"]
+            if tactic_result.get("tactics"):
+                top_tac = tactic_result["tactics"][0]
+                t_conf = float(top_tac.get("confidence", 0.5))
+                model_probabilities["tactic_model"] = {
+                    "top_tactic_probability": round(t_conf, 4),
+                    "calibrated": True,
+                    "calibration_method": "platt_scaling_ovr_cv3",
+                    "uncertainty": round(1.0 - abs(2.0 * t_conf - 1.0), 4),
+                    "model_version": tactic_result["model_version"],
+                }
+
+        if campaign_result and campaign_result.get("campaign_id") not in (None, -1):
+            sim = float(campaign_result.get("similarity_score", 0.0))
+            c_ver = campaign_result.get("correlation_provenance", {}).get("clustering_version", "hdbscan")
+            model_versions["campaign_model"] = c_ver
+            model_probabilities["campaign_model"] = {
+                "cosine_similarity": round(sim, 4),
+                "calibrated": False,
+                "calibration_method": "cosine_similarity_not_probability",
+                "uncertainty": round(1.0 - sim, 4),
+                "model_version": c_ver,
+            }
+
+        calibrated_verified = any(v.get("calibrated") for v in model_probabilities.values()) and not any(
+            not v.get("calibrated") for v in model_probabilities.values()
+        )
+        overall_uncertainty = round(
+            sum(per_model_uncertainties) / len(per_model_uncertainties), 4
+        ) if per_model_uncertainties else 0.50
+        if not calibrated_verified and not uncertainty_reasons:
+            uncertainty_reasons.append("Composite includes uncalibrated similarity or tree-score signals.")
+
+        factor_summary = "; ".join(f"{src} ({rat})" for src, _, rat in contributions) or "No high-risk signals triggered"
+        human_explanation = (
+            f"Severity '{level.upper()}' (normalized risk {calibrated_risk:.2f}). "
+            f"Evidence: {factor_summary}. "
+            f"Uncertainty: {overall_uncertainty:.2f} ({'Platt-calibrated probabilities' if calibrated_verified else 'contains uncalibrated scores'})."
+        )
+
         return {
             "threat_level": level,
             "calibrated_confidence": calibrated_risk if level != self.LEVEL_CLEAN else round(1.0 - calibrated_risk, 4),
             "risk_score": calibrated_risk,
             "verdict": verdict,
             "primary_vector": primary_vector,
+            "model_probabilities": model_probabilities,
+            "risk_normalization": {
+                "raw_weighted_score": round(raw_risk, 4),
+                "normalized_risk_score": calibrated_risk,
+                "method": "weighted_composite_with_escalation_floors",
+            },
+            "severity_classification": {
+                "level": level,
+                "is_safety_guarantee": False,
+            },
+            "uncertainty_assessment": {
+                "overall_uncertainty": overall_uncertainty,
+                "calibrated_probability_verified": calibrated_verified,
+                "uncertainty_reasons": uncertainty_reasons,
+                "requires_human_review": bool(overall_uncertainty >= 0.45 or level == self.LEVEL_INCONCLUSIVE),
+            },
+            "model_versions": model_versions,
+            "human_readable_explanation": human_explanation,
             "transparency_breakdown": breakdown,
             "remedial_actions": remedies,
         }

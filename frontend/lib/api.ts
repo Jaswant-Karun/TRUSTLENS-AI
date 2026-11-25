@@ -308,6 +308,24 @@ export async function getExperiments(): Promise<any> {
   return apiFetch<any>("/models/experiments");
 }
 
+/** Get live production ML monitoring snapshot */
+export async function getModelMonitoring(): Promise<any> {
+  return apiFetch<any>("/models/monitoring");
+}
+
+/** Submit FP/FN feedback (stored as pending_review) */
+export async function submitModelFeedback(payload: {
+  analysis_id: string;
+  feedback_type: "false_positive" | "false_negative";
+  suggested_label: string;
+  comment?: string;
+}): Promise<any> {
+  return apiFetch<any>("/models/feedback", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 /** List real HDBSCAN campaign clusters */
 export async function getCampaigns(limit = 20): Promise<CampaignSummary[]> {
   return apiFetch<CampaignSummary[]>(`/campaigns?limit=${limit}`);

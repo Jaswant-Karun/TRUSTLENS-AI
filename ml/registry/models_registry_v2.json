@@ -215,7 +215,7 @@
         "Hinglish"
       ],
       "limitations": "Unsupervised semantic similarity only; does not confirm shared criminal origin.",
-      "deployment_status": "Evaluated"
+      "deployment_status": "Production"
     },
     "trustlens-campaign-v1.0-prod": {
       "model_id": "trustlens-campaign-v1.0-prod",
@@ -239,7 +239,7 @@
         "English"
       ],
       "limitations": "English-centric embeddings; similarity does not prove shared criminal source.",
-      "deployment_status": "Production"
+      "deployment_status": "Superseded"
     }
   },
   "last_updated_utc": "2026-11-25T05:52:24.886448+00:00"

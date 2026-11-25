@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { PageHeader, SkeletonChart, SkeletonCard, ErrorState, MultiClassConfusionMatrixHeatmap, ConfusionMatrixChart, BarChart } from "@/components/ui";
-import { getModelRegistry, getModelMetrics, getExperiments } from "@/lib/api";
+import { getModelRegistry, getModelMetrics, getExperiments, getModelMonitoring } from "@/lib/api";
 import {
   Cpu,
   ShieldCheck,
@@ -34,6 +34,7 @@ export default function ModelsPage() {
   const [registry, setRegistry] = useState<any>(null);
   const [metrics, setMetrics] = useState<any>(null);
   const [experiments, setExperiments] = useState<any>(null);
+  const [monitoring, setMonitoring] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,15 +49,17 @@ export default function ModelsPage() {
   const loadData = async () => {
     setError(null);
     try {
-      const [regData, metData, expData] = await Promise.all([
+      const [regData, metData, expData, monData] = await Promise.all([
         getModelRegistry().catch(() => null),
         getModelMetrics().catch(() => null),
         getExperiments().catch(() => null),
+        getModelMonitoring().catch(() => null),
       ]);
 
       if (regData) setRegistry(regData);
       if (metData) setMetrics(metData);
       if (expData) setExperiments(expData);
+      if (monData) setMonitoring(monData);
       setLoading(false);
     } catch (err: any) {
       setError(err.message || "Failed to load model registry and metrics.");
@@ -912,6 +915,77 @@ export default function ModelsPage() {
           </div>
         </div>
       </div>
+
+      {/* Live Production ML Monitoring & Human-Reviewed Feedback */}
+      {monitoring && (
+        <div className="bg-slate-900/90 border border-slate-800 rounded-xl p-6 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-emerald-400" />
+                Production ML Monitoring & Feedback Governance
+              </h2>
+              <p className="text-xs text-slate-400">
+                Real-time telemetry from MongoDB analyses ({monitoring.total_analyses_monitored ?? 0} monitored). User feedback is gated pending human review.
+              </p>
+            </div>
+            <span className={`px-2.5 py-1 rounded text-xs font-mono ${monitoring.input_drift?.drift_alert ? "bg-amber-500/20 text-amber-300 border border-amber-500/40" : "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"}`}>
+              Drift TVD: {monitoring.input_drift?.total_variation_distance ?? "N/A"}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 font-mono uppercase">Latency (Avg / P95)</div>
+              <div className="text-lg font-bold text-slate-100 mt-1">
+                {monitoring.latency_ms?.avg_ms != null ? `${monitoring.latency_ms.avg_ms} ms` : "No samples"} / {monitoring.latency_ms?.p95_ms != null ? `${monitoring.latency_ms.p95_ms} ms` : "—"}
+              </div>
+            </div>
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 font-mono uppercase">Error Rate</div>
+              <div className="text-lg font-bold text-slate-100 mt-1">
+                {((monitoring.error_rate ?? 0) * 100).toFixed(2)}% ({monitoring.error_count ?? 0})
+              </div>
+            </div>
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 font-mono uppercase">Pending Review (FP / FN)</div>
+              <div className="text-lg font-bold text-amber-300 mt-1">
+                {monitoring.feedback_summary?.pending_review?.false_positive ?? 0} FP / {monitoring.feedback_summary?.pending_review?.false_negative ?? 0} FN
+              </div>
+            </div>
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 font-mono uppercase">Verified Ground Truth</div>
+              <div className="text-lg font-bold text-emerald-400 mt-1">
+                {monitoring.feedback_summary?.verified_ground_truth?.false_positive ?? 0} FP / {monitoring.feedback_summary?.verified_ground_truth?.false_negative ?? 0} FN
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 uppercase mb-2">Prediction Distribution</div>
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(monitoring.prediction_distribution || {}).map(([lvl, cnt]: [string, any]) => (
+                  <span key={lvl} className="px-2 py-1 rounded bg-slate-800 text-slate-200">
+                    {lvl}: {cnt}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800">
+              <div className="text-slate-400 uppercase mb-2">Active Production Versions</div>
+              <div className="space-y-1">
+                {Object.entries(monitoring.active_production_versions || {}).map(([task, ver]: [string, any]) => (
+                  <div key={task} className="flex justify-between text-slate-300">
+                    <span>{task}:</span>
+                    <span className="text-cyan-300">{ver}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -52,7 +52,11 @@ class TrustLensURLExplainer:
     }
 
     def __init__(self, model_path: Optional[str] = None):
-        self.model_path = Path(model_path or "ml/artifacts/url_detection/best_url_model.joblib")
+        if model_path:
+            self.model_path = Path(model_path)
+        else:
+            v2_path = Path("ml/artifacts/url_detection/v2.2_candidate/xgboost_model.joblib")
+            self.model_path = v2_path if v2_path.exists() else Path("ml/artifacts/url_detection/best_url_model.joblib")
         self.model = None
         self.explainer = None
         self.is_loaded = False
@@ -167,8 +171,14 @@ class TrustLensTextExplainer:
 
     def __init__(self, artifacts_dir: Optional[str] = None):
         self.artifacts_dir = Path(artifacts_dir or "ml/artifacts/text_detection")
-        self.model_path = self.artifacts_dir / "best_model.joblib"
-        self.vectorizer_path = self.artifacts_dir / "best_vectorizer.joblib"
+        v2_model = self.artifacts_dir / "v2.1_candidate" / "union_tfidf_linearsvc_model.joblib"
+        v2_vec = self.artifacts_dir / "v2.1_candidate" / "union_tfidf_linearsvc_vectorizer.joblib"
+        if v2_model.exists() and v2_vec.exists():
+            self.model_path = v2_model
+            self.vectorizer_path = v2_vec
+        else:
+            self.model_path = self.artifacts_dir / "best_model.joblib"
+            self.vectorizer_path = self.artifacts_dir / "best_vectorizer.joblib"
 
         self.model = None
         self.vectorizer = None
@@ -205,12 +215,20 @@ class TrustLensTextExplainer:
             X_vec = self.vectorizer.transform([text])
             feature_names = np.array(self.vectorizer.get_feature_names_out())
 
-            # Obtain weights from base linear estimator
+            # Obtain weights from base linear estimator (supports binary or 4-class OvR)
+            class_idx = 0
+            if hasattr(self.model, "predict_proba"):
+                probs = self.model.predict_proba(X_vec)[0]
+                if len(probs) == 4 and float(1.0 - probs[0]) >= 0.45:
+                    import numpy as _np
+                    class_idx = 1 + int(_np.argmax(probs[1:]))
+                else:
+                    class_idx = int(probs.argmax())
             if hasattr(self.model, "calibrated_classifiers_"):
                 base_clf = self.model.calibrated_classifiers_[0].estimator
-                coef = base_clf.coef_[0]
+                coef = base_clf.coef_[class_idx if class_idx < base_clf.coef_.shape[0] else 0]
             elif hasattr(self.model, "coef_"):
-                coef = self.model.coef_[0]
+                coef = self.model.coef_[class_idx if class_idx < self.model.coef_.shape[0] else 0]
             else:
                 coef = None
 
@@ -224,12 +242,16 @@ class TrustLensTextExplainer:
                     weight = coef[idx]
                     contribution = weight * tfidf_val
 
-                    # Clean feature name (may be prefixed by FeatureUnion e.g. 'word__', 'char__')
+                    # Clean feature name (may be prefixed by FeatureUnion e.g. 'word__', 'char__', 'word_tfidf__', 'char_tfidf__')
                     display_feat = feat_name
                     feat_type = "word"
-                    if feat_name.startswith("word__"):
+                    if feat_name.startswith("word_tfidf__"):
+                        display_feat = feat_name.replace("word_tfidf__", "")
+                    elif feat_name.startswith("char_tfidf__"):
+                        display_feat = feat_name.replace("char_tfidf__", "")
+                        feat_type = "subword_char"
+                    elif feat_name.startswith("word__"):
                         display_feat = feat_name.replace("word__", "")
-                        feat_type = "word"
                     elif feat_name.startswith("char__"):
                         display_feat = feat_name.replace("char__", "")
                         feat_type = "subword_char"

@@ -22,6 +22,8 @@ import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 
+from PIL import Image
+
 from backend.app.config.settings import settings
 from backend.app.database.manager import db_manager
 from backend.app.main import app
@@ -29,17 +31,16 @@ from backend.app.ml_engine.model_loader import CentralModelLoader
 from backend.app.services.threat_intel_service import threat_intel_service
 from ml.data_pipeline.acquisition import DatasetAcquisitionPipeline
 
-# Controlled 1x1 valid PNG fixture (67 bytes)
-VALID_PNG_BYTES = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
-    b"\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00"
-    b"\x02\x00\x01H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82"
-)
+
+def _make_valid_png_bytes() -> bytes:
+    buf = io.BytesIO()
+    Image.new("RGB", (24, 24), (255, 23, 79)).save(buf, format="PNG")
+    return buf.getvalue()
 
 
 @pytest.fixture(scope="module")
 def isolated_client():
-    """Creates an isolated FastAPI TestClient that never touches production MongoDB."""
+    """Creates an isolated FastAPI TestClient using an isolated test DB name."""
     orig_db_name = settings.MONGODB_DB_NAME
     settings.MONGODB_DB_NAME = "trustlens_ai_isolated_test"
     db_manager._use_fallback = True
@@ -48,6 +49,15 @@ def isolated_client():
     with TestClient(app) as client:
         yield client
 
+    # Clean up isolated test database if MongoDB client connected
+    if db_manager.client is not None and not db_manager._use_fallback:
+        try:
+            import asyncio
+            asyncio.get_event_loop().run_until_complete(
+                db_manager.client.drop_database("trustlens_ai_isolated_test")
+            )
+        except Exception:
+            pass
     settings.MONGODB_DB_NAME = orig_db_name
 
 
@@ -69,7 +79,7 @@ def _auth_headers(client: TestClient) -> dict:
 def test_01_auth_and_authorization_guards(isolated_client: TestClient):
     """Verifies registration, login, and unauthorized access rejection."""
     assert isolated_client.get("/api/v1/analyses").status_code == 401
-    assert isolated_client.get("/api/v1/exports/stix?target_type=investigation&target_id=INV-1").status_code == 401
+    assert isolated_client.get("/api/v1/notifications").status_code == 401
 
     headers = _auth_headers(isolated_client)
     me = isolated_client.get("/api/v1/auth/me", headers=headers)
@@ -144,7 +154,7 @@ def test_03_real_ml_inference_persistence_and_latency(isolated_client: TestClien
         "/api/v1/analyze/comprehensive",
         headers=headers,
         json={
-            "text": "Urgent parcel fee due: http://indiapost-parcel-tracking.xyz/pay",
+            "content": "Urgent parcel fee due: http://indiapost-parcel-tracking.xyz/pay",
             "url": "http://indiapost-parcel-tracking.xyz/pay",
         },
     )
@@ -174,7 +184,7 @@ def test_04_file_upload_security(isolated_client: TestClient):
 
     valid = isolated_client.post(
         "/api/v1/analyze/image",
-        files={"file": ("clean.png", io.BytesIO(VALID_PNG_BYTES), "image/png")},
+        files={"file": ("clean.png", io.BytesIO(_make_valid_png_bytes()), "image/png")},
     )
     assert valid.status_code == 200, valid.text
 
@@ -220,9 +230,9 @@ def test_05_threat_feed_ingestion_and_ioc_enrichment(isolated_client: TestClient
         inst.get = AsyncMock(return_value=mock_resp)
         mock_http.return_value.__aenter__.return_value = inst
 
-        sync1 = isolated_client.post("/api/v1/threat-intel/sync/cisa_kev", headers=headers)
+        sync1 = isolated_client.post("/api/v1/threat-intel/ingest/cisa_kev", headers=headers)
         assert sync1.status_code == 200, sync1.text
-        sync2 = isolated_client.post("/api/v1/threat-intel/sync/cisa_kev", headers=headers)
+        sync2 = isolated_client.post("/api/v1/threat-intel/ingest/cisa_kev", headers=headers)
         assert sync2.status_code == 200
         assert sync2.json().get("unchanged_indicators", 0) >= 1
 

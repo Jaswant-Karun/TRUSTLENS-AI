@@ -83,6 +83,28 @@ class UserProfileUpdateRequest(BaseModel):
     in_app_notifications: Optional[bool] = None
 
 
+class OrganizationCreateRequest(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+
+
+class OrganizationMembershipRequest(BaseModel):
+    organization_id: str = Field(..., min_length=3, max_length=64)
+    organization_role: str = Field("member", pattern="^(member|analyst|org_admin)$")
+
+
+class RoleAssignmentRequest(BaseModel):
+    role: str = Field(..., pattern="^(user|reviewer|analyst|admin)$")
+
+
+class AccountStatusRequest(BaseModel):
+    is_active: bool
+    reason: Optional[str] = Field(None, max_length=250)
+
+
+class AccountDeleteRequest(BaseModel):
+    password: str = Field(..., min_length=1)
+
+
 class UserProfileResponse(BaseModel):
     user_id: str
     email: str
@@ -90,6 +112,8 @@ class UserProfileResponse(BaseModel):
     role: str
     is_active: bool
     email_verified: Optional[bool] = False
+    organization_id: Optional[str] = None
+    organization_role: Optional[str] = None
     onboarding_preferences: Optional[Dict[str, Any]] = None
     created_at: datetime
     last_login: Optional[datetime] = None

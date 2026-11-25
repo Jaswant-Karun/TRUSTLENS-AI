@@ -10,7 +10,12 @@ from fastapi import APIRouter, Depends, Request, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from backend.app.schemas.auth import (
+    AccountDeleteRequest,
+    AccountStatusRequest,
     EmailVerificationRequest,
+    OrganizationCreateRequest,
+    OrganizationMembershipRequest,
+    RoleAssignmentRequest,
     UserRegisterRequest,
     UserLoginRequest,
     UserProfileUpdateRequest,
@@ -18,7 +23,8 @@ from backend.app.schemas.auth import (
     UserProfileResponse,
 )
 from backend.app.services.auth_service import auth_service
-from backend.app.security.dependencies import get_current_user
+from backend.app.services.organization_service import organization_service
+from backend.app.security.dependencies import get_current_user, require_admin
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -95,6 +101,8 @@ async def get_my_profile(current_user: Dict[str, Any] = Depends(get_current_user
         "role": current_user["role"],
         "is_active": current_user["is_active"],
         "email_verified": current_user.get("email_verified", False),
+        "organization_id": current_user.get("organization_id"),
+        "organization_role": current_user.get("organization_role"),
         "onboarding_preferences": current_user.get("onboarding_preferences"),
         "created_at": current_user["created_at"],
         "last_login": current_user.get("last_login"),
@@ -130,4 +138,72 @@ async def logout_current_session(
         user_id=current_user["user_id"],
         client_ip=client_ip,
     )
+
+
+@router.post("/organizations", response_model=Dict[str, Any], status_code=status.HTTP_201_CREATED)
+async def create_organization(
+    payload: OrganizationCreateRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Creates an organization and assigns creator as org_admin."""
+    return await organization_service.create_organization(name=payload.name, creator_user=current_user)
+
+
+@router.post("/users/{target_user_id}/organization", response_model=Dict[str, Any])
+async def assign_organization_membership(
+    target_user_id: str,
+    payload: OrganizationMembershipRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Assigns organization membership (platform admin or org_admin of that organization)."""
+    return await organization_service.assign_membership(
+        target_user_id=target_user_id,
+        organization_id=payload.organization_id,
+        organization_role=payload.organization_role,
+        actor_user=current_user,
+    )
+
+
+@router.patch("/users/{target_user_id}/role", response_model=Dict[str, Any])
+async def assign_platform_role(
+    target_user_id: str,
+    payload: RoleAssignmentRequest,
+    admin_user: Dict[str, Any] = Depends(require_admin),
+):
+    """Admin-only platform role assignment."""
+    return await organization_service.assign_platform_role(
+        target_user_id=target_user_id,
+        new_role=payload.role,
+        actor_id=admin_user["user_id"],
+    )
+
+
+@router.patch("/users/{target_user_id}/status", response_model=Dict[str, Any])
+async def update_account_status(
+    target_user_id: str,
+    payload: AccountStatusRequest,
+    admin_user: Dict[str, Any] = Depends(require_admin),
+):
+    """Admin-only account activation/deactivation lifecycle control."""
+    return await organization_service.set_account_status(
+        target_user_id=target_user_id,
+        is_active=payload.is_active,
+        actor_id=admin_user["user_id"],
+        reason=payload.reason,
+    )
+
+
+@router.get("/export-data", response_model=Dict[str, Any])
+async def export_my_personal_data(current_user: Dict[str, Any] = Depends(get_current_user)):
+    """Exports authenticated user's own profile, analyses, and owned investigations."""
+    return await organization_service.export_personal_data(user=current_user)
+
+
+@router.delete("/account", response_model=Dict[str, Any])
+async def delete_my_account(
+    payload: AccountDeleteRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Self-service account deletion with password confirmation."""
+    return await organization_service.delete_own_account(user=current_user, password=payload.password)
 

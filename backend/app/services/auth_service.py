@@ -4,7 +4,7 @@ Handles user registration, credential verification, and initial administrator bo
 """
 
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Optional
 from fastapi import HTTPException, status
 from pydantic import EmailStr
@@ -12,16 +12,24 @@ from pydantic import EmailStr
 from backend.app.config.settings import settings
 from backend.app.database.collections import get_users_collection, get_audit_collection
 from backend.app.security.password import hash_password, verify_password
-from backend.app.security.jwt import create_access_token
+from backend.app.security.jwt import create_access_token, decode_access_token
 
 
 class AuthenticationService:
     """Core user security & authentication operations."""
 
     async def register_user(
-        self, email: str, password: str, full_name: str, role: str = "user", client_ip: Optional[str] = None
+        self,
+        email: str,
+        password: str,
+        full_name: str,
+        role: str = "user",
+        client_ip: Optional[str] = None,
+        privacy_accepted: bool = True,
+        terms_accepted: bool = True,
+        onboarding_preferences: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        """Registers a new user account with hashed password."""
+        """Registers a new user account with hashed password, consent, and verification token."""
         users_coll = get_users_collection()
         audit_coll = get_audit_collection()
 
@@ -40,6 +48,11 @@ class AuthenticationService:
         user_id = str(uuid.uuid4())
         hashed_pwd = hash_password(password)
         now = datetime.now(timezone.utc)
+        prefs = onboarding_preferences or {
+            "preferred_language": "en",
+            "primary_focus": "message_scanning",
+            "threat_alerts_opt_in": False,
+        }
 
         user_doc = {
             "user_id": user_id,
@@ -48,11 +61,21 @@ class AuthenticationService:
             "full_name": full_name.strip(),
             "role": role,
             "is_active": True,
+            "email_verified": False,
+            "privacy_accepted": bool(privacy_accepted),
+            "terms_accepted": bool(terms_accepted),
+            "consent_recorded_at": now,
+            "onboarding_preferences": prefs,
             "created_at": now,
             "last_login": None,
         }
 
         await users_coll.insert_one(user_doc)
+
+        verification_token = create_access_token(
+            data={"sub": user_id, "purpose": "email_verification"},
+            expires_delta=timedelta(hours=24),
+        )
 
         # Audit log
         await audit_coll.insert_one({
@@ -63,7 +86,12 @@ class AuthenticationService:
             "resource_id": user_id,
             "client_ip": client_ip,
             "timestamp": now,
-            "details": {"email": norm_email, "role": role},
+            "details": {
+                "email": norm_email,
+                "role": role,
+                "privacy_accepted": bool(privacy_accepted),
+                "terms_accepted": bool(terms_accepted),
+            },
         })
 
         return {
@@ -72,8 +100,45 @@ class AuthenticationService:
             "full_name": user_doc["full_name"],
             "role": role,
             "is_active": True,
+            "email_verified": False,
+            "onboarding_preferences": prefs,
+            "verification_token": verification_token if settings.APP_ENV != "production" else None,
             "created_at": now,
         }
+
+    async def verify_email_token(self, token: str) -> Dict[str, Any]:
+        """Validates signed email-verification token and marks user email_verified=True."""
+        payload = decode_access_token(token)
+        if not payload or payload.get("purpose") != "email_verification":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired email verification token.",
+            )
+        user_id = payload.get("sub")
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid email verification token subject.",
+            )
+        users_coll = get_users_collection()
+        audit_coll = get_audit_collection()
+        now = datetime.now(timezone.utc)
+        res = await users_coll.update_one(
+            {"user_id": user_id},
+            {"$set": {"email_verified": True, "email_verified_at": now}},
+        )
+        if res.matched_count == 0:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found.")
+
+        await audit_coll.insert_one({
+            "audit_id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "action": "email_verified",
+            "resource_type": "user",
+            "resource_id": user_id,
+            "timestamp": now,
+        })
+        return {"verified": True, "user_id": user_id}
 
     async def authenticate_user(
         self, email: str, password: str, client_ip: Optional[str] = None

@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, Request, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from backend.app.schemas.auth import (
+    EmailVerificationRequest,
     UserRegisterRequest,
     UserLoginRequest,
     TokenResponse,
@@ -33,7 +34,20 @@ async def register(payload: UserRegisterRequest, request: Request):
         full_name=payload.full_name,
         role=payload.role or "user",
         client_ip=client_ip,
+        privacy_accepted=payload.privacy_accepted,
+        terms_accepted=payload.terms_accepted,
+        onboarding_preferences=(
+            payload.onboarding_preferences.model_dump()
+            if payload.onboarding_preferences
+            else None
+        ),
     )
+
+
+@router.post("/verify-email", response_model=Dict[str, Any])
+async def verify_email(payload: EmailVerificationRequest):
+    """Validates signed email-verification token and marks email_verified=True."""
+    return await auth_service.verify_email_token(payload.token)
 
 
 @router.post("/login", response_model=TokenResponse)

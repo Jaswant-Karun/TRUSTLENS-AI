@@ -457,11 +457,32 @@ export async function registerUser(payload: {
   email: string;
   password: string;
   full_name: string;
-}): Promise<{ user_id: string; email: string; role: string; message?: string }> {
+  privacy_accepted?: boolean;
+  terms_accepted?: boolean;
+  onboarding_preferences?: {
+    preferred_language: string;
+    primary_focus: string;
+    threat_alerts_opt_in: boolean;
+  };
+}): Promise<{
+  user_id: string;
+  email: string;
+  role: string;
+  verification_token?: string | null;
+  message?: string;
+}> {
   return apiFetch("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
+  });
+}
+
+export async function verifyEmailToken(token: string): Promise<{ verified: boolean; user_id: string }> {
+  return apiFetch("/auth/verify-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
   });
 }
 

@@ -1,0 +1,10 @@
+{
+  "algorithm": "HDBSCAN",
+  "params": {
+    "min_cluster_size": 25,
+    "min_samples": 5,
+    "metric": "euclidean",
+    "cluster_selection_method": "eom"
+  },
+  "duration_seconds": 48.32
+}

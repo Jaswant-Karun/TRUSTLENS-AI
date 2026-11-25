@@ -1,0 +1,67 @@
+{
+  "phase": "2.4",
+  "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "total_samples": 5488,
+  "primary_run_min_cluster_size_25": {
+    "min_cluster_size": 25,
+    "clusters_discovered": 43,
+    "clustered_samples": 2468,
+    "noise_samples": 3020,
+    "noise_ratio": 0.5503,
+    "silhouette_score_non_noise": 0.3163,
+    "davies_bouldin_index": 1.3828,
+    "cluster_size_min": 25,
+    "cluster_size_median": 41.0,
+    "cluster_size_max": 250
+  },
+  "stability_sweep": [
+    {
+      "min_cluster_size": 20,
+      "clusters_discovered": 53,
+      "clustered_samples": 2445,
+      "noise_samples": 3043,
+      "noise_ratio": 0.5545,
+      "silhouette_score_non_noise": 0.3485,
+      "davies_bouldin_index": 1.3768,
+      "cluster_size_min": 20,
+      "cluster_size_median": 38.0,
+      "cluster_size_max": 149
+    },
+    {
+      "min_cluster_size": 25,
+      "clusters_discovered": 43,
+      "clustered_samples": 2468,
+      "noise_samples": 3020,
+      "noise_ratio": 0.5503,
+      "silhouette_score_non_noise": 0.3163,
+      "davies_bouldin_index": 1.3828,
+      "cluster_size_min": 25,
+      "cluster_size_median": 41.0,
+      "cluster_size_max": 250
+    },
+    {
+      "min_cluster_size": 35,
+      "clusters_discovered": 34,
+      "clustered_samples": 2370,
+      "noise_samples": 3118,
+      "noise_ratio": 0.5681,
+      "silhouette_score_non_noise": 0.2843,
+      "davies_bouldin_index": 1.489,
+      "cluster_size_min": 35,
+      "cluster_size_median": 49.0,
+      "cluster_size_max": 250
+    }
+  ],
+  "average_near_duplicate_concentration": 0.1608,
+  "baseline_comparison_47_clusters": {
+    "algorithm": "HDBSCAN",
+    "total_samples": 5715,
+    "clusters_discovered": 47,
+    "noise_samples": 2901,
+    "noise_percentage": 50.76,
+    "clustered_samples": 2814,
+    "silhouette_score": 0.3209,
+    "davies_bouldin_index": 1.3339,
+    "duration_seconds": 65.08
+  }
+}

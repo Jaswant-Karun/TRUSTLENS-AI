@@ -1,0 +1,1985 @@
+[
+  {
+    "cluster_id": 30,
+    "record_count": 250,
+    "unique_text_groups": 249,
+    "near_duplicate_concentration": 0.004,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7639,
+      "min_cosine_similarity": 0.5956
+    },
+    "representative_examples": [
+      "get cashback upto rs on st dth recharge of rs or more to register dial or download the app via httpbitlysrbc tc apply",
+      "get cashback on prepaid recharge of rs or more through airtel money app tc apply click to download wwwairtelcoinhwh"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_054633",
+      "real_050116",
+      "real_031344",
+      "real_064535",
+      "real_024245",
+      "real_050525",
+      "real_025732",
+      "real_044000",
+      "real_036344",
+      "real_060284"
+    ],
+    "language_distribution": {
+      "English": 250
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 41,
+    "record_count": 149,
+    "unique_text_groups": 95,
+    "near_duplicate_concentration": 0.3624,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9707,
+      "min_cosine_similarity": 0.7938
+    },
+    "representative_examples": [
+      "Dear SBI user your SBI YONO Account will be block today Please click here link update your PAN CARD Number [URL]",
+      "Dear SBI user your SBI YONO Account will be block today Please click here link update your PAN CARD Number [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "bitly.ws",
+        "cutt.ly",
+        "byrl.me",
+        "inkiy.in"
+      ],
+      "top_urls": [
+        "http://cutt.ly/",
+        "http://sbikyc.epizy",
+        "http://cutt.ly/elvnYj9",
+        "http://bit.ly/",
+        "http://bit.ly/3aYGnDi"
+      ],
+      "top_phones": [
+        "+918653153658"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_051183",
+      "real_064721",
+      "real_075837",
+      "real_041248",
+      "real_034200",
+      "real_052446",
+      "real_070912",
+      "real_031872",
+      "real_062604",
+      "real_016462"
+    ],
+    "language_distribution": {
+      "English": 149
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 5,
+    "record_count": 142,
+    "unique_text_groups": 135,
+    "near_duplicate_concentration": 0.0493,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7426,
+      "min_cosine_similarity": 0.2434
+    },
+    "representative_examples": [
+      "Your parcel be be hold at our depot due to an unpaid ÃÂ£ 2.70 shipping fee Please pay the fee before Monday XX February XXXX otherwise the parcel will be return to sender [URL] delivery GV670517065GB",
+      "Your parcel be be hold at our depot due to an unpaid ÃÂ£ 2.70 shipping fee Please pay the fee before Monday XX March XXXX otherwise the parcel will be return to sender [URL] schedule delivery GV698600065GB"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "hermes.local-depot",
+        "royalmail",
+        "mypo.st",
+        "bit.ly",
+        "9nd.me"
+      ],
+      "top_urls": [
+        "http://hermes.local-depot",
+        "http://royalmail",
+        "http://royal",
+        "http://royalmail.co/schedule",
+        "http://mypo.st"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_028844",
+      "real_035448",
+      "real_060115",
+      "real_022204",
+      "real_067496",
+      "real_018007",
+      "real_024936",
+      "real_055737",
+      "real_070769",
+      "real_027428"
+    ],
+    "language_distribution": {
+      "English": 142
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 35,
+    "record_count": 136,
+    "unique_text_groups": 128,
+    "near_duplicate_concentration": 0.0588,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8779,
+      "min_cosine_similarity": 0.7815
+    },
+    "representative_examples": [
+      "Dear PAYTM customer your KYC have be Expired PAYTM office PH XXXXXXXXXX Call Immediately You account will block with in XX hour Thank you PAYTM Team",
+      "Dear Paytm Customer your KYC have be suspend Paytm office PH XXXXXXXXXX Call Immediately Your account will block with in XX hour Thank you Paytm Team"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "www.p",
+        "bit.ly"
+      ],
+      "top_urls": [
+        "www.p",
+        "http://bit.ly/2ZAQIOO"
+      ],
+      "top_phones": [
+        "8536074310",
+        "7908807538",
+        "6200992462",
+        "7679046492",
+        "6295500709"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_063179",
+      "real_018453",
+      "real_062366",
+      "real_052630",
+      "real_021432",
+      "real_040613",
+      "real_012474",
+      "real_045254",
+      "real_049233",
+      "real_059877"
+    ],
+    "language_distribution": {
+      "English": 136
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 23,
+    "record_count": 100,
+    "unique_text_groups": 100,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7423,
+      "min_cosine_similarity": 0.6244
+    },
+    "representative_examples": [
+      "Inspector Rajesh Kumar bol raha hoon. Aapka KYC pending hai. Account 2 ghante mein block ho jayega. OTP share kijiye.",
+      "CBI se bol raha hoon. Aapka KYC pending hai. Account 2 ghante mein block ho jayega. OTP share kijiye."
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000775",
+      "real_076822",
+      "synth_ind_000710",
+      "real_076637",
+      "real_077009",
+      "real_076638",
+      "real_077056",
+      "real_076855",
+      "real_076883",
+      "synth_ind_000718"
+    ],
+    "language_distribution": {
+      "Hinglish": 100
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 20,
+    "record_count": 93,
+    "unique_text_groups": 93,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8254,
+      "min_cosine_similarity": 0.7408
+    },
+    "representative_examples": [
+      "Congratulations Dear costomer you be lucky winner in my Flipkart online shop company you win 2nd prize tata nexon car your coupon code XXXX contact no -XXXXXXXXXX",
+      "Dear Customers congratulation you win the 1st prize Mahindra XUV with 14,85,000 For flipkart company your lucky coupon number XXXXX contest AND Registration charge deposit RS 6,500 only Helpline XXXXXXXXXX office no XXXXXXXXXX"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "onlineluckydrawlists",
+        "flpkrtluckywinner.in",
+        "www.onlineshoppingluckidraw.in",
+        "shopclus.luckywinner.org.in"
+      ],
+      "top_urls": [
+        "http://onlineluckydrawlists",
+        "http://flpkrtluckywinner.in/",
+        "www.onlineshoppingluckidraw.in",
+        "http://shopclus.luckywinner.org.in",
+        "http://bit.ly/3dF3Njl"
+      ],
+      "top_phones": [
+        "+919709135693",
+        "+916201037464",
+        "+919262262347",
+        "+917808573449",
+        "8084051720"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_028807",
+      "real_063334",
+      "real_027780",
+      "real_043167",
+      "real_075272",
+      "real_039289",
+      "real_040637",
+      "real_034155",
+      "real_065467",
+      "real_048602"
+    ],
+    "language_distribution": {
+      "English": 93
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 0,
+    "record_count": 86,
+    "unique_text_groups": 72,
+    "near_duplicate_concentration": 0.1628,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7623,
+      "min_cosine_similarity": 0.561
+    },
+    "representative_examples": [
+      "MONIOD Amazon urgently recruit for part-time job you can earn XXXX-XXXX Rs every day add Whatsapp wa.me/ [PHONE] Sep XX 9:55AM",
+      "Hi Anjana Amazon urgently recruit for part-time job you can earn XXXX-XXXXX Rs every day add Whatsapp wa.me/ XXXXXXXXXXXX"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "wa.me",
+        "wa",
+        "tiny.one",
+        "cutt.ly",
+        "phwsappm.com"
+      ],
+      "top_urls": [
+        "http://wa",
+        "http://wa.me",
+        "http://wa.me/",
+        "http://wa.me/639198693265",
+        "http://tiny.one/3nzecc4dText"
+      ],
+      "top_phones": [
+        "9199634987",
+        "9172250128",
+        "9176209998",
+        "9185048610",
+        "9197262465"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_037267",
+      "real_062582",
+      "real_074027",
+      "real_070909",
+      "real_035219",
+      "real_040248",
+      "real_058053",
+      "real_061569",
+      "real_035703",
+      "synth_ind_000590"
+    ],
+    "language_distribution": {
+      "English": 72,
+      "Hindi": 14
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 9,
+    "record_count": 79,
+    "unique_text_groups": 79,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.949,
+      "min_cosine_similarity": 0.8421
+    },
+    "representative_examples": [
+      "Dear Consumer Your Electricity power will be disconnect Tonight at 9:30 pm from electricity office Because your previous month bill be not update Please immediately contact with our electricity officer XXXXXXXXXX Thank you",
+      "Dear Consumer Your Electricity power will be disconnect Tonight at 9.30 pm from electricity office because your previous month bill be not update Please immediately contact with our electricity officer XXXXXXXXXX"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "7003738754",
+        "8509981502",
+        "6201314601",
+        "+917848874987",
+        "8179483319"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_038726",
+      "real_044328",
+      "real_064102",
+      "real_056776",
+      "real_052694",
+      "real_061658",
+      "real_037952",
+      "real_057760",
+      "real_061021",
+      "real_036287"
+    ],
+    "language_distribution": {
+      "English": 79
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 22,
+    "record_count": 79,
+    "unique_text_groups": 79,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7712,
+      "min_cosine_similarity": 0.6358
+    },
+    "representative_examples": [
+      "National Cyber Cell se bol raha hoon. Aapke naam par money laundering case register hua hai.",
+      "National Cyber Cell se bol raha hoon. Aapke naam par ek criminal complaint register hui hai."
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_076833",
+      "real_076948",
+      "real_076635",
+      "real_076945",
+      "real_077168",
+      "real_076876",
+      "real_077306",
+      "real_076745",
+      "real_077309",
+      "real_077143"
+    ],
+    "language_distribution": {
+      "Hinglish": 68,
+      "English": 11
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 6,
+    "record_count": 67,
+    "unique_text_groups": 67,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8426,
+      "min_cosine_similarity": 0.7162
+    },
+    "representative_examples": [
+      "भारतीय डाक पार्सल सूचना: पैकेट #IN208529 वेयरहाउस में अटका है। पता सत्यापन हेतु डिलीवरी अधिकारी से तुरंत संपर्क करें: [PHONE] अन्यथा सामान वापस होगा।",
+      "भारतीय डाक पार्सल सूचना: पैकेट #IN396635 वेयरहाउस में अटका है। पता सत्यापन हेतु डिलीवरी अधिकारी से तुरंत संपर्क करें: [PHONE] अन्यथा सामान वापस होगा।"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9868475513",
+        "9843251599",
+        "9831306555",
+        "9897488142",
+        "9887890494"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000841",
+      "synth_ind_000802",
+      "synth_ind_000870",
+      "synth_ind_000874",
+      "synth_ind_000858",
+      "synth_ind_000899",
+      "synth_ind_000895",
+      "synth_ind_000854",
+      "synth_ind_000827",
+      "synth_ind_000861"
+    ],
+    "language_distribution": {
+      "Hindi": 48,
+      "English": 19
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 40,
+    "record_count": 62,
+    "unique_text_groups": 25,
+    "near_duplicate_concentration": 0.5968,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9785,
+      "min_cosine_similarity": 0.9055
+    },
+    "representative_examples": [
+      "Dear Customer your SBI BANK Account have be suspend for KYC Please Complete your KYC XX min click here link [URL]",
+      "Dear Customer your SBI BANK Account have be suspend for KYC Please Complete your KYC XX min click here link [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "4012c64f2e08.ngrok.io",
+        "141.255.151.129",
+        "141.255.152.115",
+        "6f873ea42ca5.ngrok.io"
+      ],
+      "top_urls": [
+        "http://141.255.157.93/sbibank",
+        "http://d8888acb3f9e.ngrok.io/sbibank",
+        "http://866a30ad44fc.ngrok.io/sbibank",
+        "http://3e2b5e825a4f.ngrok.io",
+        "http://141.255.159.215/sbibank"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_034519",
+      "real_033642",
+      "real_028284",
+      "real_052166",
+      "real_036172",
+      "real_015291",
+      "real_023474",
+      "real_064796",
+      "real_052680",
+      "real_034605"
+    ],
+    "language_distribution": {
+      "English": 62
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 2,
+    "record_count": 61,
+    "unique_text_groups": 61,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9025,
+      "min_cosine_similarity": 0.8722
+    },
+    "representative_examples": [
+      "Dear Customer, aapka Kotak Bank A/c ending in XX8177 freeze hone wala hai. Card unblock karwane ke liye customer care number [PHONE] par call karein aur biometric verify karein.",
+      "Dear Customer, aapka Union Bank A/c ending in XX2528 freeze hone wala hai. Card unblock karwane ke liye customer care number [PHONE] par call karein aur biometric verify karein."
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9845812670",
+        "9858586340",
+        "9859684848",
+        "9835714784",
+        "9845594951"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000935",
+      "synth_ind_000071",
+      "synth_ind_000943",
+      "synth_ind_000999",
+      "synth_ind_000059",
+      "synth_ind_000035",
+      "synth_ind_000983",
+      "synth_ind_000979",
+      "synth_ind_000127",
+      "synth_ind_000143"
+    ],
+    "language_distribution": {
+      "Hinglish": 61
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 19,
+    "record_count": 52,
+    "unique_text_groups": 50,
+    "near_duplicate_concentration": 0.0385,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8063,
+      "min_cosine_similarity": 0.7125
+    },
+    "representative_examples": [
+      "7058XXXX73 receive payment of Rs 3500.00 by PAYTM Txn ID 9908XX25X Download now and Register to Receive your amount TnC [URL]",
+      "9028XXXX45 receive payment of Rs 3500.00 by PAYTM Txn ID 9908XX25X Download now and Register to Receive your amount TnC [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "phon.pe",
+        "i3fq.com",
+        "m.p-y.tm",
+        "m3fr.com",
+        "ktkbank.page.link"
+      ],
+      "top_urls": [
+        "http://m.p-y.tm/UPlpas",
+        "http://ktkbank.page.link/BAUPI",
+        "http://phon.pe/vko0p2oa",
+        "http://i3fq.com/ODPNW",
+        "http://phon.pe/au9f6amc"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000671",
+      "real_075186",
+      "real_029004",
+      "real_053902",
+      "real_029492",
+      "real_071325",
+      "real_065880",
+      "synth_ind_000655",
+      "real_029602",
+      "real_054973"
+    ],
+    "language_distribution": {
+      "English": 41,
+      "Hindi": 11
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 26,
+    "record_count": 52,
+    "unique_text_groups": 49,
+    "near_duplicate_concentration": 0.0577,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8787,
+      "min_cosine_similarity": 0.7506
+    },
+    "representative_examples": [
+      "You have WON a guaranteed Â£1000 cash or a Â£2000 prize. To claim yr prize call our customer service representative on 0[PHONE] between 10am-7pm",
+      "You have WON a guaranteed £1000 cash or a £2000 prize. To claim yr prize call our customer service representative on 0[PHONE] between 10am-7pm"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "8712778109",
+        "8712778108",
+        "8714712379",
+        "8712778107",
+        "8712300220"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_013676",
+      "real_012876",
+      "real_013465",
+      "real_012434",
+      "real_013253",
+      "real_013643",
+      "real_012667",
+      "real_013231",
+      "real_013249",
+      "real_002030"
+    ],
+    "language_distribution": {
+      "English": 52
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 27,
+    "record_count": 50,
+    "unique_text_groups": 47,
+    "near_duplicate_concentration": 0.06,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9072,
+      "min_cosine_similarity": 0.7966
+    },
+    "representative_examples": [
+      "URGENT! We are trying to contact U. Todays draw shows that you have won a Ã¥Â£2000 prize GUARANTEED. Call 0[PHONE] from land line. Claim 3030. Valid 12hrs only",
+      "URGENT! We are trying to contact U. Todays draw shows that you have won a Ã¥Â£800 prize GUARANTEED. Call 0[PHONE] from land line. Claim C52. Valid 12hrs only"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9064012160",
+        "9050000460",
+        "9058094565",
+        "9058094507",
+        "9061701851"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_012413",
+      "real_013213",
+      "real_002386",
+      "real_012802",
+      "real_013800",
+      "real_002269",
+      "real_004617",
+      "real_000166",
+      "real_050439",
+      "real_012592"
+    ],
+    "language_distribution": {
+      "English": 50
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 3,
+    "record_count": 48,
+    "unique_text_groups": 1,
+    "near_duplicate_concentration": 0.9792,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 1.0,
+      "min_cosine_similarity": 1.0
+    },
+    "representative_examples": [
+      "Power Alert: Aapke ghar ki bijli aaj raat 9:30 disconnect kar di jayegi. Last month bill update nahi hua hai. Call Billing Officer: [PHONE]",
+      "Power Alert: Aapke ghar ki bijli aaj raat 9:30 disconnect kar di jayegi. Last month bill update nahi hua hai. Call Billing Officer: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9869345683",
+        "9838195995",
+        "9873174945",
+        "9878064830",
+        "9887388337"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000282",
+      "synth_ind_000215",
+      "synth_ind_000230",
+      "synth_ind_000266",
+      "synth_ind_000254",
+      "synth_ind_000278",
+      "synth_ind_000195",
+      "synth_ind_000381",
+      "synth_ind_000321",
+      "synth_ind_000306"
+    ],
+    "language_distribution": {
+      "Hinglish": 48
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 25,
+    "record_count": 48,
+    "unique_text_groups": 48,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8249,
+      "min_cosine_similarity": 0.7199
+    },
+    "representative_examples": [
+      "extra day extra savings biggest grocery sale get off free delivery flat upto on mobikwik use code ss min order wwwaskmegroceycom",
+      "super grocery sale save big upto rs free delivery lowest rates best quality use code ss get extra off dont miss wwwaskmegrocerycom tc apply"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_057976",
+      "real_068612",
+      "real_024305",
+      "real_037822",
+      "real_023683",
+      "real_062996",
+      "real_066643",
+      "real_042469",
+      "real_070995",
+      "real_020858"
+    ],
+    "language_distribution": {
+      "English": 48
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 34,
+    "record_count": 47,
+    "unique_text_groups": 46,
+    "near_duplicate_concentration": 0.0213,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8877,
+      "min_cosine_similarity": 0.7923
+    },
+    "representative_examples": [
+      "Dear Airtel SIM user your SIM KYC have be Suspndedtoday Please call customer Care XXXXXXXXXX immediately Your S I 'M block within 24hrs",
+      "Dear AirTel User Your Airtel SIM KYC Hass Been Expire today Please Update Your KYC Call as XXXXXXXXXX immediately Will Be Block Your Some time Thanks"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "+919827380206",
+        "7076730913",
+        "+918927884648",
+        "9903424601",
+        "8420212909"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_075382",
+      "real_032480",
+      "real_032739",
+      "real_032275",
+      "real_046517",
+      "real_042816",
+      "real_032578",
+      "real_068991",
+      "real_050317",
+      "real_040751"
+    ],
+    "language_distribution": {
+      "English": 47
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 7,
+    "record_count": 41,
+    "unique_text_groups": 41,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9935,
+      "min_cosine_similarity": 0.9876
+    },
+    "representative_examples": [
+      "विद्युत नोटिस: उपभोक्ता क्र. XX6617, बकाया बिल ₹299 के कारण आज लाइन काटी जा रही है। डिस्कनेक्शन से बचने हेतु तुरंत बिजली अधिकारी से संपर्क करें: [PHONE]",
+      "विद्युत नोटिस: उपभोक्ता क्र. XX4262, बकाया बिल ₹299 के कारण आज लाइन काटी जा रही है। डिस्कनेक्शन से बचने हेतु तुरंत बिजली अधिकारी से संपर्क करें: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9825480907",
+        "9850308572",
+        "9831687165",
+        "9853868501",
+        "9842747037"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000244",
+      "synth_ind_000264",
+      "synth_ind_000201",
+      "synth_ind_000371",
+      "synth_ind_000300",
+      "synth_ind_000359",
+      "synth_ind_000284",
+      "synth_ind_000272",
+      "synth_ind_000205",
+      "synth_ind_000308"
+    ],
+    "language_distribution": {
+      "Hindi": 41
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 21,
+    "record_count": 41,
+    "unique_text_groups": 40,
+    "near_duplicate_concentration": 0.0244,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9106,
+      "min_cosine_similarity": 0.8362
+    },
+    "representative_examples": [
+      "Congratulations! You won 75 Lakh in Jio Diwali Lucky Contest. Claim code KBC24. Call Lottery Department incharge immediately on [PHONE].",
+      "Congratulations! You won 75 Lakh in Jio Diwali Lucky Contest. Claim code KBC16. Call Lottery Department incharge immediately on [PHONE]."
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9811037490",
+        "9810819505",
+        "9870867592",
+        "9885374852",
+        "9856328316"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000772",
+      "synth_ind_000733",
+      "synth_ind_000687",
+      "synth_ind_000716",
+      "synth_ind_000703",
+      "synth_ind_000757",
+      "synth_ind_000765",
+      "synth_ind_000722",
+      "synth_ind_000695",
+      "synth_ind_000752"
+    ],
+    "language_distribution": {
+      "Hindi": 21,
+      "English": 20
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 33,
+    "record_count": 41,
+    "unique_text_groups": 41,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9513,
+      "min_cosine_similarity": 0.9237
+    },
+    "representative_examples": [
+      "Alert: Aapka SBI account suspend ho chuka hai kyunki KYC pending hai. Diye gaye official portal link par click karke turant KYC update karein: sbi-verify-netbanking.site",
+      "Alert: Aapka Kotak Bank account suspend ho chuka hai kyunki KYC pending hai. Diye gaye official portal link par click karke turant KYC update karein: kotak-kyc-update.co.in"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000042",
+      "synth_ind_000158",
+      "synth_ind_000003",
+      "synth_ind_000066",
+      "synth_ind_000082",
+      "synth_ind_000138",
+      "synth_ind_000178",
+      "synth_ind_000146",
+      "synth_ind_000118",
+      "synth_ind_000190"
+    ],
+    "language_distribution": {
+      "Hinglish": 41
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 37,
+    "record_count": 41,
+    "unique_text_groups": 41,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.942,
+      "min_cosine_similarity": 0.8339
+    },
+    "representative_examples": [
+      "Dear SBI customer your account have be block due to KYC Updated within XX hour.Please contact customer care XXXXXXXXXX to continue your service Thank you",
+      "Dear customer your SBI account have be block due to KYC update within XX hour please contact customer care XXXXXXXXXX to continue your service"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "m.rbi.org.in",
+        "freeonlinesurveys.com",
+        "byrl.mel",
+        "docs.google.com"
+      ],
+      "top_urls": [
+        "http://bit.ly/",
+        "https://m.rbi.org.in//Scripts/",
+        "http://bit.ly",
+        "http://byrl.mel",
+        "http://bit.ly/3xljb"
+      ],
+      "top_phones": [
+        "+918101521152",
+        "+918609387767",
+        "+917047703639",
+        "+918537977985"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_040222",
+      "real_043374",
+      "real_035693",
+      "real_041742",
+      "real_032018",
+      "real_016622",
+      "real_072826",
+      "real_054309",
+      "real_073884",
+      "real_033870"
+    ],
+    "language_distribution": {
+      "English": 41
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 38,
+    "record_count": 41,
+    "unique_text_groups": 32,
+    "near_duplicate_concentration": 0.2195,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9312,
+      "min_cosine_similarity": 0.8515
+    },
+    "representative_examples": [
+      "Dear Customer Your State Bank of India A/C have be Suspended Please update your KYC immediately Click here link [URL] .ngrok.io/sbibank",
+      "Dear Customer Your State Bank Of India A c have be suspend Please update your KYC immediately Click here link [URL] sbibank"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "http",
+        "cd18b76d24f7.ngrok.io",
+        "bit.ly",
+        "f6109ddbe549.ngrok.io",
+        "97178d7367ca"
+      ],
+      "top_urls": [
+        "http://cd18b76d24f7.ngrok.io/sbibank",
+        "http://http://19ffb41b38ac.ngrok.io/sbibank",
+        "http://http://5268aa760a8c",
+        "http://f6109ddbe549.ngrok.io",
+        "http://97178d7367ca"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_072331",
+      "real_063548",
+      "real_056117",
+      "real_025241",
+      "real_070387",
+      "real_024429",
+      "real_040265",
+      "real_016837",
+      "real_052981",
+      "real_055094"
+    ],
+    "language_distribution": {
+      "English": 41
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 42,
+    "record_count": 41,
+    "unique_text_groups": 11,
+    "near_duplicate_concentration": 0.7317,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9886,
+      "min_cosine_similarity": 0.9563
+    },
+    "representative_examples": [
+      "Dear SBI user your SBI YONO A/c have be block please update your PAN CARD click here to login your net banking update your PAN no [URL]",
+      "Dear SBI user your SBI YONO A/c have be block please update your PAN CARD click here to login your net banking update your PAN no [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "is.gd",
+        "bit.ly",
+        "www.yonoonline-login.info",
+        "www.onlineyonologin.info",
+        "www.kroupdate"
+      ],
+      "top_urls": [
+        "www.yonoonline-login.info",
+        "www.onlineyonologin.info",
+        "www.kroupdate",
+        "http://bit.ly/3it2juG",
+        "http://is.gd/ITAwcz"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_061167",
+      "real_063384",
+      "real_056256",
+      "real_019562",
+      "real_066438",
+      "real_070947",
+      "real_064625",
+      "real_072195",
+      "real_034415",
+      "real_062215"
+    ],
+    "language_distribution": {
+      "English": 41
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 8,
+    "record_count": 40,
+    "unique_text_groups": 40,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9495,
+      "min_cosine_similarity": 0.9113
+    },
+    "representative_examples": [
+      "UPPCL Notice: Dear Consumer, aapka power connection tonight 9:30 PM cut ho jayega unpaid bill Rs 299 ki wajah se. Update bill immediately: uppcl-bill-update.pay",
+      "UPPCL Notice: Dear Consumer, aapka power connection tonight 9:30 PM cut ho jayega unpaid bill Rs 149 ki wajah se. Update bill immediately: uppcl-bill-update.pay"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000309",
+      "synth_ind_000376",
+      "synth_ind_000218",
+      "synth_ind_000198",
+      "synth_ind_000237",
+      "synth_ind_000253",
+      "synth_ind_000277",
+      "synth_ind_000352",
+      "synth_ind_000229",
+      "synth_ind_000368"
+    ],
+    "language_distribution": {
+      "English": 40
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 36,
+    "record_count": 40,
+    "unique_text_groups": 38,
+    "near_duplicate_concentration": 0.05,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9468,
+      "min_cosine_similarity": 0.8689
+    },
+    "representative_examples": [
+      "Your A/C will be block today.update your PAN CARD for KYC verify your account login NetBanking KYC upload Click here [URL]",
+      "Your A/C will be block today.update your PAN CARD for KYC verify your account login NetBanking KYC upload Click here [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "rb.gy",
+        "bitly.ws",
+        "xxxx",
+        "cutt.ly",
+        "bit.ly"
+      ],
+      "top_urls": [
+        "http://XXXX",
+        "http://bitly.ws/s6AH",
+        "http://bit.ly/",
+        "http://cutt.ly/61Qk7g9Your",
+        "http://inlnk.ru/9PRzaa"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_014347",
+      "real_017446",
+      "real_028853",
+      "real_071694",
+      "real_041570",
+      "real_058776",
+      "real_067872",
+      "real_030599",
+      "real_047032",
+      "real_044739"
+    ],
+    "language_distribution": {
+      "English": 40
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 14,
+    "record_count": 39,
+    "unique_text_groups": 37,
+    "near_duplicate_concentration": 0.0513,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.7978,
+      "min_cosine_similarity": 0.6807
+    },
+    "representative_examples": [
+      "Dear Customer Rs 300,000 Your loan Application have be approve Please click the link to confirm the loan [URL] DGEDGE",
+      "Dear Customer Your business loan application of Rs 65,50,000/- Ref:56894XX be pre-approved Verify Details 7kb.in/lee/JDHqisq NST"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "tinyurl.com",
+        "usls.in",
+        "x3pr.com",
+        "epx9.com"
+      ],
+      "top_urls": [
+        "http://bit.ly/35FzbcU",
+        "http://bit.ly/31CCeL2",
+        "https://usls.in/s/9xCObiMxbX",
+        "http://bit.ly/3vYSxox",
+        "http://bit.ly/340XMJV"
+      ],
+      "top_phones": [
+        "8744840111",
+        "8750960377"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_036234",
+      "real_062169",
+      "real_035187",
+      "real_034578",
+      "real_057579",
+      "real_024070",
+      "real_074284",
+      "real_020656",
+      "real_057473",
+      "real_043839"
+    ],
+    "language_distribution": {
+      "English": 39
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 17,
+    "record_count": 39,
+    "unique_text_groups": 39,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9532,
+      "min_cosine_similarity": 0.9151
+    },
+    "representative_examples": [
+      "Parivahan Alert: Vehicle UP-04-DE-2976 challan worth Rs 1,500 pending in Lucknow. Download official Parivahan Virtual Court App to pay fine: mahatraffic-challan.app/challan_download.apk",
+      "Parivahan Alert: Vehicle UP-07-BC-9117 challan worth Rs 1,000 pending in Kolkata. Download official Parivahan Virtual Court App to pay fine: parivahan-e-challan.site/challan_download.apk"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000496",
+      "synth_ind_000396",
+      "synth_ind_000524",
+      "synth_ind_000420",
+      "synth_ind_000528",
+      "synth_ind_000552",
+      "synth_ind_000508",
+      "synth_ind_000548",
+      "synth_ind_000460",
+      "synth_ind_000516"
+    ],
+    "language_distribution": {
+      "English": 39
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 31,
+    "record_count": 38,
+    "unique_text_groups": 38,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8509,
+      "min_cosine_similarity": 0.7481
+    },
+    "representative_examples": [
+      "get off on askmegrocery end of month sale use flat for off extra mobikwik cashback visit httpwwwaskmegrocerycom min order rs",
+      "last day of off on askmegrocery month end sale use flat for off extra mobikwik cashback visit httpwwwaskmegrocerycom min order"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_035240",
+      "real_027574",
+      "real_059400",
+      "real_049318",
+      "real_074831",
+      "real_072394",
+      "real_056162",
+      "real_037155",
+      "real_072974",
+      "real_067002"
+    ],
+    "language_distribution": {
+      "English": 38
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 10,
+    "record_count": 37,
+    "unique_text_groups": 37,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9349,
+      "min_cosine_similarity": 0.8819
+    },
+    "representative_examples": [
+      "महावितरण: प्रिय उपभोक्ता, आपका बिजली कनेक्शन आज रात 9:30 बजे काट दिया जाएगा क्योंकि पिछले माह का बिल ₹299 अपडेट नहीं हुआ है। बिल भुगतान करें: tatapower-bill-update.org",
+      "महावितरण: प्रिय उपभोक्ता, आपका बिजली कनेक्शन आज रात 9:30 बजे काट दिया जाएगा क्योंकि पिछले माह का बिल ₹299 अपडेट नहीं हुआ है। बिल भुगतान करें: msedcl-bill-update.link"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000303",
+      "synth_ind_000291",
+      "synth_ind_000271",
+      "synth_ind_000196",
+      "synth_ind_000342",
+      "synth_ind_000366",
+      "synth_ind_000307",
+      "synth_ind_000322",
+      "synth_ind_000212",
+      "synth_ind_000326"
+    ],
+    "language_distribution": {
+      "Hindi": 37
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 24,
+    "record_count": 37,
+    "unique_text_groups": 37,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9225,
+      "min_cosine_similarity": 0.8659
+    },
+    "representative_examples": [
+      "सावधान! आपका बैंक ऑफ बड़ौदा खाता संख्या XX3504 आज रात 12 बजे ब्लॉक कर दिया जाएगा। ई-केवाईसी (e-KYC) सत्यापन हेतु तुरंत पैन व आधार लिंक करें: ofbaroda-pan-link.top",
+      "सावधान! आपका एचडीएफसी बैंक खाता संख्या XX2964 आज रात 12 बजे ब्लॉक कर दिया जाएगा। ई-केवाईसी (e-KYC) सत्यापन हेतु तुरंत पैन व आधार लिंक करें: idfcfirst-portal-auth.site"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000048",
+      "synth_ind_000184",
+      "synth_ind_000172",
+      "synth_ind_000120",
+      "synth_ind_000025",
+      "synth_ind_000076",
+      "synth_ind_000001",
+      "synth_ind_000052",
+      "synth_ind_000080",
+      "synth_ind_000156"
+    ],
+    "language_distribution": {
+      "Hindi": 37
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 15,
+    "record_count": 36,
+    "unique_text_groups": 36,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9852,
+      "min_cosine_similarity": 0.969
+    },
+    "representative_examples": [
+      "Traffic Police Notice: Non-bailable warrant issued for traffic violation on vehicle UP-09-AB-7226. Settle penalty with Traffic Sub-Inspector: [PHONE]",
+      "Traffic Police Notice: Non-bailable warrant issued for traffic violation on vehicle DL-03-DE-7717. Settle penalty with Traffic Sub-Inspector: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9897219599",
+        "9847080140",
+        "9847333543",
+        "9875056916",
+        "9888270025"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000525",
+      "synth_ind_000413",
+      "synth_ind_000477",
+      "synth_ind_000493",
+      "synth_ind_000541",
+      "synth_ind_000429",
+      "synth_ind_000537",
+      "synth_ind_000445",
+      "synth_ind_000441",
+      "synth_ind_000401"
+    ],
+    "language_distribution": {
+      "English": 36
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 13,
+    "record_count": 35,
+    "unique_text_groups": 35,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9644,
+      "min_cosine_similarity": 0.937
+    },
+    "representative_examples": [
+      "परिवहन विभाग नोटिस: वाहन UP-02-CD-7622 पर लंबित चालान ₹1,500 का भुगतान न करने पर वाहन सीज किया जाएगा। लोक अदालत अधिकारी से संपर्क करें: [PHONE]",
+      "परिवहन विभाग नोटिस: वाहन DL-08-BC-6661 पर लंबित चालान ₹1,000 का भुगतान न करने पर वाहन सीज किया जाएगा। लोक अदालत अधिकारी से संपर्क करें: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9861053474",
+        "9848605268",
+        "9885543051",
+        "9817275149",
+        "9842255732"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000447",
+      "synth_ind_000543",
+      "synth_ind_000443",
+      "synth_ind_000487",
+      "synth_ind_000415",
+      "synth_ind_000463",
+      "synth_ind_000439",
+      "synth_ind_000399",
+      "synth_ind_000435",
+      "synth_ind_000395"
+    ],
+    "language_distribution": {
+      "Hindi": 35
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 28,
+    "record_count": 33,
+    "unique_text_groups": 33,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9673,
+      "min_cosine_similarity": 0.9159
+    },
+    "representative_examples": [
+      "URGENT! Your mobile No 077xxx WON a Â£2,000 Bonus Caller Prize on 02/06/03! This is the 2nd attempt to reach YOU! Call 0[PHONE] ASAP! BOX97N7QP, 150ppm",
+      "URGENT! Your mobile No 077xxx WON a Ã¥Â£2,000 Bonus Caller Prize on 02/06/03! This is the 2nd attempt to reach YOU! Call 0[PHONE] ASAP! BOX97N7QP, 150ppm"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9066362231",
+        "9066362206",
+        "7808726822",
+        "9066368753",
+        "8714714011"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_012420",
+      "real_013600",
+      "real_054910",
+      "real_012210",
+      "real_073907",
+      "real_042868",
+      "real_013491",
+      "real_001416",
+      "real_065830",
+      "real_002803"
+    ],
+    "language_distribution": {
+      "English": 33
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 16,
+    "record_count": 29,
+    "unique_text_groups": 29,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9415,
+      "min_cosine_similarity": 0.8886
+    },
+    "representative_examples": [
+      "यातायात पुलिस कोलकाता: आपके वाहन UP-02-CD-7622 पर ₹1,500 का ई-चालान दर्ज हुआ है। न्यायालय समन से बचने के लिए चालान एपीके (APK) डाउनलोड करें: mahatraffic-challan.xyz/challan_download.apk",
+      "यातायात पुलिस अहमदाबाद: आपके वाहन RJ-01-CD-3068 पर ₹1,000 का ई-चालान दर्ज हुआ है। न्यायालय समन से बचने के लिए चालान एपीके (APK) डाउनलोड करें: e-court-notice.online/challan_download.apk"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000534",
+      "synth_ind_000522",
+      "synth_ind_000542",
+      "synth_ind_000418",
+      "synth_ind_000530",
+      "synth_ind_000478",
+      "synth_ind_000498",
+      "synth_ind_000402",
+      "synth_ind_000454",
+      "synth_ind_000386"
+    ],
+    "language_distribution": {
+      "Hindi": 29
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 39,
+    "record_count": 29,
+    "unique_text_groups": 21,
+    "near_duplicate_concentration": 0.2759,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9622,
+      "min_cosine_similarity": 0.9287
+    },
+    "representative_examples": [
+      "Dear HDFC user Your HDFC Netbanking Account will be block today please click on this link and update your PAN CARD Number immediately [URL]",
+      "Dear HDFC user Your HDFC Netbanking Account will be block today please click on this link and update your PAN CARD Number immediately [URL]"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "bit.ly",
+        "cutt.ly",
+        "hdfchpto-tech.preview-domain.com",
+        "hdfcdsrto-tech.preview",
+        "www.8585073934,08"
+      ],
+      "top_urls": [
+        "https://hdfchpto-tech.preview-domain.com",
+        "http://bit.ly/3yBN7CÃÂ°",
+        "http://cutt.ly/YPrXi2L",
+        "http://cutt.ly",
+        "http://cutt.ly/BOnGzxU"
+      ],
+      "top_phones": [
+        "8585073934"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_018687",
+      "real_059343",
+      "real_059618",
+      "real_021367",
+      "real_071561",
+      "real_068955",
+      "real_046674",
+      "real_035321",
+      "real_073528",
+      "real_044886"
+    ],
+    "language_distribution": {
+      "English": 29
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 1,
+    "record_count": 28,
+    "unique_text_groups": 28,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.8678,
+      "min_cosine_similarity": 0.643
+    },
+    "representative_examples": [
+      "Part-time Job Opportunity! Earn daily Rs 6,000 from mobile. Simple Google Maps rating & YouTube like tasks. Daily instant payout. Join Telegram: t.me/hotel_review_income",
+      "Part-time Job Opportunity! Earn daily Rs 2,500 from mobile. Simple Google Maps rating & YouTube like tasks. Daily instant payout. Join Telegram: t.me/hotel_review_income"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "wa.me"
+      ],
+      "top_urls": [
+        "http://wa.me/918851885851"
+      ],
+      "top_phones": [
+        "9188518858"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000567",
+      "synth_ind_000606",
+      "synth_ind_000571",
+      "synth_ind_000596",
+      "synth_ind_000640",
+      "synth_ind_000608",
+      "synth_ind_000594",
+      "synth_ind_000578",
+      "synth_ind_000584",
+      "synth_ind_000622"
+    ],
+    "language_distribution": {
+      "English": 18,
+      "Hindi": 10
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 4,
+    "record_count": 28,
+    "unique_text_groups": 28,
+    "near_duplicate_concentration": 0.0,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9987,
+      "min_cosine_similarity": 0.9963
+    },
+    "representative_examples": [
+      "Delhivery Alert: Delivery boy attempted delivery for parcel #IN582087 but house number was missing. Call Delivery Executive: [PHONE] within 2 hours.",
+      "Delhivery Alert: Delivery boy attempted delivery for parcel #IN624563 but house number was missing. Call Delivery Executive: [PHONE] within 2 hours."
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9885663295",
+        "9820113745",
+        "9848137561",
+        "9850643870",
+        "9889036966"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000828",
+      "synth_ind_000824",
+      "synth_ind_000888",
+      "synth_ind_000840",
+      "synth_ind_000804",
+      "synth_ind_000900",
+      "synth_ind_000880",
+      "synth_ind_000788",
+      "synth_ind_000892",
+      "synth_ind_000852"
+    ],
+    "language_distribution": {
+      "English": 28
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 11,
+    "record_count": 28,
+    "unique_text_groups": 6,
+    "near_duplicate_concentration": 0.7857,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.971,
+      "min_cosine_similarity": 0.946
+    },
+    "representative_examples": [
+      "महत्वपूर्ण सूचना: एक्सिस बैंक उपभोक्ता, आपका डेबिट कार्ड व नेट बैंकिंग ब्लॉक कर दिया गया है। पुनः चालू करने हेतु बैंक हेल्पडेस्क [PHONE] पर तुरंत कॉल करें या ओटीपी बताएं।",
+      "महत्वपूर्ण सूचना: एक्सिस बैंक उपभोक्ता, आपका डेबिट कार्ड व नेट बैंकिंग ब्लॉक कर दिया गया है। पुनः चालू करने हेतु बैंक हेल्पडेस्क [PHONE] पर तुरंत कॉल करें या ओटीपी बताएं।"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9847385696",
+        "9891756179",
+        "9827758595",
+        "9810435578",
+        "9852339391"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000129",
+      "synth_ind_000037",
+      "synth_ind_000113",
+      "synth_ind_000073",
+      "synth_ind_000045",
+      "synth_ind_000117",
+      "synth_ind_000109",
+      "synth_ind_000069",
+      "synth_ind_000137",
+      "synth_ind_000141"
+    ],
+    "language_distribution": {
+      "Hindi": 28
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 29,
+    "record_count": 28,
+    "unique_text_groups": 16,
+    "near_duplicate_concentration": 0.4286,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.9854,
+      "min_cosine_similarity": 0.9657
+    },
+    "representative_examples": [
+      "URGENT! Your Mobile number has been awarded with a Â£2000 prize GUARANTEED. Call 0[PHONE] from land line. Claim 3030. Valid 12hrs only",
+      "URGENT! Your Mobile number has been awarded with a Â£2000 prize GUARANTEED. Call 0[PHONE] from land line. Claim 3030. Valid 12hrs only"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9061790121",
+        "9058094454",
+        "9058095201",
+        "9058094455",
+        "9061790126"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_002761",
+      "real_001064",
+      "real_013359",
+      "real_046974",
+      "real_003203",
+      "real_004893",
+      "real_013258",
+      "real_012469",
+      "real_000417",
+      "real_013609"
+    ],
+    "language_distribution": {
+      "English": 28
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 32,
+    "record_count": 27,
+    "unique_text_groups": 26,
+    "near_duplicate_concentration": 0.037,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 0.895,
+      "min_cosine_similarity": 0.8096
+    },
+    "representative_examples": [
+      "Paytm Cashback: Congratulations! You have received Rs 999 direct bank cashback. Click to credit in bank: paytm-refund-portal.top/pay",
+      "Paytm Cashback: Congratulations! You have received Rs 4,999 direct bank cashback. Click to credit in bank: gpay-reward-collect.xyz/cashback"
+    ],
+    "shared_indicators": {
+      "top_domains": [
+        "77d9f8c6.ngrok.io",
+        "1f2eaobb.ngrok.io",
+        "fff405f4.ngrok.io",
+        "6f381e1c.ngrok.io",
+        "51f23aee.ngrok.io"
+      ],
+      "top_urls": [
+        "http://1f2eaObb.ngrok.io",
+        "http://fff405f4.ngrok.io",
+        "http://77d9f8c6.ngrok.io/paytm",
+        "http://6f381e1c.ngrok.io/kyc",
+        "http://51f23aee.ngrok.io/paytm/user/"
+      ],
+      "top_phones": [],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "real_026880",
+      "synth_ind_000673",
+      "synth_ind_000683",
+      "synth_ind_000657",
+      "real_025271",
+      "real_014920",
+      "synth_ind_000646",
+      "real_035697",
+      "synth_ind_000650",
+      "synth_ind_000675"
+    ],
+    "language_distribution": {
+      "English": 27
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 12,
+    "record_count": 25,
+    "unique_text_groups": 1,
+    "near_duplicate_concentration": 0.96,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 1.0,
+      "min_cosine_similarity": 1.0
+    },
+    "representative_examples": [
+      "दिल्ली पुलिस मुख्यालय: आपके आधार कार्ड पर 14 गैरकानूनी खाते पाए गए हैं। 2 घंटे में वीडियो वेरिफिकेशन करें वरना साइबर अरेस्ट वारंट जारी होगा। जांच अधिकारी: [PHONE]",
+      "दिल्ली पुलिस मुख्यालय: आपके आधार कार्ड पर 14 गैरकानूनी खाते पाए गए हैं। 2 घंटे में वीडियो वेरिफिकेशन करें वरना साइबर अरेस्ट वारंट जारी होगा। जांच अधिकारी: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9896057593",
+        "9830796389",
+        "9822543044",
+        "9817148018",
+        "9878248169"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000974",
+      "synth_ind_000926",
+      "synth_ind_000910",
+      "synth_ind_000994",
+      "synth_ind_000914",
+      "synth_ind_000906",
+      "synth_ind_000930",
+      "synth_ind_000966",
+      "synth_ind_000918",
+      "synth_ind_000982"
+    ],
+    "language_distribution": {
+      "Hindi": 25
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  },
+  {
+    "cluster_id": 18,
+    "record_count": 25,
+    "unique_text_groups": 1,
+    "near_duplicate_concentration": 0.96,
+    "similarity_evidence": {
+      "mean_cosine_similarity": 1.0,
+      "min_cosine_similarity": 1.0
+    },
+    "representative_examples": [
+      "Hi Beta, Call me Please. Cyber crime branch s bat kar rha hu, urgent money laundering case hai, turant call karo: [PHONE]",
+      "Hi Beta, Call me Please. Cyber crime branch s bat kar rha hu, urgent money laundering case hai, turant call karo: [PHONE]"
+    ],
+    "shared_indicators": {
+      "top_domains": [],
+      "top_urls": [],
+      "top_phones": [
+        "9893851247",
+        "9826733967",
+        "9899941500",
+        "9834194479",
+        "9847818761"
+      ],
+      "top_upis": []
+    },
+    "source_records_sample_ids": [
+      "synth_ind_000944",
+      "synth_ind_000980",
+      "synth_ind_000908",
+      "synth_ind_000920",
+      "synth_ind_000964",
+      "synth_ind_000968",
+      "synth_ind_000940",
+      "synth_ind_000956",
+      "synth_ind_000948",
+      "synth_ind_000996"
+    ],
+    "language_distribution": {
+      "Hinglish": 25
+    },
+    "review_status": "Candidate similarity cluster — Under review",
+    "embedding_model_version": "paraphrase-multilingual-MiniLM-L12-v2",
+    "clustering_version": "hdbscan-v2.4",
+    "disclaimer": "Candidate Similarity Cluster: Grouping reflects mathematical and linguistic embedding similarity only; it does not confirm a shared criminal organization or coordinated threat actor."
+  }
+]

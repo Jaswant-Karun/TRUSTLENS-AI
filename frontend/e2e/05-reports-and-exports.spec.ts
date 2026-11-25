@@ -22,10 +22,10 @@ test.describe("Community Reports & Report Exports", () => {
     }
 
     // Verify backend STIX & JSON export endpoints directly with authenticated session
-    await page.goto("/login");
-    await page.getByLabel(/email/i).fill("admin@trustlens.ai");
+    await page.goto("/login", { waitUntil: "networkidle" });
+    await page.locator('input[type="email"]').fill("admin@trustlens.ai");
     await page.locator('input[type="password"]').fill("Admin@TrustLens2026!");
-    await page.getByRole("button", { name: /sign in/i }).click();
+    await page.locator('form button[type="submit"]').click();
     await expect(page).toHaveURL(/\/analyze\/text/);
 
     const exportCheck = await page.evaluate(async () => {

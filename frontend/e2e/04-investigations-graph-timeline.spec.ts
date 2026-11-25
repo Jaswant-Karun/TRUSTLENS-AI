@@ -50,9 +50,9 @@ test.describe("Investigations, Graph Interactions, Filters, Search & Timeline Sy
     }
 
     // Timeline collapse/expand & event selection synchronization
-    const timelineHeader = page.getByText(/Investigation Timeline/i).first();
+    const timelineHeader = page.getByText(/Correlation Timeline/i).first();
     await expect(timelineHeader).toBeVisible();
-    const refreshTimelineBtn = page.getByTitle(/refresh timeline/i).first();
+    const refreshTimelineBtn = page.getByTitle("Refresh Timeline");
     if (await refreshTimelineBtn.isVisible()) {
       await refreshTimelineBtn.click();
     }

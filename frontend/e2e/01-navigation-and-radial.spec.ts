@@ -32,7 +32,7 @@ test.describe("Navigation, Radial Wheel & All Routes", () => {
     await page.goto("/");
 
     // Open radial navigation launcher in ProductHeader
-    const launcher = page.locator("header button").first();
+    const launcher = page.getByRole("button", { name: "Open primary radial navigation" });
     await expect(launcher).toBeVisible();
     await launcher.click();
 
@@ -43,7 +43,8 @@ test.describe("Navigation, Radial Wheel & All Routes", () => {
     await expect(page).toHaveURL(/\/analyze\/text/);
 
     // Re-open radial nav and verify Escape closes it
-    await launcher.click();
+    const launcherAfter = page.getByRole("button", { name: "Open primary radial navigation" });
+    await launcherAfter.click();
     await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeHidden();

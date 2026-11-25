@@ -69,17 +69,15 @@ async def get_model_monitoring(limit: int = Query(default=1000, ge=1, le=5000)):
 @router.post("/feedback", status_code=status.HTTP_201_CREATED, response_model=Dict[str, Any])
 async def submit_model_feedback(
     payload: ModelFeedbackCreate,
-    current_user: Optional[Dict[str, Any]] = Depends(get_optional_user),
 ):
     """
     Submits user FP/FN feedback strictly as 'pending_review' (never automatically treated as ground truth).
     """
-    submitted_by = (current_user or {}).get("user_id") or (current_user or {}).get("email") or "anonymous"
     return await monitoring_service.submit_feedback(
         analysis_id=payload.analysis_id,
         feedback_type=payload.feedback_type,
         suggested_label=payload.suggested_label,
-        submitted_by=submitted_by,
+        submitted_by="user_report",
         comment=payload.comment,
         detected_language=payload.detected_language,
         model_version=payload.model_version,

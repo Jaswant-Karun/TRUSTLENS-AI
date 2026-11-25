@@ -56,7 +56,7 @@ def test_monitoring_and_human_reviewed_feedback_separation(client):
     assert unauth.status_code == 401
 
     # 4. Authenticated human review promotes to verified_ground_truth
-    from backend.app.core.security import get_current_user
+    from backend.app.security.dependencies import get_current_user
     app.dependency_overrides[get_current_user] = lambda: {"user_id": "analyst-1", "email": "analyst@trustlens.ai"}
     try:
         rev = client.post(

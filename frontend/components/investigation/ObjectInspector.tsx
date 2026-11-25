@@ -24,6 +24,7 @@ interface ObjectInspectorProps {
   onToggleCollapse: () => void;
   onExpandNode?: (id: string) => void;
   isExpanding?: boolean;
+  onTimelineRefresh?: () => void;
 }
 
 export function ObjectInspector({
@@ -36,6 +37,7 @@ export function ObjectInspector({
   onToggleCollapse,
   onExpandNode,
   isExpanding,
+  onTimelineRefresh,
 }: ObjectInspectorProps) {
   // Collapsed Sidebar View (ThreatQ right rail)
   if (isCollapsed) {
@@ -144,7 +146,7 @@ export function ObjectInspector({
           /* CASE C: No selection -> Compose InvestigationHeader + Notes */
           <>
             <InvestigationHeader investigation={investigation} />
-            <InvestigationNotesPanel investigationId={investigation.id} />
+            <InvestigationNotesPanel investigationId={investigation.id} onNotesChanged={onTimelineRefresh} />
           </>
         )}
       </div>

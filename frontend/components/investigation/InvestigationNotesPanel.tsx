@@ -9,7 +9,13 @@ import {
 } from "@/lib/api";
 import { MessageSquare, Send, Trash2, RefreshCw, AlertCircle, CheckCircle2 } from "lucide-react";
 
-export function InvestigationNotesPanel({ investigationId }: { investigationId: string }) {
+export function InvestigationNotesPanel({
+  investigationId,
+  onNotesChanged,
+}: {
+  investigationId: string;
+  onNotesChanged?: () => void;
+}) {
   const [notes, setNotes] = useState<InvestigationNoteItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState("");
@@ -46,6 +52,7 @@ export function InvestigationNotesPanel({ investigationId }: { investigationId: 
       setContent("");
       setSuccessMsg("Note saved.");
       await loadNotes();
+      if (onNotesChanged) onNotesChanged();
       setTimeout(() => setSuccessMsg(null), 3000);
     } catch (err: any) {
       setErrorMsg(err?.message || "Authorization or validation error saving note.");

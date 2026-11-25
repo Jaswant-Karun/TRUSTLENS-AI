@@ -17,6 +17,8 @@ from backend.app.schemas.investigation import (
     InvestigationNoteCreate,
     InvestigationNoteUpdate,
     InvestigationNoteResponse,
+    InvestigationUpdate,
+    AttachAnalysisRequest,
 )
 from backend.app.services.investigation_service import investigation_service
 from backend.app.security.dependencies import get_current_user, get_optional_current_user
@@ -259,3 +261,55 @@ async def delete_investigation_note(
             detail=f"Note '{note_id}' in investigation '{investigation_id}' was not found.",
         )
     return {"status": "deleted", "note_id": note_id}
+
+
+@router.patch("/{investigation_id}", response_model=InvestigationDetail)
+async def update_investigation(
+    investigation_id: str,
+    payload: InvestigationUpdate,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Updates investigation status, visibility, or metadata and records timeline + audit events."""
+    try:
+        updated = await investigation_service.update_investigation(
+            investigation_id=investigation_id,
+            payload=payload.model_dump(exclude_none=True),
+            current_user=current_user,
+        )
+    except PermissionError as exc:
+        _handle_access_error(exc, current_user)
+    except ValueError as verr:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(verr))
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Investigation with ID '{investigation_id}' was not found.",
+        )
+    return updated
+
+
+@router.post("/{investigation_id}/attach-analysis", response_model=InvestigationDetail)
+async def attach_analysis_to_investigation(
+    investigation_id: str,
+    payload: AttachAnalysisRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Attaches an existing analysis record to an investigation without mutating the original analysis."""
+    try:
+        updated = await investigation_service.attach_analysis(
+            investigation_id=investigation_id,
+            analysis_id=payload.analysis_id,
+            current_user=current_user,
+        )
+    except PermissionError as exc:
+        _handle_access_error(exc, current_user)
+    except RuntimeError as rerr:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(rerr))
+    except LookupError as lerr:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(lerr))
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Investigation with ID '{investigation_id}' was not found.",
+        )
+    return updated

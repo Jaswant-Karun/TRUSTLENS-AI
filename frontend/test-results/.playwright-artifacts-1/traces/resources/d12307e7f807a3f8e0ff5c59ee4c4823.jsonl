@@ -1,0 +1,4 @@
+{"type":"receive","time":1795628089211.9688,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"70f5cec3b0ee9f45\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
+{"type":"send","time":1795628089212.994,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628088990}"}
+{"type":"receive","time":1795628090259.1128,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"10fb601609d816b4\",\"warnings\":[],\"errors\":[]}"}
+{"type":"send","time":1795628090259.326,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628088990}"}

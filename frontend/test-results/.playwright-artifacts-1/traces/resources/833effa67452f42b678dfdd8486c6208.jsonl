@@ -1,0 +1,7 @@
+{"type":"receive","time":1795628082192.3718,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"33720cc3d990035a\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
+{"type":"send","time":1795628082193.963,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628082173}"}
+{"type":"receive","time":1795628082912.055,"opcode":1,"data":"{\"action\":\"building\"}"}
+{"type":"receive","time":1795628084636.786,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"7a6561b983fd4a48\",\"warnings\":[],\"errors\":[]}"}
+{"type":"send","time":1795628084636.9478,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628082173}"}
+{"type":"send","time":1795628084668.826,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"threat-library\",{\"children\":[\"__PAGE__\",{},\"/threat-library\",\"refresh\"]}]},null,null,true],\"appDirRoute\":true}"}
+{"type":"send","time":1795628085032.5188,"opcode":1,"data":"{\"event\":\"client-hmr-latency\",\"startTime\":1795628082912,\"endTime\":1795628085031,\"page\":\"/threat-library\",\"updatedModules\":[],\"isPageHidden\":false}"}

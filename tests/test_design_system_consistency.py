@@ -58,11 +58,15 @@ def test_product_cyber_primitives_and_radial_routes_exist():
         "CyberBackground.tsx",
         "NeonFrame.tsx",
         "GlowButton.tsx",
+        "GlowEffect.tsx",
         "RadialNavigation.tsx",
         "ProductHeader.tsx",
     ]
     for name in required_product_files:
-        assert (FRONTEND / "components" / "product" / name).exists(), f"Missing {name}"
+        path = FRONTEND / "components" / "product" / name
+        assert path.exists(), f"Missing {name}"
+        content = path.read_text(encoding="utf-8").lower()
+        assert "<video" not in content, f"Heavy video background forbidden in {name}"
 
     radial = (FRONTEND / "components" / "product" / "RadialNavigation.tsx").read_text(encoding="utf-8")
     for route in ["/", "/analyze/text", "/analyze/url", "/analyze/image", "/intelligence/campaigns", "/investigations", "/reports", "/profile"]:

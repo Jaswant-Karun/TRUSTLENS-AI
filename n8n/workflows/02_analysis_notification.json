@@ -19,7 +19,8 @@
         "httpMethod": "POST",
         "path": "analysis-completed",
         "responseMode": "onReceived"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Analysis Completed Webhook (n8n-nodes-base.webhook)"
     },
     {
       "id": "w2-if",
@@ -49,7 +50,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Verify Webhook Secret (n8n-nodes-base.if)"
     },
     {
       "id": "node-auth",
@@ -76,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Authenticate Admin (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w2-notify",
@@ -113,7 +116,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ analysis_id: $node[\"Analysis Completed Webhook\"].json.body.analysis_id, notification_channel: \"soc_webhook\" }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Validate & Dispatch Redacted Alert (n8n-nodes-base.httpRequest)"
     }
   ],
   "connections": {

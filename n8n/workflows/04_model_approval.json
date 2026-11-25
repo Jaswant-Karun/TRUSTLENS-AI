@@ -19,7 +19,8 @@
         "httpMethod": "POST",
         "path": "model-evaluation-completed",
         "responseMode": "onReceived"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Evaluation Completed Webhook (n8n-nodes-base.webhook)"
     },
     {
       "id": "w4-if",
@@ -49,7 +50,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Verify Webhook Secret (n8n-nodes-base.if)"
     },
     {
       "id": "node-auth",
@@ -76,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Authenticate Admin (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w4-cmp",
@@ -110,7 +113,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Compare Candidate vs Production (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w4-gate",
@@ -140,7 +144,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Require Authorized Human Approval (n8n-nodes-base.if)"
     },
     {
       "id": "w4-prom",
@@ -177,7 +182,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ approved_by: $node[\"Evaluation Completed Webhook\"].json.body.approved_by, approval_token: $node[\"Evaluation Completed Webhook\"].json.body.approval_token }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Promote Approved Artifact (n8n-nodes-base.httpRequest)"
     }
   ],
   "connections": {

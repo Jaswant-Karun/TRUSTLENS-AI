@@ -88,6 +88,7 @@ export function IntelligenceReportPanel() {
         <div>
           <label className="block text-[11px] font-semibold text-slate-600 mb-1">Report Type</label>
           <select
+            aria-label="Report Type"
             value={reportType}
             onChange={(e) => {
               const next = e.target.value;

@@ -520,6 +520,7 @@ export default function ReportsPage() {
           </div>
 
           <select
+            aria-label="Filter reports by status"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="text-xs font-mono px-3 py-2.5 rounded-lg border border-slate-300 bg-white"
@@ -568,6 +569,7 @@ export default function ReportsPage() {
                   Scam Vector Type
                 </label>
                 <select
+                  aria-label="Scam Vector Type"
                   value={targetType}
                   onChange={(e) => setTargetType(e.target.value)}
                   className="w-full text-xs font-mono p-2 rounded-lg border border-slate-300 bg-white"

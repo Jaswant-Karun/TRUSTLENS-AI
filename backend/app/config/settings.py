@@ -58,8 +58,18 @@ class AppSettings(BaseSettings):
 
     # ML Runtime Configuration
     ML_ARTIFACTS_DIR: str = "ml/artifacts"
+    MODEL_ARTIFACTS_URI: str = Field(
+        default="",
+        description="Remote object storage URI (s3:// or https://) for syncing verified ML artifacts outside Git",
+    )
     ENABLE_CALIBRATED_SCORES: bool = True
     SIMILARITY_THRESHOLD_DEFAULT: float = 0.55
+
+    # Observability & Error Tracking
+    SENTRY_DSN: str = Field(
+        default="",
+        description="Sentry DSN for production error tracking (PII scrubbing enabled)",
+    )
 
     # n8n Automation Security
     N8N_WEBHOOK_SECRET: str = Field(
@@ -78,12 +88,18 @@ class AppSettings(BaseSettings):
     )
 
     def validate_production_security(self) -> None:
-        """Prevents booting in production with default/weak JWT secret or default admin password."""
+        """Prevents booting in production with default secrets, debug mode, or localhost services."""
         if self.APP_ENV.lower() == "production":
+            if self.DEBUG:
+                raise RuntimeError("SECURITY BLOCK: Production DEBUG must be False.")
             if "change-me" in self.SECRET_KEY or len(self.SECRET_KEY) < 32:
                 raise RuntimeError("SECURITY BLOCK: Production SECRET_KEY must be set to a strong >=32 char secret via environment.")
             if self.ADMIN_DEFAULT_PASSWORD == "Admin@TrustLens2026!":
                 raise RuntimeError("SECURITY BLOCK: Production ADMIN_DEFAULT_PASSWORD must not use the default value.")
+            if "localhost" in self.MONGODB_URI or "127.0.0.1" in self.MONGODB_URI:
+                raise RuntimeError("SECURITY BLOCK: Production MONGODB_URI must not point to localhost.")
+            if any("localhost" in o or "127.0.0.1" in o for o in self.cors_origins):
+                raise RuntimeError("SECURITY BLOCK: Production ALLOWED_ORIGINS must not expose localhost origins.")
 
 
 settings = AppSettings()

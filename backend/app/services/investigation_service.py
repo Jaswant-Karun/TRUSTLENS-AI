@@ -559,8 +559,12 @@ class InvestigationService:
         self,
         investigation_id: str,
         current_user: Optional[Dict[str, Any]] = None,
+        node_type: Optional[str] = None,
+        search: Optional[str] = None,
+        min_confidence: Optional[float] = None,
+        relationship_type: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
-        """Returns the full graph nodes and edges for an investigation."""
+        """Returns graph nodes and edges with provenance, confidence, explanations, and optional filtering/search."""
         await self._ensure_seeded()
         resolved_id = self._resolve_id(investigation_id)
         coll = get_investigations_collection()
@@ -572,29 +576,73 @@ class InvestigationService:
         raw_nodes = doc.get("nodes", [])
         raw_edges = doc.get("edges", [])
 
-        # Format nodes and edges to match contract
         nodes = []
         for n in raw_nodes:
+            src_val = n.get("source", "TRUSTLENS Intelligence")
+            ver_val = n.get("verification_status", "verified")
+            ts_val = n.get("created_at", doc.get("created_at"))
             nodes.append({
                 "id": n.get("id"),
                 "type": n.get("type"),
                 "label": n.get("label"),
                 "properties": n.get("properties", {}),
-                "source": n.get("source", "TRUSTLENS Intelligence"),
-                "verification_status": n.get("verification_status", "verified"),
-                "created_at": n.get("created_at", doc.get("created_at")),
+                "source": src_val,
+                "verification_status": ver_val,
+                "created_at": ts_val,
+                "provenance": n.get("provenance") or {
+                    "source": src_val,
+                    "verification_status": ver_val,
+                    "first_seen_utc": str(ts_val),
+                },
             })
 
         edges = []
         for e in raw_edges:
+            rel = e.get("relationship_type") or "related_to"
+            ev_ref = e.get("evidence_reference")
+            conf = e.get("confidence")
+            if conf is None:
+                conf = 0.90 if rel in ("references_indicator", "contains_url", "resolves_to") else 0.75
+            src_name = e.get("source_name") or ("TRUSTLENS ML & Threat Intel" if ev_ref else "Investigation Record")
+            explanation = e.get("explanation") or (
+                f"{rel.replace('_', ' ').title()}: {ev_ref}" if ev_ref else f"Linked via {rel.replace('_', ' ')}"
+            )
             edges.append({
                 "id": e.get("id"),
                 "source": e.get("source"),
                 "target": e.get("target"),
-                "relationship_type": e.get("relationship_type"),
-                "evidence_reference": e.get("evidence_reference"),
+                "relationship_type": rel,
+                "evidence_reference": ev_ref,
+                "confidence": round(float(conf), 4),
+                "source_name": src_name,
+                "explanation": explanation,
                 "created_at": e.get("created_at", doc.get("created_at")),
             })
+
+        if node_type:
+            nt = node_type.strip().lower()
+            nodes = [n for n in nodes if str(n.get("type", "")).lower() == nt]
+
+        if search:
+            q = search.strip().lower()
+            nodes = [
+                n for n in nodes
+                if q in str(n.get("label", "")).lower()
+                or q in str(n.get("type", "")).lower()
+                or q in str(n.get("source", "")).lower()
+                or q in str(n.get("properties", {})).lower()
+            ]
+
+        if min_confidence is not None:
+            edges = [e for e in edges if (e.get("confidence") or 0.0) >= min_confidence]
+
+        if relationship_type:
+            rt = relationship_type.strip().lower()
+            edges = [e for e in edges if str(e.get("relationship_type", "")).lower() == rt]
+
+        if node_type or search:
+            valid_ids = {n["id"] for n in nodes}
+            edges = [e for e in edges if e["source"] in valid_ids and e["target"] in valid_ids]
 
         return {
             "investigation_id": doc.get("investigation_id", investigation_id),
@@ -768,46 +816,65 @@ class InvestigationService:
             obj_type = target_obj.get("type")
             props = target_obj.get("properties", {})
 
-            # Case A: Expanding a Domain or URL -> Search MongoDB threat_indicators & suspicious_urls
+            # Case A: Expanding a Domain or URL -> Search MongoDB threat_indicators
             if obj_type in ["domain", "url"]:
-                domain_val = props.get("domain") or target_obj.get("label")
-                ind_coll = get_indicators_collection()
-                new_inds = await ind_coll.find({"indicator_value": {"$regex": domain_val, "$options": "i"}}).limit(3).to_list(3)
-                for ind in new_inds:
-                    new_id = f"node-exp-ioc-{ind.get('indicator_id')}"
-                    if not any(n["id"] == new_id for n in connected_nodes):
-                        new_node = {
-                            "id": new_id,
-                            "type": "threat_indicator",
-                            "label": f"IOC: {ind.get('indicator_value')}",
-                            "source": ind.get("source", "MongoDB threat_indicators"),
-                            "verification_status": ind.get("status", "verified"),
-                            "created_at": ind.get("first_seen", now.isoformat()),
-                            "properties": {
-                                "indicator_type": ind.get("indicator_type"),
-                                "confidence": ind.get("confidence", 0.9),
-                                "tags": ind.get("tags", []),
-                                "severity": "high",
-                            },
-                        }
-                        connected_nodes.append(new_node)
-                        existing_edges.append({
-                            "id": f"e-exp-{uuid.uuid4().hex[:6]}",
-                            "source": object_id,
-                            "target": new_id,
-                            "relationship_type": "references_indicator",
-                            "evidence_reference": f"1-Hop query match in threat_indicators collection",
-                            "created_at": now.isoformat(),
-                        })
+                import re as _re
+                domain_val = str(props.get("domain") or target_obj.get("label") or "").strip()
+                if domain_val:
+                    ind_coll = get_indicators_collection()
+                    safe_pat = _re.escape(domain_val)
+                    new_inds = await ind_coll.find(
+                        {"$or": [{"value": {"$regex": safe_pat, "$options": "i"}}, {"indicator_value": {"$regex": safe_pat, "$options": "i"}}]}
+                    ).limit(3).to_list(3)
+                    if not new_inds:
+                        all_inds = await ind_coll.find({}).limit(200).to_list(200)
+                        dv_low = domain_val.lower()
+                        new_inds = [
+                            i for i in all_inds
+                            if dv_low in str(i.get("value") or i.get("indicator_value") or "").lower()
+                        ][:3]
+                    for ind in new_inds:
+                        val_str = ind.get("value") or ind.get("indicator_value")
+                        new_id = f"node-exp-ioc-{ind.get('indicator_id')}"
+                        if not any(n["id"] == new_id for n in connected_nodes):
+                            conf = float(ind.get("confidence", 0.90))
+                            src_str = ind.get("source", "MongoDB threat_indicators")
+                            new_node = {
+                                "id": new_id,
+                                "type": "threat_indicator",
+                                "label": f"IOC: {val_str}",
+                                "source": src_str,
+                                "verification_status": ind.get("verification_status") or ind.get("status", "verified"),
+                                "created_at": ind.get("ingested_at_utc") or ind.get("first_seen", now.isoformat()),
+                                "properties": {
+                                    "indicator_type": ind.get("indicator_type"),
+                                    "confidence": conf,
+                                    "tags": ind.get("tags", []),
+                                    "severity": ind.get("severity", "high"),
+                                },
+                            }
+                            connected_nodes.append(new_node)
+                            existing_edges.append({
+                                "id": f"e-exp-{uuid.uuid4().hex[:6]}",
+                                "source": object_id,
+                                "target": new_id,
+                                "relationship_type": "references_indicator",
+                                "evidence_reference": f"1-Hop match in threat_indicators ({src_str})",
+                                "confidence": conf,
+                                "source_name": src_str,
+                                "explanation": f"Indicator '{val_str}' matched domain/URL '{domain_val}' in {src_str}.",
+                                "created_at": now.isoformat(),
+                            })
 
             # Case B: Expanding a Threat Indicator Phone -> Search MongoDB analyses for matching extracted_iocs.phones
             elif obj_type == "threat_indicator" and props.get("indicator_type") == "phone":
-                phone_val = props.get("indicator_value", "").replace("+91", "").strip()
+                import re as _re
+                phone_val = str(props.get("indicator_value") or "").replace("+91", "").strip()
                 if phone_val:
                     analyses_coll = get_analyses_collection()
-                    matching_analyses = await analyses_coll.find({"extracted_iocs.phones": {"$regex": phone_val}}).limit(2).to_list(2)
+                    matching_analyses = await analyses_coll.find({"extracted_iocs.phones": {"$regex": _re.escape(phone_val)}}).limit(2).to_list(2)
                     for a in matching_analyses:
-                        new_id = f"node-exp-ana-{a.get('analysis_id')[:8]}"
+                        new_id = f"node-exp-ana-{str(a.get('analysis_id'))[:8]}"
                         if not any(n["id"] == new_id for n in connected_nodes):
                             new_node = {
                                 "id": new_id,
@@ -830,6 +897,73 @@ class InvestigationService:
                                 "target": new_id,
                                 "relationship_type": "belongs_to_cluster",
                                 "evidence_reference": f"1-Hop extraction shared phone indicator '{phone_val}'",
+                                "confidence": 0.92,
+                                "source_name": "MongoDB analyses",
+                                "explanation": f"Analysis {a.get('analysis_id')} shares extracted phone indicator '{phone_val}'.",
+                                "created_at": now.isoformat(),
+                            })
+
+            # Case C: Expanding a Campaign Cluster -> Search correlated analyses
+            elif obj_type in ["campaign_cluster", "similarity_cluster"]:
+                cid = props.get("cluster_id") if props.get("cluster_id") is not None else props.get("campaign_id")
+                if cid is not None:
+                    analyses_coll = get_analyses_collection()
+                    matching_analyses = await analyses_coll.find({"campaign_model.campaign_id": cid}).limit(3).to_list(3)
+                    for a in matching_analyses:
+                        new_id = f"node-exp-ana-{str(a.get('analysis_id'))[:8]}"
+                        if not any(n["id"] == new_id for n in connected_nodes):
+                            sim = float((a.get("campaign_model") or {}).get("similarity_score", 0.75))
+                            connected_nodes.append({
+                                "id": new_id,
+                                "type": "message",
+                                "label": f"Analysis {str(a.get('analysis_id'))[:8]} ({a.get('threat_level', 'unknown')})",
+                                "source": f"Analysis {a.get('analysis_id')}",
+                                "verification_status": "verified",
+                                "created_at": str(a.get("created_at", now.isoformat())),
+                                "properties": {"analysis_id": a.get("analysis_id"), "threat_level": a.get("threat_level")},
+                            })
+                            existing_edges.append({
+                                "id": f"e-exp-{uuid.uuid4().hex[:6]}",
+                                "source": object_id,
+                                "target": new_id,
+                                "relationship_type": "belongs_to_cluster",
+                                "evidence_reference": f"Campaign Cluster #{cid} similarity {sim:.2f}",
+                                "confidence": round(sim, 4),
+                                "source_name": "HDBSCAN Campaign Intelligence",
+                                "explanation": f"Analysis {a.get('analysis_id')} matched Campaign Cluster #{cid} with cosine similarity {sim:.2f}.",
+                                "created_at": now.isoformat(),
+                            })
+
+            # Case D: Expanding a Message / Analysis -> Search matching threat_indicators
+            elif obj_type in ["message", "analysis"]:
+                iocs = props.get("extracted_iocs") or {}
+                vals = list(iocs.get("urls", [])) + list(iocs.get("domains", [])) + list(iocs.get("phones", []))
+                if vals:
+                    ind_coll = get_indicators_collection()
+                    new_inds = await ind_coll.find({"value": {"$in": vals}}).limit(3).to_list(3)
+                    for ind in new_inds:
+                        new_id = f"node-exp-ioc-{ind.get('indicator_id')}"
+                        if not any(n["id"] == new_id for n in connected_nodes):
+                            conf = float(ind.get("confidence", 0.90))
+                            src_str = ind.get("source", "MongoDB threat_indicators")
+                            connected_nodes.append({
+                                "id": new_id,
+                                "type": "threat_indicator",
+                                "label": f"IOC: {ind.get('value')}",
+                                "source": src_str,
+                                "verification_status": ind.get("verification_status", "verified"),
+                                "created_at": ind.get("ingested_at_utc", now.isoformat()),
+                                "properties": {"indicator_type": ind.get("indicator_type"), "severity": ind.get("severity", "high")},
+                            })
+                            existing_edges.append({
+                                "id": f"e-exp-{uuid.uuid4().hex[:6]}",
+                                "source": object_id,
+                                "target": new_id,
+                                "relationship_type": "references_indicator",
+                                "evidence_reference": f"Extracted IOC '{ind.get('value')}' matched {src_str}",
+                                "confidence": conf,
+                                "source_name": src_str,
+                                "explanation": f"Extracted indicator '{ind.get('value')}' correlated with {src_str}.",
                                 "created_at": now.isoformat(),
                             })
 

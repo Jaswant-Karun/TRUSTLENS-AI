@@ -9,6 +9,10 @@ from typing import Dict, Any, Tuple
 from fastapi import UploadFile, HTTPException, status
 from PIL import Image
 
+Image.MAX_IMAGE_PIXELS = 25_000_000  # Guard against decompression bombs
+ALLOWED_PIL_FORMATS = {"JPEG", "PNG", "WEBP", "BMP"}
+MAX_IMAGE_DIM = 8192
+
 from backend.app.config.settings import settings
 from backend.app.core.logging import logger
 
@@ -45,13 +49,26 @@ class ScreenshotOCRService:
                 detail="Uploaded file is empty (0 bytes).",
             )
 
-        # 3. PIL Image Validation
+        # 3. PIL Image Format & Decompression-Bomb Validation
         try:
             image = Image.open(io.BytesIO(contents))
+            if (image.format or "").upper() not in ALLOWED_PIL_FORMATS:
+                raise HTTPException(
+                    status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+                    detail=f"Decoded image format '{image.format}' does not match allowed image formats.",
+                )
+            w, h = image.size
+            if w > MAX_IMAGE_DIM or h > MAX_IMAGE_DIM:
+                raise HTTPException(
+                    status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                    detail=f"Image dimensions ({w}x{h}) exceed maximum allowable {MAX_IMAGE_DIM}x{MAX_IMAGE_DIM}.",
+                )
             image.verify()  # Verify file integrity
             # Reopen because verify() consumes image stream
             image = Image.open(io.BytesIO(contents))
             return contents, image
+        except HTTPException:
+            raise
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,

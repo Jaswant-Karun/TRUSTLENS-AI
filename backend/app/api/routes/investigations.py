@@ -90,13 +90,24 @@ async def get_investigation(
 @router.get("/{investigation_id}/graph", response_model=InvestigationGraphResponse)
 async def get_investigation_graph(
     investigation_id: str,
+    node_type: Optional[str] = Query(None, description="Filter graph nodes by type"),
+    search: Optional[str] = Query(None, description="Search node labels, types, or sources"),
+    min_confidence: Optional[float] = Query(None, ge=0.0, le=1.0, description="Filter edges by minimum confidence"),
+    relationship_type: Optional[str] = Query(None, description="Filter edges by relationship_type"),
     current_user: Optional[Dict[str, Any]] = Depends(get_optional_current_user),
 ):
     """
-    Retrieves all graph nodes, technical properties, and evidence-backed edges for the investigation.
+    Retrieves graph nodes, provenance, and evidence-backed edges with optional filtering & search.
     """
     try:
-        graph = await investigation_service.get_investigation_graph(investigation_id, current_user=current_user)
+        graph = await investigation_service.get_investigation_graph(
+            investigation_id,
+            current_user=current_user,
+            node_type=node_type,
+            search=search,
+            min_confidence=min_confidence,
+            relationship_type=relationship_type,
+        )
     except PermissionError as exc:
         _handle_access_error(exc, current_user)
     if not graph:

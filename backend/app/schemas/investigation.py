@@ -23,6 +23,7 @@ class GraphNodeSchema(BaseModel):
     source: str = Field(..., description="Data provenance source (e.g. HDBSCAN Cluster #11, URLhaus, Analysis UUID)")
     verification_status: str = Field(default="verified", description="verified | under_review | flagged")
     created_at: datetime = Field(..., description="Creation / first seen timestamp")
+    provenance: Optional[Dict[str, Any]] = Field(None, description="Structured node provenance metadata")
 
 
 class GraphEdgeSchema(BaseModel):
@@ -34,6 +35,9 @@ class GraphEdgeSchema(BaseModel):
         description="Relationship type: belongs_to_cluster | contains_url | resolves_to | exhibits_tactic | references_indicator | reported_by | targets_entity | attributed_to"
     )
     evidence_reference: Optional[str] = Field(None, description="Direct reference to supporting token, SHAP attribution, or analysis record")
+    confidence: Optional[float] = Field(None, ge=0.0, le=1.0, description="Evidence-backed relationship confidence score")
+    source_name: Optional[str] = Field(None, description="Source system or dataset that produced this relationship")
+    explanation: Optional[str] = Field(None, description="Human-readable explanation of why these entities are linked")
     created_at: datetime = Field(..., description="Edge discovery timestamp")
 
 

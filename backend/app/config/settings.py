@@ -73,6 +73,14 @@ class AppSettings(BaseSettings):
         extra="ignore",
     )
 
+    def validate_production_security(self) -> None:
+        """Prevents booting in production with default/weak JWT secret or default admin password."""
+        if self.APP_ENV.lower() == "production":
+            if "change-me" in self.SECRET_KEY or len(self.SECRET_KEY) < 32:
+                raise RuntimeError("SECURITY BLOCK: Production SECRET_KEY must be set to a strong >=32 char secret via environment.")
+            if self.ADMIN_DEFAULT_PASSWORD == "Admin@TrustLens2026!":
+                raise RuntimeError("SECURITY BLOCK: Production ADMIN_DEFAULT_PASSWORD must not use the default value.")
+
 
 settings = AppSettings()
 

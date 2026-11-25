@@ -63,16 +63,22 @@ class ModelRegistryResponse(BaseModel):
 # --- COMMUNITY REPORT SCHEMAS ---
 
 class CreateReportRequest(BaseModel):
-    target_type: str = Field(..., description="sms | whatsapp | url | call | upi | email")
-    content: str = Field(..., min_length=2, description="Suspicious communication text or target URL")
-    target_identifier: Optional[str] = Field(None, description="Sender phone number, sender email, or shortcode")
-    description: Optional[str] = Field(None, description="Victim context or incident description")
+    target_type: str = Field(..., description="sms | whatsapp | url | call | upi | email | message | fraud")
+    content: str = Field(..., min_length=2, max_length=5000, description="Suspicious communication text or target URL")
+    target_identifier: Optional[str] = Field(None, max_length=256, description="Sender phone number, sender email, or shortcode")
+    description: Optional[str] = Field(None, max_length=2000, description="Victim context or incident description")
     evidence_urls: List[str] = Field(default_factory=list)
+    redact_sensitive_content: bool = Field(default=True, description="Automatically redact PII and sensitive identifiers")
+    allow_public_listing: bool = Field(default=False, description="Privacy control for public visibility")
 
 
 class ReviewReportRequest(BaseModel):
-    verdict: str = Field(..., description="verified_scam | benign | inconclusive")
-    notes: Optional[str] = Field(None, description="Analyst verification rationale")
+    verdict: str = Field(
+        ...,
+        pattern="^(pending|reviewed|rejected|confirmed|verified_scam|benign|under_review|inconclusive)$",
+        description="pending | reviewed | rejected | confirmed | verified_scam | benign | under_review | inconclusive",
+    )
+    notes: Optional[str] = Field(None, max_length=2000, description="Analyst verification rationale")
     assigned_tactics: List[str] = Field(default_factory=list)
 
 

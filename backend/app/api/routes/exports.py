@@ -9,11 +9,18 @@ from typing import Dict, Any, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from pydantic import BaseModel
 
 from backend.app.services.reporting_service import reporting_service
-from backend.app.security.dependencies import get_optional_current_user
+from backend.app.services.ti_sharing_service import ti_sharing_service
+from backend.app.security.dependencies import get_optional_current_user, get_current_user
 
 router = APIRouter(tags=["Reports & Exports"])
+
+
+class ImportValidationRequest(BaseModel):
+    format: str
+    payload: Dict[str, Any]
 
 
 @router.get("/intelligence-reports/generate", response_model=Dict[str, Any])
@@ -87,6 +94,13 @@ async def export_investigation_stix(
             target_id=target_id,
             current_user=current_user,
         )
+        await ti_sharing_service.log_sharing_audit(
+            "export_stix",
+            (current_user or {}).get("user_id") or "anonymous",
+            "stix21",
+            target_id,
+            {"target_type": target_type, "schema_valid": bundle.get("x_trustlens_stix_validation", {}).get("schema_valid")},
+        )
         headers = {}
         if download:
             headers["Content-Disposition"] = f'attachment; filename="trustlens-{target_type}-{target_id}.stix.json"'
@@ -95,5 +109,45 @@ async def export_investigation_stix(
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
     except LookupError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+
+@router.get("/exports/misp")
+async def export_investigation_misp(
+    target_type: str = Query(..., description="investigation | analysis | campaign"),
+    target_id: str = Query(..., description="Record identifier"),
+    download: bool = Query(False, description="Set true to include Content-Disposition attachment header"),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Exports an authorized, PII-scrubbed MISP Core Format Event JSON with audit logging."""
+    try:
+        misp_event = await ti_sharing_service.export_misp_event(
+            target_type=target_type,
+            target_id=target_id,
+            current_user=current_user,
+            reporting_svc=reporting_service,
+        )
+        headers = {}
+        if download:
+            headers["Content-Disposition"] = f'attachment; filename="trustlens-{target_type}-{target_id}.misp.json"'
+        return JSONResponse(content=jsonable_encoder(misp_event), headers=headers)
+    except PermissionError as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc))
+    except LookupError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+
+@router.post("/exports/validate-import", response_model=Dict[str, Any])
+async def validate_threat_intel_import(
+    req: ImportValidationRequest,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Validates incoming STIX 2.1 or MISP payloads for schema compliance and PII leakage."""
+    try:
+        uid = current_user.get("user_id") or current_user.get("email") or "analyst"
+        return await ti_sharing_service.validate_import(req.format, req.payload, user_id=uid)
     except ValueError as exc:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))

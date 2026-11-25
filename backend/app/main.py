@@ -26,6 +26,7 @@ from backend.app.middleware.rate_limit import RateLimitMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifecycle events: initialize database, indexes, and initial admin on startup."""
+    settings.validate_production_security()
     logger.info(f"Starting {settings.APP_NAME} v{settings.APP_VERSION} [{settings.APP_ENV}]...")
     # 1. Connect to MongoDB Atlas (or in-memory resilient fallback)
     await db_manager.connect()
@@ -60,8 +61,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID", "X-Correlation-ID", "X-N8N-Webhook-Secret"],
 )
 
 # 2. Security Headers Middleware (OWASP hardening)

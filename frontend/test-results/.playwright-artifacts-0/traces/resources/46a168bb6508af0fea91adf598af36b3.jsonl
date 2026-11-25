@@ -1,0 +1,5 @@
+{"type":"receive","time":1795628541127.847,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"ff2d435c9bfc4247\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
+{"type":"send","time":1795628541128.9238,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628541079}"}
+{"type":"send","time":1795628543612.8208,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"login\",{\"children\":[\"__PAGE__\",{},\"/login\",\"refresh\"]}]},null,null,true],\"appDirRoute\":true}"}
+{"type":"receive","time":1795628545669.4397,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"928abfb21f088990\",\"warnings\":[],\"errors\":[]}"}
+{"type":"send","time":1795628545669.5889,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628541079}"}

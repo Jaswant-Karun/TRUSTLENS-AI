@@ -1,4 +1,0 @@
-{"version":10,"type":"context-options","origin":"library","browserName":"chromium","playwrightVersion":"1.65.1","options":{"baseURL":"http://127.0.0.1:3000","viewport":{"width":1440,"height":900},"deviceScaleFactor":1,"isMobile":false,"userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.8154.6 Safari/537.36"},"platform":"win32","wallTime":1795628586796,"monotonicTime":99853.452,"sdkLanguage":"javascript","testIdAttributeName":"data-testid","title":"01-navigation-and-radial.spec.ts:67 › Navigation, Radial Wheel & All Routes › mobile bottom navigation bar works on mobile viewport"}
-{"type":"before","callId":"uncy@332","startTime":99864.551,"class":"BrowserContext","method":"newPage","params":{}}
-{"type":"event","time":100107.06,"class":"BrowserContext","method":"page","params":{"pageId":"page@96a8bad3915ccdbb4ff9968ff1fb7318"}}
-{"type":"after","callId":"uncy@332","endTime":100107.251,"result":{"page":"<Page>"}}

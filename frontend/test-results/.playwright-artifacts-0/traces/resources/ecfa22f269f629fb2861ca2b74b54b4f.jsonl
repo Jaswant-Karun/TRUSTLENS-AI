@@ -1,7 +1,0 @@
-{"type":"receive","time":1795628528852.8372,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"bff9ad11c5fc2c59\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
-{"type":"send","time":1795628528853.9832,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628528749}"}
-{"type":"receive","time":1795628530046.4072,"opcode":1,"data":"{\"action\":\"building\"}"}
-{"type":"send","time":1795628531323.123,"opcode":1,"data":"{\"event\":\"ping\",\"tree\":[\"\",{\"children\":[\"__PAGE__\",{},\"/\",\"refresh\"]},null,null,true],\"appDirRoute\":true}"}
-{"type":"receive","time":1795628532883.745,"opcode":1,"data":"{\"action\":\"built\",\"hash\":\"8d77bc7f9b593db3\",\"warnings\":[],\"errors\":[]}"}
-{"type":"send","time":1795628532883.9622,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795628528749}"}
-{"type":"send","time":1795628533155.914,"opcode":1,"data":"{\"event\":\"client-hmr-latency\",\"startTime\":1795628530046,\"endTime\":1795628533154,\"page\":\"/\",\"updatedModules\":[],\"isPageHidden\":false}"}

@@ -48,7 +48,7 @@ test.describe("Authentication, Form Validation, Profile & Notifications", () => 
     await expect(page.getByText(/Profile and preferences saved/i)).toBeVisible();
 
     // Reload and verify persisted in backend
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("#profile-name")).toHaveValue("TrustLens QA Analyst");
     await expect(
       page.getByLabel(/Consented emerging scam campaign advisories/i)

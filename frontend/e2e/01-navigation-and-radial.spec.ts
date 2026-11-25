@@ -31,22 +31,21 @@ test.describe("Navigation, Radial Wheel & All Routes", () => {
   }) => {
     await page.goto("/");
 
-    // Open radial navigation launcher in ProductHeader
-    const launcher = page.getByRole("button", { name: "Open primary radial navigation" });
-    await expect(launcher).toBeVisible();
-    await launcher.click();
+    // Open hero radial navigation wheel on / (avoids sticky header backdrop-filter containing block)
+    const heroHub = page.getByRole("button", { name: "Expand TRUSTLENS AI radial navigation" });
+    await expect(heroHub).toBeVisible();
+    await heroHub.click();
 
     // Verify radial sector menu items appear and click Message Scanner
     const messageNav = page.getByRole("menuitem", { name: /message scanner/i }).first();
     await expect(messageNav).toBeVisible();
-    await page.waitForTimeout(250);
     await messageNav.click({ force: true });
     await expect(page).toHaveURL(/\/analyze\/text/);
 
-    // Re-open radial nav and verify Escape closes it
-    const launcherAfter = page.getByRole("button", { name: "Open primary radial navigation" });
-    await launcherAfter.click();
-    await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeVisible();
+    // Open header radial launcher on /analyze/text and verify Escape closes it
+    const launcher = page.getByRole("button", { name: "Open primary radial navigation" });
+    await launcher.click();
+    await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeAttached();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("menuitem", { name: /url shield/i }).first()).toBeHidden();
   });

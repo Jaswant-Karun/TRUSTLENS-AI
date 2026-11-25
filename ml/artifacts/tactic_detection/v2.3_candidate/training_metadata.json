@@ -1,0 +1,65 @@
+{
+  "phase": "2.3",
+  "dataset_version": "2.0.5",
+  "random_seed": 42,
+  "train_samples": 68552,
+  "val_samples": 8565,
+  "supported_labels": [
+    "urgency_time_pressure",
+    "threats_intimidation",
+    "otp_credential_requests",
+    "bank_impersonation",
+    "government_impersonation",
+    "fake_employment",
+    "prize_reward_manipulation",
+    "account_suspension_threats",
+    "refund_payment_manipulation"
+  ],
+  "unsupported_labels": [
+    "fake_investment"
+  ],
+  "trained_at_utc": "2026-11-25T05:37:08.558344+00:00",
+  "models": {
+    "ovr_logreg": {
+      "display_name": "One-vs-Rest Logistic Regression (Balanced)",
+      "train_duration_seconds": 12.56,
+      "val_micro_f1": 0.9428,
+      "val_macro_f1": 0.9332,
+      "thresholds": {
+        "urgency_time_pressure": 0.65,
+        "threats_intimidation": 0.8,
+        "otp_credential_requests": 0.6,
+        "bank_impersonation": 0.8,
+        "government_impersonation": 0.5,
+        "fake_employment": 0.6,
+        "prize_reward_manipulation": 0.7,
+        "account_suspension_threats": 0.85,
+        "refund_payment_manipulation": 0.8
+      },
+      "size_mb": 5.499
+    },
+    "ovr_linearsvc": {
+      "display_name": "One-vs-Rest Calibrated LinearSVC (Balanced)",
+      "train_duration_seconds": 50.34,
+      "val_micro_f1": 0.9629,
+      "val_macro_f1": 0.9556,
+      "thresholds": {
+        "urgency_time_pressure": 0.4,
+        "threats_intimidation": 0.2,
+        "otp_credential_requests": 0.65,
+        "bank_impersonation": 0.25,
+        "government_impersonation": 0.15,
+        "fake_employment": 0.4,
+        "prize_reward_manipulation": 0.4,
+        "account_suspension_threats": 0.5,
+        "refund_payment_manipulation": 0.2
+      },
+      "size_mb": 16.498
+    }
+  },
+  "artifact_sha256": {
+    "vectorizer.joblib": "248f3382467ea3adf2bd23b431c1be166663c36a72ff7c4f0f909eb7b3a01a2d",
+    "ovr_logreg.joblib": "9fdbd9a5054e280c521916662ccea38c26ada3eea2668b7edebb6c303c89529a",
+    "ovr_linearsvc.joblib": "0216bc8c71504e6afe6eeefabeebc83881bc278969c3264f76ffd231f56ddcd4"
+  }
+}

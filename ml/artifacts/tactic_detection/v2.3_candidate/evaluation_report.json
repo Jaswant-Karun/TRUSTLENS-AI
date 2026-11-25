@@ -1,0 +1,305 @@
+{
+  "phase": "2.3",
+  "dataset_version": "2.0.5",
+  "test_samples": 8563,
+  "supported_labels": [
+    "urgency_time_pressure",
+    "threats_intimidation",
+    "otp_credential_requests",
+    "bank_impersonation",
+    "government_impersonation",
+    "fake_employment",
+    "prize_reward_manipulation",
+    "account_suspension_threats",
+    "refund_payment_manipulation"
+  ],
+  "unsupported_labels": [
+    "fake_investment"
+  ],
+  "selected_model_key": "ovr_linearsvc",
+  "selected_model_summary": {
+    "model_key": "ovr_linearsvc",
+    "display_name": "One-vs-Rest Calibrated LinearSVC (Balanced)",
+    "micro_f1": 0.9566,
+    "macro_f1": 0.9521,
+    "hamming_loss": 0.003,
+    "inference_latency_ms_per_sample": 0.0162,
+    "size_mb": 16.498,
+    "per_label": {
+      "urgency_time_pressure": {
+        "precision": 0.9369,
+        "recall": 0.9659,
+        "f1": 0.9512,
+        "pr_auc": 0.9634,
+        "support": 646,
+        "threshold": 0.4
+      },
+      "threats_intimidation": {
+        "precision": 0.9459,
+        "recall": 0.9663,
+        "f1": 0.956,
+        "pr_auc": 0.9892,
+        "support": 326,
+        "threshold": 0.2
+      },
+      "otp_credential_requests": {
+        "precision": 1.0,
+        "recall": 0.9886,
+        "f1": 0.9943,
+        "pr_auc": 1.0,
+        "support": 88,
+        "threshold": 0.65
+      },
+      "bank_impersonation": {
+        "precision": 0.9,
+        "recall": 0.9706,
+        "f1": 0.934,
+        "pr_auc": 0.9639,
+        "support": 102,
+        "threshold": 0.25
+      },
+      "government_impersonation": {
+        "precision": 0.9545,
+        "recall": 0.9767,
+        "f1": 0.9655,
+        "pr_auc": 0.9968,
+        "support": 43,
+        "threshold": 0.15
+      },
+      "fake_employment": {
+        "precision": 0.88,
+        "recall": 0.898,
+        "f1": 0.8889,
+        "pr_auc": 0.9514,
+        "support": 49,
+        "threshold": 0.4
+      },
+      "prize_reward_manipulation": {
+        "precision": 0.9594,
+        "recall": 0.9653,
+        "f1": 0.9623,
+        "pr_auc": 0.9703,
+        "support": 979,
+        "threshold": 0.4
+      },
+      "account_suspension_threats": {
+        "precision": 0.9699,
+        "recall": 0.9556,
+        "f1": 0.9627,
+        "pr_auc": 0.9877,
+        "support": 135,
+        "threshold": 0.5
+      },
+      "refund_payment_manipulation": {
+        "precision": 0.9326,
+        "recall": 0.9765,
+        "f1": 0.954,
+        "pr_auc": 0.9764,
+        "support": 255,
+        "threshold": 0.2
+      }
+    }
+  },
+  "false_positive_examples": [
+    {
+      "tactic": "urgency_time_pressure",
+      "text": "\u092c\u0948\u0902\u0915 \u0905\u0932\u0930\u094d\u091f Yesterday 11:30 PM\n\u092c\u0927\u093e\u0908 \u0939\u094b! \u0906\u092a\u0915\u093e \u092e\u094b\u092c\u093e\u0907\u0932 \u0928\u0902\u092c\u0930 \u0905\u0902\u0924\u0930\u094d\u0930\u093e\u0937\u094d\u091f\u094d\u0930\u0940\u092f \u0932\u0949\u091f\u0930\u0940 \u0921\u094d\u0930\u093e \u0915\u0947 \u0932\u093f\u090f \u091a\u0941\u0928\u093e \u0917\u092f\u093e \u0939\u0948\u0964 \u0906\u092a \u091c\u0940\u0924\u0947 \u0939\u0948\u0902: \u20b97,50,000 (\u0938\u093e\u0924 \u0932\u093e\u0916 \u092a\u091a\u093e\u0938 \u0939",
+      "predicted_prob": 0.9856
+    },
+    {
+      "tactic": "threats_intimidation",
+      "text": "Dear User Your P.YATM K Y C have be expire today please call customer care no.[PHONE] immediately your P.YATM account suspen 24hrs THANK YOU",
+      "predicted_prob": 0.3309
+    },
+    {
+      "tactic": "bank_impersonation",
+      "text": "Delhi Police se bol raha hoon. Aapke naam par registered account illegal activities mein use hua hai.",
+      "predicted_prob": 0.3099
+    }
+  ],
+  "false_negative_examples": [
+    {
+      "tactic": "urgency_time_pressure",
+      "text": "Please confirm your details for shipment today, otherwise your parcel will be returned to the retailer:",
+      "predicted_prob": 0.3831
+    },
+    {
+      "tactic": "threats_intimidation",
+      "text": "wwweasemytripin book airtickets hotels easily in seconds with easy cancellation easy rescheduling use paytm wallet get cashback book now",
+      "predicted_prob": 0.0348
+    },
+    {
+      "tactic": "otp_credential_requests",
+      "text": "Hello! We need extra hands in our team to meet up with our clients demand. Therefore, we'll like you to join us as a Purchasing Agent. You'l",
+      "predicted_prob": 0.5548
+    }
+  ],
+  "experiments": [
+    {
+      "model_key": "ovr_logreg",
+      "display_name": "One-vs-Rest Logistic Regression (Balanced)",
+      "micro_f1": 0.9403,
+      "macro_f1": 0.9386,
+      "hamming_loss": 0.0041,
+      "inference_latency_ms_per_sample": 0.0075,
+      "size_mb": 5.499,
+      "per_label": {
+        "urgency_time_pressure": {
+          "precision": 0.9096,
+          "recall": 0.9659,
+          "f1": 0.9369,
+          "pr_auc": 0.9524,
+          "support": 646,
+          "threshold": 0.65
+        },
+        "threats_intimidation": {
+          "precision": 0.9346,
+          "recall": 0.9202,
+          "f1": 0.9274,
+          "pr_auc": 0.965,
+          "support": 326,
+          "threshold": 0.8
+        },
+        "otp_credential_requests": {
+          "precision": 0.9886,
+          "recall": 0.9886,
+          "f1": 0.9886,
+          "pr_auc": 0.9995,
+          "support": 88,
+          "threshold": 0.6
+        },
+        "bank_impersonation": {
+          "precision": 0.8909,
+          "recall": 0.9608,
+          "f1": 0.9245,
+          "pr_auc": 0.9524,
+          "support": 102,
+          "threshold": 0.8
+        },
+        "government_impersonation": {
+          "precision": 0.9556,
+          "recall": 1.0,
+          "f1": 0.9773,
+          "pr_auc": 0.9895,
+          "support": 43,
+          "threshold": 0.5
+        },
+        "fake_employment": {
+          "precision": 0.75,
+          "recall": 0.9796,
+          "f1": 0.8496,
+          "pr_auc": 0.9206,
+          "support": 49,
+          "threshold": 0.6
+        },
+        "prize_reward_manipulation": {
+          "precision": 0.9322,
+          "recall": 0.9551,
+          "f1": 0.9435,
+          "pr_auc": 0.9585,
+          "support": 979,
+          "threshold": 0.7
+        },
+        "account_suspension_threats": {
+          "precision": 0.9225,
+          "recall": 0.9704,
+          "f1": 0.9458,
+          "pr_auc": 0.9871,
+          "support": 135,
+          "threshold": 0.85
+        },
+        "refund_payment_manipulation": {
+          "precision": 0.9425,
+          "recall": 0.9647,
+          "f1": 0.9535,
+          "pr_auc": 0.9649,
+          "support": 255,
+          "threshold": 0.8
+        }
+      }
+    },
+    {
+      "model_key": "ovr_linearsvc",
+      "display_name": "One-vs-Rest Calibrated LinearSVC (Balanced)",
+      "micro_f1": 0.9566,
+      "macro_f1": 0.9521,
+      "hamming_loss": 0.003,
+      "inference_latency_ms_per_sample": 0.0162,
+      "size_mb": 16.498,
+      "per_label": {
+        "urgency_time_pressure": {
+          "precision": 0.9369,
+          "recall": 0.9659,
+          "f1": 0.9512,
+          "pr_auc": 0.9634,
+          "support": 646,
+          "threshold": 0.4
+        },
+        "threats_intimidation": {
+          "precision": 0.9459,
+          "recall": 0.9663,
+          "f1": 0.956,
+          "pr_auc": 0.9892,
+          "support": 326,
+          "threshold": 0.2
+        },
+        "otp_credential_requests": {
+          "precision": 1.0,
+          "recall": 0.9886,
+          "f1": 0.9943,
+          "pr_auc": 1.0,
+          "support": 88,
+          "threshold": 0.65
+        },
+        "bank_impersonation": {
+          "precision": 0.9,
+          "recall": 0.9706,
+          "f1": 0.934,
+          "pr_auc": 0.9639,
+          "support": 102,
+          "threshold": 0.25
+        },
+        "government_impersonation": {
+          "precision": 0.9545,
+          "recall": 0.9767,
+          "f1": 0.9655,
+          "pr_auc": 0.9968,
+          "support": 43,
+          "threshold": 0.15
+        },
+        "fake_employment": {
+          "precision": 0.88,
+          "recall": 0.898,
+          "f1": 0.8889,
+          "pr_auc": 0.9514,
+          "support": 49,
+          "threshold": 0.4
+        },
+        "prize_reward_manipulation": {
+          "precision": 0.9594,
+          "recall": 0.9653,
+          "f1": 0.9623,
+          "pr_auc": 0.9703,
+          "support": 979,
+          "threshold": 0.4
+        },
+        "account_suspension_threats": {
+          "precision": 0.9699,
+          "recall": 0.9556,
+          "f1": 0.9627,
+          "pr_auc": 0.9877,
+          "support": 135,
+          "threshold": 0.5
+        },
+        "refund_payment_manipulation": {
+          "precision": 0.9326,
+          "recall": 0.9765,
+          "f1": 0.954,
+          "pr_auc": 0.9764,
+          "support": 255,
+          "threshold": 0.2
+        }
+      }
+    }
+  ]
+}

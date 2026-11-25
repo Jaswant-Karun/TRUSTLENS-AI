@@ -1,0 +1,2 @@
+{"type":"receive","time":1795626764226.586,"opcode":1,"data":"{\"action\":\"sync\",\"hash\":\"d534307e836e2ed4\",\"errors\":[],\"warnings\":[],\"versionInfo\":{\"staleness\":\"stale-major\",\"expected\":\"16.4.6\",\"installed\":\"14.2.35\"}}"}
+{"type":"send","time":1795626764227.552,"opcode":1,"data":"{\"event\":\"client-success\",\"clientId\":1795626764143}"}

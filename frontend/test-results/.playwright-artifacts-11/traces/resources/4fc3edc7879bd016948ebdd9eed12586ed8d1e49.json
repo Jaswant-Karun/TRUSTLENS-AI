@@ -1,1 +1,0 @@
-{"status":"healthy","app_name":"TRUSTLENS AI Backend","version":"1.0.0","environment":"development","database_connected":true,"db_ping_ms":2.58,"models_loaded":{"model_1_text_scam":true,"model_2_phishing_url":true,"model_3_tactic_detector":true,"model_4_campaign_clusterer":true},"timestamp":"2026-11-25T17:11:58.856094+00:00"}

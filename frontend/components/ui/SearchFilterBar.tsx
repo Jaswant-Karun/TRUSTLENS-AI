@@ -29,21 +29,22 @@ export function SearchFilterBar({
   const hasActiveFilters = Boolean(search || threatLevel || channel);
 
   return (
-    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-subtle mb-5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div className="cyber-panel p-4 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-3">
       {/* Search Bar */}
       <div className="relative flex-1 max-w-md">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#A1A1AA]" />
         <input
           type="text"
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={searchPlaceholder}
-          className="w-full pl-9 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/30 transition-all"
+          className="cyber-input pl-9 pr-8"
         />
         {search && (
           <button
             onClick={() => onSearchChange("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded"
+            aria-label="Clear search"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#A1A1AA] hover:text-white p-0.5 rounded"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -56,7 +57,7 @@ export function SearchFilterBar({
           <select
             value={threatLevel}
             onChange={(e) => onThreatLevelChange(e.target.value)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 transition-colors"
+            className="cyber-select"
           >
             <option value="">All Threat Levels</option>
             <option value="critical">Critical Risk</option>
@@ -70,7 +71,7 @@ export function SearchFilterBar({
           <select
             value={channel}
             onChange={(e) => onChannelChange(e.target.value)}
-            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 focus:bg-white focus:outline-none focus:border-blue-500 transition-colors"
+            className="cyber-select"
           >
             <option value="">All Vectors / Channels</option>
             <option value="sms">SMS</option>
@@ -86,7 +87,7 @@ export function SearchFilterBar({
         {hasActiveFilters && onReset && (
           <button
             onClick={onReset}
-            className="inline-flex items-center space-x-1 px-2.5 py-2 text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
+            className="inline-flex items-center space-x-1 px-2.5 py-2 text-xs font-mono text-[#A1A1AA] hover:text-white hover:bg-[#170A12] rounded-lg transition-colors"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset</span>
@@ -96,4 +97,3 @@ export function SearchFilterBar({
     </div>
   );
 }
-

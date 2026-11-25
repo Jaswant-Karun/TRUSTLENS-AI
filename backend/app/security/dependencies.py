@@ -3,6 +3,7 @@ TRUSTLENS AI - Security & Authentication Dependencies
 Provides user extraction, role enforcement, and token validation for FastAPI routes.
 """
 
+from datetime import timezone
 from typing import Optional, Dict, Any
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -41,11 +42,25 @@ async def get_current_user(token: Optional[str] = Depends(oauth2_scheme)) -> Dic
             status_code=status.HTTP_403_FORBIDDEN,
             detail="User account is deactivated.",
         )
+    revoked_before = user.get("session_revoked_before")
+    iat = payload.get("iat")
+    if revoked_before is not None and iat is not None:
+        revoked_dt = (
+            revoked_before.replace(tzinfo=timezone.utc)
+            if revoked_before.tzinfo is None
+            else revoked_before
+        )
+        if float(iat) <= revoked_dt.timestamp():
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Session has been logged out. Please sign in again.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
     return user
 
 
 async def get_optional_current_user(token: Optional[str] = Depends(oauth2_scheme)) -> Optional[Dict[str, Any]]:
-    """Returns authenticated user if valid token provided; returns None otherwise."""
+    """Returns authenticated user if valid, active, non-revoked token provided; returns None otherwise."""
     if not token:
         return None
     try:
@@ -55,6 +70,18 @@ async def get_optional_current_user(token: Optional[str] = Depends(oauth2_scheme
             return None
         users_coll = get_users_collection()
         user = await users_coll.find_one({"user_id": user_id})
+        if not user or not user.get("is_active", True):
+            return None
+        revoked_before = user.get("session_revoked_before")
+        iat = payload.get("iat")
+        if revoked_before is not None and iat is not None:
+            revoked_dt = (
+                revoked_before.replace(tzinfo=timezone.utc)
+                if revoked_before.tzinfo is None
+                else revoked_before
+            )
+            if float(iat) <= revoked_dt.timestamp():
+                return None
         return user
     except Exception:
         return None

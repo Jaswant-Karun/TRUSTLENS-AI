@@ -19,7 +19,8 @@
         "httpMethod": "POST",
         "path": "community-report-submitted",
         "responseMode": "onReceived"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: New Community Report Webhook (n8n-nodes-base.webhook)"
     },
     {
       "id": "w5-if",
@@ -49,7 +50,8 @@
             }
           ]
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Verify Webhook Secret (n8n-nodes-base.if)"
     },
     {
       "id": "node-auth",
@@ -76,7 +78,8 @@
             }
           }
         }
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Authenticate Admin (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w5-create",
@@ -113,7 +116,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify($node[\"New Community Report Webhook\"].json.body) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Create & Validate Report Task (n8n-nodes-base.httpRequest)"
     },
     {
       "id": "w5-log",
@@ -150,7 +154,8 @@
         "sendBody": true,
         "specifyBody": "json",
         "jsonBody": "={{ JSON.stringify({ workflow_name: \"community_report_review\", trigger_event: \"report_submitted\", status: \"awaiting_human_review\", payload_summary: { report_id: $json.report_id, status: $json.status } }) }}"
-      }
+      },
+      "notes": "TRUSTLENS AI n8n node: Store Audit History (n8n-nodes-base.httpRequest)"
     }
   ],
   "connections": {

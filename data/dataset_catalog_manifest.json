@@ -1,0 +1,280 @@
+{
+  "catalog_version": "2.0.0",
+  "generated_at_utc": "2026-11-25T13:16:06.398312+00:00",
+  "commercial_permitted_count": 6,
+  "non_commercial_gated_count": 1,
+  "datasets": {
+    "scamshield": {
+      "dataset_id": "scamshield",
+      "name": "ScamShield: Multilingual Smishing & Social Engineering Corpus",
+      "category": "Hugging Face / Multilingual Fraud",
+      "source": {
+        "provider": "Hugging Face",
+        "identifier": "sidzzz07/scamshield-dataset",
+        "url": "https://huggingface.co/datasets/sidzzz07/scamshield-dataset",
+        "authors": [
+          "sidzzz07"
+        ]
+      },
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT",
+        "requires_attribution": true
+      },
+      "collection_date": "2024-2025 (Dataset v1.0.0; acquired 2026-11-12)",
+      "language": [
+        "English",
+        "Hindi",
+        "Hinglish"
+      ],
+      "label_definitions": {
+        "is_scam": {
+          "0": "Legitimate / Benign",
+          "1": "Fraud / Smishing / Scam / Spam"
+        },
+        "head1_social_engineering": "Multi-label psychological cues (urgency, fear, financial_pressure, authority_impersonation, reward_bait)",
+        "head2_scam_intent": "Fine-grained intent category (e.g., Fake KYC, UPI Fraud, Lottery / Prize, Courier Scam, Legitimate / Benign)"
+      },
+      "record_count": 85680,
+      "known_limitations": "Severe language imbalance (~89% English, ~7.4% Hindi, ~3.5% Hinglish); 0 Tamil or Bengali samples; 'fake_investment' tactic has 0 verified ground-truth annotations; contains 978 near-duplicate template groups.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "Permitted under MIT License with copyright and permission notice preservation."
+      },
+      "ingest_type": "huggingface_jsonl",
+      "urls": [
+        "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/train.jsonl",
+        "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/val.jsonl",
+        "https://huggingface.co/datasets/sidzzz07/scamshield-dataset/resolve/main/test.jsonl"
+      ],
+      "local_raw_dir": "data/raw/scamshield"
+    },
+    "sms_phishing": {
+      "dataset_id": "sms_phishing",
+      "name": "SMS Phishing Dataset for Machine Learning and Pattern Recognition",
+      "category": "Public Research Dataset (Mendeley Data)",
+      "source": {
+        "provider": "Mendeley Data",
+        "identifier": "10.17632/f45bkkt8pr.1",
+        "url": "https://data.mendeley.com/datasets/f45bkkt8pr/1",
+        "authors": [
+          "Sandhya Mishra",
+          "Devpriya Soni"
+        ]
+      },
+      "license": {
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "requires_attribution": true
+      },
+      "collection_date": "2022 (Version 1; acquired 2026-11-12)",
+      "language": [
+        "English"
+      ],
+      "label_definitions": {
+        "ham": "Legitimate personal or informational SMS (4,844 raw rows)",
+        "Spam / spam": "Unsolicited commercial/bulk SMS (489 raw rows)",
+        "Smishing / smishing": "SMS phishing / credential or financial lure (638 raw rows)"
+      },
+      "record_count": 5971,
+      "known_limitations": "5,756 of 5,971 rows (96.4%) overlap with ScamShield and must be deduplicated (leaving 215 novel rows); inconsistent label casing ('Spam'/'spam', 'Smishing'/'smishing'); English-only.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "Permitted under CC BY 4.0 with mandatory author attribution and indication of changes."
+      },
+      "ingest_type": "zip_csv",
+      "urls": [
+        "https://data.mendeley.com/public-files/datasets/f45bkkt8pr/files/edb361de-918d-469f-9106-e84823830665/file_downloaded"
+      ],
+      "local_raw_dir": "data/raw/sms_phishing"
+    },
+    "legitphish": {
+      "dataset_id": "legitphish",
+      "name": "LegitPhish URL Dataset",
+      "category": "Public Research Dataset (Mendeley Data)",
+      "source": {
+        "provider": "Mendeley Data",
+        "identifier": "10.17632/hx4m73v2sf.2",
+        "url": "https://data.mendeley.com/datasets/hx4m73v2sf/2",
+        "authors": [
+          "Rachana Potpelwar",
+          "Uday Kulkarni",
+          "Jaishri Waghmare"
+        ]
+      },
+      "license": {
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "requires_attribution": true
+      },
+      "collection_date": "2024 (Version 2; acquired 2026-11-12)",
+      "language": [
+        "URL-Agnostic (Lexical/Structural)"
+      ],
+      "label_definitions": {
+        "0": "Phishing URL (63,678 raw rows)",
+        "1": "Legitimate URL (37,540 raw rows)",
+        "empty": "1 malformed row with missing ClassLabel (dropped during validation)"
+      },
+      "record_count": 101219,
+      "known_limitations": "100,872 clean URLs span only 63,962 unique domains (requires domain-grouped splitting to prevent leakage); class imbalance (62.94% phishing); lexical features only without live HTTP/DNS verification; near-zero positive samples for has_ip_address.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "Permitted under CC BY 4.0 with mandatory author attribution."
+      },
+      "ingest_type": "csv",
+      "urls": [
+        "https://data.mendeley.com/public-files/datasets/hx4m73v2sf/files/0ed51e4d-d160-4047-b650-3f0801eea4aa/file_downloaded"
+      ],
+      "local_raw_dir": "data/raw/legitphish"
+    },
+    "uci_sms_spam": {
+      "dataset_id": "uci_sms_spam",
+      "name": "UCI SMS Spam Collection",
+      "category": "UCI Machine Learning Repository",
+      "source": {
+        "provider": "UCI Machine Learning Repository",
+        "identifier": "uci-ml/228",
+        "url": "https://archive.ics.uci.edu/dataset/228/sms+spam+collection",
+        "authors": [
+          "Tiago A. Almeida",
+          "Jose Maria Gomez Hidalgo"
+        ]
+      },
+      "license": {
+        "name": "CC BY 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+        "requires_attribution": true
+      },
+      "collection_date": "2012-06-22 (UCI Publication; 2011 corpus)",
+      "language": [
+        "English"
+      ],
+      "label_definitions": {
+        "ham": "Legitimate SMS message (4,827 records)",
+        "spam": "Unsolicited commercial/fraudulent SMS message (747 records)"
+      },
+      "record_count": 5574,
+      "known_limitations": "Historical 2011 UK/Singapore SMS corpus (predates modern UPI/KYC/WhatsApp scams); class imbalance (13.4% spam); partial overlap with downstream Mendeley/ScamShield corpora requires deduplication.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "Permitted under CC BY 4.0 with attribution to Almeida & Hidalgo."
+      },
+      "ingest_type": "zip_tsv",
+      "urls": [
+        "https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip"
+      ],
+      "local_raw_dir": "data/raw/uci_sms_spam"
+    },
+    "phishtank_feed": {
+      "dataset_id": "phishtank_feed",
+      "name": "PhishTank Verified Online Phishing URL Feed",
+      "category": "Phishing URL Feed (Cisco Talos)",
+      "source": {
+        "provider": "PhishTank / Cisco Talos",
+        "identifier": "phishtank-online-valid",
+        "url": "https://phishtank.org/developer_info.php",
+        "authors": [
+          "PhishTank Community / Cisco Talos"
+        ]
+      },
+      "license": {
+        "name": "PhishTank Terms of Use (Data Feeds)",
+        "url": "https://phishtank.org/terms.php",
+        "requires_attribution": false
+      },
+      "collection_date": "Rolling live feed (snapshot timestamped at ingestion)",
+      "language": [
+        "URL-Agnostic (Global)"
+      ],
+      "label_definitions": {
+        "verified=yes, online=yes": "Community-verified active phishing URL at time of snapshot"
+      },
+      "record_count": "Dynamic rolling feed (~10,000-50,000 active verified URLs per snapshot)",
+      "known_limitations": "Phishing-only positive class (requires paired legitimate URLs); rate-limited without registered PHISHTANK_APP_KEY and descriptive User-Agent; provided AS-IS without accuracy/uptime warranty; short-lived URLs cause temporal drift.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "PhishTank Terms of Use explicitly permit commercial use of Data feeds free of charge; requires descriptive User-Agent (e.g. phishtank/<username>) and respect for HTTP 509 rate limits."
+      },
+      "ingest_type": "json_feed",
+      "urls": [
+        "https://data.phishtank.com/data/online-valid.json"
+      ],
+      "local_raw_dir": "data/external/phishtank"
+    },
+    "urlhaus_community": {
+      "dataset_id": "urlhaus_community",
+      "name": "abuse.ch URLhaus Malicious URL Feed",
+      "category": "Recognized Cybersecurity Research Source (abuse.ch)",
+      "source": {
+        "provider": "abuse.ch (in partnership with Spamhaus Technology)",
+        "identifier": "urlhaus-csv-recent",
+        "url": "https://urlhaus.abuse.ch/api/",
+        "authors": [
+          "abuse.ch"
+        ]
+      },
+      "license": {
+        "name": "abuse.ch Community Fair-Use / Spamhaus Terms of Service",
+        "url": "https://urlhaus.abuse.ch/api/",
+        "requires_attribution": true
+      },
+      "collection_date": "Rolling live feed (last 30 days of malware distribution URLs)",
+      "language": [
+        "URL-Agnostic (Global)"
+      ],
+      "label_definitions": {
+        "url_status": "online / offline malware distribution endpoint",
+        "threat": "Malware payload delivery classification (e.g., malware_download)"
+      },
+      "record_count": "Dynamic rolling feed (recent 30-day window)",
+      "known_limitations": "Malware-distribution URLs rather than credential-phishing pages; community feed is restricted to research/non-commercial/fair-use.",
+      "permitted_commercial_usage": {
+        "allowed": false,
+        "terms": "BLOCKED FOR COMMERCIAL TRAINING/PRODUCT USE: Free URLhaus community feeds are for non-commercial, academic research, or internal non-profit defense under fair-use terms. Commercial/for-profit product integration requires a paid abuse.ch/Spamhaus commercial API agreement."
+      },
+      "ingest_type": "csv_feed",
+      "urls": [
+        "https://urlhaus.abuse.ch/downloads/csv_recent/"
+      ],
+      "local_raw_dir": "data/external/urlhaus"
+    },
+    "cisa_kev": {
+      "dataset_id": "cisa_kev",
+      "name": "CISA Known Exploited Vulnerabilities (KEV) Catalog",
+      "category": "Government Cybersecurity Source (U.S. CISA)",
+      "source": {
+        "provider": "U.S. Cybersecurity and Infrastructure Security Agency (CISA)",
+        "identifier": "cisa-kev-catalog",
+        "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+        "authors": [
+          "U.S. Department of Homeland Security / CISA"
+        ]
+      },
+      "license": {
+        "name": "CC0 1.0 Universal (Public Domain Dedication)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "requires_attribution": false
+      },
+      "collection_date": "Rolling government catalog (snapshot timestamped at ingestion)",
+      "language": [
+        "English"
+      ],
+      "label_definitions": {
+        "cveID": "Authoritative CVE identifier with confirmed active exploitation",
+        "knownRansomwareCampaignUse": "'Known' or 'Unknown' linkage to ransomware campaigns"
+      },
+      "record_count": "Dynamic authoritative catalog (~1,200+ exploited CVEs)",
+      "known_limitations": "Vulnerability/CVE intelligence rather than SMS/URL phishing text; useful for threat-intel enrichment and advisory correlation, not direct SMS classification; no CISA/DHS endorsement implied.",
+      "permitted_commercial_usage": {
+        "allowed": true,
+        "terms": "Public Domain (CC0 1.0); commercial use permitted without restriction, without implying CISA/DHS endorsement."
+      },
+      "ingest_type": "json_feed",
+      "urls": [
+        "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+      ],
+      "local_raw_dir": "data/external/cisa_kev"
+    }
+  }
+}

@@ -9,6 +9,7 @@ import {
   NodeType,
   adaptBackendNode,
   adaptBackendEdge,
+  adaptBackendTimeline,
 } from "./types";
 import Link from "next/link";
 import { LayoutGrid, Network, Search, Shield, History } from "lucide-react";
@@ -20,7 +21,7 @@ import { GraphLegend } from "./GraphLegend";
 import { ObjectInspector } from "./ObjectInspector";
 import { InvestigationTimeline } from "./InvestigationTimeline";
 import { CreateInvestigationModal } from "./CreateInvestigationModal";
-import { getInvestigationObjectRelationships } from "@/lib/api";
+import { getInvestigationObjectRelationships, getInvestigationTimeline } from "@/lib/api";
 
 interface InvestigationWorkspaceProps {
   investigation: InvestigationData;
@@ -72,6 +73,24 @@ export function InvestigationWorkspace({
   const [isInspectorCollapsed, setIsInspectorCollapsed] = useState(false);
   const [isTimelineCollapsed, setIsTimelineCollapsed] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Live timeline refresh state
+  const [timelineLoading, setTimelineLoading] = useState(false);
+  const [timelineError, setTimelineError] = useState<string | null>(null);
+
+  const handleRefreshTimeline = useCallback(async () => {
+    setTimelineLoading(true);
+    setTimelineError(null);
+    try {
+      const res = await getInvestigationTimeline(investigation.id);
+      const adapted = (res.timeline || []).map(adaptBackendTimeline);
+      setInvestigation((prev) => ({ ...prev, timeline: adapted }));
+    } catch (err: any) {
+      setTimelineError(err?.message || "Failed to refresh timeline.");
+    } finally {
+      setTimelineLoading(false);
+    }
+  }, [investigation.id]);
 
   // Live 1-hop expansion state
   const [isExpanding, setIsExpanding] = useState(false);
@@ -356,6 +375,7 @@ export function InvestigationWorkspace({
           onToggleCollapse={() => setIsInspectorCollapsed(!isInspectorCollapsed)}
           onExpandNode={handleExpandNeighbors}
           isExpanding={isExpanding}
+          onTimelineRefresh={handleRefreshTimeline}
         />
       </div>
 
@@ -366,6 +386,9 @@ export function InvestigationWorkspace({
         onSelectEvent={handleSelectEvent}
         isCollapsed={isTimelineCollapsed}
         onToggleCollapse={() => setIsTimelineCollapsed(!isTimelineCollapsed)}
+        onRefresh={handleRefreshTimeline}
+        loading={timelineLoading}
+        error={timelineError}
       />
 
       {/* 5. Create Investigation Modal */}

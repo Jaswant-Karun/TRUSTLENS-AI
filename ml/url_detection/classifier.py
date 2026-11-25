@@ -37,6 +37,7 @@ class PhishingURLDetector:
             "is_phishing": res["is_phishing"],
             "features": res["features"],
             "top_risk_factors": res["top_risk_factors"],
+            "security_signals": res.get("security_signals"),
             "is_trained": self.is_trained,
             "model_version": res.get("model_version", "trustlens-model2-xgboost-v1.0"),
             "processing_time_ms": res.get("processing_time_ms", 0.0),

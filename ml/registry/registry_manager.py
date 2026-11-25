@@ -10,7 +10,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 
-VALID_STATUSES = {"Development", "Evaluated", "Approved", "Production", "Deprecated", "Blocked"}
+VALID_STATUSES = {"Development", "Evaluated", "Approved", "Production", "Deprecated", "Superseded", "Blocked"}
 
 REQUIRED_FIELDS = [
     "model_id",
@@ -59,7 +59,9 @@ class ModelRegistryManager:
     def promote_model(self, model_id: str, target_status: str, human_approved_by: Optional[str] = None) -> Dict[str, Any]:
         """
         Enforces strict Promotion Policy:
-        - Production requires explicit human_approved_by and prior Evaluated/Approved status.
+        - Production requires explicit human_approved_by, prior Evaluated/Approved status,
+          and live SHA-256 artifact verification.
+        - Automatically marks prior Production model for the same task as Superseded.
         - Blocked models cannot be promoted.
         """
         if target_status not in VALID_STATUSES:
@@ -78,12 +80,84 @@ class ModelRegistryManager:
                 raise PermissionError("Production promotion denied: explicit human_approved_by is required.")
             if current not in ("Evaluated", "Approved"):
                 raise PermissionError(f"Production promotion denied: model status must be Evaluated or Approved (current: {current}).")
+
+            art_path = Path(model.get("artifact_path", ""))
+            if not art_path.exists():
+                raise FileNotFoundError(f"Cannot promote '{model_id}': artifact missing at {art_path}")
+            actual_sha = compute_sha256(art_path)
+            if actual_sha != model.get("artifact_checksum"):
+                raise ValueError(f"Cannot promote '{model_id}': SHA-256 checksum mismatch.")
+
+            task = model.get("task")
+            superseded_ids: List[str] = []
+            for other_id, other_entry in self.data["models"].items():
+                if other_id != model_id and other_entry.get("task") == task and other_entry.get("deployment_status") == "Production":
+                    other_entry["deployment_status"] = "Superseded"
+                    superseded_ids.append(other_id)
+
+            now_utc = datetime.now(timezone.utc).isoformat()
             model["approved_by"] = human_approved_by
-            model["approved_at_utc"] = datetime.now(timezone.utc).isoformat()
+            model["approved_at_utc"] = now_utc
+            self.data.setdefault("promotion_history", []).append({
+                "action": "promote",
+                "task": task,
+                "model_id": model_id,
+                "superseded_models": superseded_ids,
+                "approved_by": human_approved_by,
+                "timestamp_utc": now_utc,
+            })
 
         model["deployment_status"] = target_status
         self.save()
         return model
+
+    def rollback_model(
+        self,
+        task: str,
+        target_model_id: str,
+        reason: str,
+        human_approved_by: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Rolls back a task's Production model to a prior verified model_id (Superseded/Evaluated/Approved)
+        after verifying SHA-256 integrity and recording audit history.
+        """
+        if not human_approved_by or not human_approved_by.strip():
+            raise PermissionError("Rollback denied: explicit human_approved_by is required.")
+        if target_model_id not in self.data["models"]:
+            raise KeyError(f"Target rollback model '{target_model_id}' not found in registry")
+
+        target = self.data["models"][target_model_id]
+        if target.get("task") != task:
+            raise ValueError(f"Task mismatch: '{target_model_id}' belongs to '{target.get('task')}', expected '{task}'.")
+        if target.get("deployment_status") == "Blocked":
+            raise PermissionError(f"Cannot roll back to Blocked model '{target_model_id}'.")
+
+        art_path = Path(target.get("artifact_path", ""))
+        if not art_path.exists() or compute_sha256(art_path) != target.get("artifact_checksum"):
+            raise ValueError(f"Rollback aborted: artifact missing or SHA-256 mismatch for '{target_model_id}'.")
+
+        rolled_from: List[str] = []
+        for other_id, other_entry in self.data["models"].items():
+            if other_id != target_model_id and other_entry.get("task") == task and other_entry.get("deployment_status") == "Production":
+                other_entry["deployment_status"] = "Superseded"
+                rolled_from.append(other_id)
+
+        now_utc = datetime.now(timezone.utc).isoformat()
+        target["deployment_status"] = "Production"
+        target["approved_by"] = human_approved_by
+        target["approved_at_utc"] = now_utc
+        self.data.setdefault("promotion_history", []).append({
+            "action": "rollback",
+            "task": task,
+            "model_id": target_model_id,
+            "rolled_back_from": rolled_from,
+            "reason": reason,
+            "approved_by": human_approved_by,
+            "timestamp_utc": now_utc,
+        })
+        self.save()
+        return target
 
     def save(self) -> None:
         self.data["last_updated_utc"] = datetime.now(timezone.utc).isoformat()

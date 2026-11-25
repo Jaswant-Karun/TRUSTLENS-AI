@@ -16,12 +16,16 @@ PHONE_REGEX = re.compile(r"(?:\+?91[\-\s]?)?[6-9]\d{9}\b|\b\d{5}[\-\s]?\d{5}\b")
 OTP_REGEX = re.compile(r"\b\d{4,6}\b(?=\s*(?:is your|as your|otp|verification code|pin))", re.IGNORECASE)
 UPI_REGEX = re.compile(r"\b[\w.\-]+@(?:okaxis|okhdfcbank|okicici|oksbi|paytm|ybl|apl|upi)\b", re.IGNORECASE)
 
-# Hinglish vocabulary markers
+# Hinglish & regional transliteration vocabulary markers
 HINGLISH_KEYWORDS = {
-    "aapka", "karein", "turant", "paisa", "khata", "sampark", "kare", "hai",
-    "bheje", "band", "hoga", "shukriya", "dhyan", "karo", "karen", "sakte",
-    "par", "nahi", "raha", "gaya", "kripya", "jaldi", "inam", "jeet", "crore",
-    "lakh", "paaye", "bhejo", "paas", "liye", "bhi", "sirf", "aaj"
+    "aapka", "apka", "aapke", "apna", "apne", "karein", "turant", "paisa", "paise",
+    "khata", "khate", "sampark", "kare", "hai", "bheje", "bhejen", "bhejein",
+    "band", "bandh", "hoga", "hogaya", "jayega", "jayegi", "shukriya", "dhyan",
+    "karo", "kro", "karen", "sakte", "par", "nahi", "raha", "gaya", "gya",
+    "kripya", "jaldi", "inam", "inaam", "jeet", "jeete", "jeeta", "crore",
+    "karod", "lakh", "paaye", "bhejo", "paas", "liye", "bhi", "sirf", "aaj",
+    "bijli", "challan", "rupaye", "mahoday", "grahak", "seva", "bhugtan",
+    "nambar", "dabayen", "nikal", "wrna", "warna", "subah", "baje", "kal",
 }
 
 

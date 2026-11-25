@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.backend
+    env_file:
+      - env/.env.staging.example
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+        reservations:
+          memory: 2G
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.frontend
+      args:
+        NEXT_PUBLIC_API_URL: /api/v1
+    environment:
+      BACKEND_API_URL: http://backend:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    restart: unless-stopped

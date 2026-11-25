@@ -1,0 +1,74 @@
+{
+  "annotated_test_samples": 8563,
+  "multi_label_messages_count": 580,
+  "overall": {
+    "micro_f1": 0.9566,
+    "macro_f1": 0.9521,
+    "hamming_loss": 0.003,
+    "exact_match_accuracy": 0.9751
+  },
+  "multi_label_subset": {
+    "samples": 580,
+    "micro_f1": 0.9835,
+    "macro_f1": 0.981,
+    "exact_match_accuracy": 0.931
+  },
+  "per_label_calibration": {
+    "urgency_time_pressure": {
+      "support": 646,
+      "brier_score": 0.006,
+      "ece_10bins": 0.0033,
+      "threshold": 0.4
+    },
+    "threats_intimidation": {
+      "support": 326,
+      "brier_score": 0.0027,
+      "ece_10bins": 0.001,
+      "threshold": 0.2
+    },
+    "otp_credential_requests": {
+      "support": 88,
+      "brier_score": 0.0001,
+      "ece_10bins": 0.0005,
+      "threshold": 0.65
+    },
+    "bank_impersonation": {
+      "support": 102,
+      "brier_score": 0.0013,
+      "ece_10bins": 0.0008,
+      "threshold": 0.25
+    },
+    "government_impersonation": {
+      "support": 43,
+      "brier_score": 0.0003,
+      "ece_10bins": 0.0006,
+      "threshold": 0.15
+    },
+    "fake_employment": {
+      "support": 49,
+      "brier_score": 0.001,
+      "ece_10bins": 0.0006,
+      "threshold": 0.4
+    },
+    "prize_reward_manipulation": {
+      "support": 979,
+      "brier_score": 0.0076,
+      "ece_10bins": 0.0056,
+      "threshold": 0.4
+    },
+    "account_suspension_threats": {
+      "support": 135,
+      "brier_score": 0.001,
+      "ece_10bins": 0.0013,
+      "threshold": 0.5
+    },
+    "refund_payment_manipulation": {
+      "support": 255,
+      "brier_score": 0.0021,
+      "ece_10bins": 0.0016,
+      "threshold": 0.2
+    }
+  },
+  "mean_brier_score": 0.0025,
+  "mean_ece": 0.0017
+}

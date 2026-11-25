@@ -21,8 +21,10 @@ import {
   Network,
   Cpu,
   Info,
+  FolderPlus,
 } from "lucide-react";
 import { ScanResult } from "@/lib/api";
+import { AttachToInvestigationModal } from "@/components/investigation/AttachToInvestigationModal";
 
 interface AnalysisResultPanelProps {
   result: ScanResult;
@@ -30,6 +32,7 @@ interface AnalysisResultPanelProps {
 
 export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
   const [activeSubTab, setActiveSubTab] = useState<"overview" | "ssl" | "content" | "campaign" | "evidence">("overview");
+  const [attachOpen, setAttachOpen] = useState(false);
 
   const threatLevel = result.threat_level || "inconclusive";
   const hasConfidence = typeof result.confidence === "number";
@@ -148,7 +151,23 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
             </span>
           </div>
         </div>
+        {result.analysis_id && (
+          <button
+            type="button"
+            onClick={() => setAttachOpen(true)}
+            className="shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-[#FF174F]/70 bg-[#FF174F]/15 px-3 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-wider text-white hover:bg-[#FF174F]/30 transition-colors"
+          >
+            <FolderPlus className="w-3.5 h-3.5 text-[#FF3D70]" />
+            <span>Attach to Investigation</span>
+          </button>
+        )}
       </div>
+
+      <AttachToInvestigationModal
+        isOpen={attachOpen}
+        analysisId={result.analysis_id || null}
+        onClose={() => setAttachOpen(false)}
+      />
 
       {/* 2. Target Overview Card with Circular Risk Gauge */}
       <div className="bg-slate-900/80 rounded-xl border border-slate-800 p-5 flex flex-col lg:flex-row items-center justify-between gap-6">
@@ -482,7 +501,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                       <span>Evidence Tokens:</span>
                       {tac.evidence_tokens.map((tok: string, idx: number) => (
                         <span key={idx} className="px-1.5 py-0.5 rounded bg-slate-800 text-cyan-300 font-bold">
-                          "{tok}"
+                          &ldquo;{tok}&rdquo;
                         </span>
                       ))}
                     </div>
@@ -535,7 +554,7 @@ export function AnalysisResultPanel({ result }: AnalysisResultPanelProps) {
                   <div className="flex flex-wrap gap-1.5">
                     {result.campaign_association.shared_phrases.map((phrase: string, i: number) => (
                       <span key={i} className="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">
-                        "{phrase}"
+                        &ldquo;{phrase}&rdquo;
                       </span>
                     ))}
                   </div>

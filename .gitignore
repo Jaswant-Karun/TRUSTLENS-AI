@@ -18,8 +18,11 @@ htmlcov/
 # Node & Next.js
 frontend/node_modules/
 frontend/.next/
+frontend/android/.next/
 frontend/out/
 frontend/build/
+frontend/test-results/
+frontend/playwright-report/
 frontend/.env.local
 frontend/.env.production.local
 frontend/.env.development.local
@@ -29,6 +32,14 @@ frontend/.env.development.local
 .env.*.local
 *.pem
 *.key
+*.jks
+*.keystore
+keystore.properties
+frontend/android/keystore.properties
+frontend/android/.gradle/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/app/release/
 
 # Data & Large Artifacts (preserve structure, exclude heavy binaries)
 data/raw/*

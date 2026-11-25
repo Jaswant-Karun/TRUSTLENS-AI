@@ -51,8 +51,8 @@ INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
         {"keys": [("targeted_entity", 1)]},
     ],
     COLL_THREAT_INDICATORS: [
-        {"keys": [("type", 1), ("value", 1)], "unique": True},
-        {"keys": [("severity", 1)]},
+        {"keys": [("indicator_type", 1), ("indicator_value", 1)], "unique": True},
+        {"keys": [("status", 1)]},
         {"keys": [("last_seen", -1)]},
     ],
     COLL_MODEL_REGISTRY: [
@@ -76,9 +76,24 @@ INDEX_SPECIFICATIONS: Dict[str, List[Dict]] = {
     ],
     COLL_INVESTIGATIONS: [
         {"keys": [("investigation_id", 1)], "unique": True},
+        {"keys": [("owner_id", 1)]},
         {"keys": [("status", 1)]},
         {"keys": [("severity", 1)]},
         {"keys": [("created_at", -1)]},
+    ],
+    "scam_campaigns": [
+        {"keys": [("cluster_size", -1)]},
+    ],
+    "organizations": [
+        {"keys": [("organization_id", 1)], "unique": True},
+    ],
+    "notifications": [
+        {"keys": [("notification_id", 1)], "unique": True},
+        {"keys": [("user_id", 1), ("read", 1), ("created_at", -1)]},
+    ],
+    "notification_deliveries": [
+        {"keys": [("delivery_id", 1)], "unique": True},
+        {"keys": [("user_id", 1), ("delivered_at", -1)]},
     ],
 }
 
@@ -92,6 +107,12 @@ async def init_database_indexes() -> None:
     for coll_name, specs in INDEX_SPECIFICATIONS.items():
         try:
             coll = db_manager.db[coll_name]
+            if coll_name == COLL_THREAT_INDICATORS:
+                existing_idx = await coll.index_information()
+                if "type_1_value_1" in existing_idx:
+                    await coll.drop_index("type_1_value_1")
+                if "severity_1" in existing_idx:
+                    await coll.drop_index("severity_1")
             for spec in specs:
                 keys = spec["keys"]
                 unique = spec.get("unique", False)

@@ -1,0 +1,62 @@
+name: Deploy TRUSTLENS AI to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_production:
+        description: "Type DEPLOY_PRODUCTION to confirm"
+        required: true
+
+jobs:
+  verify-and-deploy:
+    if: github.event.inputs.confirm_production == 'DEPLOY_PRODUCTION'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 & Run Backend/ML Gate
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install -r requirements.txt
+          python -m pytest tests/test_e2e_backend_ml_integration.py -q
+
+      - name: Run Database Migrations (Pre-Deploy)
+        env:
+          APP_ENV: production
+          MONGODB_URI: ${{ secrets.PROD_MONGODB_URI }}
+          MONGODB_DB_NAME: trustlens_ai_prod
+        run: python infra/scripts/run_migrations.py
+
+      - name: Deploy Backend Container & Capture Previous Revision
+        id: deploy_backend
+        run: |
+          echo "PREV_REVISION=$(gcloud run services describe trustlens-api --region asia-south1 --format='value(status.latestReadyRevisionName)' || echo '')" >> $GITHUB_OUTPUT
+          gcloud run deploy trustlens-api \
+            --source . \
+            --region asia-south1 \
+            --memory 4Gi \
+            --cpu 2 \
+            --min-instances 1 \
+            --no-allow-unauthenticated=false
+
+      - name: Deploy Frontend (Vercel Production)
+        run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Run Live Production Smoke Tests
+        id: smoke
+        run: |
+          python infra/scripts/production_smoke_test.py \
+            --frontend-url https://trustlens.ai \
+            --backend-url https://api.trustlens.ai
+
+      - name: Automatic Rollback on Smoke Failure
+        if: failure() && steps.deploy_backend.outputs.PREV_REVISION != ''
+        run: |
+          echo "Smoke tests failed! Rolling back backend to ${{ steps.deploy_backend.outputs.PREV_REVISION }}"
+          gcloud run services update-traffic trustlens-api \
+            --region asia-south1 \
+            --to-revisions=${{ steps.deploy_backend.outputs.PREV_REVISION }}=100
+          exit 1

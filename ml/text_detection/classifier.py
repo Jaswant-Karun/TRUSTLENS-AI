@@ -35,6 +35,8 @@ class MultilingualScamClassifier:
             "confidence": res["confidence"],
             "is_threat": res["is_threat"],
             "detected_language": res["detected_language"],
+            "language_support_status": res.get("language_support_status", "evaluated"),
+            "class_probabilities": res.get("class_probabilities", {}),
             "is_trained": self.is_trained,
             "model_version": res["model_version"],
             "explanation": f"Contributing signals: {', '.join(res['supporting_evidence'][:4])}" if res['supporting_evidence'] else "Linguistic indicators analyzed",

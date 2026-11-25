@@ -612,7 +612,7 @@ export default function KillChainGraph({ id }: KillChainGraphProps) {
                           key={idx}
                           className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-mono"
                         >
-                          "{phrase}"
+                          &ldquo;{phrase}&rdquo;
                         </span>
                       ))
                     ) : (
